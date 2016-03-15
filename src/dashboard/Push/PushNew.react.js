@@ -188,7 +188,7 @@ export default class PushNew extends DashboardView {
         promise.reject({ error });
       } else {
         //TODO: global success message banner for passing successful creation - store should also be cleared
-        history.pushState(null, this.context.generatePath('push/activity'));
+        history.push(this.context.generatePath('push/activity'));
       }
     }, (error) => {
       promise.reject(error);

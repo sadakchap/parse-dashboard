@@ -12,7 +12,7 @@ cd parse-dashboard
 npm install
 ```
 
-Next add your app info into `parse-dashboard/Parse-Dashboard/parse-dashboard-config.json`. The file should match the following format, using the server URL, App ID, and Master Key from your Parse Server. The App Name can be anything you want, and is used to reference your app in the dashboard.
+Next add your app info into `parse-dashboard/Parse-Dashboard/parse-dashboard-config.json`. The file should match the following format, using the server URL, App ID, and Master Key from your Parse Server. The App Name can be anything you want, and is used to reference your app in the dashboard. **Make sure the server URL is a URL that can be accessed by your browser.**
 
 ```
 {
@@ -53,6 +53,8 @@ You can also manage your apps that are hosted on Parse.com from the same dashboa
 ```
 
 Then execute `npm run dashboard` and visit [`http://localhost:4040`](http://localhost:4040) and you will be able to manage your parse apps.
+
+![Parse Dashboard](.github/dash-shot.png)
 
 ## Other options
 
@@ -104,21 +106,11 @@ If you are not familiar with Docker, ``--port 8080`` with be passed in as argume
 
 ## Deploying in production
 
-For production deployments, it's recommended to use the npm package
-
-1. Create a folder for your project
-2. run `$ npm init`
-3. Create your dashboard.json in the root ot your project
-4. run `$ npm install --save parse-dashboard`
-5. add a start script in your package.json  `"start": "parse-dashboard --config ./dashboard.json"` 
-6. run `$ npm start`
-
-
-If you're deploying to a provider like Heroku, or Google App Engine, the SSL endpoint is terminated early and handled by the provider and you may encounter this error `Parse Dashboard can only be remotely accessed via HTTPS`. 
+If you're deploying to a provider like Heroku, or Google App Engine, the SSL endpoint is terminated early and handled by the provider and you may encounter this error: `Parse Dashboard can only be remotely accessed via HTTPS`. 
 
 :warning: :warning: Before going further, make sure your server **cannot** be reachable via **HTTP**. See the provider documentation for force HTTPS connections to your deployment.
 
-Set the environment variable to PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=1 to tell parse server to skip the secure tests.
+Set the environment variable `PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=1` to tell parse server to skip the secure tests.
 
 To start your server use:
 
