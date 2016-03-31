@@ -35,7 +35,7 @@ let BrowserToolbar = ({
   onRemoveColumn,
   onDeleteRows,
   onDropClass,
-  updateCLP,
+  onChangeCLP,
   hidePerms,
 
   enableDeleteAllRows,
@@ -44,14 +44,15 @@ let BrowserToolbar = ({
 }) => {
   let selectionLength = Object.keys(selection).length;
   let details = [];
-  if (!relation) {
-    if (count !== undefined) {
+  if (count !== undefined) {
       if (count === 1) {
         details.push('1 object');
       } else {
         details.push(prettyNumber(count) + ' objects');
       }
-    }
+  }
+
+  if (!relation) {    
     if (perms && !hidePerms) {
       let read = perms.get && perms.find && perms.get['*'] && perms.find['*'];
       let write = perms.create && perms.update && perms.delete && perms.create['*'] && perms.update['*'] && perms.delete['*'];
@@ -116,7 +117,7 @@ let BrowserToolbar = ({
         disabled={!!relation}
         perms={perms}
         className={classNameForPermissionsEditor}
-        updateCLP={updateCLP}
+        onChangeCLP={onChangeCLP}
         userPointers={userPointers} /> : <noscript />}
       {enableSecurityDialog ? <div className={styles.toolbarSeparator} /> : <noscript/>}
       {menu}

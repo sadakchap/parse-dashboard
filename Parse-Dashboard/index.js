@@ -6,61 +6,123 @@
  * the root directory of this source tree.
  */
 // Command line tool for npm start
+"use strict"
+const packageJson = require('package-json');
+const basicAuth = require('basic-auth');
+const path = require('path');
+const jsonFile = require('json-file-plus');
+const express = require('express');
 
-var DEFAULT_DASHBOARD_CONFIG = __dirname + '/parse-dashboard-config.json';
-
-var program = require("commander");
-program.option('--port [port]', "the port to run parse-dashboard");
-program.option('--config [config]', "the path to the configuration file");
-program.option('--allowInsecureHTTP [allowInsecureHTTP]', 'set that flag when parse server is behind an HTTPS load balancer/proxy');
+const program = require('commander');
+program.option('--appId [appId]', 'the app Id of the app you would like to manage.');
+program.option('--masterKey [masterKey]', 'the master key of the app you would like to manage.');
+program.option('--serverURL [serverURL]', 'the server url of the app you would like to manage.');
+program.option('--appName [appName]', 'the name of the app you would like to manage. Optional.');
+program.option('--config [config]', 'the path to the configuration file');
+program.option('--port [port]', 'the port to run parse-dashboard');
+program.option('--allowInsecureHTTP [allowInsecureHTTP]', 'set this flag when you are running the dashboard behind an HTTPS load balancer or proxy with early SSL termination.');
 
 program.parse(process.argv);
 
-// collect the variables
-var configFile = program.config || DEFAULT_DASHBOARD_CONFIG;
-var port = program.port || process.env.PORT;
-var allowInsecureHTTP = program.allowInsecureHTTP || process.env.PARSE_DASHBOARD_ALLOW_INSECURE_HTTP;
+const currentVersionFeatures = require('../package.json').parseDashboardFeatures;
 
-var packageJson = require('package-json');
-var basicAuth = require('basic-auth');
-var path = require('path');
-var jsonFile = require('json-file-plus');
-var express = require('express');
-var app = express();
-var currentVersionFeatures = require('../package.json').parseDashboardFeatures;
-
-// Serve public files.
-app.use(express.static(path.join(__dirname,'public')));
-
-var newFeaturesInLatestVersion = []
-packageJson('parse-dashboard').then(latestPackage => {
+var newFeaturesInLatestVersion = [];
+packageJson('parse-dashboard', 'latest').then(latestPackage => {
   if (latestPackage.parseDashboardFeatures instanceof Array) {
-    newFeaturesInLatestVersion = parseDashboardFeatures.filter(feature => {
+    newFeaturesInLatestVersion = latestPackage.parseDashboardFeatures.filter(feature => {
       return currentVersionFeatures.indexOf(feature) === -1;
     });
   }
 });
 
-app.get('/parse-dashboard-config.json', function(req, res) {
-  jsonFile(configFile)
-  .then(config => {
-    config.data.apps.forEach((app) => {
-      if (!app.appName) {
-        return res.send({ success: false, error: 'An application is misconfigured, appName is required' });
+const port = program.port || process.env.PORT || 4040;
+const allowInsecureHTTP = program.allowInsecureHTTP || process.env.PARSE_DASHBOARD_ALLOW_INSECURE_HTTP;
+
+let explicitConfigFileProvided = !!program.config;
+let configFile = null;
+let configFromCLI = null;
+let configServerURL = program.serverURL || process.env.PARSE_DASHBOARD_SERVER_URL;
+let configMasterKey = program.masterKey || process.env.PARSE_DASHBOARD_MASTER_KEY;
+let configAppId = program.appId || process.env.PARSE_DASHBOARD_APP_ID;
+let configAppName = program.appName || process.env.PARSE_DASHBOARD_APP_NAME;
+let configUserId = program.userId || process.env.PARSE_DASHBOARD_USER_ID;
+let configUserPassword = program.userPassword || process.env.PARSE_DASHBOARD_USER_PASSWORD;
+if (!program.config && !process.env.PARSE_DASHBOARD_CONFIG) {
+  if (configServerURL && configMasterKey && configAppId) {
+    configFromCLI = {
+      data: {
+        apps: [
+          {
+            appId: configAppId,
+            serverURL: configServerURL,
+            masterKey: configMasterKey,
+            appName: configAppName,
+          },
+        ]
       }
-    });
-    var response = {
+    };
+    if (configUserId && configUserPassword) {
+      configFromCLI.data.users = [
+        {
+          user: configUserId,
+          pass: configUserPassword,
+        }
+      ];
+    }
+  } else if (!configServerURL && !configMasterKey && !configAppName) {
+    configFile = path.join(__dirname, 'parse-dashboard-config.json');
+  }
+} else if (!program.config && process.env.PARSE_DASHBOARD_CONFIG) {
+  configFromCLI = {
+    data: JSON.parse(process.env.PARSE_DASHBOARD_CONFIG)
+  };
+} else {
+  configFile = program.config;
+  if (program.appId || program.serverURL || program.masterKey || program.appName) {
+    console.log('You must provide either a config file or required CLI options (app ID, Master Key, and server URL); not both.');
+    process.exit(3);
+  }
+}
+
+let p = null;
+if (configFile) {
+  p = jsonFile(configFile);
+} else if (configFromCLI) {
+  p = Promise.resolve(configFromCLI);
+} else {
+  //Failed to load default config file.
+  console.log('You must provide either a config file or an app ID, Master Key, and server URL. See parse-dashboard --help for details.');
+  process.exit(4);
+}
+p.then(config => {
+  config.data.apps.forEach(app => {
+    if (!app.appName) {
+      app.appName = app.appId;
+    }
+  });
+
+  const app = express();
+
+  // Serve public files.
+  app.use(express.static(path.join(__dirname,'public')));
+
+  // Serve the configuration.
+  app.get('/parse-dashboard-config.json', function(req, res) {
+    const response = {
       apps: config.data.apps,
       newFeaturesInLatestVersion: newFeaturesInLatestVersion,
     };
-    var users = config.data.users;
+    const users = config.data.users;
+
+    let auth = null;
     //If they provide auth when their config has no users, ignore the auth
     if (users) {
-      var auth = basicAuth(req);
+      auth = basicAuth(req);
     }
+
     //Based on advice from Doug Wilson here:
     //https://github.com/expressjs/express/issues/2518
-    var requestIsLocal =
+    const requestIsLocal =
       req.connection.remoteAddress === '127.0.0.1' ||
       req.connection.remoteAddress === '::ffff:127.0.0.1' ||
       req.connection.remoteAddress === '::1';
@@ -74,7 +136,7 @@ app.get('/parse-dashboard-config.json', function(req, res) {
       return res.send({ success: false, error: 'Configure a user to access Parse Dashboard remotely' });
     }
 
-    var successfulAuth =
+    const successfulAuth =
       //they provided auth
       auth &&
       //there are configured users
@@ -86,7 +148,7 @@ app.get('/parse-dashboard-config.json', function(req, res) {
       });
     if (successfulAuth) {
       //They provided correct auth
-      return res.send(response);
+      return res.json(response);
     }
 
     if (users || auth) {
@@ -103,22 +165,35 @@ app.get('/parse-dashboard-config.json', function(req, res) {
     }
     //We shouldn't get here. Fail closed.
     res.send({ success: false, error: 'Something went wrong.' });
-  }, error => {
-    if (error instanceof SyntaxError) {
-      res.send({ success: false, error: 'Your parse-dashboard-config.json file contains invalid JSON.' });
-    } else if (error.code === 'ENOENT') {
-      res.send({ success: false, error: 'Your parse-dashboard-config.json file is missing.' });
+  });
+
+  // For every other request, go to index.html. Let client-side handle the rest.
+  app.get('/*', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
+  });
+
+  // Start the server.
+  app.listen(port);
+
+  console.log(`The dashboard is now available at http://localhost:${port}/`);
+}, error => {
+  if (error instanceof SyntaxError) {
+    console.log('Your config file contains invalid JSON. Exiting.');
+    process.exit(1);
+  } else if (error.code === 'ENOENT') {
+    if (explicitConfigFileProvided) {
+      console.log('Your config file is missing. Exiting.');
+      process.exit(2);
     } else {
-      res.send({ success: false, error: 'There was a problem with your parse-dashboard-config.json file.' });
+      console.log('You must provide either a config file or required CLI options (app ID, Master Key, and server URL); not both.');
+      process.exit(3);
     }
-  })
-  .catch(error => res.send({ success: false, error: 'There was a problem loading the dashboard.' }));
+  } else {
+    console.log('There was a problem with your config. Exiting.');
+    process.exit(-1);
+  }
+})
+.catch(error => {
+  console.log('There was a problem loading the dashboard. Exiting.');
+  process.exit(-1);
 });
-
-// For every other request, go to index.html. Let client-side handle the rest.
-app.get('/*', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
-});
-
-// Start the server, listening to port 4040.
-app.listen(port || 4040);
