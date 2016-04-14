@@ -16,7 +16,7 @@ You can launch the dashboard for an app with a single command by supplying an ap
 parse-dashboard --appId yourAppId --masterKey yourMasterKey --serverURL "https://example.com/parse" --appName optionalName
 ```
 
-You can then visit the dashboard in your browser at http://localhost:4040. If you want to use a different port you can supply the --port option to parse-dashboard. You can use anything you want as the app name, or leave it out in which case the app ID will be used.
+You can then visit the dashboard in your browser at http://localhost:4040. You may set the host, port and mount path by supplying the `--host`, `--port` and `--mountPath` options to parse-dashboard. You can use anything you want as the app name, or leave it out in which case the app ID will be used.
 
 If you want to manage multiple apps from the same dashboard, you can start the dashboard with a config file. For example, you could put your info into a file called `parse-dashboard-config.json` and then start the dashboard using `parse-dashboard --config parse-dashboard-config.json`. The file should match the following format:
 
@@ -44,7 +44,8 @@ You can also manage apps that on Parse.com from the same dashboard. In your conf
       "masterKey": "myMasterKey",
       "javascriptKey": "myJavascriptKey",
       "restKey": "myRestKey",
-      "appName": "My Parse.Com App"
+      "appName": "My Parse.Com App",
+      "production": true
     },
     {
       "serverURL": "http://localhost:1337/parse",
@@ -62,7 +63,7 @@ You can also manage apps that on Parse.com from the same dashboard. In your conf
 
 ## Other options
 
-You can set `appNameForURL` in the config file for each app to control the url of your app within the dashboard. This can make it easier to use bookmarks or share links on your dashboard.
+You can set `appNameForURL` in the config file for each app to control the url of your app within the dashboard. This can make it easier to use bookmarks or share links on your dashboard. To change the app to production, simply set `production` to `true` in your config file. Defaults to false if not specified.
 
 ## Deploying the dashboard
 
