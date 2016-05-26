@@ -242,6 +242,19 @@ export default class Browser extends DashboardView {
     this.setState({clp: this.props.schema.data.get('CLPs').toJS()});
   }
 
+  refresh() {
+    let initialState = {
+      filters: new List(),
+      data: null,
+      newObject: null,
+      lastMax: -1,
+      selection: {},
+      relation: null
+    };
+    this.setState(initialState);
+    this.fetchData(this.props.params.className, this.state.filters)
+  }
+
   fetchData(source, filters, last) {
     let query = queryFromFilters(source, filters);
     if (this.state.ordering[0] === '-') {
@@ -335,9 +348,9 @@ export default class Browser extends DashboardView {
       relation: relation,
       relationCount: 0,
       selection: {},
-    }, () => { 
+    }, () => {
       this.fetchData(relation, this.state.filters);
-      this.fetchRelationCount(relation);      
+      this.fetchRelationCount(relation);
     });
   }
 
@@ -436,15 +449,6 @@ export default class Browser extends DashboardView {
         });
       }
     }
-  }
-
-  onChangeCLP(perms) {
-    let p = this.props.schema.dispatch(ActionTypes.SET_CLP, {
-      className: this.props.params.className,
-      clp: perms,
-    });
-    p.then(() => this.handleFetchedSchema());
-    return p;
   }
 
   selectRow(id, checked) {
@@ -561,7 +565,15 @@ export default class Browser extends DashboardView {
             onDeleteRows={this.showDeleteRows.bind(this)}
             onDropClass={this.showDropClass.bind(this)}
             onExport={this.showExport.bind(this)}
-            onChangeCLP={this.onChangeCLP.bind(this)}
+            onChangeCLP={clp => {
+              let p = this.props.schema.dispatch(ActionTypes.SET_CLP, {
+                className: this.props.params.className,
+                clp,
+              });
+              p.then(() => this.handleFetchedSchema());
+              return p;
+            }}
+            onRefresh={this.refresh.bind(this)}
 
             columns={columns}
             className={className}
