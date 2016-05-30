@@ -8,13 +8,13 @@ var fs = require('fs');
 const currentVersionFeatures = require('../package.json').parseDashboardFeatures;
 
 var newFeaturesInLatestVersion = [];
-packageJson('parse-dashboard', 'latest').then(latestPackage => {
+/*packageJson('parse-dashboard', 'latest').then(latestPackage => {
   if (latestPackage.parseDashboardFeatures instanceof Array) {
     newFeaturesInLatestVersion = latestPackage.parseDashboardFeatures.filter(feature => {
       return currentVersionFeatures.indexOf(feature) === -1;
     });
   }
-});
+});*/
 
 function getMount(req) {
   let url = req.url;
