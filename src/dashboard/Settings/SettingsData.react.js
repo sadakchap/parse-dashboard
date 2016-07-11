@@ -19,7 +19,7 @@ export default class SettingsData extends React.Component {
 
   componentDidMount() {
     console.log('componentDidMount')
-    this.context.currentApp.fetchSettingsFields().then(( fields ) => {
+    this.context.currentApp.fetchSettingsFields().then(({ fields }) => {
       this.setState({ fields });
     });
   }

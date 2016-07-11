@@ -214,7 +214,6 @@ export default class ParseApp {
     let audiencePromises = [
       'daily_users',
       'weekly_users',
-      'weekly_users',
       'monthly_users',
       'total_users',
       'daily_installations',
