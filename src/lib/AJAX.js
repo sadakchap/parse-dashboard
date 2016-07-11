@@ -27,15 +27,16 @@ export function request(method, url, body, abortable = false, withCredentials = 
   }
   let xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
-  if (method === 'POST' || method === 'PUT' || method === 'DELETE') {
-    xhr.setRequestHeader('X-CSRF-Token', CSRFManager.getToken());
-  }
-  if (useRequestedWith) {
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-  }
-  xhr.withCredentials = withCredentials;
+  // if (method === 'POST' || method === 'PUT' || method === 'DELETE') {
+  //   xhr.setRequestHeader('X-CSRF-Token', CSRFManager.getToken());
+  // }
+  // if (useRequestedWith) {
+  //   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  // }
+  //xhr.withCredentials = withCredentials;
   let p = new Promise();
   xhr.onerror = (e) => {
+    console.log(e);
     p.reject({
       success: false,
       message: 'Network Error',

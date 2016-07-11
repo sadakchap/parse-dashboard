@@ -214,6 +214,7 @@ export default class ParseApp {
     let audiencePromises = [
       'daily_users',
       'weekly_users',
+      'weekly_users',
       'monthly_users',
       'total_users',
       'daily_installations',
@@ -315,7 +316,6 @@ export default class ParseApp {
     let promise = AJAX.put(path, appFields);
     promise.then(({ successes }) => {
       for (let f in fields) {
-        fields = {"success":true,"fields":{"client_class_creation_enabled":true,"client_push_enabled":false,"rest_push_enabled":true,"require_revocable_session":true,"expire_revocable_session":true,"revoke_on_password_reset":true,"subdomain_name":null,"host_name_key":"a17777dada61","host_name":null,"send_email_address":"no-reply@parseapps.com","sender_display_name":null,"verify_emails":false,"email_verification_mail_subject":"Please verify your e-mail for %appname%","email_verification_mail_body":"Hi,\n\nYou are being asked to confirm the e-mail address %email% with %appname%\n\nClick here to confirm it:\n%link%","reset_password_mail_subject":"Password Reset Request for %appname%","reset_password_mail_body":"Hi,\n\nYou requested a password reset for %appname%.\n\nClick here to reset it:\n%link%","choose_password_link":"/apps/choose_password","password_updated_link":"/apps/password_reset_success.html","email_verification_link":"/apps/verify_email_success.html","invalid_link_link":"/apps/invalid_link.html","external_frame_link":null,"pricing_plan":{"base_price":0,"base_request_limit":30,"created_at":"2016-01-29T19:23:04Z","data_transfer_limit":2000,"file_storage_limit":20,"id":1178087,"max_file_size":20971520,"max_push_certificates":6,"mongo_limit":20,"parse_app_id":1218042,"push_limit":1000000,"request_limit":30,"updated_at":"2016-01-29T19:23:04Z"},"collaborators":[],"owner_email":"seiji_akiyama@live.com","owner_name":"seijiakiyama","urls":[{"platform":"other","url":"https://back4app.com"}],"auth_options_attributes":{"_enable_by_default":true,"username":{"enabled":true},"facebook":{"enabled":true},"twitter":{"enabled":true},"anonymous":{"enabled":true},"custom":{"enabled":true}},"gcm_credentials":[]}}
         this.settings.fields[f] = successes[f];
       }
     });
@@ -327,16 +327,15 @@ export default class ParseApp {
     // if (new Date() - this.settings.lastFetched < 60000) {
     //   return Parse.Promise.as(this.settings.fields);
     // }
-    let path = '/apps/' + this.slug + '/dashboard_ajax/settings';
-    //return AJAX.get(path).then((fields) => {
-      var fields = {"fields": {}, "client_class_creation_enabled":true,"client_push_enabled":false,"rest_push_enabled":true,"require_revocable_session":true,"expire_revocable_session":true,"revoke_on_password_reset":true,"subdomain_name":null,"host_name_key":"a17777dada61","host_name":null,"send_email_address":"no-reply@parseapps.com","sender_display_name":null,"verify_emails":false,"email_verification_mail_subject":"Please verify your e-mail for %appname%","email_verification_mail_body":"Hi,\n\nYou are being asked to confirm the e-mail address %email% with %appname%\n\nClick here to confirm it:\n%link%","reset_password_mail_subject":"Password Reset Request for %appname%","reset_password_mail_body":"Hi,\n\nYou requested a password reset for %appname%.\n\nClick here to reset it:\n%link%","choose_password_link":"/apps/choose_password","password_updated_link":"/apps/password_reset_success.html","email_verification_link":"/apps/verify_email_success.html","invalid_link_link":"/apps/invalid_link.html","external_frame_link":null,"pricing_plan":{"base_price":0,"base_request_limit":30,"created_at":"2016-01-29T19:23:04Z","data_transfer_limit":2000,"file_storage_limit":20,"id":1178087,"max_file_size":20971520,"max_push_certificates":6,"mongo_limit":20,"parse_app_id":1218042,"push_limit":1000000,"request_limit":30,"updated_at":"2016-01-29T19:23:04Z"},"collaborators":[],"owner_email":"seiji_akiyama@live.com","owner_name":"seijiakiyama","urls":[{"platform":"other","url":"https://back4app.com"}],"auth_options_attributes":{"_enable_by_default":true,"username":{"enabled":true},"facebook":{"enabled":true},"twitter":{"enabled":true},"anonymous":{"enabled":true},"custom":{"enabled":true}},"gcm_credentials":[]}
+    let path = 'http://localhost:4000/apps/' + this.slug + '/dashboard_ajax/settings';
+    return AJAX.get(path).then((fields) => {
       console.log('fetchSettingsFields AJAX.get fields', fields);
       for (let f in fields) {
         this.settings.fields[f] = fields[f];
         this.settings.lastFetched = new Date();
       }
       return Parse.Promise.as(fields);
-    //});
+    });
   }
 
   cleanUpFiles() {
@@ -371,7 +370,7 @@ export default class ParseApp {
   }
 
   validateCollaborator(email) {
-    let path = '/apps/' + this.slug + '/collaborations/validate?email=' + encodeURIComponent(email);
+    let path = 'http://localhost:4000/apps/' + this.slug + '/collaborations/validate?email=' + encodeURIComponent(email);
     return AJAX.get(path);
   }
 
@@ -432,7 +431,7 @@ export default class ParseApp {
   }
 
   removeCollaboratorById(id) {
-    let path = '/apps/' + this.slug + '/collaborations/' + id.toString();
+    let path = 'http://localhost:4000/apps/' + this.slug + '/collaborations/' + id.toString();
     let promise = AJAX.del(path)
     promise.then(() => {
       //TODO: this currently works because everything that uses collaborators
@@ -444,12 +443,15 @@ export default class ParseApp {
   }
 
   addCollaborator(email) {
-    let path = '/apps/' + this.slug + '/collaborations';
+    let path = 'http://localhost:4000/apps/' + this.slug + '/collaborations';
     let promise = AJAX.post(path, {'collaboration[email]': email});
     promise.then(({ data }) => {
       //TODO: this currently works because everything that uses collaborators
       // happens to re-render after this call anyway, but really the collaborators
       // should be updated properly in a store or AppsManager or something
+      this.settings.fields.fields.collaborators = 
+        Array.isArray(this.settings.fields.fields.collaborators) ?
+          this.settings.fields.fields.collaborators : [];
       this.settings.fields.fields.collaborators.unshift(data);
     });
     return promise;

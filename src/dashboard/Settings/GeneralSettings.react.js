@@ -379,6 +379,7 @@ export default class GeneralSettings extends DashboardView {
   }
 
   renderContent() {
+    console.log(this.props)
     if (!this.props.initialFields) {
       return <Toolbar section='Settings' subsection='General' />
     }
@@ -703,62 +704,11 @@ export default class GeneralSettings extends DashboardView {
             <CollaboratorsFields
               collaborators={fields.collaborators}
               ownerEmail={this.props.initialFields.owner_email}
-              viewerEmail={AccountManager.currentUser().email}
+              viewerEmail={this.props.initialFields.owner_email}
               addCollaborator={setCollaborators.bind(undefined, setField)}
               removeCollaborator={setCollaborators.bind(undefined, setField)}/>
-            <ManageAppFields
-              mongoURL={fields.mongoURL}
-              changeConnectionString={() => this.setState({showChangeConnectionStringModal: true})}
-              isCollaborator={isCollaborator}
-              hasCollaborators={initialFields.collaborators.length > 0}
-              startMigration={() => this.setState({showMigrateAppModal: true})}
-              hasInProgressMigration={!!this.context.currentApp.migration}
-              appSlug={this.context.currentApp.slug}
-              cleanUpFiles={() => this.context.currentApp.cleanUpFiles().then(result => {
-                this.setState({
-                  cleanupFilesMessage: result.notice,
-                  cleanupNoteColor: 'orange',
-                });
-              }).fail((e) => {
-                this.setState({
-                  cleanupFilesMessage: e.error,
-                  cleanupNoteColor: 'red',
-                });
-              })}
-              cleanUpFilesMessage={this.state.cleanupFilesMessage}
-              cleanUpMessageColor={this.state.cleanupNoteColor}
-              exportData={() => this.context.currentApp.exportData().then((result) => {
-                this.setState({
-                  exportDataMessage: result.notice,
-                  exportDataColor: 'orange',
-                });
-              }).fail((e) => {
-                this.setState({
-                  exportDataMessage: e.error,
-                  exportDataColor: 'red',
-                });
-              })}
-              exportDataMessage={this.state.exportDataMessage}
-              exportMessageColor={this.state.exportDataColor}
-              cloneApp={() => this.setState({
-                showCloneAppModal: true,
-                cloneAppMessage: '',
-              })}
-              cloneAppMessage={this.state.cloneAppMessage}
-              transferApp={() => this.setState({
-                showTransferAppModal: true,
-                transferAppSuccessMessage: '',
-              })}
-              transferAppMessage={this.state.transferAppSuccessMessage}
-              deleteApp={() => this.setState({showDeleteAppModal: true})}/>
           </div>;
         }} />
-      {migrateAppModal}
-      {transferAppModal}
-      {deleteAppModal}
-      {cloneAppModal}
-      {collaboratorRemovedWarningModal}
-      {changeConnectionStringModal}
       <Toolbar section='Settings' subsection='General' />
     </div>;
   }
