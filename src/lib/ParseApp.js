@@ -326,7 +326,7 @@ export default class ParseApp {
     // if (new Date() - this.settings.lastFetched < 60000) {
     //   return Parse.Promise.as(this.settings.fields);
     // }
-    let path = 'https://parse-dashboard.back4app.com/apps/' + this.slug + '/dashboard_ajax/settings';
+    let path = '/apps/' + this.slug + '/dashboard_ajax/settings';
     return AJAX.get(path).then((fields) => {
       console.log('fetchSettingsFields AJAX.get fields', fields);
       for (let f in fields) {
@@ -369,7 +369,7 @@ export default class ParseApp {
   }
 
   validateCollaborator(email) {
-    let path = 'https://parse-dashboard.back4app.com/apps/' + this.slug + '/collaborations/validate?email=' + encodeURIComponent(email);
+    let path = '/apps/' + this.slug + '/collaborations/validate?email=' + encodeURIComponent(email);
     return AJAX.get(path);
   }
 
@@ -430,7 +430,7 @@ export default class ParseApp {
   }
 
   removeCollaboratorById(id) {
-    let path = 'https://parse-dashboard.back4app.com/apps/' + this.slug + '/collaborations/' + id.toString();https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!msg/back4app/Uke79yPfqrc/QbwSbUsWAQAJ
+    let path = '/apps/' + this.slug + '/collaborations/' + id.toString();
     let promise = AJAX.del(path)
     promise.then(() => {
       //TODO: this currently works because everything that uses collaborators
@@ -442,7 +442,7 @@ export default class ParseApp {
   }
 
   addCollaborator(email) {
-    let path = 'https://parse-dashboard.back4app.com/' + this.slug + '/collaborations';
+    let path = '/apps/' + this.slug + '/collaborations';
     let promise = AJAX.post(path, {'collaboration[email]': email});
     promise.then(({ data }) => {
       //TODO: this currently works because everything that uses collaborators
