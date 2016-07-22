@@ -63,7 +63,7 @@ export default class Collaborators extends React.Component {
   }
 
   validateEmail(email) {
-    console.log('validateEmail', email);
+    console.log('validateEmail', email, AccountManager.currentUser());
     // We allow mixed-case emails for Parse accounts
     let isExistingCollaborator = !!this.props.collaborators.find(collab => email.toLowerCase() === collab.userEmail.toLowerCase());
     return validateEmailFormat(email) &&
