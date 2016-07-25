@@ -5,7 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import AccountManager     from 'lib/AccountManager'; // user workaround
+//import AccountManager     from 'lib/AccountManager'; // user workaround
 import AccountOverview    from './Account/AccountOverview.react';
 import AccountView        from './AccountView.react';
 import AnalyticsOverview  from './Analytics/Overview/Overview.react';
@@ -119,8 +119,8 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    get('/parse-dashboard-config.json').then(({ apps, newFeaturesInLatestVersion = [], user }) => {
-      AccountManager.setCurrentUser(user);
+    get('/parse-dashboard-config.json').then(({ apps, newFeaturesInLatestVersion = [] }) => {
+      //AccountManager.setCurrentUser(user);
       this.setState({ newFeaturesInLatestVersion });
       let appInfoPromises = apps.map(app => {
         if (app.serverURL.startsWith('https://api.parse.com/1')) {
