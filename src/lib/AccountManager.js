@@ -20,7 +20,7 @@ let AccountManager = {
     currentUser = JSON.parse(unescape(accountData.innerHTML));
   },
   
-  setCurrentUser(user) {
+  setCurrentUser({ user }) {
     console.log('user:',user)
     currentUser = user;
   },
