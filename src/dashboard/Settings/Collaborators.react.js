@@ -68,7 +68,7 @@ export default class Collaborators extends React.Component {
     let isExistingCollaborator = !!this.props.collaborators.find(collab => email.toLowerCase() === collab.userEmail.toLowerCase());
     return validateEmailFormat(email) &&
       !isExistingCollaborator &&
-      AccountManager.currentUser().email !== email.toLowerCase();
+      AccountManager.currentUser().email.toLowerCase() !== email.toLowerCase();
   }
 
   render() {

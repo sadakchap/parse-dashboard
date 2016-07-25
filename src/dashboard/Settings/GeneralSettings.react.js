@@ -704,7 +704,7 @@ export default class GeneralSettings extends DashboardView {
             <CollaboratorsFields
               collaborators={fields.collaborators}
               ownerEmail={this.props.initialFields.owner_email}
-              viewerEmail={this.props.initialFields.owner_email}
+              viewerEmail={AccountManager.currentUser().email}
               addCollaborator={setCollaborators.bind(undefined, setField)}
               removeCollaborator={setCollaborators.bind(undefined, setField)}/>
           </div>;
