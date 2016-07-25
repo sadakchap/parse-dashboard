@@ -20,6 +20,10 @@ let AccountManager = {
     currentUser = JSON.parse(unescape(accountData.innerHTML));
   },
 
+  setCurrentUser(user) {
+    currentUser = user;
+  },
+
   currentUser() {
     if (!currentUser) {
       AccountManager.init();
