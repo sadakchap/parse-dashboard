@@ -76,6 +76,10 @@ let AccountManager = {
       xhrMap[xhrKey].abort();
     }
   },
+  
+  setCurrentUser(user) {
+    currentUser = user;
+  },
 };
 
 module.exports = AccountManager;

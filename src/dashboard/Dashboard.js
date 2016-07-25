@@ -118,8 +118,8 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    get('/parse-dashboard-config.json').then(({ apps, newFeaturesInLatestVersion = [] }) => {
-      console.log(this.refs.accountData);
+    get('/parse-dashboard-config.json').then(({ apps, newFeaturesInLatestVersion = [], user }) => {
+      AccountOverview.AccountManager.setCurrentUser(user);
       this.setState({ newFeaturesInLatestVersion });
       let appInfoPromises = apps.map(app => {
         if (app.serverURL.startsWith('https://api.parse.com/1')) {
