@@ -53,7 +53,7 @@ let CurrentPlan = ({requestLimit}) => {
   return (
     <div>
       <div className={cost}>{costString}</div>
-      <div className={features}>{requestLimit.toString() + ' requests per second'}<br/>{numJobsFromRequestLimit(requestLimit).toString() + ' background job' + (numJobsFromRequestLimit(requestLimit) > 1 ? 's' : '')}</div>
+      <div className={features}>{(requestLimit || 0).toString() + ' requests per second'}<br/>{numJobsFromRequestLimit(requestLimit).toString() + ' background job' + (numJobsFromRequestLimit(requestLimit) > 1 ? 's' : '')}</div>
     </div>
 )};
 
