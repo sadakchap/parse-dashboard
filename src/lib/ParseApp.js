@@ -430,6 +430,7 @@ export default class ParseApp {
   }
 
   removeCollaboratorById(id) {
+    console.log(id);
     let path = '/apps/' + this.slug + '/collaborations/' + id.toString();
     let promise = AJAX.del(path)
     promise.then(() => {
@@ -457,6 +458,7 @@ export default class ParseApp {
   }
 
   setRequestLimit(limit) {
+    console.log(limit);
     let path = '/plans/' + this.slug + '?new_limit=' + limit.toString();
     let promise = AJAX.put(path);
     promise.then(() => {
