@@ -68,9 +68,7 @@ let AppInformationFields = ({
     labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
     label={<Label text='App name' />}
     input={<TextInput
-      value={appName}
-      onChange={setAppName}
-      editable='false' />
+      value={appName} />
     } />
   <Field
     labelWidth={58}
@@ -79,9 +77,7 @@ let AppInformationFields = ({
       description='(On back4app, this switch is temporarily disabled)' />}
     input={<Toggle
       value={inProduction}
-      type={Toggle.Types.YES_NO}
-      onChange={setInProduction}
-      editable='false' />
+      type={Toggle.Types.YES_NO} />
     } />
 </Fieldset>;
 
