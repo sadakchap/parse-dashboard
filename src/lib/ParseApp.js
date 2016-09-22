@@ -256,7 +256,7 @@ export default class ParseApp {
   getAnalyticsTimeSeries(query) {
     let path = '/apps/' + this.slug + '/analytics?' + encodeFormData(null, query);
     let { promise, xhr } = AJAX.abortableGet(path);
-    promise = promise.then(({ requested_data }) => requested_data);
+    promise = promise.then(( requested_data ) => requested_data);
     return { promise, xhr };
   }
 
