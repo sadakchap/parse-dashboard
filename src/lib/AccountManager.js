@@ -25,6 +25,10 @@ let AccountManager = {
     currentUser = user;
   },
 
+  setCurrentUser(user) {
+    currentUser = user;
+  },
+
   currentUser() {
     if (!currentUser) {
       AccountManager.init();
