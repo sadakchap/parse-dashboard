@@ -19,6 +19,11 @@ let AccountManager = {
     }
     currentUser = JSON.parse(unescape(accountData.innerHTML));
   },
+  
+  setCurrentUser({ user }) {
+    console.log('user:',user)
+    currentUser = user;
+  },
 
   setCurrentUser(user) {
     currentUser = user;
@@ -54,6 +59,7 @@ let AccountManager = {
   },
 
   deleteAccountKeyById(id) {
+    console.log(id);
     let path = '/account/keys/' + id.toString();
     let promise = del(path);
     promise.then(() => {

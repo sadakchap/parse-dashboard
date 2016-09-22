@@ -288,6 +288,7 @@ export default class GeneralSettings extends DashboardView {
   }
 
   renderContent() {
+    console.log(this.props)
     if (!this.props.initialFields) {
       return <Toolbar section='Settings' subsection='General' />
     }
@@ -399,42 +400,7 @@ export default class GeneralSettings extends DashboardView {
       {this.state.migrationWarnings.map(warning => <FormNote key={warning}show={true} color='orange'>{warning}</FormNote>)}
     </FormModal>
 
-    let transferAppModal = <FormModal
-      title='Transfer App Ownership'
-      subtitle='This is an irreversible action!'
-      icon='users-solid'
-      iconSize={30}
-      type={Modal.Types.DANGER}
-      open={this.state.showTransferAppModal}
-      submitText='Transfer ownership'
-      inProgressText={'Transferring\u2026'}
-      enabled={
-        (this.state.password.length > 0 || !AccountManager.currentUser().has_password)
-        && this.state.transferNewOwner.length > 0
-      }
-      onSubmit={() => AppsManager.transferApp(this.context.currentApp.slug, this.state.transferNewOwner, this.state.password)}
-      onClose={() => this.setState({showTransferAppModal: false})}
-      onSuccess={({ message }) => this.setState({transferAppSuccessMessage: message})}
-      clearFields={() => this.setState({
-        password: '',
-        transferNewOwner: '',
-        })}>
-      <Field
-        labelWidth={60}
-        label={<Label
-          text='Choose new owner'
-          description='The new owner must already be a collaborator.' />
-        }
-        input={<Dropdown
-          fixed={true}
-          value={this.state.transferNewOwner}
-          onChange={(collaborator) => this.setState({transferNewOwner: collaborator})}>
-            {((this.props.initialFields||{}).collaborators||[]).map(collaborator =>
-              <DropdownOption key={collaborator.id.toString()} value={collaborator.userEmail}>{collaborator.userEmail}</DropdownOption>
-            )}
-        </Dropdown>} />
-      {AccountManager.currentUser().has_password ? passwordField : null}
-    </FormModal>;
+    
 
     let deleteAppModal = <FormModal
       title='Delete App'
@@ -613,7 +579,6 @@ export default class GeneralSettings extends DashboardView {
               removeCollaborator={setCollaborators.bind(undefined, setField)}/>
           </div>;
         }} />
-      {collaboratorRemovedWarningModal}
       <Toolbar section='Settings' subsection='General' />
     </div>;
   }
