@@ -21,11 +21,6 @@ let AccountManager = {
   },
   
   setCurrentUser({ user }) {
-    console.log('user:',user)
-    currentUser = user;
-  },
-
-  setCurrentUser(user) {
     currentUser = user;
   },
 
