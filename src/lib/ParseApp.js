@@ -40,8 +40,10 @@ export default class ParseApp {
     production,
     iconName,
     supportedPushLocales,
+    feedbackEmail
   }) {
     this.name = appName;
+    this.feedbackEmail = feedbackEmail;
     this.createdAt = created_at ? new Date(created_at) : new Date();
     this.applicationId = appId;
     this.slug = appNameForURL || appName;
@@ -344,6 +346,45 @@ export default class ParseApp {
     return AJAX.put(path);
   }
 
+  normalizePath(path) {
+    path = path.replace(/([^:\s])\/+/g, '$1/');
+    return path;
+  }
+
+  importData(className, file) {
+    let path = this.normalizePath(this.serverURL + '/import_data/' + className);
+    var formData = new FormData();
+    formData.append('importFile', file);
+    if (this.feedbackEmail) {
+      formData.append('feedbackEmail', this.feedbackEmail);
+    }
+    return fetch(path, {
+      method: 'POST',
+      headers: {
+        'X-Parse-Application-Id': this.applicationId,
+        'X-Parse-Master-Key': this.masterKey
+      },
+      body: formData
+    });
+  }
+
+  importRelationData(className, relationName,  file) {
+    let path = this.normalizePath(this.serverURL + '/import_relation_data/' + className + '/' + relationName);
+    var formData = new FormData();
+    formData.append('importFile', file);
+    if (this.feedbackEmail) {
+      formData.append('feedbackEmail', this.feedbackEmail);
+    }
+    return fetch(path, {
+      method: 'POST',
+      headers: {
+        'X-Parse-Application-Id': this.applicationId,
+        'X-Parse-Master-Key': this.masterKey
+      },
+      body: formData
+    });
+  }
+
   exportData() {
     let path = '/apps/' + this.slug + '/export_data';
     return AJAX.put(path);
@@ -513,26 +554,22 @@ export default class ParseApp {
   }
 
   getAvailableJobs() {
-    let path = 'cloud_code/jobs/data';
-    return this.apiRequest('GET', path, {}, { useMasterKey: true });
+    let path = '/apps/' + this.slug + '/cloud_code/jobs/data';
+    return Parse._request('GET', path);
   }
 
   getJobStatus() {
-    // Cache it for a 30s
-    if (new Date() - this.jobStatus.lastFetched < 30000) {
-      return Parse.Promise.as(this.jobStatus.status);
-    }
+    // Cache it for a minute
     let query = new Parse.Query('_JobStatus');
     query.descending('createdAt');
-    return query.find({ useMasterKey: true }).then((status) => {
-      status = status.map((jobStatus) => {
-        return jobStatus.toJSON();
-      });
+    return query.find({ useMasterKey: true }).then((status) => {
       this.jobStatus = {
         status: status || null,
         lastFetched: new Date()
       };
-      return status;
+      return status.map((jobStatus) => {
+        return jobStatus.toJSON();
+      });
     });
   }
 
