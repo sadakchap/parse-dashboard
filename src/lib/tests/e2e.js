@@ -9,6 +9,7 @@
 jest.disableAutomock();
 
 var express = require('express');
+var app = express();
 var rp = require('request-promise');
 var ParseDashboard = require('../../../Parse-Dashboard/app');
 
