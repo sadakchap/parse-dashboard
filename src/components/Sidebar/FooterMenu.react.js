@@ -11,6 +11,8 @@ import Position from 'lib/Position';
 import React    from 'react';
 import styles   from 'components/Sidebar/Sidebar.scss';
 
+let host = location.host.split('.');
+let urlRoot = location.protocol + '//' + host.slice(host.length - 2).join('.');
 let mountPath = window.PARSE_DASHBOARD_PATH;
 
 export default class FooterMenu extends React.Component {
@@ -41,7 +43,6 @@ export default class FooterMenu extends React.Component {
           position={this.state.position}
           onExternalClick={() => this.setState({ show: false })}>
           <div className={styles.popup}>
-            <a href={`${mountPath}logout`}>Log Out <span className={styles.emoji}>👋</span></a>
             <a target='_blank' href='http://docs.parseplatform.org/parse-server/guide/'>Server Guide <span className={styles.emoji}>📚</span></a>
             <a target='_blank' href='http://stackoverflow.com/questions/tagged/parse.com'>Code-level Questions <span className={styles.emoji}>❓</span></a>
             <a target='_blank' href='http://stackoverflow.com/questions/tagged/parse-server'>Server Questions <span className={styles.emoji}>❓</span></a>
