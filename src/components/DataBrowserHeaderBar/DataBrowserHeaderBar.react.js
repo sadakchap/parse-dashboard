@@ -15,7 +15,7 @@ import { DragDropContext } from 'react-dnd';
 @DragDropContext(HTML5Backend)
 export default class DataBrowserHeaderBar extends React.Component {
   render() {
-    let { headers, onResize, selectAll, onAddColumn, updateOrdering, readonly } = this.props;
+    let { headers, onResize, selected, selectAll, onAddColumn, updateOrdering, readonly, handleDragDrop, minWidth } = this.props;
     let elements = [
       // Note: bulk checkbox is disabled as all rows are selected (not just visible ones due to current lazy loading implementation)
       // TODO: add bulk checking only visible rows
@@ -74,6 +74,6 @@ export default class DataBrowserHeaderBar extends React.Component {
       )
     );
 
-    return <div className={styles.bar}>{elements}</div>;
+    return <div className={styles.bar} style={{ minWidth: minWidth }}>{elements}</div>;
   }
 }

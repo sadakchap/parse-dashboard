@@ -6,13 +6,16 @@
  * the root directory of this source tree.
  */
 import BrowserCell            from 'components/BrowserCell/BrowserCell.react';
+import * as ColumnPreferences from 'lib/ColumnPreferences';
 import * as browserUtils      from 'lib/browserUtils';
 import DataBrowserHeaderBar   from 'components/DataBrowserHeaderBar/DataBrowserHeaderBar.react';
+import DateTimeEditor         from 'components/DateTimeEditor/DateTimeEditor.react';
 import Editor                 from 'dashboard/Data/Browser/Editor.react';
 import EmptyState             from 'components/EmptyState/EmptyState.react';
 import Icon                   from 'components/Icon/Icon.react';
 import Parse                  from 'parse';
 import React                  from 'react';
+import StringEditor           from 'components/StringEditor/StringEditor.react';
 import styles                 from 'dashboard/Data/Browser/Browser.scss';
 import Button                 from 'components/Button/Button.react';
 
@@ -24,7 +27,7 @@ const READ_ONLY = [ 'objectId', 'createdAt', 'updatedAt' ];
 let scrolling = false;
 
 export default class BrowserTable extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
 
     this.state = {
@@ -33,7 +36,7 @@ export default class BrowserTable extends React.Component {
     this.handleScroll = this.handleScroll.bind(this);
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props, context) {
     if (props.className !== this.props.className) {
       this.setState({
         offset: 0,
@@ -141,7 +144,7 @@ export default class BrowserTable extends React.Component {
       }
     }
 
-    let headers = this.props.order.map(({ name, width }) => (
+    let headers = this.props.order.map(({ name, width }, i) => (
       {
         width: width,
         name: name,
@@ -152,6 +155,10 @@ export default class BrowserTable extends React.Component {
     ));
     let editor = null;
     let table = <div ref='table' />;
+    let classes = [styles.browser, browserUtils.isSafari() ? styles.safari : '']
+    let addRow = null;
+    let rowWidth = 0;
+
     if (this.props.data) {
       let rowWidth = 210;
       for (let i = 0; i < this.props.order.length; i++) {
@@ -160,7 +167,7 @@ export default class BrowserTable extends React.Component {
       let newRow = null;
       if (this.props.newObject && this.state.offset <= 0) {
         newRow = (
-          <div style={{ marginBottom: 30, borderBottom: '1px solid #169CEE' }}>
+          <div className={styles.addNewRow}>
             {this.renderRow({ row: -1, obj: this.props.newObject, rowWidth: rowWidth })}
           </div>
         );
@@ -244,47 +251,34 @@ export default class BrowserTable extends React.Component {
         }
       }
 
-      let addRow = null;
-      if (!this.props.newObject) {
-        if (this.props.relation) {
-          addRow = (
-            <div className={styles.addRow}>
-              <Button
-                onClick={this.props.onAddRow}
-                primary
-                value={`Create a ${this.props.relation.targetClassName} and attach`}
-              />
-              {' '}
-              <Button
-                onClick={this.props.onAttachRows}
-                primary
-                value={`Attach existing rows from ${this.props.relation.targetClassName}`}
-              />
-            </div>
-          );
-        } else {
-          addRow = (
-            <div className={styles.addRow}>
-              <a title='Add Row' onClick={this.props.onAddRow}>
-                <Icon
-                  name='plus-outline'
-                  width={14}
-                  height={14}
-                />
-              </a>
-            </div>
-          );
-        }
+      if (!this.props.newObject && this.props.relation) {
+        classes.push(styles.showAddRow);
+
+        addRow = (
+          <div className={styles.addRow}>
+            <Button
+              onClick={this.props.onAddRow}
+              primary
+              value={`Create a ${this.props.relation.targetClassName} and attach`}
+            />
+            {' '}
+            <Button
+              onClick={this.props.onAttachRows}
+              primary
+              value={`Attach existing rows from ${this.props.relation.targetClassName}`}
+            />
+          </div>
+        );
       }
 
       if (this.props.newObject || this.props.data.length > 0) {
         table = (
-          <div className={styles.table} ref='table'>
-            <div style={{ height: Math.max(0, this.state.offset * ROW_HEIGHT) }} />
+          <div className={styles.table} ref='table' style={{ minWidth: rowWidth }}>
             {newRow}
-            {rows}
-            <div style={{ height: Math.max(0, (this.props.data.length - this.state.offset - MAX_ROWS) * ROW_HEIGHT) }} />
             {addRow}
+            <div className={styles.rowsHolder} style={{ top: Math.max(0, this.state.offset * ROW_HEIGHT) }}>
+              {rows}
+            </div>
             {editor}
           </div>
         );
@@ -315,7 +309,7 @@ export default class BrowserTable extends React.Component {
     }
 
     return (
-      <div className={[styles.browser, browserUtils.isSafari() ? styles.safari : ''].join(' ')}>
+      <div className={classes.join(' ')}>
         {table}
         <DataBrowserHeaderBar
           selected={this.props.selection['*']}
@@ -325,7 +319,8 @@ export default class BrowserTable extends React.Component {
           readonly={!!this.props.relation}
           handleDragDrop={this.props.handleHeaderDragDrop}
           onResize={this.props.handleResize}
-          onAddColumn={this.props.onAddColumn} />
+          onAddColumn={this.props.onAddColumn}
+          minWidth={rowWidth} />
       </div>
     );
   }

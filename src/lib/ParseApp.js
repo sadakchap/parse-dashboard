@@ -342,9 +342,14 @@ export default class ParseApp {
   }
 
   cleanUpFiles() {
-    let path = '/apps/' + this.slug + '/cleanup_files';
-    return AJAX.put(path);
+    let path = '/apps/' + this.slug + '/orphan_files';
+    return AJAX.post(path);
   }
+
+  cleanUpSystemLog() {
+    let path = '/parse-app/' + this.slug + '/purge-logs';
+    return AJAX.post(path);
+ }
 
   normalizePath(path) {
     path = path.replace(/([^:\s])\/+/g, '$1/');
@@ -490,7 +495,7 @@ export default class ParseApp {
       //TODO: this currently works because everything that uses collaborators
       // happens to re-render after this call anyway, but really the collaborators
       // should be updated properly in a store or AppsManager or something
-      this.settings.fields.fields.collaborators = 
+      this.settings.fields.fields.collaborators =
         Array.isArray(this.settings.fields.fields.collaborators) ?
           this.settings.fields.fields.collaborators : [];
       this.settings.fields.fields.collaborators.unshift(data);

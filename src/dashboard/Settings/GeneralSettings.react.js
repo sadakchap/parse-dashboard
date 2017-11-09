@@ -26,6 +26,7 @@ import Modal                             from 'components/Modal/Modal.react';
 import MultiSelect                       from 'components/MultiSelect/MultiSelect.react';
 import MultiSelectOption                 from 'components/MultiSelect/MultiSelectOption.react';
 import Parse                             from 'parse';
+import ParseApp                          from 'lib/ParseApp';
 import pluck                             from 'lib/pluck';
 import Range                             from 'components/Range/Range.react';
 import React                             from 'react';
@@ -38,6 +39,7 @@ import Toolbar                           from 'components/Toolbar/Toolbar.react'
 import unique                            from 'lib/unique';
 import validateAndSubmitConnectionString from 'lib/validateAndSubmitConnectionString';
 import { cost, features }                from 'dashboard/Settings/GeneralSettings.scss';
+import { get }                           from 'lib/AJAX';
 import { Link }                          from 'react-router';
 
 const DEFAULT_SETTINGS_LABEL_WIDTH = 62;
@@ -105,6 +107,8 @@ let ManageAppFields = ({
   cleanUpFiles,
   cleanUpFilesMessage,
   cleanUpMessageColor = 'orange',
+  cleanUpSystemLog,
+  cleanUpSystemLogMessage,
   exportData,
   exportDataMessage,
   exportMessageColor = 'orange',
@@ -179,7 +183,9 @@ let ManageAppFields = ({
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
         text='Clean up app'
-        description={<span>This will delete any files that <br/>are not referenced by any objects.</span>} />}
+        description={<span>This will delete any files that are not referenced by any objects.
+        (Don't use the feature if you have Arrays of Files,<br/>or Files inside Object columns!)
+        </span>} />}
       input={<FormButton
         onClick={cleanUpFiles}
         value='Clean Up Files'/>} />
@@ -191,58 +197,17 @@ let ManageAppFields = ({
     <Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
-        text='Export app data'
-        description={'We firmly believe in data portability.'} />}
-      //TODO: Add export progress view when designs are ready.
+        text='Clean up log'
+        description={<span>This will purge your System Log.
+        </span>} />}
       input={<FormButton
-        onClick={exportData}
-        value='Export Data'/>} />
-    {exportDataMessage ? <FormNote
-      show={true}
-      color={exportMessageColor}>
-      <div>{exportDataMessage}</div>
+        onClick={cleanUpSystemLog}
+        value='Clean Up System Log'/>} />
+        {cleanUpSystemLogMessage ? <FormNote
+          show={true}
+          color={cleanUpMessageColor}>
+          <div>{cleanUpSystemLogMessage}</div>
     </FormNote> : null}
-    {migrateAppField}
-    <Field
-      labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-      label={<Label
-        text='Clone app'
-        description={<span>Choose what you want to carry over <br/>and create a copy of this Parse app.</span>} />}
-      input={<FormButton
-        value='Clone this app'
-        onClick={cloneApp} />
-      } />
-    {cloneAppMessage ? <FormNote
-      show={true}
-      color='green'>
-      <div>{cloneAppMessage} Check out the progress on your <Link to={{ pathname: '/apps' }}>apps page</Link>!</div>
-    </FormNote> : null}
-    {!isCollaborator ? <Field
-      labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-      label={<Label
-        text='Transfer app'
-        description={<span>Give an existing collaborator <br/>ownership over this app.</span>} />
-      }
-      input={<FormButton
-        value='Transfer this app'
-        color='red'
-        disabled={!hasCollaborators}
-        onClick={transferApp} />
-      } /> : null}
-    {transferAppMessage ? <FormNote
-      color='green'>
-      {transferAppMessage}
-    </FormNote> : null}
-    {!isCollaborator ? <Field
-      labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-      label={<Label
-        text='Delete app'
-        description={<span>Completely remove any trace <br/>of this app's existence.</span>} />}
-      input={<FormButton
-        color='red'
-        value='Delete this app'
-        onClick={deleteApp} />
-      } /> : null}
   </Fieldset>);
 }
 
@@ -253,6 +218,7 @@ export default class GeneralSettings extends DashboardView {
     this.subsection = 'General';
 
     this.state = {
+      cleanupSystemLogMessage: '',
       cleanupFilesMessage: '',
       cleanupNoteColor: '',
 
@@ -282,6 +248,8 @@ export default class GeneralSettings extends DashboardView {
       newConnectionString: '',
 
       removedCollaborators: [],
+      showPurgeFilesModal: false,
+      showPurgeSystemLogModal: false
     };
   }
 
@@ -410,7 +378,7 @@ export default class GeneralSettings extends DashboardView {
       inProgressText={'Deleting\u2026'}
       enabled={this.state.password.length > 0}
       onSubmit={() => AppsManager.deleteApp(this.context.currentApp.slug, this.state.password)}
-      onSuccess={() => history.push('/apps')}
+      onSuccess={result => history.push('/apps')}
       onClose={() => this.setState({showDeleteAppModal: false})}
       clearFields={() => this.setState({password: ''})}>
       {passwordField}
@@ -550,8 +518,8 @@ export default class GeneralSettings extends DashboardView {
           });
           return promise;
         }}
-        renderForm={({ fields, setField }) => {
-          let isCollaborator = AccountManager.currentUser().email !== this.props.initialFields.owner_email;
+        renderForm={({ changes, fields, setField, resetFields }) => {
+          //let isCollaborator = AccountManager.currentUser().email !== this.props.initialFields.owner_email;
           return <div className={styles.settings_page}>
             <AppInformationFields
               appName={fields.appName}
@@ -574,6 +542,62 @@ export default class GeneralSettings extends DashboardView {
               viewerEmail={AccountManager.currentUser().email}
               addCollaborator={setCollaborators.bind(undefined, setField)}
               removeCollaborator={setCollaborators.bind(undefined, setField)}/>
+            <ManageAppFields
+              mongoURL={fields.mongoURL}
+              isCollaborator={AccountManager.currentUser().email !== this.props.initialFields.owner_email}
+              hasCollaborators={fields.collaborators.length > 0}
+              appSlug={this.context.currentApp.slug}
+              cleanUpFiles={() => this.setState({showPurgeFilesModal: true})}
+              cleanUpFilesMessage={this.state.cleanupFilesMessage}
+              cleanUpMessageColor={this.state.cleanupNoteColor}
+              cleanUpSystemLog={() => this.setState({showPurgeSystemLogModal: true})}
+              cleanUpSystemLogMessage={this.state.cleanupSystemLogMessage} />
+            {this.state.showPurgeFilesModal ? <Modal
+              type={Modal.Types.INFO}
+              icon='down-outline'
+              iconSize={40}
+              title='Clean Orphan Files'
+              subtitle={'The files without DB references will be removed!'}
+              confirmText='Purge Files'
+              cancelText='Cancel'
+              buttonsInCenter={true}
+              onCancel={() => this.setState({showPurgeFilesModal: false})}
+              onConfirm={() => this.context.currentApp.cleanUpFiles().then(result => {
+                this.setState({
+                  cleanupFilesMessage: 'All set! You\'ll receive an email when the process is over.',
+                  cleanupNoteColor: 'orange',
+                  showPurgeFilesModal: false,
+                });
+              }).fail((e) => {
+                this.setState({
+                  cleanupFilesMessage: e.error,
+                  cleanupNoteColor: 'red',
+                  showPurgeFilesModal: false,
+                });
+              })} /> : null }
+              {this.state.showPurgeSystemLogModal ? <Modal
+                type={Modal.Types.INFO}
+                icon='down-outline'
+                iconSize={40}
+                title='Clean System Log'
+                subtitle={'The System log will be removed!'}
+                confirmText='Purge System Log'
+                cancelText='Cancel'
+                buttonsInCenter={true}
+                onCancel={() => this.setState({showPurgeSystemLogModal: false})}
+                onConfirm={() => this.context.currentApp.cleanUpSystemLog().then(result => {
+                  this.setState({
+                    cleanupSystemLogMessage: 'Your System log was deleted.',
+                    cleanupNoteColor: 'orange',
+                    showPurgeSystemLogModal: false,
+                  });
+                }).fail((e) => {
+                  this.setState({
+                    cleanupSystemLogMessage: e.error,
+                    cleanupNoteColor: 'red',
+                    showPurgeSystemLogModal: false,
+                  });
+                })} /> : null }
           </div>;
         }} />
       <Toolbar section='Settings' subsection='General' />
