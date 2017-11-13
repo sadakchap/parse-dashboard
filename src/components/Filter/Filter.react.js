@@ -57,9 +57,12 @@ let Filter = ({ schema, filters, renderRow, onChange, blacklist }) => {
           fields.push(field);
         }
         fields.sort();
-        let constraints = Filters.FieldConstraints[schema[field].type].filter((c) => blacklist.indexOf(c) < 0);
-        let compareType = schema[field].type;
-        if (Filters.Constraints[constraint].hasOwnProperty('field')) {
+        let constraints = typeof schema[field] !== 'undefined' ?
+          Filters.FieldConstraints[schema[field].type].filter((c) => blacklist.indexOf(c) < 0) : [''];
+        let compareType = typeof schema[field] !== 'undefined' ? schema[field].type : '';
+        if (typeof Filters.Constraints[constraint] !== 'undefined' &&
+          Filters.Constraints[constraint].hasOwnProperty('field'))
+        {
           compareType = Filters.Constraints[constraint].field;
         }
         return renderRow({
@@ -67,7 +70,7 @@ let Filter = ({ schema, filters, renderRow, onChange, blacklist }) => {
           constraints,
           compareInfo: {
             type: compareType,
-            targetClass: schema[field].targetClass,
+            targetClass: typeof schema[field] !== 'undefined' ? schema[field].targetClass : '',
           },
           currentField: field,
           currentConstraint: constraint,

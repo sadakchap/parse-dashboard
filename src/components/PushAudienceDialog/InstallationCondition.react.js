@@ -96,12 +96,13 @@ export default class InstallationCondition extends React.Component {
           <Dropdown
             fixed={true}
             hideArrow={true}
-            value={Constraints[this.props.currentConstraint].name}
+            value={typeof Constraints[this.props.currentConstraint] !== 'undefined' ? Constraints[this.props.currentConstraint].name : ''}
             onChange={(c) => this.props.onChangeConstraint(constraintLookup[c])}
             placeHolder='is'
             className={styles.conditionDropdown}>
             {this.props.constraints.map(function(object, i){
-              return <Option value={Constraints[object].name} key={`constraintOpt${i}`}>{Constraints[object].name}</Option>;
+              return <Option value={Constraints[object] ? Constraints[object].name : ''}
+                             key={`constraintOpt${i}`}>{Constraints[object] ? Constraints[object].name : ''}</Option>;
             })}
           </Dropdown>
         </div>

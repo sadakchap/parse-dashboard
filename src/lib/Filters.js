@@ -181,7 +181,7 @@ export function availableFilters(schema, currentFilters, blacklist) {
   let disabled = {};
   if (currentFilters) {
     currentFilters.forEach((filter) => {
-      if (!Constraints[filter.get('constraint')].composable) {
+      if (typeof Constraints[filter.get('constraint')] !== 'undefined' && !Constraints[filter.get('constraint')].composable) {
         disabled[filter.get('field')] = true;
       }
     });

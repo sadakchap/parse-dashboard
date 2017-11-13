@@ -70,10 +70,10 @@ export default class BrowserFilter extends React.Component {
   apply() {
     let formatted = this.state.filters.map((filter) => {
       // TODO: type is unused?
-      /*let type = this.props.schema[filter.get('field')].type;
+      let type = this.props.schema[filter.get('field')].type;
       if (Filters.Constraints[filter.get('constraint')].hasOwnProperty('field')) {
         type = Filters.Constraints[filter.get('constraint')].field;
-      }*/
+      }
       return filter;
     })
     this.setState({ open: false }, () => {

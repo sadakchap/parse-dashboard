@@ -30,10 +30,14 @@ const PARSE_SERVER_SUPPORTS_SAVED_AUDIENCES = false;
 const AUDIENCE_SIZE_FETCHING_ENABLED = false;
 
 let filterFormatter = (filters, schema) => {
+  console.log(filters, schema);
   return filters.map((filter) => {
     let type = schema[filter.get('field')];
-    if (Filters.Constraints[filter.get('constraint')].hasOwnProperty('field')) {
-      type = Filters.Constraints[filter.get('constraint')].field;
+    if (
+      typeof Filters.Constraints[filter.get('constraint')] !== 'undefined' &&
+      Filters.Constraints[filter.get('constraint')].hasOwnProperty('field')
+    ) {
+      type = Filters.Constraints[filter.get('constraint')].field || null;
     }
     // Format any stringified fields
     if (type === 'Number') {
@@ -91,10 +95,11 @@ export default class PushAudienceDialog extends React.Component {
   }
 
   handleAddCondition() {
+    console.log(this);
     let available = Filters.availableFilters(this.props.schema, this.state.filters);
     let field = Object.keys(available)[0];
     this.setState(({ filters }) => ({
-      filters: filters.push(new Map({ field: field, constraint: available[field][0] }))
+      filters: filters.push(new Map({ field: field, constraint: (available[field] || [])[0] || '' }))
     }), this.fetchAudienceSize.bind(this));
   }
 

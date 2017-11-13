@@ -88,6 +88,7 @@ export default class PushAudiencesIndex extends DashboardView {
   }
 
   tableData() {
+    console.log(this);
     let schema = formatAudienceSchema(this.props.schema.data.get('classes')) || {};
     let pushAudienceData = this.props.pushaudiences.data;
     let audiences = undefined;
@@ -113,6 +114,7 @@ export default class PushAudiencesIndex extends DashboardView {
   }
 
   renderRow(audience) {
+    console.log('renderRow', audience, this);
     return (
       <PushAudiencesIndexRow
         key={audience.objectId}

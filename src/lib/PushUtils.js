@@ -287,9 +287,9 @@ export function largeInfoBuilder(query, schema, styles = {}) {
         <ul className={styles.installationInfo}>
           <li className={styles.detailsHeaderListItem}>INSTALLATION CONDITIONS</li>
           {conditionRows}
-        </ul> : 
+        </ul> :
         null
-      }    
+      }
     </div>
   )
 }
@@ -307,7 +307,7 @@ let tableInfoBuilderHelper = (styles, key, description, value) => {
 export function tableInfoBuilder(query, schema, styles = {}) {
   try {
     query = JSON.parse(query);
-  } catch(e) {/**/} 
+  } catch(e) {/**/}
 
   if(!query) {
     return;
@@ -366,6 +366,7 @@ export function formatCountDetails(count, approximate) {
 }
 
 export function formatAudienceSchema(classes) {
+  console.log('formatAudienceSchema', classes);
   let schema = {};
   if(classes){
     let installations = classes.get('_Installation');

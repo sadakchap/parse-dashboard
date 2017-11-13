@@ -179,7 +179,7 @@ export default class PushAudiencesData extends React.Component {
         <Button value={this.state.loading ? 'Fetching all audiences' : 'Show all audiences'} onClick={this.handleShowMoreClick.bind(this)}/>
       </div>
     ) : null;
-
+    console.log('render', this.props);
     let createAudienceButton = (
       <div className={styles.pushAudienceDialog}>
         <Button
