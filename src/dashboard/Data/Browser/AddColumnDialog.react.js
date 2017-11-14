@@ -77,9 +77,9 @@ export default class AddColumnDialog extends React.Component {
           if (checkVersion(t)) {
             return <Option key={t} value={t}>{t}</Option>
           } else {
-            return;
+            return null;
           }
-        })}
+        }).filter((t => t !== null))}
       </Dropdown>
     );
     return (
