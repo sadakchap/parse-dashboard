@@ -50,58 +50,23 @@ import { AsyncStatus }    from 'lib/Constants';
 import { center }         from 'stylesheets/base.scss';
 import { get }            from 'lib/AJAX';
 import { setBasePath }    from 'lib/AJAX';
-import Header             from 'components/back4App/Header/Header.react';
-import Sidebar            from 'components/back4App/Sidebar/Sidebar.react';
-import ServerSettings     from 'dashboard/ServerSettings/ServerSettings.react';
-import 'whatwg-fetch';
-
-import subscribeTo        from 'lib/subscribeTo';
-
 import {
   Router,
   Route,
   Redirect
 } from 'react-router';
 
-const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sidebarIsOpen: false
-    };
-  }
-
-  handleSidebarToggle(isOpen) {
-    this.setState({
-      sidebarIsOpen: typeof isOpen !== 'undefined' ? isOpen : !this.state.sidebarIsOpen
-    });
-  }
-
+let App = React.createClass({
   render() {
-    return (
-      <div>
-        <Header
-          sidebarToggle={() => {
-            this.handleSidebarToggle();
-          }}
-        />
-        <Sidebar
-          isOpen={this.state.sidebarIsOpen}
-          sidebarToggle={() => {
-            this.handleSidebarToggle();
-          }}
-        />
-        {this.props.children}
-      </div>
-    );      
+    return this.props.children;
   }
-}
+});
 
-let Empty = () => (
-  <div>Not yet implemented</div>
-);
+let Empty = React.createClass({
+  render() {
+    return <div>Not yet implemented</div>;
+  }
+});
 
 const AccountSettingsPage = () => (
     <AccountView section='Account Settings'>
@@ -200,23 +165,17 @@ class Dashboard extends React.Component {
         }
       });
       return Parse.Promise.when(appInfoPromises);
-    }).then(function(resolvedApps) {
-      if(resolvedApps && Array.isArray(resolvedApps)) {
-        resolvedApps.forEach(app => {
-          AppsManager.addApp(app);
-        });
-      } else {
-        Array.prototype.slice.call(arguments).forEach(app => {
-          AppsManager.addApp(app);
-        });
-      }
+    }).then(function() {
+      Array.prototype.slice.call(arguments).forEach(app => {
+        AppsManager.addApp(app);
+      });
       this.setState({ configLoadingState: AsyncStatus.SUCCESS });
     }.bind(this)).fail(({ error }) => {
       this.setState({
         configLoadingError: error,
         configLoadingState: AsyncStatus.FAILED
       });
-    })
+    });
   }
 
   render() {
