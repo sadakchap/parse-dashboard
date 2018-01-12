@@ -267,9 +267,6 @@ export default class BrowserTable extends React.Component {
           <div className={styles.table} ref='table' style={{ minWidth: rowWidth }}>
             {newRow}
             {addRow}
-            <div className={styles.rowsHolder} style={{ top: Math.max(0, this.state.offset * ROW_HEIGHT) }}>
-              {rows}
-            </div>
             {editor}
           </div>
         );
