@@ -66,11 +66,11 @@ export default class Header extends React.Component {
               }} />
             </div>
           </Media>
-          <a className={styles['logo-face']} href="http://www.back4app.com/">
+          <a className={styles['logo-face']} href="https://dashboard.back4app.com/apps/#!/admin">
             <Icon width={46} height={47} name='back4app-logo-face-blue' fill='#208AEC' />
           </a>
           <Media query="(min-width: 680px)">
-            <a className={styles['logo-text']} href="http://www.back4app.com/">
+            <a className={styles['logo-text']} href="https://dashboard.back4app.com/apps/#!/admin">
               <Icon width={134} height={53} name='back4app-logo-text-blue' fill='#208AEC' />
             </a>
           </Media>
