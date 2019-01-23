@@ -54,7 +54,6 @@ let AccountManager = {
   },
 
   deleteAccountKeyById(id) {
-    console.log(id);
     let path = '/account/keys/' + id.toString();
     let promise = del(path);
     promise.then(() => {

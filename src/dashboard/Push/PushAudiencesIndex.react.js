@@ -119,7 +119,6 @@ export default class PushAudiencesIndex extends DashboardView {
   }
 
   renderRow(audience) {
-    console.log('audience', audience)
     return (
       <PushAudiencesIndexRow
         key={audience.objectId}

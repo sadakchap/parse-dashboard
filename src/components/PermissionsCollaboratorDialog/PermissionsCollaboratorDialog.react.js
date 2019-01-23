@@ -138,7 +138,6 @@ export default class PermissionsCollaboratorDialog extends React.Component {
 
   renderClassesRows(permissionType) {
     let rows = [];
-    console.log(this.props.classesPermissions, permissionType)
     for (let appClassName in this.props.classesPermissions) {
       let label = <Label key={appClassName  + (permissionType === 'Custom' ? 'Label' : 'Input')} text={appClassName}/>
       let content = null;
@@ -149,7 +148,6 @@ export default class PermissionsCollaboratorDialog extends React.Component {
         <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} />
       </div>))
     }
-    console.log('rows', rows)
     return rows;
   }
 
@@ -175,7 +173,6 @@ export default class PermissionsCollaboratorDialog extends React.Component {
 
   render() {
     let classes = [styles.dialog, unselectable];
-    console.log('state', this.state)
 
     return (
       <Popover fadeIn={true} fixed={true} position={origin} modal={true} color='rgba(17,13,17,0.8)'>
@@ -309,7 +306,6 @@ export default class PermissionsCollaboratorDialog extends React.Component {
                     classesPermissions = lodash.mapValues(this.state.classesPermissions, () => this.state.selectedClassesTab)
                     featuresPermissions['classes'] = this.state.selectedClassesTab
                   }
-                  console.log(featuresPermissions, classesPermissions)
                   this.props.onConfirm(featuresPermissions, classesPermissions)
                 }}
               />

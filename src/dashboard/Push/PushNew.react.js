@@ -161,7 +161,6 @@ export default class PushNew extends DashboardView {
     if (available) {
       this.context.currentApp.fetchPushLocales().promise
         .then((locales) => {
-          console.log(locales);
           const filteredLocales = (locales || []).filter((locale) => !(locale === '' || locale === undefined));
           this.setState({
             isLocalizationAvailable: true,
@@ -636,8 +635,6 @@ export default class PushNew extends DashboardView {
         pushAudiencesStore={this.props.pushaudiences}
         current={fields.audience_id}
         onChange={(audienceId, queryOrFilters, deviceCount) => {
-          console.log('audienceId', audienceId);
-          console.log('PushConstants.NEW_SEGMENT_ID', PushConstants.NEW_SEGMENT_ID);
           PushConstants.NEW_SEGMENT_ID
           this.setState({ deviceCount });
           setField('audience_id', audienceId);

@@ -35,7 +35,6 @@ export default class AppleCerts extends React.Component {
   }
 
   handleUpload(file) {
-    console.log('wrong way')
     this.context.currentApp.uploadAppleCert(file).then((cert) => {
       this.state.certs.unshift(cert);
       this.setState({ uploadPending: false });
