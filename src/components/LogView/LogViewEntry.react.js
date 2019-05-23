@@ -52,7 +52,7 @@ LogViewEntry.propTypes = {
   text: PropTypes.string.isRequired.describe(
     'The content of the log view entry.'
   ),
-  timestamp: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).describe(
+  timestamp: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired.describe(
     'The timestamp of the log.'
   ),
   type: PropTypes.oneOf(['info', 'error']).isRequired.describe(

@@ -14,39 +14,51 @@ export const component = LogView;
 export const demos = [
   {
     render() {
-      let type = {
+      const type = {
         info: 'info',
         error: 'error'
       }
 
-      let text1 = `I2015-09-30T00:25:26.950Z]Deployed v1 with triggers:
-        Item:
-          before_save
-          after_save
-        OtherItem:
-          before_delete
-          after_delete
-        Cloud Functions:
-          functionName
-          anotherFunction
-          WillError`;
-
-      let text2 = `I2015-09-30T00:35:42.336Z]v2 before_save triggered for Item:
-        Input: {"original":null,"update":{"name":"i"}}
-        Result: Update changed to {"name":"i","count":12}`;
-
-      let text3 = `I2015-10-06T22:39:11.029Z]v4 Ran cloud function doSomething with:
-        Input: {}
-        Result: {}`;
-
-      let text4 = `ParseError { code: 141, message: 'Function not found.' }`;
+      const logs = [
+        {
+          text: `Deployed v1 with triggers:
+            Item:
+              before_save
+              after_save
+            OtherItem:
+              before_delete
+              after_delete
+            Cloud Functions:
+              functionName
+              anotherFunction
+              WillError`,
+          timestamp: '2015-09-30T00:25:26.950Z',
+          type: type.info
+        },
+        {
+          text: `v2 before_save triggered for Item:
+            Input: {"original":null,"update":{"name":"i"}}
+            Result: Update changed to {"name":"i","count":12}`,
+          timestamp: '2015-09-30T00:35:42.336Z',
+          type: type.info
+        },
+        {
+          text: `v4 Ran cloud function doSomething with:
+            Input: {}
+            Result: {}`,
+          timestamp: '2015-10-06T22:39:11.029Z',
+          type: type.info
+        },
+        {
+          text: `ParseError { code: 141, message: 'Function not found.' }`,
+          timestamp: '2019-05-23T16:25:27.123Z',
+          type: type.error
+        },
+      ];
 
       return (
         <LogView>
-          <LogViewEntry text={text1} type={type.info} />
-          <LogViewEntry text={text2} type={type.info} />
-          <LogViewEntry text={text3} type={type.info} />
-          <LogViewEntry text={text4} timestamp={'2019-05-23T16:25:27.123Z'} type={type.error} />
+          {logs.map(({text, timestamp, type}) => <LogViewEntry text={text} timestamp={timestamp} type={type} />)}
         </LogView>
       );
     }
