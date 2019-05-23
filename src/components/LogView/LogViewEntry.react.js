@@ -20,30 +20,11 @@ const TIMESTAMP_REGEX = [
   '(\\])'  // Any Single Character 2
 ].join('');
 
-let isError = (str) => str[0] === 'E';
-
 let getLogEntryInfo = (str) => {
   let re = getTimestampRegex();
-  let time = '';
-  let content = '';
-  let error = false;
+  let timeStampStr = str.match(re) ? str.match(re)[0] : '';
 
-  if (typeof str === 'string') {
-    time = str.match(re) ? str.match(re)[0] : '';
-    content = str.replace(time, '');
-    error = isError(str);
-  } else if (str && typeof str.message === 'object') {
-    let objectError = str.message;
-    time = objectError.timestamp;
-    content = objectError.message;
-    error = objectError.level && objectError.level === 'error';
-  }
-
-  return {
-    time,
-    content,
-    error
-  };
+  return str.replace(timeStampStr,'')
 }
 
 //example timestamp: 'I2015-09-30T00:36:45.522Z]'
@@ -52,14 +33,15 @@ let getTimestampRegex = () => new RegExp(TIMESTAMP_REGEX,['i']);
 let LogViewEntry = ({
   text = '',
   timestamp,
+  type
 }) => {
   let logEntryInfo = getLogEntryInfo(text);
-  let classes = [styles.entry, logEntryInfo.error ? styles.error: ''];
+  let classes = [styles.entry, type === 'error' ? styles.error: ''];
   return (
     <li className={classes.join(' ')}>
       {/* handle the timestamp format used by both Parse Server and Parse.com */}
       <span className={styles.time}>{timestamp.iso || timestamp} - </span>
-      <span className={styles.content}>{logEntryInfo.content}</span>
+      <span className={styles.content}>{logEntryInfo}</span>
     </li>
   );
 }
@@ -69,5 +51,11 @@ export default LogViewEntry;
 LogViewEntry.propTypes = {
   text: PropTypes.string.isRequired.describe(
     'The content of the log view entry.'
+  ),
+  timestamp: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).describe(
+    'The timestamp of the log.'
+  ),
+  type: PropTypes.oneOf(['info', 'error']).isRequired.describe(
+    'The type of the log.'
   ),
 };

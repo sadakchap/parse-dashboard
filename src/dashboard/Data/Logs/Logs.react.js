@@ -107,10 +107,16 @@ export default class Logs extends DashboardView {
       content = (
         <div className={styles.content}>
           <LogView>
-            {this.state.logs.map(({ message, timestamp }) => <LogViewEntry
-              key={timestamp}
-              text={message}
-              timestamp={timestamp} />)}
+            {this.state.logs.map(({ message, timestamp }) => {
+              const text = (typeof message === 'object' ? JSON.stringify(message) : message)
+              return (
+                <LogViewEntry
+                  key={timestamp}
+                  text={text}
+                  timestamp={timestamp}
+                  type={this.props.params.type} />
+              )}
+            )}
           </LogView>
         </div>
       );
