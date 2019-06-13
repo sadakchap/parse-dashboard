@@ -50,8 +50,7 @@ export const SpecialClasses = {
   _Installation: 'Installation',
   _Role: 'Role',
   _Product: 'Product',
-  _Session: 'Session',
-  _PushStatus: 'PushStatus',
+  _Session: 'Session'
 };
 
 export const DefaultColumns = {
@@ -61,8 +60,7 @@ export const DefaultColumns = {
   _Installation: [ 'installationId', 'deviceToken', 'channels', 'deviceType', 'pushType', 'GCMSenderId', 'timeZone', 'localeIdentifier', 'badge' ],
   _Role: [ 'name', 'users', 'roles' ],
   _Product: [ 'order', 'productIdentifier', 'icon', 'title', 'subtitle', 'download', 'downloadName' ],
-  _Session: [ 'restricted', 'user', 'installationId', 'sessionToken', 'expiresAt', 'createdWith' ],
-  _PushStatus: [ 'pushTime', 'query', 'pushHash', 'payload', 'status', 'sentPerType', 'failedPerType', 'numSent', 'numFailed', 'errorMessage', 'source' ],
+  _Session: [ 'restricted', 'user', 'installationId', 'sessionToken', 'expiresAt', 'createdWith' ]
 };
 
 export const DataTypes = [
