@@ -34,10 +34,13 @@ export default class GraphQLConsole extends Component {
         'X-Parse-Application-Id': applicationId,
         'X-Parse-Master-Key': masterKey
       }
+      const settings = {
+        'schema.polling.enable': false
+      }
       content = (
         <Provider store={store}>
           <div className={styles.playgroundContainer}>
-            <Playground endpoint={graphQLServerURL} headers={headers} />
+            <Playground settings={settings} endpoint={graphQLServerURL} headers={headers} />
           </div>
         </Provider>
       );
