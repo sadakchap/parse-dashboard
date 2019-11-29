@@ -32,11 +32,10 @@ const apiDocsButtonStyle = {
 
 let B4ABrowserToolbar = ({
     className,
-    classNameForPermissionsEditor,
+    classNameForEditors,
     count,
     perms,
     schema,
-    userPointers,
     filters,
     selection,
     relation,
@@ -57,6 +56,8 @@ let B4ABrowserToolbar = ({
     onChangeCLP,
     onRefresh,
     hidePerms,
+    isUnique,
+    uniqueField,
     handleColumnDragDrop,
     handleColumnsOrder,
     order,
@@ -81,7 +82,7 @@ let B4ABrowserToolbar = ({
     }
   }
 
-  if (!relation) {
+  if (!relation && !isUnique) {
     if (perms && !hidePerms) {
       let read = perms.get && perms.find && perms.get['*'] && perms.find['*'];
       let write = perms.create && perms.update && perms.delete && perms.create['*'] && perms.update['*'] && perms.delete['*'];
@@ -154,11 +155,36 @@ let B4ABrowserToolbar = ({
   } else if (subsection.length > 30) {
     subsection = subsection.substr(0, 30) + '\u2026';
   }
+  const classes = [styles.toolbarButton];
+  let onClick = onAddRow;
+  if (isUnique) {
+    classes.push(styles.toolbarButtonDisabled);
+    onClick = null;
+  }
+
+  const userPointers = [];
+  const schemaSimplifiedData = {};
+  const classSchema = schema.data.get('classes').get(classNameForEditors);
+  if (classSchema) {
+    classSchema.forEach(({ type, targetClass }, col) => {
+      schemaSimplifiedData[col] = {
+        type,
+        targetClass,
+      };
+
+      if (col === 'objectId' || isUnique && col !== uniqueField) {
+        return;
+      }
+      if (targetClass === '_User') {
+        userPointers.push(col);
+      }
+    });
+  }
 
   // variables used to define an API reference button on browser toolbar
   let classApiId = ''
   let apiDocsButton = ''
-  let isCustomCLass = classNameForPermissionsEditor && classNameForPermissionsEditor.indexOf('_') === -1
+  let isCustomCLass = classNameForEditors && classNameForEditors.indexOf('_') === -1
 
   if (className && (className === 'User' || isCustomCLass)) {
     // set classApiId taking into count the User class special condition
@@ -190,7 +216,7 @@ let B4ABrowserToolbar = ({
       subsection={subsection}
       details={relation ? details.join(' \u2022 ') : ''}
       helpsection={helpsection}>
-      <a className={styles.toolbarButton} onClick={onAddRow} title='Add a row' style={{ padding: '4px 4px 6px 4px' }}>
+      <a className={styles.toolbarButton} onClick={onClick} title='Add a row' style={{ padding: '4px 4px 6px 4px' }}>
         <Icon name='add-row' width={32} height={26} />
       </a>
       <a className={styles.toolbarButton} onClick={onAddColumn} title='Add a column' style={{ padding: '4px 4px 6px 4px' }}>
@@ -208,14 +234,14 @@ let B4ABrowserToolbar = ({
       </a>
       <BrowserFilter
         setCurrent={setCurrent}
-        schema={schema}
+        schema={schemaSimplifiedData}
         filters={filters}
         onChange={onFilterChange} />
       {enableSecurityDialog ? <SecurityDialog
         setCurrent={setCurrent}
-        disabled={!!relation}
+        disabled={!!relation || !!isUnique}
         perms={perms}
-        className={classNameForPermissionsEditor}
+        className={classNameForEditors}
         onChangeCLP={onChangeCLP}
         userPointers={userPointers} /> : <noscript />}
       {enableSecurityDialog ? null : <noscript/>}

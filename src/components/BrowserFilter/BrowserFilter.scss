@@ -21,6 +21,10 @@
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
+
+  &.active {
+    background: $blue;
+  }
 }
 
 .entry {
@@ -30,7 +34,6 @@
 }
 
 .entry.active {
-  background: $blue;
   border-radius: 5px;
 
   svg {

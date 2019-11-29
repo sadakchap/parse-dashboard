@@ -659,7 +659,7 @@ class Browser extends DashboardView {
       query.ascending(field)
     }
 
-    query.limit(200);
+    query.limit(MAX_ROWS_FETCHED);
 
     let promise = query.find({ useMasterKey: true });
     let isUnique = false;
@@ -727,7 +727,7 @@ class Browser extends DashboardView {
     let className = this.props.params.className;
     let source = this.state.relation || className;
     let query = queryFromFilters(source, this.state.filters);
-    if (this.state.ordering !== '-createdAt') {
+    if (this.state.ordering !== 'createdAt') {
       // Construct complex pagination query
       let equalityQuery = queryFromFilters(source, this.state.filters);
       let field = this.state.ordering;
@@ -1014,9 +1014,6 @@ class Browser extends DashboardView {
 
   selectRow(id, checked) {
     this.setState(({ selection }) => {
-      if (id === '*') {
-        return { selection: checked ? { '*': true } : {} };
-      }
       if (checked) {
         selection[id] = true;
       } else {
@@ -1256,13 +1253,6 @@ class Browser extends DashboardView {
           </div>
         );
       } else if (className && classes.get(className)) {
-        let schema = {};
-        classes.get(className).forEach(({ type, targetClass }, col) => {
-          schema[col] = {
-            type,
-            targetClass,
-          };
-        });
 
         let columns = {
           objectId: { type: 'String' }
@@ -1270,20 +1260,13 @@ class Browser extends DashboardView {
         if (this.state.isUnique) {
           columns = {};
         }
-        let userPointers = [];
-        classes.get(className).forEach((field, name) => {
-          if (name === 'objectId') {
+        classes.get(className).forEach(({ type, targetClass }, name) => {
+          if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
             return;
           }
-          if (this.state.isUnique && name !== this.state.uniqueField) {
-            return;
-          }
-          let info = { type: field.type };
-          if (field.targetClass) {
-            info.targetClass = field.targetClass;
-            if (field.targetClass === '_User') {
-              userPointers.push(name);
-            }
+          const info = { type };
+          if (targetClass) {
+            info.targetClass = targetClass;
           }
           columns[name] = info;
         });
@@ -1304,8 +1287,7 @@ class Browser extends DashboardView {
             uniqueField={this.state.uniqueField}
             count={count}
             perms={this.state.clp[className]}
-            schema={schema}
-            userPointers={userPointers}
+            schema={this.props.schema}
             filters={this.state.filters}
             onFilterChange={this.updateFilters}
             onRemoveColumn={this.showRemoveColumn}

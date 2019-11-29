@@ -27,6 +27,7 @@ export default class BrowserFilter extends React.Component {
       open: false,
       filters: new List(),
     };
+    this.toggle = this.toggle.bind(this)
   }
 
   componentDidMount() {
@@ -34,22 +35,22 @@ export default class BrowserFilter extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.schema !== this.props.schema) {
+    if (props.className !== this.props.className) {
       this.setState({ open: false });
     }
   }
 
-  open() {
+  toggle() {
     let filters = this.props.filters;
     if (this.props.filters.size === 0) {
       let available = Filters.availableFilters(this.props.schema, null, BLACKLISTED_FILTERS);
       let field = Object.keys(available)[0];
       filters = new List([new Map({ field: field, constraint: available[field][0] })]);
     }
-    this.setState({
-      open: true,
+    this.setState(prevState => ({
+      open: !prevState.open,
       filters: filters,
-    });
+    }));
     this.props.setCurrent(null);
   }
 
@@ -62,9 +63,7 @@ export default class BrowserFilter extends React.Component {
   }
 
   clear() {
-    this.setState({ open: false }, () => {
-      this.props.onChange(new Map());
-    });
+    this.props.onChange(new Map());
   }
 
   apply() {
@@ -76,26 +75,27 @@ export default class BrowserFilter extends React.Component {
       }*/
       return filter;
     })
-    this.setState({ open: false }, () => {
-      this.props.onChange(formatted);
-    });
+    this.props.onChange(formatted);
   }
 
   render() {
     let popover = null;
+    let buttonStyle = [styles.entry];
+    const wrapperStyle = [styles.wrap];
+
     if (this.state.open) {
       let position = Position.inDocument(this.node);
       let popoverStyle = [styles.popover];
+      buttonStyle.push(styles.title);
+
       if (this.props.filters.size) {
         popoverStyle.push(styles.active);
       }
       let available = Filters.availableFilters(this.props.schema, this.state.filters);
       popover = (
-        <Popover fixed={true} position={position}>
+        <Popover fixed={true} position={position} onExternalClick={this.toggle}>
           <div className={popoverStyle.join(' ')} onClick={() => this.props.setCurrent(null)}>
-            <div className={styles.title} onClick={() => this.setState({ open: false })} title='Filter'>
-              <Icon name='filter-solid' width={32} height={24} />
-            </div>
+            <div onClick={this.toggle} style={{ cursor: 'pointer', width: this.node.clientWidth, height: this.node.clientHeight }}></div>
             <div className={styles.body}>
               <Filter
                 blacklist={BLACKLISTED_FILTERS}
@@ -128,14 +128,14 @@ export default class BrowserFilter extends React.Component {
         </Popover>
       );
     }
-    let buttonStyle = [styles.entry];
     if (this.props.filters.size) {
-      buttonStyle.push(styles.active);
+      wrapperStyle.push(styles.active);
     }
     return (
-      <div className={styles.wrap}>
-        <div className={buttonStyle.join(' ')} onClick={this.open.bind(this)} title='Filter'>
-          <Icon name='filter-solid' width={32} height={24} />
+      <div className={wrapperStyle.join(' ')}>
+        <div className={buttonStyle.join(' ')} onClick={this.toggle}>
+          <Icon name='filter-solid' width={24} height={24} />
+          {/* <span>{this.props.filters.size ? 'Filtered' : 'Filter'}</span> */}
         </div>
         {popover}
       </div>
