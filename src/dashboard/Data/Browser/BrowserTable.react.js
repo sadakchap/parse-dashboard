@@ -192,24 +192,28 @@ export default class BrowserTable extends React.Component {
             }
           }
           let obj = this.props.current.row < 0 ? this.props.newObject : this.props.data[this.props.current.row];
-          let value = obj;
+          let value = obj ;
           if (!this.props.isUnique) {
             if (type === 'Array' || type === 'Object') {
               // This is needed to avoid unwanted conversions of objects to Parse.Objects.
               // "Parse._encoding" is responsible to convert Parse data into raw data.
               // Since array and object are generic types, we want to edit them the way
               // they were stored in the database.
-              value = encode(obj.get(name), undefined, true);
+              value = obj ? encode(obj.get(name), undefined, true) : type === 'Array' ? [] : {};
             } else {
-              value = obj.get(name);
+              value = obj ? obj.get(name) : undefined;
             }
           }
           if (name === 'objectId') {
             if (!this.props.isUnique) {
-              value = obj.id;
+              value = obj ? obj.id : undefined;
             }
           } else if (name === 'ACL' && this.props.className === '_User' && !value) {
-            value = new Parse.ACL({ '*': { read: true }, [obj.id]: { read: true, write: true }});
+            const acl = { '*': { read: true }};
+            if (obj) {
+              acl[obj.id] = { read: true, write: true };
+            }
+            value = new Parse.ACL(acl);
           } else if (name === 'password' && this.props.className === '_User') {
             value = '';
           }
