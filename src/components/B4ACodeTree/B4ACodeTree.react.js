@@ -12,9 +12,14 @@ import 'components/B4ACodeTree/B4AJsTree.css'
 
 const getCloudFolderPlaceholder = (appId, restKey) => "// The first deployed file must be named main.js and must be placed on the root of the cloud folder.\n" +
   "// The example below shows you how a cloud code function looks like.\n\n" +
-  "/*\n* Parse.Cloud.define(\"hello\", function(request, response){\n" +
-  "* \tresponse.success(\"Hello world!\");\n" +
+  "/* Parse Server 3.x"+
+  "\n* Parse.Cloud.define(\"hello\", (request) => {\n" +
+  "* \treturn(\"Hello world!\");\n" +
   "* });\n*/\n\n" +
+  "/* Parse Server 2.x"+
+  "\n* Parse.Cloud.define(\"hello\", function(request, response){\n" +
+  "* \tresponse.success(\"Hello world!\");\n" +
+  "* });\n*/\n\n" + 
   "// To see it working, you only need to call it through SDK or REST API.\n" +
   "// Here is how you have to call it via REST API:\n" +
   "\n/*\n* curl -X POST \\\n" +
