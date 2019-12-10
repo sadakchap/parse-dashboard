@@ -87,6 +87,11 @@ export default class DashboardView extends React.Component {
     }
 
     coreSubsections.push({
+      name: 'Connections',
+      link: '/connections'
+    })
+
+    coreSubsections.push({
       name: 'Index Manager',
       link: '/index'
     })
