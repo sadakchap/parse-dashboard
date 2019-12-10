@@ -965,7 +965,7 @@ export default class ParseApp {
 
   async fetchHubConnections() {
     try {
-      await axios.get(`/hub/connections/${this.slug}`);
+      return await axios.get(`/hub/connections/${this.slug}`).data;
     } catch (err) {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     }
