@@ -65,6 +65,7 @@ class HubConnections extends DashboardView {
         </div>
         {!this.state.data || this.state.data.length === 0
           ? <EmptyState
+              cta='Go to Database Hub'
               action='http://www.back4app.com/database'
               description='Check the Database Hub and connect to public databases'
               icon='devices-solid'
@@ -91,7 +92,7 @@ class HubConnections extends DashboardView {
                   namespace={this.state.namespaceBeingDisconnected}
                   onConfirm={async () => {
                     await this.context.currentApp.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
-                    this.setState({ showDisconnectDialog: false });
+                    window.location.reload(false);
                   }}
                   onCancel={() => this.setState({ showDisconnectDialog: false })} />
               }
