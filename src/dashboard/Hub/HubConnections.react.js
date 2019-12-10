@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import DashboardView from 'dashboard/DashboardView.react'
 import EmptyState from 'components/EmptyState/EmptyState.react'
 import Icon from 'components/Icon/Icon.react'
+import DashboardView from 'dashboard/DashboardView.react'
+import HubDisconnectionDialog from 'dashboard/Hub/HubDisconnectionDialog.react'
 import ParseApp from 'lib/ParseApp'
 import styles from './HubConnections.scss'
 
@@ -13,11 +14,15 @@ class HubConnections extends DashboardView {
     this.section = 'Core';
     this.subsection = 'Connections';
 
-    this.state = { data: null };
+    this.state = {
+      data: null,
+      namespaceBeingDisconnected: '',
+      showDisconnectDialog: false
+    };
   }
 
   async componentWillMount() {
-    const data = await this.currentApp.fetchHubConnections();
+    const data = await this.context.currentApp.fetchHubConnections();
     this.setState({ data });
   }
 
@@ -25,7 +30,7 @@ class HubConnections extends DashboardView {
     if (!this.state.data) {
       return null
     }
-    return this.state.data.map(({ name, author: { slug: authorSlug }, namespace, slug }) => {
+    return this.state.data.map(({ name, authorSlug, namespace, slug }) => {
       return (
         <tr key={namespace}>
           <td>{name}</td>
@@ -36,8 +41,8 @@ class HubConnections extends DashboardView {
             </a>
           </td>
           <td>
-            <a onClick={() => this.currentApp.disconnectHubDatabase(name)}>
-              <Icon name='trash-solid' fill='#59596e' width={18} height={18} role='button'/>
+            <a onClick={() => this.setState({ namespaceBeingDisconnected: namespace, showDisconnectDialog: true })}>
+              <Icon name='trash-solid' fill='red' width={18} height={18} role='button'/>
             </a>
           </td>
         </tr>
@@ -58,28 +63,39 @@ class HubConnections extends DashboardView {
             </section>
           </div>
         </div>
-        {this.state.data && this.state.data.length === 0
+        {!this.state.data || this.state.data.length === 0
           ? <EmptyState
               action='http://www.back4app.com/database'
               description='Check the Database Hub and connect to public databases'
               icon='devices-solid'
               title='No connections were found'
             />
-          : <div className={styles.connectionsTableContainer}>
-              <table className={styles.connectionsTable}>
-                <thead>
-                  <tr>
-                    <th>Public database</th>
-                    <th>Namespace</th>
-                    <th>Database Hub Link</th>
-                    <th>Disconnect</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.renderRows()}
-                </tbody>
-              </table>
-            </div>
+          : <>
+              <div className={styles.connectionsTableContainer}>
+                <table className={styles.connectionsTable}>
+                  <thead>
+                    <tr>
+                      <th>Public database</th>
+                      <th>Namespace</th>
+                      <th>Database Hub Link</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.renderRows()}
+                  </tbody>
+                </table>
+              </div>
+              {this.state.showDisconnectDialog &&
+                <HubDisconnectionDialog
+                  namespace={this.state.namespaceBeingDisconnected}
+                  onConfirm={async () => {
+                    await this.context.currentApp.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
+                    this.setState({ showDisconnectDialog: false });
+                  }}
+                  onCancel={() => this.setState({ showDisconnectDialog: false })} />
+              }
+            </>
         }
       </div>
     )
