@@ -31,6 +31,11 @@
         }
       }
     }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .connectionsTableContainer {

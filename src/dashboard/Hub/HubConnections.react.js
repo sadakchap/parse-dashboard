@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import Button from 'components/Button/Button.react';
 import EmptyState from 'components/EmptyState/EmptyState.react'
 import Icon from 'components/Icon/Icon.react'
 import DashboardView from 'dashboard/DashboardView.react'
@@ -27,7 +28,7 @@ class HubConnections extends DashboardView {
   }
 
   renderRows() {
-    if (!this.state.data) {
+    if (!this.state.data || this.state.data.length === 0) {
       return null
     }
     return this.state.data.map(({ name, authorSlug, namespace, slug }) => {
@@ -62,11 +63,20 @@ class HubConnections extends DashboardView {
               </div>
             </section>
           </div>
+
+          <section className={styles.toolbar}>
+            <Button
+              color='white'
+              value='Database Hub'
+              onClick={() => {
+                window.open(b4aSettings.HUB_URL, '_blank');
+              }}/>
+          </section>
         </div>
         {!this.state.data || this.state.data.length === 0
           ? <EmptyState
               cta='Go to Database Hub'
-              action='http://www.back4app.com/database'
+              action={b4aSettings.HUB_URL}
               description='Check the Database Hub and connect to public databases'
               icon='devices-solid'
               title='No connections were found'
