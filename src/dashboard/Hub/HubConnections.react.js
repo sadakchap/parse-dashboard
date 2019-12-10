@@ -21,7 +21,7 @@ class HubConnections extends DashboardView {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const data = await this.context.currentApp.fetchHubConnections();
     this.setState({ data });
   }
