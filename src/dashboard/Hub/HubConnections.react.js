@@ -34,8 +34,8 @@ class HubConnections extends DashboardView {
     return this.state.data.map(({ name, authorSlug, namespace, slug }) => {
       return (
         <tr key={namespace}>
-          <td>{name}</td>
           <td>{namespace}</td>
+          <td>{name}</td>
           <td>
             <a href={`${b4aSettings.BACK4APP_SITE_PATH}/database/${authorSlug}/${slug}`}>
               View on Hub
@@ -86,8 +86,8 @@ class HubConnections extends DashboardView {
                 <table className={styles.connectionsTable}>
                   <thead>
                     <tr>
-                      <th>Public database</th>
                       <th>Namespace</th>
+                      <th>Public database</th>
                       <th>Database Hub Link</th>
                       <th></th>
                     </tr>
