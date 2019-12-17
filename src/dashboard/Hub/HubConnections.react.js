@@ -31,7 +31,7 @@ class HubConnections extends DashboardView {
     if (!this.state.data || this.state.data.length === 0) {
       return null
     }
-    return this.state.data.map(({ name, authorSlug, namespace, slug }) => {
+    return this.state.data.map(({ name, authorSlug, namespace, slug, isCollab }) => {
       return (
         <tr key={namespace}>
           <td>{namespace}</td>
@@ -42,9 +42,9 @@ class HubConnections extends DashboardView {
             </a>
           </td>
           <td>
-            <a onClick={() => this.setState({ namespaceBeingDisconnected: namespace, showDisconnectDialog: true })}>
+            {!isCollab && <a onClick={() => this.setState({ namespaceBeingDisconnected: namespace, showDisconnectDialog: true })}>
               <Icon name='trash-solid' fill='red' width={18} height={18} role='button'/>
-            </a>
+            </a>}
           </td>
         </tr>
       )
