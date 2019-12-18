@@ -954,4 +954,20 @@ export default class ParseApp {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     })
   }
+
+  async disconnectHubDatabase(databaseName) {
+    try {
+      await axios.post('/hub/disconnect', { appEntityId: this.slug, database: databaseName });
+    } catch (err) {
+      throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
+    }
+  }
+
+  async fetchHubConnections() {
+    try {
+      return (await axios.get(`/hub/connections/${this.slug}`)).data;
+    } catch (err) {
+      throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
+    }
+  }
 }

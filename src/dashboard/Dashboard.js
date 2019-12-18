@@ -22,6 +22,7 @@ import GeneralSettings    from './Settings/GeneralSettings.react';
 import GraphQLConsole     from './Data/ApiConsole/GraphQLConsole.react';
 import history            from 'dashboard/history';
 import HostingSettings    from './Settings/HostingSettings.react';
+import HubConnections     from './Hub/HubConnections.react';
 import Icon               from 'components/Icon/Icon.react';
 import IndexManager       from './IndexManager/IndexManager.react'
 import JobEdit            from 'dashboard/Data/Jobs/JobEdit.react';
@@ -326,6 +327,7 @@ export default class Dashboard extends React.Component {
           <Route path={ match.path + '/server-settings/:targetPage?' } render={(props) => (
             <ServerSettings params={props.match.params} />
           )} />
+          <Route exact path={ match.path + '/connections' } component={HubConnections} />
           <Route exact path={ match.path + '/index' } render={props => <IndexManager {...props} params={props.match.params} />} />
           <Route path={ match.path + '/index/:className'} render={props => <IndexManager {...props} params={props.match.params} />} />
 
