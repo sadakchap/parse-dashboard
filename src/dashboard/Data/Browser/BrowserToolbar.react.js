@@ -20,11 +20,10 @@ import Toolbar        from 'components/Toolbar/Toolbar.react';
 
 let BrowserToolbar = ({
   className,
-  classNameForPermissionsEditor,
+  classNameForEditors,
   count,
   perms,
   schema,
-  userPointers,
   filters,
   selection,
   relation,
@@ -46,6 +45,7 @@ let BrowserToolbar = ({
   onRefresh,
   hidePerms,
   isUnique,
+  uniqueField,
   handleColumnDragDrop,
   handleColumnsOrder,
   order,
@@ -146,6 +146,26 @@ let BrowserToolbar = ({
     classes.push(styles.toolbarButtonDisabled);
     onClick = null;
   }
+
+  const userPointers = [];
+  const schemaSimplifiedData = {};
+  const classSchema = schema.data.get('classes').get(classNameForEditors);
+  if (classSchema) {
+    classSchema.forEach(({ type, targetClass }, col) => {
+      schemaSimplifiedData[col] = {
+        type,
+        targetClass,
+      };
+
+      if (col === 'objectId' || isUnique && col !== uniqueField) {
+        return;
+      }
+      if (targetClass === '_User') {
+        userPointers.push(col);
+      }
+    });
+  }
+
   return (
     <Toolbar
       relation={relation}
@@ -171,15 +191,16 @@ let BrowserToolbar = ({
       <div className={styles.toolbarSeparator} />
       <BrowserFilter
         setCurrent={setCurrent}
-        schema={schema}
+        schema={schemaSimplifiedData}
         filters={filters}
-        onChange={onFilterChange} />
+        onChange={onFilterChange}
+        className={classNameForEditors} />
       <div className={styles.toolbarSeparator} />
       {enableSecurityDialog ? <SecurityDialog
         setCurrent={setCurrent}
         disabled={!!relation || !!isUnique}
         perms={perms}
-        className={classNameForPermissionsEditor}
+        className={classNameForEditors}
         onChangeCLP={onChangeCLP}
         userPointers={userPointers} /> : <noscript />}
       {enableSecurityDialog ? <div className={styles.toolbarSeparator} /> : <noscript/>}

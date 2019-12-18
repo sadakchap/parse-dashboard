@@ -5,41 +5,27 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import { dateStringUTC }    from 'lib/DateUtils';
-import getFileName          from 'lib/getFileName';
-import Parse                from 'parse';
-import Pill                 from 'components/Pill/Pill.react';
-import React                from 'react';
-import styles               from 'components/BrowserCell/BrowserCell.scss';
-import { unselectable }     from 'stylesheets/base.scss';
-import { findDOMNode }      from 'react-dom'
-import ReactTooltip         from 'react-tooltip'
-import PropTypes            from 'lib/PropTypes';
+import { dateStringUTC }         from 'lib/DateUtils';
+import getFileName               from 'lib/getFileName';
+import Parse                     from 'parse';
+import Pill                      from 'components/Pill/Pill.react';
+import React, { Component }      from 'react';
+import styles                    from 'components/BrowserCell/BrowserCell.scss';
+import { unselectable }          from 'stylesheets/base.scss';
+import ReactTooltip              from 'react-tooltip'
+import PropTypes                 from 'lib/PropTypes';
 
-class BrowserCell extends React.Component {
-  constructor (){
-    super()
+class BrowserCell extends Component {
+  constructor() {
+    super();
 
-    this.readableValue = undefined;
+    this.cellRef = React.createRef();
+    this.copyableValue = undefined;
   }
 
-  showTooltip(ref) {
-    ReactTooltip.show(findDOMNode(this.refs[ref]))
-    this.props.unsetTooltip()
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // show the next currentTooltip
-    if (nextProps.currentTooltip !== this.props.currentTooltip && nextProps.currentTooltip) {
-      this.showTooltip(nextProps.currentTooltip)
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!prevProps.current && this.props.current) {
-      this.props.onSelect(this.readableValue);
-
-      const node = findDOMNode(this);
+  componentDidUpdate() {
+    if (this.props.current) {
+      const node = this.cellRef.current;
       const { left, right, bottom, top } = node.getBoundingClientRect();
 
       // Takes into consideration Sidebar width when over 980px wide.
@@ -49,59 +35,83 @@ class BrowserCell extends React.Component {
       const topBoundary = 126;
 
       if (left < leftBoundary || right > window.innerWidth) {
-        node.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        node.scrollIntoView({ block: 'nearest', inline: 'start' });
       } else if (top < topBoundary || bottom > window.innerHeight) {
-        node.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        node.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+
+      if (!this.props.hidden) {
+        this.props.setCopyableValue(this.copyableValue);
       }
     }
   }
 
-  defineCellParams() {
-    let { type, value, hidden, current, setRelation, onPointerClick, readonly } = this.props
-    let content = value;
-    let classes = [styles.cell, unselectable];
-    let readableValue = value
+  shouldComponentUpdate(nextProps) {
+    const shallowVerifyProps = [...new Set(Object.keys(this.props).concat(Object.keys(nextProps)))]
+      .filter(propName => propName !== 'value');
+    if (shallowVerifyProps.some(propName => this.props[propName] !== nextProps[propName])) {
+      return true;
+    }
+    const { value } = this.props;
+    const { value: nextValue } = nextProps;
+    if (typeof value !== typeof nextValue) {
+      return true;
+    }
+    const isRefDifferent = value !== nextValue;
+    if (isRefDifferent && typeof value === 'object') {
+      return JSON.stringify(value) !== JSON.stringify(nextValue);
+    }
+    return isRefDifferent;
+  }
 
-    if (hidden && !current) {
+  render() {
+    let { type, value, hidden, width, current, onSelect, onEditChange, setCopyableValue, setRelation, onPointerClick, row, col, readonly } = this.props;
+    let content = value;
+    this.copyableValue = content;
+    let classes = [styles.cell, unselectable];
+    if (hidden) {
       content = '(hidden)';
       classes.push(styles.empty);
     } else if (value === undefined) {
       if (type === 'ACL') {
-        readableValue = content = 'Public Read + Write';
+        this.copyableValue = content = 'Public Read + Write';
       } else {
-        readableValue = content = '(undefined)';
+        this.copyableValue = content = '(undefined)';
         classes.push(styles.empty);
       }
     } else if (value === null) {
-      readableValue = content = '(null)';
+      this.copyableValue = content = '(null)';
       classes.push(styles.empty);
     } else if (value === '') {
       content = <span>&nbsp;</span>;
       classes.push(styles.empty);
     } else if (type === 'Pointer') {
+      if (value && value.__type) {
+        const object = new Parse.Object(value.className);
+        object.id = value.objectId;
+        value = object;
+      }
       content = (
         <a href='javascript:;' onClick={onPointerClick.bind(undefined, value)}>
-          <Pill value={value ? value.id : undefined} />
+          <Pill value={value.id} />
         </a>
       );
-      readableValue = value ? value.id : undefined;
+      this.copyableValue = value.id;
     } else if (type === 'Date') {
-      readableValue = content = value ? dateStringUTC(value) : undefined;
-    } else if (type === 'Boolean') {
-      readableValue = content = value ? 'True' : 'False';
-    } else if (type === 'Array') {
-      readableValue = content = value && typeof value.map === 'function'
-        ? JSON.stringify(value.map(val => val instanceof Parse.Object ? val.toPointer() : val))
-        : undefined;
-    } else if (type === 'Object' || type === 'Bytes') {
-      readableValue = content = value ? JSON.stringify(value) : undefined;
-    } else if (type === 'File') {
-      if (value && value.url()) {
-        content = <Pill value={getFileName(value)} />;
-      } else {
-        content = <Pill value={'Uploading\u2026'} />;
+      if (typeof value === 'object' && value.__type) {
+        value = new Date(value.iso);
+      } else if (typeof value === 'string') {
+        value = new Date(value);
       }
-      readableValue = getFileName(value)
+      this.copyableValue = content = dateStringUTC(value);
+    } else if (type === 'Boolean') {
+      this.copyableValue = content = value ? 'True' : 'False';
+    } else if (type === 'Object' || type === 'Bytes' || type === 'Array') {
+      this.copyableValue = content = JSON.stringify(value);
+    } else if (type === 'File') {
+      const fileName = value.url() ? getFileName(value) : 'Uploading\u2026';
+      content = <Pill value={fileName} />;
+      this.copyableValue = fileName;
     } else if (type === 'ACL') {
       let pieces = [];
       let json = value.toJSON();
@@ -122,18 +132,18 @@ class BrowserCell extends React.Component {
       if (pieces.length === 0) {
         pieces.push('Master Key Only');
       }
-      readableValue = content = pieces.join(', ');
+      this.copyableValue = content = pieces.join(', ');
     } else if (type === 'GeoPoint') {
-      readableValue = content = value ? `(${value.latitude}, ${value.longitude})` : undefined;
+      this.copyableValue = content = `(${value.latitude}, ${value.longitude})`;
     } else if (type === 'Polygon') {
-      readableValue = content = value ? value.coordinates.map(coord => `(${coord})`) : undefined;
+      this.copyableValue = content = value.coordinates.map(coord => `(${coord})`)
     } else if (type === 'Relation') {
       content = (
         <div style={{ textAlign: 'center', cursor: 'pointer' }}>
           <Pill onClick={() => setRelation(value)} value='View relation' />
         </div>
       );
-      readableValue = value
+      this.copyableValue = undefined;
     }
 
     // Set read only style
@@ -142,30 +152,33 @@ class BrowserCell extends React.Component {
     if (current) {
       classes.push(styles.current);
     }
-
-    return { content, readableValue, classes }
-  }
-
-  render() {
-    let { id, readonly , width, current, type, onSelect, onEditChange } = this.props;
-    let { content, readableValue, classes } = this.defineCellParams();
-
-    this.readableValue = readableValue;
     return (
       readonly ?
         <span
+          ref={this.cellRef}
           className={classes.join(' ')}
           style={{ width }}
-          ref={id}
           data-tip='Read only (CTRL+C to copy)'
-          onClick={() => onSelect(readableValue)} >
+          onClick={() => {
+            onSelect({ row, col });
+            setCopyableValue(hidden ? undefined : this.copyableValue);
+          }}>
           {content}
-          <ReactTooltip event={'dblclick'} place={'bottom'} afterShow={() => setTimeout(ReactTooltip.hide, 2000)} />
+          <ReactTooltip event='dblclick' place='bottom' afterShow={() => setTimeout(ReactTooltip.hide, 2000)} />
         </span> :
         <span
+          ref={this.cellRef}
           className={classes.join(' ')}
           style={{ width }}
-          onClick={() => current && type !== 'Relation' ? onEditChange(true) : onSelect(readableValue)}
+          onClick={() => {
+            onSelect({ row, col });
+            setCopyableValue(hidden ? undefined : this.copyableValue);
+          }}
+          onDoubleClick={() => {
+            if (type !== 'Relation') {
+              onEditChange(true)
+            }
+          }}
           onTouchEnd={e => {
             if (current && type !== 'Relation') {
               // The touch event may trigger an unwanted change in the column value
@@ -185,7 +198,11 @@ BrowserCell.propTypes = {
   type: PropTypes.string.isRequired.describe('The column data type'),
   value: PropTypes.any.describe('The cell value (can be null/undefined as well)'),
   hidden: PropTypes.bool.describe('True if the cell value must be hidden (like passwords), false otherwise'),
+  width: PropTypes.number.describe('The cell width style'),
   current: PropTypes.bool.describe('True if it is the BrowserCell selected, false otherwise'),
+  onSelect: PropTypes.func.isRequired.describe('Function invoked when the selected flag should be updated'),
+  onEditChange: PropTypes.func.isRequired.describe('Function invoked when the edit flag should be updated'),
+  setCopyableValue: PropTypes.func.isRequired.describe('Function invoked when the copyable value has changed'),
   setRelation: PropTypes.func.isRequired.describe('Function invoked when the Relation link is clicked'),
   onPointerClick: PropTypes.func.isRequired.describe('Function invoked when the Pointer link is clicked'),
   readonly: PropTypes.bool.describe('True if the cell value is read only')
