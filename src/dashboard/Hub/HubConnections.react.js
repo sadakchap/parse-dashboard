@@ -37,7 +37,7 @@ class HubConnections extends DashboardView {
           <td>{namespace}</td>
           <td>{name}</td>
           <td>
-            <a href={`${b4aSettings.HUB_URL}/${authorSlug}/${slug}`}>
+            <a href={`${b4aSettings.BACK4APP_SITE_PATH}/database/${authorSlug}/${slug}`}>
               View on Hub
             </a>
           </td>
