@@ -88,7 +88,11 @@ export default class DashboardView extends React.Component {
 
     coreSubsections.push({
       name: 'Connections',
-      link: '/connections'
+      link: '/connections',
+      badge: {
+        label: 'NEW',
+        color: 'green'
+      }
     })
 
     coreSubsections.push({
@@ -140,10 +144,6 @@ export default class DashboardView extends React.Component {
     coreSubsections.push({
       name: 'API Console',
       link: '/api_console',
-      badge: {
-        label: 'NEW',
-        color: 'green'
-      }
     });
 
     if (this.context.currentApp.migration) {
