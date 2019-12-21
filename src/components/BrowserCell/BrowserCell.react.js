@@ -11,8 +11,8 @@ import Parse                     from 'parse';
 import Pill                      from 'components/Pill/Pill.react';
 import React, { Component }      from 'react';
 import styles                    from 'components/BrowserCell/BrowserCell.scss';
+import Tooltip                   from 'components/Tooltip/PopperTooltip.react';
 import { unselectable }          from 'stylesheets/base.scss';
-import ReactTooltip              from 'react-tooltip'
 import PropTypes                 from 'lib/PropTypes';
 
 class BrowserCell extends Component {
@@ -21,9 +21,12 @@ class BrowserCell extends Component {
 
     this.cellRef = React.createRef();
     this.copyableValue = undefined;
+    this.state = {
+      showTooltip: false
+    };
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.current) {
       const node = this.cellRef.current;
       const { left, right, bottom, top } = node.getBoundingClientRect();
@@ -44,9 +47,15 @@ class BrowserCell extends Component {
         this.props.setCopyableValue(this.copyableValue);
       }
     }
+    if (prevProps.current !== this.props.current) {
+      this.setState({ showTooltip: false });
+    }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.showTooltip !== this.state.showTooltip) {
+      return true;
+    }
     const shallowVerifyProps = [...new Set(Object.keys(this.props).concat(Object.keys(nextProps)))]
       .filter(propName => propName !== 'value');
     if (shallowVerifyProps.some(propName => this.props[propName] !== nextProps[propName])) {
@@ -154,18 +163,24 @@ class BrowserCell extends Component {
     }
     return (
       readonly ?
+      <Tooltip placement="bottom" tooltip="Read only (CTRL+C to copy)" tooltipShown={this.state.showTooltip}>
         <span
           ref={this.cellRef}
           className={classes.join(' ')}
           style={{ width }}
-          data-tip='Read only (CTRL+C to copy)'
           onClick={() => {
             onSelect({ row, col });
             setCopyableValue(hidden ? undefined : this.copyableValue);
+          }}
+          onDoubleClick={() => {
+            this.setState({ showTooltip: true });
+            setTimeout(() => {
+              this.setState({ showTooltip: false });
+            }, 2000);
           }}>
           {content}
-          <ReactTooltip event='dblclick' place='bottom' afterShow={() => setTimeout(ReactTooltip.hide, 2000)} />
-        </span> :
+        </span>
+      </Tooltip> :
         <span
           ref={this.cellRef}
           className={classes.join(' ')}
