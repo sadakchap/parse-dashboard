@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import Swal from 'sweetalert2'
 import Button from 'components/Button/Button.react';
 import EmptyState from 'components/EmptyState/EmptyState.react'
 import Icon from 'components/Icon/Icon.react'
@@ -18,7 +19,8 @@ class HubConnections extends DashboardView {
     this.state = {
       data: null,
       namespaceBeingDisconnected: '',
-      showDisconnectDialog: false
+      showDisconnectDialog: false,
+      isDisconnecting: false
     };
   }
 
@@ -101,10 +103,21 @@ class HubConnections extends DashboardView {
                 <HubDisconnectionDialog
                   namespace={this.state.namespaceBeingDisconnected}
                   onConfirm={async () => {
-                    await this.context.currentApp.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
-                    window.location.reload(false);
+                    await this.setState({ isDisconnecting: true });
+                    try {
+                      await this.context.currentApp.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
+                      window.location.reload(false);
+                    } catch (err) {
+                      this.setState({ isDisconnecting: false });
+                      Swal.fire({
+                        type: 'error',
+                        title: 'Disconnection failed',
+                        text: 'Please contact our support or try again later'
+                      });
+                    }
                   }}
-                  onCancel={() => this.setState({ showDisconnectDialog: false })} />
+                  onCancel={() => this.setState({ isDisconnecting: false, showDisconnectDialog: false })}
+                  isDisconnecting={this.state.isDisconnecting} />
               }
             </>
         }
