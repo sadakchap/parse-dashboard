@@ -4,7 +4,7 @@ import Label from 'components/Label/Label.react';
 import Modal from 'components/Modal/Modal.react'
 import TextInput from 'components/TextInput/TextInput.react';
 
-const HubDisconnectionDialog = ({ namespace, onCancel, onConfirm }) => {
+const HubDisconnectionDialog = ({ isDisconnecting, namespace, onCancel, onConfirm }) => {
   const [ namespaceInputVal, setNamespaceInputVal ] = useState('');
   return (
     <Modal
@@ -14,7 +14,8 @@ const HubDisconnectionDialog = ({ namespace, onCancel, onConfirm }) => {
       subtitle='This action cannot be undone'
       confirmText='Yes, delete'
       onConfirm={onConfirm}
-      onCancel={onCancel}>
+      onCancel={onCancel}
+      progress={isDisconnecting}>
         <Field
           labelWidth={35}
           label={<Label text='Confirm this action' description='Enter the database namespace in order to proceed' />}
