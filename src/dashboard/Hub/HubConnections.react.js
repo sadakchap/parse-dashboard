@@ -110,13 +110,13 @@ class HubConnections extends DashboardView {
                     } catch (err) {
                       this.setState({ isDisconnecting: false });
                       Swal.fire({
-                        icon: 'error',
+                        type: 'error',
                         title: 'Disconnection failed',
                         text: 'Please contact our support or try again later'
                       });
                     }
                   }}
-                  onCancel={() => this.setState({ showDisconnectDialog: false })}
+                  onCancel={() => this.setState({ isDisconnecting: false, showDisconnectDialog: false })}
                   isDisconnecting={this.state.isDisconnecting} />
               }
             </>
