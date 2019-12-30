@@ -87,6 +87,11 @@ export default class CreateClassDialog extends React.Component {
             label={<Label text='What should we call it?' description={'Don\u2019t use any special characters, and start your name with a letter.'} />}
             input={<TextInput placeholder='Give it a good name...' value={this.state.name} onChange={(name) => this.setState({ name })} />}/> : null
         }
+        <div style={{ display: "flex", flexDirection: "column", textAlign: "center", borderBottom: "1px solid #e3e3e3" }}>
+          <span style={{ margin: '1rem' }}>or</span>
+          <a style={{ color: "#169cee" }} href={b4aSettings.HUB_URL} target="_blank">Find a public dataset to connect</a>
+          <span style={{ margin: '1rem' }}>e.g. jobs, countries, industries, colors, zip codes and more...</span>
+        </div>
       </Modal>
     );
   }
