@@ -43,13 +43,15 @@ let EmptyState = ({
   action=() => {},
   secondaryCta='',
   secondaryAction=() => {},
+  background,
+  fill = '#343445'
 }) => (
   <div className={center}>
-    <div className={styles.icon}>
+    <div className={styles.icon} style={background ? { background } : undefined}>
       <Icon
         width={80}
         height={80}
-        fill='#343445'
+        fill={fill}
         name={icon} />
     </div>
     <div className={styles.title}>{title}</div>
