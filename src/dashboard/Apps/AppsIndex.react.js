@@ -135,9 +135,9 @@ export default class AppsIndex extends React.Component {
             title="You don't have any apps"
             description='Create a new app or clone a database from database hub'
             cta="Create a new app"
-            action={() => window.open(`${b4aSettings.DASHBOARD_PATH}/apps/new`, '_blank')}
+            action={() => window.location = `${b4aSettings.DASHBOARD_PATH}/apps/new`}
             secondaryCta="Go to database hub"
-            secondaryAction={() => window.open(b4aSettings.HUB_URL, '_blank')} />
+            secondaryAction={() => window.location = b4aSettings.HUB_URL} />
         </div>
       );
     }
