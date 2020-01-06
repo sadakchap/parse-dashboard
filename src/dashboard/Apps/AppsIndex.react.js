@@ -17,6 +17,7 @@ import React         from 'react';
 import styles        from 'dashboard/Apps/AppsIndex.scss';
 import { center }    from 'stylesheets/base.scss';
 import AppBadge      from 'components/AppBadge/AppBadge.react';
+import EmptyState from '../../components/EmptyState/EmptyState.react';
 
 function dash(value, content) {
   if (value === undefined) {
@@ -127,12 +128,16 @@ export default class AppsIndex extends React.Component {
     if (apps.length === 0) {
       return (
         <div className={styles.empty}>
-          <div className={center}>
-            <div className={styles.cloud}>
-              <Icon width={110} height={110} name='cloud-surprise' fill='#1e3b4d' />
-            </div>
-            <div className={styles.alert}>You don't have any apps</div>
-          </div>
+          <EmptyState
+            icon='cloud-surprise'
+            fill="#1e3b4d"
+            background="#364c61"
+            title="You don't have any apps"
+            description='Create a new app or clone a database from database hub'
+            cta="Create a new app"
+            action={() => window.location = `${b4aSettings.DASHBOARD_PATH}/apps/new`}
+            secondaryCta="Go to database hub"
+            secondaryAction={() => window.location = b4aSettings.HUB_URL} />
         </div>
       );
     }
