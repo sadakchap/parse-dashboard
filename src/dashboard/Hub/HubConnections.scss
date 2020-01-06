@@ -76,6 +76,14 @@
           td {
             padding-left: 20px;
             word-break: break-word;
+
+            a {
+              color: #169cee;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
           }
         }
       }
