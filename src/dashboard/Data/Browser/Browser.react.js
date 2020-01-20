@@ -743,8 +743,12 @@ class Browser extends DashboardView {
       } else {
         query.greaterThan(field, comp);
       }
-      equalityQuery.equalTo(field, comp);
-      equalityQuery.lessThan('createdAt', this.state.data[this.state.data.length - 1].get('createdAt'));
+      if (field === 'createdAt') {
+        equalityQuery.greaterThan('createdAt', this.state.data[this.state.data.length - 1].get('createdAt'));
+      } else {
+        equalityQuery.lessThan('createdAt', this.state.data[this.state.data.length - 1].get('createdAt'));
+        equalityQuery.equalTo(field, comp);
+      }
       query = Parse.Query.or(query, equalityQuery);
       if (ascending) {
         query.ascending(this.state.ordering);
@@ -753,8 +757,8 @@ class Browser extends DashboardView {
       }
     } else {
       query.lessThan('createdAt', this.state.data[this.state.data.length - 1].get('createdAt'));
+      query.addDescending('createdAt');
     }
-    query.addDescending('createdAt');
     query.limit(MAX_ROWS_FETCHED);
 
     query.find({ useMasterKey: true }).then((nextPage) => {
