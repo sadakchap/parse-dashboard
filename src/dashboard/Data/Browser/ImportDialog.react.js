@@ -57,7 +57,7 @@ export default class ImportDialog extends React.Component {
         <Field
             label={
                 <Label
-                    text='Select a JSON file with your class data' />}
+                    text='Select a JSON or CSV file with your class data' />}
             input={
                 <FileInput
                     onChange={(file) => {this.setState({ file: file });}} />}

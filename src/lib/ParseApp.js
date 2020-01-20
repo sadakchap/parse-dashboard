@@ -9,6 +9,7 @@ import * as AJAX      from 'lib/AJAX';
 import encodeFormData from 'lib/encodeFormData';
 import Parse          from 'parse';
 import axios          from 'axios';
+import csv            from 'csvtojson';
 
 function setEnablePushSource(setting, enable) {
   let path = `/apps/${this.slug}/update_push_notifications`;
@@ -374,7 +375,70 @@ export default class ParseApp {
     return path;
   }
 
-  importData(className, file) {
+  async transformCSVtoJSON(file, className) {
+    let text;
+    await (new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        text = reader.result;
+        resolve();
+      };
+      reader.readAsText(file);
+    }));
+
+    let fieldNames;
+    const jsonArray = await csv({
+      delimiter: 'auto',
+      ignoreEmpty: true,
+      nullObject: true,
+      checkType: true
+    }).on('header', header => fieldNames = header).fromString(text);
+
+    if (className) {
+      const schema = await (new Parse.Schema(className)).get();
+      const fields = fieldNames.filter(fieldName => fieldName.indexOf('.') < 0).reduce((fields, fieldName) => ({
+        ...fields,
+        [fieldName]: schema.fields[fieldName] || { type: undefined }
+      }), {});
+
+      jsonArray.forEach(json => {
+        Object.keys(json).forEach(fieldName => {
+          const fieldValue = json[fieldName];
+          const field = fields[fieldName];
+          if (fieldValue === null || fieldValue === undefined || !field) {
+            return;
+          }
+          const fieldType = field.type;
+          if (fieldType === 'String') {
+            json[fieldName] = fieldValue.toString();
+          } else if (fieldType === undefined) {
+            const fieldDataType = field.dataType;
+            if (fieldDataType === 'string') {
+              json[fieldName] = fieldValue.toString();
+            } else if (fieldDataType === undefined) {
+              field.dataType = typeof fieldValue;
+              field.parsedFieldNames = [fieldName];
+            } else if (fieldDataType === typeof fieldValue) {
+              field.parsedFieldNames.push(fieldName);
+            } else {
+              field.dataType = 'string';
+              json[fieldName] = fieldValue.toString();
+              field.parsedFieldNames.forEach(parsedFieldName => json[parsedFieldName] = json[parsedFieldName].toString());
+              field.parsedFieldNames = undefined;
+            }
+          }
+        });
+      });
+    }
+
+    return new Blob([JSON.stringify({ results: jsonArray })], { type: 'text/plain' });
+  }
+
+  async importData(className, file) {
+    if (file.name.endsWith('.csv')) {
+      file = await this.transformCSVtoJSON(file, className);
+    }
+
     let path = this.normalizePath(this.serverURL + '/import_data/' + className);
     var formData = new FormData();
     formData.append('importFile', file);
@@ -394,7 +458,11 @@ export default class ParseApp {
     return fetch(path, options);
   }
 
-  importRelationData(className, relationName,  file) {
+  async importRelationData(className, relationName,  file) {
+    if (file.name.endsWith('.csv')) {
+      file = await this.transformCSVtoJSON(file);
+    }
+
     let path = this.normalizePath(this.serverURL + '/import_relation_data/' + className + '/' + relationName);
     var formData = new FormData();
     formData.append('importFile', file);

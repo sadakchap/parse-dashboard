@@ -65,7 +65,7 @@ export default class ImportRelationDialog extends React.Component {
         <Field
             label={
                 <Label
-                    text='Select a JSON file with your relation data' />}
+                    text='Select a JSON or CSV file with your relation data' />}
             input={
                 <FileInput
                     onChange={(file) => {this.setState({ file: file });}} />}
