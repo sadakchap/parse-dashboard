@@ -51,6 +51,7 @@ const show = (currentApp, onPublished) => {
               </div>
             )
           });
+          return;
         }
 
         onPublished(result);
