@@ -1057,7 +1057,7 @@ export default class ParseApp {
       throw new Error('Something wrong happened in our side. Please try again later.')
     }
 
-    const jobStatusId = publishResult.data && publishResult.data.jobStatusId
+    const jobStatusId = publishResult.data && publishResult.data.result && publishResult.data.result.jobStatusId
 
     if (!jobStatusId) {
       console.error(JSON.stringify(publishResult))
