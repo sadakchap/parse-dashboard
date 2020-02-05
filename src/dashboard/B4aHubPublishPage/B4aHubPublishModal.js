@@ -3,7 +3,7 @@ import ReactDOMServer       from 'react-dom/server'
 import Swal                 from 'sweetalert2'
 import styles               from 'dashboard/B4aHubPublishPage/B4aHubPublishPage.scss'
 
-const show = onPublished => {
+const show = (currentApp, onPublished) => {
   let result;
 
   Swal.mixin({
@@ -39,7 +39,7 @@ const show = onPublished => {
         Swal.showLoading()
 
         try {
-          result = await this.context.currentApp.publishOnHub()
+          result = await currentApp.publishOnHub()
         } catch (e) {
           Swal.fire({
             type: 'error',

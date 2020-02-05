@@ -58,7 +58,7 @@ class B4aHubPublishPage extends DashboardView {
                     }])
                     return;
                   }
-                  B4aHubPublishModal.show(result => {
+                  B4aHubPublishModal.show(this.context.currentApp, result => {
                     this.setState({
                       url: `https://www.back4app.com/database/${result.author.slug}/${result.database.slug}`
                     })
