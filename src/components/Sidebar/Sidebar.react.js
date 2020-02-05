@@ -137,7 +137,7 @@ class Sidebar extends React.Component {
             name,
             icon,
             style,
-            link
+            link,
           }) => {
             const active = name === section;
             // If link points to another component, adds the prefix

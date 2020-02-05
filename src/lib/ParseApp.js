@@ -1038,4 +1038,70 @@ export default class ParseApp {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     }
   }
+
+  async publishOnHub() {
+    const hubEndpoint = this.serverURL === 'https://parseapi-homolog.back4app.com' ? this.serverURL : 'https://parseapi.back4app.com'
+    const axiosConfig = {
+      withCredentials: true,
+      headers: {
+        'X-Parse-Application-Id': this.serverURL === 'https://parseapi-homolog.back4app.com' ? 'laJwKNAPsuBKrj2B6u1jbE03cgKeFez8eZcTYlL7' : 'X4zHblrpTF5ZhOwoKXzm6PhPpUQCQLrmZoKPBAoS',
+        'X-Parse-Client-Key': this.serverURL === 'https://parseapi-homolog.back4app.com' ? 'vNlgQDBx2NNo9VMp2XLMHHjPwITqALprXbjZMdDU' : 'k3xdRL0jnNB4qnfjsiYC3qLtKYdLEAvWA96ysIU4',
+      }
+    }
+
+    let publishResult
+    try {
+      publishResult = await axios.post(`${hubEndpoint}/functions/publish`, { appEntityId: this.slug }, axiosConfig)
+    } catch (err) {
+      console.error(err.response && err.response.data && err.response.data.error ? err.response.data.error : err)
+      throw new Error('Something wrong happened in our side. Please try again later.')
+    }
+
+    const jobStatusId = publishResult.data && publishResult.data.jobStatusId
+
+    if (!jobStatusId) {
+      console.error(JSON.stringify(publishResult))
+      throw new Error('Something wrong happened in our side. Please try again later.')
+    }
+
+    for (let i = 1; i <= 10; i++) {
+      let jobStatusResult
+      try {
+        jobStatusResult = await axios.get(`${hubEndpoint}/classes/_JobStatus/${jobStatusId}`, axiosConfig)
+      } catch (err) {
+        console.error(err.response && err.response.data && err.response.data.error ? err.response.data.error : err)
+        throw new Error('Something wrong happened in our side. Please try again later.')
+      }
+
+      if (!jobStatusResult.data) {
+        console.error(JSON.stringify(jobStatusResult))
+        throw new Error('Something wrong happened in our side. Please try again later.')
+      }
+
+      let messageObject = {}
+      if (jobStatusResult.data.message) {
+        try {
+          messageObject = JSON.parse(jobStatusResult.data.message)
+        } catch {
+          console.error(jobStatusResult.data.message)
+          throw new Error('Something wrong happened in our side. Please try again later.')
+        }
+      }
+
+      if (jobStatusResult.data.status === 'succeeded') {
+        return messageObject
+      } else if (jobStatusResult.data.status === 'failed') {
+        if (messageObject.code && messageObject.message) {
+          throw messageObject
+        } else {
+          console.error(jobStatusResult.data.message)
+          throw new Error('Something wrong happened in our side. Please try again later.')
+        }
+      }
+
+      await new Promise(resolve => setTimeout(resolve, i * 2000))
+    }
+
+    throw new Error('Something wrong happened in our side. Please try again later.')
+  }
 }

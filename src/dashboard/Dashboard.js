@@ -48,6 +48,7 @@ import SlowQueries        from './Analytics/SlowQueries/SlowQueries.react';
 import styles             from 'dashboard/Apps/AppsIndex.scss';
 import UsersSettings      from './Settings/UsersSettings.react';
 import Webhooks           from './Data/Webhooks/Webhooks.react';
+import B4aHubPublishPage       from './B4aHubPublishPage/B4aHubPublishPage.react';
 import B4aAdminPage       from './B4aAdminPage/B4aAdminPage.react';
 import B4aAppTemplates    from './B4aAppTemplates/B4aAppTemplates.react';
 import { AsyncStatus }    from 'lib/Constants';
@@ -322,6 +323,7 @@ export default class Dashboard extends React.Component {
           <Route path={ match.path + '/push/:pushId' } render={(props) => (
             <PushDetails {...props} params={props.match.params} />
           )} />
+          <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
           <Route path={ match.path + '/admin' } component={B4aAdminPage} />
           <Route path={ match.path + '/app-templates' } component={B4aAppTemplates} />
           <Route path={ match.path + '/server-settings/:targetPage?' } render={(props) => (
