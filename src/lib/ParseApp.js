@@ -1067,34 +1067,36 @@ export default class ParseApp {
     for (let i = 1; i <= 10; i++) {
       let jobStatusResult
       try {
-        jobStatusResult = await axios.get(`${hubEndpoint}/classes/_JobStatus/${jobStatusId}`, axiosConfig)
+        jobStatusResult = await axios.post(`${hubEndpoint}/functions/getJobStatus`, { jobStatusId }, axiosConfig)
       } catch (err) {
         console.error(err.response && err.response.data && err.response.data.error ? err.response.data.error : err)
         throw new Error('Something wrong happened in our side. Please try again later.')
       }
 
-      if (!jobStatusResult.data) {
+      const jobStatus = jobStatusResult.data && jobStatusResult.data.result;
+
+      if (!jobStatus) {
         console.error(JSON.stringify(jobStatusResult))
         throw new Error('Something wrong happened in our side. Please try again later.')
       }
 
       let messageObject = {}
-      if (jobStatusResult.data.message) {
+      if (jobStatus.message) {
         try {
-          messageObject = JSON.parse(jobStatusResult.data.message)
+          messageObject = JSON.parse(jobStatus.message)
         } catch {
-          console.error(jobStatusResult.data.message)
+          console.error(jobStatus.message)
           throw new Error('Something wrong happened in our side. Please try again later.')
         }
       }
 
-      if (jobStatusResult.data.status === 'succeeded') {
+      if (jobStatus.status === 'succeeded') {
         return messageObject
-      } else if (jobStatusResult.data.status === 'failed') {
+      } else if (jobStatus.status === 'failed') {
         if (messageObject.code && messageObject.message) {
           throw messageObject
         } else {
-          console.error(jobStatusResult.data.message)
+          console.error(jobStatus.message)
           throw new Error('Something wrong happened in our side. Please try again later.')
         }
       }
