@@ -1067,7 +1067,7 @@ export default class ParseApp {
     for (let i = 1; i <= 10; i++) {
       let jobStatusResult
       try {
-        jobStatusResult = await axios.post(`${hubEndpoint}/functions/getJobStatus`, { jobStatusId }, axiosConfig)
+        jobStatusResult = await axios.post(`${hubEndpoint}/functions/jobStatus`, { id: jobStatusId }, axiosConfig)
       } catch (err) {
         console.error(err.response && err.response.data && err.response.data.error ? err.response.data.error : err)
         throw new Error('Something wrong happened in our side. Please try again later.')
