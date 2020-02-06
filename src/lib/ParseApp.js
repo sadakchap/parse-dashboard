@@ -1106,4 +1106,57 @@ export default class ParseApp {
 
     throw new Error('Something wrong happened in our side. Please try again later.')
   }
+
+  async getPublicDatabase() {
+    const hubEndpoint = this.serverURL === 'https://parseapi-homolog.back4app.com' ? this.serverURL : 'https://parseapi.back4app.com'
+    const axiosConfig = {
+      headers: {
+        'X-Parse-Application-Id': this.serverURL === 'https://parseapi-homolog.back4app.com' ? 'laJwKNAPsuBKrj2B6u1jbE03cgKeFez8eZcTYlL7' : 'X4zHblrpTF5ZhOwoKXzm6PhPpUQCQLrmZoKPBAoS',
+        'X-Parse-Client-Key': this.serverURL === 'https://parseapi-homolog.back4app.com' ? 'vNlgQDBx2NNo9VMp2XLMHHjPwITqALprXbjZMdDU' : 'k3xdRL0jnNB4qnfjsiYC3qLtKYdLEAvWA96ysIU4',
+      }
+    }
+
+    let getPublicDatabaseResult
+    try {
+      getPublicDatabaseResult = await axios.get(`${hubEndpoint}/classes/Database?where=${encodeURIComponent(JSON.stringify({ appEntityId: this.slug }))}&include=author`, axiosConfig)
+    } catch (err) {
+      console.error(err.response && err.response.data && err.response.data.error ? err.response.data.error : err)
+      return null
+    }
+
+    const publicDatabase = getPublicDatabaseResult.data && getPublicDatabaseResult.data.results && getPublicDatabaseResult.data.results.length > 0 && getPublicDatabaseResult.data.results[0]
+
+    if (!publicDatabase) {
+      console.error(JSON.stringify(getPublicDatabaseResult))
+      return null
+    }
+  }
+
+  async unpublishFromHub() {
+    const hubEndpoint = this.serverURL === 'https://parseapi-homolog.back4app.com' ? this.serverURL : 'https://parseapi.back4app.com'
+    const axiosConfig = {
+      withCredentials: true,
+      headers: {
+        'X-Parse-Application-Id': this.serverURL === 'https://parseapi-homolog.back4app.com' ? 'laJwKNAPsuBKrj2B6u1jbE03cgKeFez8eZcTYlL7' : 'X4zHblrpTF5ZhOwoKXzm6PhPpUQCQLrmZoKPBAoS',
+        'X-Parse-Client-Key': this.serverURL === 'https://parseapi-homolog.back4app.com' ? 'vNlgQDBx2NNo9VMp2XLMHHjPwITqALprXbjZMdDU' : 'k3xdRL0jnNB4qnfjsiYC3qLtKYdLEAvWA96ysIU4',
+      }
+    }
+  
+    let unpublishResult
+    try {
+      unpublishResult = await axios.post(`${hubEndpoint}/functions/unpublish`, { appEntityId: this.slug }, axiosConfig)
+    } catch (err) {
+      console.error(err.response && err.response.data && err.response.data.error ? err.response.data.error : err)
+      throw new Error('Something wrong happened in our side. Please try again later.')
+    }
+  
+    if (unpublishResult.status !== 200) {
+      if (unpublishResult.data && unpublishResult.data.code && unpublishResult.message) {
+        throw unpublishResult.data
+      } else {
+        console.error(JSON.stringify(unpublishResult))
+        throw new Error('Something wrong happened in our side. Please try again later.')
+      }
+    }
+  }
 }

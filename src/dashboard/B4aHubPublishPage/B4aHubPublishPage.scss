@@ -1,5 +1,10 @@
 @import 'stylesheets/back4app.scss';
 
+.loading {
+  position: relative;
+  min-height: $content-max-height;
+}
+
 .hub-publish-page {
   background-color: #f9f9f9;
   min-height: $content-max-height;
