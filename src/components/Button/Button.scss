@@ -143,12 +143,6 @@
   }
 }
 
-.danger {
-  color: $white;
-  background-color: #E02424;
-  border-color: #E02424;
-}
-
 @include keyframes(progress-bg) {
   0% {
     background-position: -40 0;

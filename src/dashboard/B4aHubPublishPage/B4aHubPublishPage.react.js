@@ -92,7 +92,8 @@ class B4aHubPublishPage extends DashboardView {
                       })
                     }}
                     value="Unpublish from Hub"
-                    className="danger"
+                    color="red"
+                    primary={true}
                     className={styles['input-child']}
                   />
                 ) : (
