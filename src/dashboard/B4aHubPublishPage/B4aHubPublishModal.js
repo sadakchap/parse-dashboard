@@ -51,7 +51,8 @@ const show = (currentApp, onPublished) => {
                 </p>
               </div>
             ),
-            showConfirmButton: false
+            showConfirmButton: false,
+            cancelButtonText: 'Got it!',
           });
           return;
         }
