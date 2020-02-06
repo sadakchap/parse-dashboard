@@ -13,11 +13,11 @@ const show = (currentApp, onUnpublished) => {
   }).queue([
     {
       type: 'warning',
-      title: 'Unpublish on Database Hub',
+      title: 'Unpublish from Database Hub',
       html: ReactDOMServer.renderToStaticMarkup(
         <div className={styles['elements-wrapper']}>
           <div className={styles['label-wrapper']}>
-            Are you sure that you want to unpublish this app from Database Hub? Nobody will be able to connect or clone to it anymore and all customizations will be lost.
+            Are you sure that you want to unpublish this app from Database Hub? Nobody will be able to connect to or clone it anymore and all customizations will be lost.
           </div>
         </div>
       ),
@@ -57,6 +57,7 @@ const show = (currentApp, onUnpublished) => {
       ),
       showCancelButton: false,
       confirmButtonText: 'Got it!',
+      confirmButtonColor: '#3085d6'
     }
   ])
 }

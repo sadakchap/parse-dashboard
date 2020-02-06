@@ -1091,6 +1091,7 @@ export default class ParseApp {
       }
 
       if (jobStatus.status === 'succeeded') {
+        this.custom.isDatabasePublic = true;
         return messageObject
       } else if (jobStatus.status === 'failed') {
         if (messageObject.code && messageObject.message) {
@@ -1160,5 +1161,7 @@ export default class ParseApp {
         throw new Error('Something wrong happened in our side. Please try again later.')
       }
     }
+
+    this.custom.isDatabasePublic = false;
   }
 }
