@@ -41,6 +41,7 @@ const show = (currentApp, onPublished) => {
         try {
           result = await currentApp.publishOnHub()
         } catch (e) {
+          Swal.deleteQueueStep(1);
           Swal.insertQueueStep({
             type: 'error',
             html: ReactDOMServer.renderToStaticMarkup(
@@ -50,7 +51,7 @@ const show = (currentApp, onPublished) => {
                 </p>
               </div>
             )
-          }, 1);
+          });
           return;
         }
 
