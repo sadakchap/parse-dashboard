@@ -1130,6 +1130,8 @@ export default class ParseApp {
       console.error(JSON.stringify(getPublicDatabaseResult))
       return null
     }
+
+    return publicDatabase;
   }
 
   async unpublishFromHub() {

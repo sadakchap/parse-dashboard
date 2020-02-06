@@ -9,7 +9,7 @@ import Label            from 'components/Label/Label.react';
 import Button           from 'components/Button/Button.react';
 import Field            from 'components/Field/Field.react';
 import B4aHubPublishModal    from 'dashboard/B4aHubPublishPage/B4aHubPublishModal'
-import B4aHubUnpublishModal    from 'dashboard/B4aHubPublishPage/B4aHubPublishModal'
+import B4aHubUnpublishModal    from 'dashboard/B4aHubPublishPage/B4aHubUnpublishModal'
 import Swal                 from 'sweetalert2'
 import LoaderContainer  from 'components/LoaderContainer/LoaderContainer.react'
 
@@ -92,7 +92,7 @@ class B4aHubPublishPage extends DashboardView {
                       })
                     }}
                     value="Unpublish from Hub"
-                    color="#E02424"
+                    className="danger"
                     className={styles['input-child']}
                   />
                 ) : (
@@ -134,7 +134,7 @@ class B4aHubPublishPage extends DashboardView {
                   {this.state.publicDatabaseURL ? (
                     <a target='_blank' href={this.state.publicDatabaseURL} className={styles['input-child']}>{this.state.publicDatabaseURL}</a>
                   ) : (
-                    <>We could not find your Hub URL</>
+                    <div className={styles['input-child']}>We could not find your Hub URL</div>
                   )}
                 </div>}>
               </Field>
