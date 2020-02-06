@@ -222,6 +222,11 @@ let B4ABrowserToolbar = ({
       <a className={styles.toolbarButton} onClick={onAddColumn} title='Add a column' style={{ padding: '4px 4px 6px 4px' }}>
         <Icon name='add-column' width={32} height={26} />
       </a>
+      {enableImport && (
+        <a className={styles.toolbarButton} onClick={onImport} title='Import a file' style={{ padding: '4px 4px 6px 4px' }}>
+          <Icon name='import-file' width={32} height={26} />
+        </a>
+      )}
       <ColumnsConfiguration
         handleColumnsOrder={handleColumnsOrder}
         handleColumnDragDrop={handleColumnDragDrop}

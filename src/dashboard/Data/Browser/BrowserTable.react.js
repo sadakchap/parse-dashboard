@@ -312,7 +312,9 @@ export default class BrowserTable extends React.Component {
                   description='Add a row to store an object in this class.'
                   icon='files-solid'
                   cta='Add a row'
-                  action={this.props.onAddRow} />
+                  action={this.props.onAddRow}
+                  secondaryCta='Import a file'
+                  secondaryAction={this.props.onImport} />
               }
             </div>
           </div>

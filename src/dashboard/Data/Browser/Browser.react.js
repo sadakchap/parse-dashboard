@@ -1305,7 +1305,7 @@ class Browser extends DashboardView {
             onAttachRows={this.showAttachRowsDialog}
             onAttachSelectedRows={this.showAttachSelectedRowsDialog}
             onCloneSelectedRows={this.showCloneSelectedRowsDialog}
-
+            onImport={this.showImport}
             columns={columns}
             className={className}
             fetchNextPage={this.fetchNextPage}
