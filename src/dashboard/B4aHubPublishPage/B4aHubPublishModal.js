@@ -41,7 +41,7 @@ const show = (currentApp, onPublished) => {
         try {
           result = await currentApp.publishOnHub()
         } catch (e) {
-          Swal.fire({
+          Swal.insertQueueStep({
             type: 'error',
             html: ReactDOMServer.renderToStaticMarkup(
               <div className={`${styles['elements-wrapper']} ${styles['congrats-box']}`}>
