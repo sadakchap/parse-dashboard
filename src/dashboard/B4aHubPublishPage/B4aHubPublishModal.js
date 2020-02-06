@@ -50,7 +50,8 @@ const show = (currentApp, onPublished) => {
                   {e.message || 'Something wrong happened in our side. Please try again later.'}
                 </p>
               </div>
-            )
+            ),
+            showConfirmButton: false
           });
           return;
         }
