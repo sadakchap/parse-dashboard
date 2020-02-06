@@ -50,7 +50,7 @@ const show = (currentApp, onPublished) => {
                 </p>
               </div>
             )
-          });
+          }, 1);
           return;
         }
 
