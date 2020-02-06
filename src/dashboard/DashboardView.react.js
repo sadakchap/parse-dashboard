@@ -271,6 +271,16 @@ export default class DashboardView extends React.Component {
     }
 
     appSidebarSections.push({
+      name: 'Publish on Hub',
+      icon: 'database-hub',
+      link: '/hub-publish',
+      badgeParams: {
+        label: 'NEW',
+        color: 'green'
+      }
+    })
+
+    appSidebarSections.push({
       name: 'Admin App',
       icon: 'admin-app',
       link: '/admin'
