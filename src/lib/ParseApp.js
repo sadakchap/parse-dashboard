@@ -957,24 +957,6 @@ export default class ParseApp {
     })
   }
 
-  checkPermission() {
-    let path = '/email-verification/activated';
-    return axios.get(path).then(({data}) =>
-      data.response
-    ).catch(err => {
-      throw err.response
-    })
-  }
-
-  resendEmail() {
-    let path = '/email-verification/resend';
-    return axios.get(path).then(({data}) =>
-      data.response
-    ).catch(err => {
-      throw err.response
-    })
-  }
-
   getAdminHost() {
     let path = '/parse-app/' + this.slug + '/adminhost';
     return axios.get(path).then(({ data }) => data.adminHost).catch(err => {

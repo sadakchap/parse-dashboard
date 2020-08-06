@@ -1,6 +1,7 @@
 import React            from 'react'
 import { ActionTypes }  from 'lib/stores/SchemaStore';
 import Parse            from 'parse';
+import axios            from 'axios'
 import DashboardView    from 'dashboard/DashboardView.react';
 import subscribeTo      from 'lib/subscribeTo';
 import LoaderContainer  from 'components/LoaderContainer/LoaderContainer.react'
@@ -16,6 +17,7 @@ import Toolbar          from 'components/Toolbar/Toolbar.react';
 import Icon             from 'components/Icon/Icon.react';
 import ReactPlayer      from 'react-player';
 
+const EMAIL_VERIFICATION_URL = `${b4aSettings.BACK4APP_API_PATH}/email-verification`;
 
 @subscribeTo('Schema', 'schema')
 class B4aAdminPage extends DashboardView {
@@ -74,24 +76,23 @@ class B4aAdminPage extends DashboardView {
   }
 
   async resendEmail(){
-    try{
-      await this.context.currentApp.resendEmail()
+    try {
+      await axios.get(`${EMAIL_VERIFICATION_URL}/resend`, { withCredentials: true })
       this.setState({lastSuccess: "The email has been sent!", lastError: ''})
-    } catch (e){
+    } catch (error){
       this.setState({lastError: "Something went wrong! Please reach us on the chat", lastSuccess: ''})
     }
     setTimeout(() => { this.setState({ lastSuccess: '', lastError: ''})},
-      5000);
+      5000);    
   }
 
   async checkPermission(){
-    try{
-      await this.context.currentApp.checkPermission()
-      this.setState({userVerified: true})
-    } catch (e){
-      let error = e.data
-     this.setState({userVerified: false })
-    }
+    let response = await axios.get(`${EMAIL_VERIFICATION_URL}/activated`, { withCredentials: true })
+    if (response.data && response.data.isUserVerified){
+      this.setState({userVerified: response.data.isUserVerified})
+    } else {
+      this.setState({userVerified: false })
+    }    
   }
 
   async checkRole() {
