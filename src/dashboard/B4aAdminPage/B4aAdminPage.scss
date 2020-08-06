@@ -42,7 +42,25 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);     
+  }
+}
+
+.enable-feature-block{
+  .box-email{ 
+    font-size: 10px;
+    padding: 5px 30px;
+    color: rgb(88, 87, 87);
+    span{
+      display: flex;
+    }
+    a{
+      color: #1a5582;
+      font-weight: bold;
+    }
+    .message-error{
+      color: #fd594df2;
+    }
   }
 }
 

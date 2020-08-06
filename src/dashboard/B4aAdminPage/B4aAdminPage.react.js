@@ -1,11 +1,13 @@
 import React            from 'react'
 import { ActionTypes }  from 'lib/stores/SchemaStore';
 import Parse            from 'parse';
+import axios            from 'axios'
 import DashboardView    from 'dashboard/DashboardView.react';
 import subscribeTo      from 'lib/subscribeTo';
 import LoaderContainer  from 'components/LoaderContainer/LoaderContainer.react'
 import Field            from 'components/Field/Field.react';
 import Fieldset         from 'components/Fieldset/Fieldset.react';
+import FormNote         from 'components/FormNote/FormNote.react';
 import Label            from 'components/Label/Label.react';
 import Button           from 'components/Button/Button.react';
 import styles           from 'dashboard/B4aAdminPage/B4aAdminPage.scss'
@@ -15,6 +17,7 @@ import Toolbar          from 'components/Toolbar/Toolbar.react';
 import Icon             from 'components/Icon/Icon.react';
 import ReactPlayer      from 'react-player';
 
+const EMAIL_VERIFICATION_URL = `${b4aSettings.BACK4APP_API_PATH}/email-verification`;
 
 @subscribeTo('Schema', 'schema')
 class B4aAdminPage extends DashboardView {
@@ -31,7 +34,10 @@ class B4aAdminPage extends DashboardView {
       host: '',
       adminURL: '',
       isRoleCreated: false,
-      adminParams: {}
+      adminParams: {},
+      userVerified: true,
+      lastSuccess: '',
+      lastError: ''
     }
 
     this.legend = 'Admin App Setup'
@@ -39,6 +45,7 @@ class B4aAdminPage extends DashboardView {
   }
 
   async componentDidMount() {
+    await this.checkPermission()
     const adminParams = B4aAdminParams({ appName: this.context.currentApp.name })
     await this.setState({ adminParams })
 
@@ -49,6 +56,43 @@ class B4aAdminPage extends DashboardView {
 
     if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAdminPageEvent === 'function')
       back4AppNavigation.atAdminPageEvent()
+  }
+
+  displayMessage(colorNotification, message) {
+    return (
+      <FormNote
+        show={true}
+        color={colorNotification}>
+        <div>
+          {message}
+          {this.state.inviteCollab ?
+            <span> -&nbsp;
+            <a onClick={() => {this.setState({showDialog: true})}} style={{ fontWeight: "bold" }}>Send Invite</a>
+            </span>
+            : null}
+        </div>
+      </FormNote>
+    );
+  }
+
+  async resendEmail(){
+    try {
+      await axios.get(`${EMAIL_VERIFICATION_URL}/resend`, { withCredentials: true })
+      this.setState({lastSuccess: "The email has been sent!", lastError: ''})
+    } catch (error){
+      this.setState({lastError: "Something went wrong! Please reach us on the chat", lastSuccess: ''})
+    }
+    setTimeout(() => { this.setState({ lastSuccess: '', lastError: ''})},
+      5000);    
+  }
+
+  async checkPermission(){
+    let response = await axios.get(`${EMAIL_VERIFICATION_URL}/activated`, { withCredentials: true })
+    if (response.data && response.data.isUserVerified){
+      this.setState({userVerified: response.data.isUserVerified})
+    } else {
+      this.setState({userVerified: false })
+    }    
   }
 
   async checkRole() {
@@ -93,6 +137,28 @@ class B4aAdminPage extends DashboardView {
       back4AppNavigation.onShowAdminModalEvent()
   }
 
+  renderButtonToEnable(){
+    return (
+      <div>
+        <div className={styles["enable-feature-block"]}>
+          <Button value='Enable Admin App'
+            onClick={this.renderModal.bind(this)}
+            primary={true}
+            className={styles['input-child']}
+            disabled={!this.state.userVerified}/>
+          {!this.state.userVerified?
+            <div className={styles["box-email"]}>
+              <span>In order to enable this feature, you must confirm your account by email!</span>
+              <a href='javascript:;' onClick={() => this.resendEmail()}>Resend email</a>
+            </div>
+          :<div><span className={styles['message-error']}>Unauthorized!</span></div>}
+          {this.state.lastSuccess != '' ? this.displayMessage("green", this.state.lastSuccess) : null}
+          {this.state.lastError != '' ? this.displayMessage("red", this.state.lastError): null}
+          </div>
+      </div>
+    )
+  }
+
   renderContent() {
     const isAdminHostEnabled = this.state.adminURL || false
     const adminURL = this.state.adminURL
@@ -117,15 +183,14 @@ class B4aAdminPage extends DashboardView {
         height='120px'
         textAlign='center'
         label={<Label text='Is Enabled?' description="Enabling will automatically add three new classes, new indexes and a new role to your application’s schema." />}
-        input={<div className={styles['input']}>
+        input={<div 
+          style={{display: "flex", alignItems: "center", justifyContent: "center"}}
+          className={styles['input']}>
           {
             isAdminHostEnabled
               ? <Icon name='admin-app-check' width={50} height={50}
                       fill='#4CAF50' className={styles['input-child']}></Icon>
-              : <Button value='Enable Admin App'
-                        onClick={this.renderModal.bind(this)}
-                        primary={true}
-                        className={styles['input-child']}/>
+              : this.renderButtonToEnable()
           }
         </div>
         }>
