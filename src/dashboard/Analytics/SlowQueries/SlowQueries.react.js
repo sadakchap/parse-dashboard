@@ -241,7 +241,7 @@ class SlowQueries extends TableView {
         description={'You haven\'t executed any queries.'}
         icon='gears'
         cta='Get started with Query'
-        action={() => window.open('https://www.back4app.com/docs/analytics/slow-query-tool', '_blank') } />
+        action={() => window.open('https://www.back4app.com/docs/parse-dashboard/analytics/slow-query-tool', '_blank') } />
     );
   }
 

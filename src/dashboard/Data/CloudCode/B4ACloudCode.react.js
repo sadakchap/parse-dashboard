@@ -201,7 +201,7 @@ class B4ACloudCode extends CloudCode {
     let alertTips = null;
 
     let alertTipsMessage = <div>
-      <p><b>•</b> To deploy your Cloud Code Functions you can use the Dashboard bellow or the <a href="https://www.back4app.com/docs/platform/command-line-tool/parse-server-setup" target="_blank">Back4App CLI.</a></p>
+      <p><b>•</b> To deploy your Cloud Code Functions you can use the Dashboard bellow or the <a href="https://www.back4app.com/docs/platform/parse-cli" target="_blank">Back4App CLI.</a></p>
       <p><b>•</b> To upload your code you should first click on ADD button and choose what files you want to upload.</p>
       <p><b>•</b> The first file MUST BE called main.js and any other file or folder MUST BE referenced more in this file.</p>
       <p><b>•</b> After ADD and REMOVE all files you want, click on the DEPLOY button and commit your operation;</p>
@@ -223,7 +223,7 @@ class B4ACloudCode extends CloudCode {
         <Button
           value='LEARN MORE'
           primary={true}
-          onClick={() => window.open('https://back4app.com/docs/platform/get-started/cloud-functions', '_blank')} />
+          onClick={() => window.open('https://www.back4app.com/docs/get-started/cloud-functions', '_blank')} />
       </div>
 
       alertWhatIs = <B4AAlert

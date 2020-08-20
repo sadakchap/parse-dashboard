@@ -357,7 +357,7 @@ class Explorer extends DashboardView {
         <a
           href='javascript:;'
           role='button'
-          onClick={() => window.open('https://www.back4app.com/docs/analytics/mobile-app-analytics', '_blank') }
+          onClick={() => window.open('https://www.back4app.com/docs/parse-dashboard/analytics/mobile-app-analytics', '_blank') }
           className={styles.toolbarAction}
           style={{ borderRight: '1px solid #66637a' }}>
           <Icon name='question-solid' width={14} height={14} fill='#66637a' />
@@ -483,7 +483,7 @@ class Explorer extends DashboardView {
                 icon='analytics-outline'
                 description={'These queries didn\'t retrieve any result.'}
                 cta='Get started with Analytics Explorer'
-                action={() => window.open('https://www.back4app.com/docs/analytics/mobile-app-analytics', '_blank') } />
+                action={() => window.open('https://www.back4app.com/docs/parse-dashboard/analytics/mobile-app-analytics', '_blank') } />
             );
           break;
         case 'table':
