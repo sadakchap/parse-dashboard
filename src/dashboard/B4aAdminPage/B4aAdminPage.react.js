@@ -34,10 +34,7 @@ class B4aAdminPage extends DashboardView {
       host: '',
       adminURL: '',
       isRoleCreated: false,
-      adminParams: {},
-      userVerified: true,
-      lastSuccess: '',
-      lastError: ''
+      adminParams: {}
     }
 
     this.legend = 'Admin App Setup'
@@ -45,7 +42,6 @@ class B4aAdminPage extends DashboardView {
   }
 
   async componentDidMount() {
-    await this.checkPermission()
     const adminParams = B4aAdminParams({ appName: this.context.currentApp.name })
     await this.setState({ adminParams })
 
@@ -73,26 +69,6 @@ class B4aAdminPage extends DashboardView {
         </div>
       </FormNote>
     );
-  }
-
-  async resendEmail(){
-    try {
-      await axios.get(`${EMAIL_VERIFICATION_URL}/resend`, { withCredentials: true })
-      this.setState({lastSuccess: "The email has been sent!", lastError: ''})
-    } catch (error){
-      this.setState({lastError: "Something went wrong! Please reach us on the chat", lastSuccess: ''})
-    }
-    setTimeout(() => { this.setState({ lastSuccess: '', lastError: ''})},
-      5000);    
-  }
-
-  async checkPermission(){
-    let response = await axios.get(`${EMAIL_VERIFICATION_URL}/activated`, { withCredentials: true })
-    if (response.data && response.data.isUserVerified){
-      this.setState({userVerified: response.data.isUserVerified})
-    } else {
-      this.setState({userVerified: false })
-    }    
   }
 
   async checkRole() {
@@ -144,16 +120,7 @@ class B4aAdminPage extends DashboardView {
           <Button value='Enable Admin App'
             onClick={this.renderModal.bind(this)}
             primary={true}
-            className={styles['input-child']}
-            disabled={!this.state.userVerified}/>
-          {!this.state.userVerified?
-            <div className={styles["box-email"]}>
-              <span>In order to enable this feature, you must confirm your account by email!</span>
-              <a href='javascript:;' onClick={() => this.resendEmail()}>Resend email</a>
-            </div>
-          :<div><span className={styles['message-error']}>Unauthorized!</span></div>}
-          {this.state.lastSuccess != '' ? this.displayMessage("green", this.state.lastSuccess) : null}
-          {this.state.lastError != '' ? this.displayMessage("red", this.state.lastError): null}
+            className={styles['input-child']}/>
           </div>
       </div>
     )
