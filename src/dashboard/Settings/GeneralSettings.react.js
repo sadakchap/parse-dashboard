@@ -115,16 +115,6 @@ let AppInformationFields = ({
       value={appName}
       onChange={setAppName} />
     } />
-  <Field
-    labelWidth={58}
-    label={<Label
-      text='In production?'
-      description='(On back4app, this switch is temporarily disabled)' />}
-    input={<Toggle
-      value={inProduction}
-      type={Toggle.Types.YES_NO}
-      onChange={() => {}} />
-    } />
 </Fieldset>;
 
 let CollaboratorsFields = ({
