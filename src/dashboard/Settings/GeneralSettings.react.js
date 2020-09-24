@@ -115,16 +115,6 @@ let AppInformationFields = ({
       value={appName}
       onChange={setAppName} />
     } />
-  <Field
-    labelWidth={58}
-    label={<Label
-      text='In production?'
-      description='(On back4app, this switch is temporarily disabled)' />}
-    input={<Toggle
-      value={inProduction}
-      type={Toggle.Types.YES_NO}
-      onChange={() => {}} />
-    } />
 </Fieldset>;
 
 let CollaboratorsFields = ({
@@ -229,7 +219,7 @@ let ManageAppFields = ({
     <Fieldset
     legend='App Management'
     description='These options will affect your entire app.' >
-    <Field
+    {/* <Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
         text='Clean up app'
@@ -238,7 +228,7 @@ let ManageAppFields = ({
         </span>} />}
       input={<FormButton
         onClick={cleanUpFiles}
-        value='Clean Up Files'/>} />
+        value='Clean Up Files'/>} /> */}
     {cleanUpFilesMessage ? <FormNote
       show={true}
       color={cleanUpMessageColor}>
