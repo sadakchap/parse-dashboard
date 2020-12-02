@@ -112,6 +112,8 @@ PARSE_DASHBOARD_USER_PASSWORD: "pass"
 PARSE_DASHBOARD_SSL_KEY: "sslKey"
 PARSE_DASHBOARD_SSL_CERT: "sslCert"
 PARSE_DASHBOARD_CONFIG: undefined // Only for reference, it must not exist
+PARSE_DASHBOARD_COOKIE_SESSION_SECRET: undefined // set the cookie session secret, defaults to a random string. Use this option if you want sessions to work across multiple servers, or across restarts
+
 ```
 
 ## Managing Multiple Apps
@@ -154,7 +156,7 @@ HOST: "0.0.0.0"
 PORT: "4040"
 MOUNT_PATH: "/"
 PARSE_DASHBOARD_SERVER_URL: "http://localhost:1337/parse"
-PARSE_DASHBOARD_GRAPHQL_URL: "http://localhost:1337/graphql"
+PARSE_DASHBOARD_GRAPHQL_SERVER_URL: "http://localhost:1337/graphql"
 PARSE_DASHBOARD_MASTER_KEY: "myMasterKey"
 PARSE_DASHBOARD_APP_ID: "myAppId"
 PARSE_DASHBOARD_APP_NAME: "MyApp"
