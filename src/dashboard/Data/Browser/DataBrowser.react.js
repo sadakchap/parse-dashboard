@@ -41,7 +41,7 @@ export default class DataBrowser extends React.Component {
       editing: false,
       copyableValue: undefined,
       numberOfColumns: 0,
-      showIndexManager: false
+      showIndexManager: false,
       simplifiedSchema: this.getSimplifiedSchema(props.schema, props.className)
     };
 
