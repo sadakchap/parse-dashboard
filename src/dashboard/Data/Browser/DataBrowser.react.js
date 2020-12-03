@@ -280,7 +280,8 @@ export default class DataBrowser extends React.Component {
 
   render() {
     let { className, count, disableSecurityDialog,  ...other } = this.props;
-    const { preventSchemaEdits } = this.context.currentApp;
+    const { applicationId, preventSchemaEdits } = this.context.currentApp;
+
     return (
       <div>
         <BrowserTable
