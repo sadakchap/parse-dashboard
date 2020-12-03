@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 import PropTypes         from 'lib/PropTypes'; 
+import Icon              from 'components/Icon/Icon.react';
 import Parse             from 'parse'
 import ParseApp          from 'lib/ParseApp';
 import PermissionsDialog from 'components/PermissionsDialog/PermissionsDialog.react';
