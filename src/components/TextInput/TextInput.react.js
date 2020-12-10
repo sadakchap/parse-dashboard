@@ -41,7 +41,7 @@ export default class TextInput extends React.Component {
     if (this.props.monospace) {
       classes.push(styles.monospace);
     }
-    if (this.props.multiline) {
+    if (this.props.multiline || this.props.multiplelines) {
       return (
         <textarea
           ref="textarea"

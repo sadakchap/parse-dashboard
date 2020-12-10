@@ -54,6 +54,7 @@ let B4ABrowserToolbar = ({
     onDeleteRows,
     onDropClass,
     onChangeCLP,
+    onEditPermissions,
     onRefresh,
     hidePerms,
     isUnique,
@@ -248,6 +249,7 @@ let B4ABrowserToolbar = ({
         perms={perms}
         className={classNameForEditors}
         onChangeCLP={onChangeCLP}
+        onEditPermissions={onEditPermissions}
         userPointers={userPointers} /> : <noscript />}
       {enableSecurityDialog ? null : <noscript/>}
       {menu}

@@ -219,7 +219,7 @@ let ManageAppFields = ({
     <Fieldset
     legend='App Management'
     description='These options will affect your entire app.' >
-    {/* <Field
+    <Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
         text='Clean up app'
@@ -228,25 +228,11 @@ let ManageAppFields = ({
         </span>} />}
       input={<FormButton
         onClick={cleanUpFiles}
-        value='Clean Up Files'/>} /> */}
+        value='Clean Up Files'/>} />
     {cleanUpFilesMessage ? <FormNote
       show={true}
       color={cleanUpMessageColor}>
       <div>{cleanUpFilesMessage}</div>
-    </FormNote> : null}
-    <Field
-      labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-      label={<Label
-        text='Clean up log'
-        description={<span>This will purge your System Log.
-        </span>} />}
-      input={<FormButton
-        onClick={cleanUpSystemLog}
-        value='Clean Up System Log'/>} />
-        {cleanUpSystemLogMessage ? <FormNote
-          show={true}
-          color={cleanUpMessageColor}>
-          <div>{cleanUpSystemLogMessage}</div>
     </FormNote> : null}
   </Fieldset>);
 }
