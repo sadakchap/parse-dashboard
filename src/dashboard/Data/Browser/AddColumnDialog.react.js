@@ -148,7 +148,7 @@ export default class AddColumnDialog extends React.Component {
       case 'GeoPoint':
         return <TextInput
           placeholder='Set here a default value'
-          multiline={true}
+          multiplelines={true}
           onChange={async (defaultValue) => await this.handleDefaultValueChange(defaultValue)} />
       case 'Number':
       case 'String':

@@ -14,10 +14,10 @@ const puppeteer = require('puppeteer');
 
 const dashboardSettings = {
   apps: [{
-    serverURL: "http://localhost:5051/parse",
-    appId: "appId",
-    masterKey: "masterKey",
-    appName: "MyApp"
+    serverURL: 'http://localhost:5051/parse',
+    appId: 'appId',
+    masterKey: 'masterKey',
+    appName: 'MyApp'
   }]
 };
 
@@ -39,7 +39,6 @@ describe('dashboard e2e', () => {
 
     await page.goto(`http://localhost:5051${mount}`);
     await page.waitForSelector('#browser_mount');
-    console.log(page.url());
     expect(page.url().indexOf(`http://localhost:5051${mount}/apps`)).toBe(0);
 
     await page.close();

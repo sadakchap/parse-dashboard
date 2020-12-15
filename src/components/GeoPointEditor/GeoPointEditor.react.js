@@ -6,7 +6,6 @@
  * the root directory of this source tree.
  */
 import { GeoPoint }    from 'parse';
-import hasAncestor     from 'lib/hasAncestor';
 import React           from 'react';
 import styles          from 'components/GeoPointEditor/GeoPointEditor.scss';
 import validateNumeric from 'lib/validateNumeric';
@@ -26,25 +25,44 @@ export default class GeoPointEditor extends React.Component {
   }
 
   componentDidMount() {
-    this.refs.latitude.focus();
+    if (!this.props.disableAutoFocus) {
+      this.refs.latitude.focus();
+    }
     this.refs.latitude.setSelectionRange(0, String(this.state.latitude).length);
-    document.body.addEventListener('click', this.checkExternalClick);
     this.refs.latitude.addEventListener('keypress', this.handleKeyLatitude);
     this.refs.longitude.addEventListener('keypress', this.handleKeyLongitude);
     this.props.setFocus && this.refs.latitude.focus();
 
   }
 
+  componentWillReceiveProps(props) {
+    if (props.value) {
+      if (props.value.latitude !== this.state.latitude) {
+        this.setState({ latitude: props.value.latitude });
+      }
+      if (props.value.longitude !== this.state.longitude) {
+        this.setState({ longitude: props.value.longitude });
+      }
+    }
+  }
+
   componentWillUnmount() {
-    document.body.removeEventListener('click', this.checkExternalClick);
     this.refs.latitude.removeEventListener('keypress', this.handleKeyLatitude);
     this.refs.longitude.removeEventListener('keypress', this.handleKeyLongitude);
   }
 
-  checkExternalClick(e) {
-    if (!hasAncestor(e.target, this.refs.input)) {
-      this.commitValue();
-    }
+  checkExternalClick() {
+    // timeout needed because activeElement is set after onBlur event is done
+    setTimeout(function() {
+      // check if activeElement is something else from input fields,
+      // to avoid commiting new value on every switch of focus beetween latitude and longitude fields
+      if (
+        document.activeElement !== this.refs.latitude &&
+        document.activeElement !== this.refs.longitude
+      ) {
+        this.commitValue();
+      }
+    }.bind(this), 1);
   }
 
   handleKeyLatitude(e) {
@@ -87,7 +105,7 @@ export default class GeoPointEditor extends React.Component {
       let value = e.target.value;
 
       if (!validateNumeric(value)) {
-        var values = value.split(",");
+        var values = value.split(',');
 
         if (values.length == 2) {
           values = values.map(val => val.trim());
@@ -114,14 +132,16 @@ export default class GeoPointEditor extends React.Component {
       this.setState({ [target]: validateNumeric(value) ? value : this.state[target] });
     };
     return (
-      <div ref='input' style={{ width: this.props.width }} className={styles.editor}>
+      <div ref='input' style={{ width: this.props.width, ...this.props.style }} className={styles.editor}>
         <input
           ref='latitude'
           value={this.state.latitude}
+          onBlur={this.checkExternalClick}
           onChange={onChange.bind(this, 'latitude')} />
         <input
           ref='longitude'
           value={this.state.longitude}
+          onBlur={this.checkExternalClick}
           onChange={onChange.bind(this, 'longitude')} />
       </div>
     );
