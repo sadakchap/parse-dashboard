@@ -236,7 +236,7 @@ let ManageAppFields = ({
   //     color={cleanUpMessageColor}>
   //     <div>{cleanUpFilesMessage}</div>
   //   </FormNote> : null}
-  </Fieldset>
+  // </Fieldset>
   );
 }
 
