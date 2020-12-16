@@ -215,26 +215,26 @@ let ManageAppFields = ({
         value='Change connection string' />} />
     ];
   }
-  return (
-    <Fieldset
-    legend='App Management'
-    description='These options will affect your entire app.' >
-    {/* <Field
-      labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-      label={<Label
-        text='Clean up app'
-        description={<span>This will delete any files that are not referenced by any objects.
-        (Don't use the feature if you have Arrays of Files,<br/>or Files inside Object columns!)
-        </span>} />}
-      input={<FormButton
-        onClick={cleanUpFiles}
-        value='Clean Up Files'/>} /> */}
-    {cleanUpFilesMessage ? <FormNote
-      show={true}
-      color={cleanUpMessageColor}>
-      <div>{cleanUpFilesMessage}</div>
-    </FormNote> : null}
-  </Fieldset>);
+  // return (
+  //   <Fieldset
+  //   legend='App Management'
+  //   description='These options will affect your entire app.' >
+  //   {/* <Field
+  //     labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
+  //     label={<Label
+  //       text='Clean up app'
+  //       description={<span>This will delete any files that are not referenced by any objects.
+  //       (Don't use the feature if you have Arrays of Files,<br/>or Files inside Object columns!)
+  //       </span>} />}
+  //     input={<FormButton
+  //       onClick={cleanUpFiles}
+  //       value='Clean Up Files'/>} /> */}
+  //   {cleanUpFilesMessage ? <FormNote
+  //     show={true}
+  //     color={cleanUpMessageColor}>
+  //     <div>{cleanUpFilesMessage}</div>
+  //   </FormNote> : null}
+  // </Fieldset>);
 }
 
 export default class GeneralSettings extends DashboardView {
