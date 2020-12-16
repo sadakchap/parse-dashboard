@@ -215,10 +215,12 @@ let ManageAppFields = ({
         value='Change connection string' />} />
     ];
   }
-  // return (
-  //   <Fieldset
-  //   legend='App Management'
-  //   description='These options will affect your entire app.' >
+  return (
+    <Fieldset
+      legend=''
+      description=''/>
+    // legend='App Management'
+    // description='These options will affect your entire app.' >
   //   {/* <Field
   //     labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
   //     label={<Label
@@ -234,7 +236,8 @@ let ManageAppFields = ({
   //     color={cleanUpMessageColor}>
   //     <div>{cleanUpFilesMessage}</div>
   //   </FormNote> : null}
-  // </Fieldset>);
+  </Fieldset>
+  );
 }
 
 export default class GeneralSettings extends DashboardView {
