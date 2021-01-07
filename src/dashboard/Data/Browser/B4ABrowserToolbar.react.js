@@ -62,16 +62,15 @@ let B4ABrowserToolbar = ({
     handleColumnDragDrop,
     handleColumnsOrder,
     order,
-
     enableDeleteAllRows,
     enableImport,
     enableExportClass,
     enableSecurityDialog,
     enableColumnManipulation,
     enableClassManipulation,
-
     applicationId,
-    onClickIndexManager
+    onClickIndexManager,
+    columns
   }) => {
   let selectionLength = Object.keys(selection).length;
   let details = [];
@@ -250,6 +249,7 @@ let B4ABrowserToolbar = ({
         className={classNameForEditors}
         onChangeCLP={onChangeCLP}
         onEditPermissions={onEditPermissions}
+        columns={columns}
         userPointers={userPointers} /> : <noscript />}
       {enableSecurityDialog ? null : <noscript/>}
       {menu}
