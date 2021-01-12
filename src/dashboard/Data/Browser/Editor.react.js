@@ -16,7 +16,7 @@ import decode         from 'parse/lib/browser/decode';
 import React          from 'react';
 import StringEditor   from 'components/StringEditor/StringEditor.react';
 
-let Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit }) => {
+let Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit, onCancel }) => {
   let content = null;
   if (type === 'String') {
     content = (
@@ -127,7 +127,8 @@ let Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit }
         value={value}
         width={width}
         onCommit={onCommit}
-        setFocus={true} />
+        setFocus={true}
+        onCancel={onCancel} />
     );
   } else if (type === 'ACL') {
     content = (

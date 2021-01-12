@@ -185,7 +185,7 @@ class PushNew extends DashboardView {
   handlePushSubmit(changes) {
     let payload = changes.data_type === 'json' ? JSON.parse(changes.data) : { alert: changes.data };
     if (changes.increment_badge) {
-      payload.badge = "Increment";
+      payload.badge = 'Increment';
     }
 
     const push_time = extractPushTime(changes);
@@ -210,7 +210,7 @@ class PushNew extends DashboardView {
 
     let audience_id = changes.audience_id;
     // Only set the audience ID if it is a saved audience.
-    if (audience_id != PushConstants.NEW_SEGMENT_ID && audience_id != "everyone") {
+    if (audience_id != PushConstants.NEW_SEGMENT_ID && audience_id != 'everyone') {
       body.audience_id = audience_id;
       const pushAudience = this.props.pushaudiences.data.get('audiences').toJS()
         .find((a) => a.objectId === audience_id);
@@ -679,7 +679,7 @@ class PushNew extends DashboardView {
 
     const timeFieldsDescription = hasScheduledPushSupport ?
       'We can send the campaign immediately, or any time in the next 2 weeks.' :
-      "If your push hasn't been send by this time, it won't get sent.";
+      'If your push hasn\'t been send by this time, it won\'t get sent.';
 
     const deliveryTimeFields = hasScheduledPushSupport ? <Fieldset
       legend={timeFieldsLegend}

@@ -234,20 +234,6 @@ let ManageAppFields = ({
       color={cleanUpMessageColor}>
       <div>{cleanUpFilesMessage}</div>
     </FormNote> : null}
-    <Field
-      labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-      label={<Label
-        text='Clean up log'
-        description={<span>This will purge your System Log.
-        </span>} />}
-      input={<FormButton
-        onClick={cleanUpSystemLog}
-        value='Clean Up System Log'/>} />
-        {cleanUpSystemLogMessage ? <FormNote
-          show={true}
-          color={cleanUpMessageColor}>
-          <div>{cleanUpSystemLogMessage}</div>
-    </FormNote> : null}
   </Fieldset>);
 }
 
@@ -367,7 +353,7 @@ export default class GeneralSettings extends DashboardView {
 
     let changeConnectionStringModal = <FormModal
       title='Change Connection String'
-      subtitle={"Immediately switch your connection string for your app's database."}
+      subtitle={'Immediately switch your connection string for your app\'s database.'}
       open={this.state.showChangeConnectionStringModal}
       onSubmit={() => {
         let promise = validateAndSubmitConnectionString(

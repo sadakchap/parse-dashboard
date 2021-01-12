@@ -17,11 +17,29 @@
   height: 48px;
   color: white;
   margin-top: $header-height;
+  transition: left 0.5s ease-in;
+  z-index: 5;
 }
 
 body:global(.expanded) {
   .toolbar {
     left: 54px;
+  }
+}
+
+.objectPickerContent {
+  .toolbar {
+    background: #00db7c;
+    height: 80px;
+    right: 135px;
+
+    .nav {
+      display: none;
+    }
+
+    .titleText {
+      display: none;
+    }
   }
 }
 
@@ -71,4 +89,5 @@ body:global(.expanded) {
   height: 100%;
   display: flex;
   align-items: center;
+  top: 0;
 }
