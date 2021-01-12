@@ -175,7 +175,7 @@ let B4ABrowserToolbar = ({
       if (col === 'objectId' || isUnique && col !== uniqueField) {
         return;
       }
-      if (targetClass === '_User') {
+      if ((type ==='Pointer' && targetClass === '_User') || type === 'Array' ) {
         userPointers.push(col);
       }
     });
