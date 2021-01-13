@@ -362,6 +362,11 @@ export default class ParseApp {
     });
   }
 
+  checkCurrentUser(){
+    let path = '/me';
+    return AJAX.get(path);
+  }
+
   cleanUpFiles() {
     let path = '/apps/' + this.slug + '/orphan_files';
     return AJAX.post(path);

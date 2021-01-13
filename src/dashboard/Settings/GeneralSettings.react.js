@@ -282,6 +282,14 @@ export default class GeneralSettings extends DashboardView {
     };
   }
 
+  async componentDidMount(){
+    try{
+      await this.context.currentApp.checkCurrentUser()
+    } catch (e){
+      window.location.reload()
+    }
+  }
+
   renderContent() {
     if (!this.props.initialFields) {
       return <Toolbar section='Settings' subsection='General' />
@@ -573,7 +581,7 @@ export default class GeneralSettings extends DashboardView {
               setWebAppURL={setField.bind(this, 'webAppURL')}
               otherURL={fields.otherURL}
               setOtherURL={setField.bind(this, 'otherURL')} />
-            <CollaboratorsFields
+            {this.props.loadingSettings ? <CollaboratorsFields
               collaborators={fields.collaborators}
               waiting_collaborators={fields.waiting_collaborators}
               ownerEmail={this.props.initialFields.owner_email}
@@ -581,6 +589,7 @@ export default class GeneralSettings extends DashboardView {
               addCollaborator={setCollaborators.bind(undefined, setField)}
               removeCollaborator={setCollaborators.bind(undefined, setField)}
               editCollaborator={setCollaborators.bind(undefined, setField)}/>
+              : null}
             <ManageAppFields
               mongoURL={fields.mongoURL}
               isCollaborator={AccountManager.currentUser().email !== this.props.initialFields.owner_email}
