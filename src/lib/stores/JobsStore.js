@@ -41,7 +41,7 @@ function JobsStore(state, action) {
           .catch(err => Map({ lastFetch: new Date(), jobs: [], err }));
         }
         else {
-          path = 'cloud_code/jobs?per_page=50';
+          path = 'cloud_code/jobs/data?per_page=50';
           return Parse._request('GET', path, {}, { useMasterKey: true}).then((results) => {
             return Map({ lastFetch: new Date(), jobs: List(results) });
           })
