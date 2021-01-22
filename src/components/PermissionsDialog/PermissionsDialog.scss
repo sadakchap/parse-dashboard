@@ -8,13 +8,19 @@
  @import 'stylesheets/globals.scss';
 
  $labelWidth: 330px;
+ $labelWidthWithoutCount: 355px;
  $colWidth: 82px;
+ $colWidthWithoutCount: 55px;
  $writeColWidth: 92px;
+ $writeColWidthWithoutCount: 89px;
  $addFieldColWidth: 118px;
+ $addFieldColWidthWithoutCount: 116px;
  $deleteColWidth: 44px;
  
  $sumReadColsWidth: calc(3 * #{$colWidth});
+ $sumReadColsWidthWithoutCount: calc(3 * #{$colWidthWithoutCount});
  $sumWriteColsWidth: calc(3 * #{$writeColWidth});
+ $sumWriteColsWidthWithoutCount: calc(3 * #{$writeColWidthWithoutCount});
  
  $permissionsDialogWidth: calc(#{$labelWidth} + (2 * #{$colWidth}) + #{$deleteColWidth});
  $permissionsDialogMaxWidth: calc(#{$labelWidth} + #{$sumReadColsWidth} + #{$sumWriteColsWidth} + #{$addFieldColWidth} + #{$deleteColWidth});
@@ -124,9 +130,19 @@
  .fifth, .sixth, .seventh {
    width: $writeColWidth;
  }
+
+ .fifthWithoutCount, .sixthWithoutCount, .seventhWithoutCount {
+   width: $writeColWidthWithoutCount;
+  }
+
  .eighth {
    width: $addFieldColWidth;
  }
+
+ .eighthWithoutCount {
+  width: $addFieldColWidth;
+ }
+ 
  .nineth {
    width: $deleteColWidth;
  }
@@ -154,6 +170,9 @@
      &.eighth {
        left: calc(#{$labelWidth} + #{$sumReadColsWidth} + #{$sumWriteColsWidth});
      }
+     &.eighthWithoutCount {
+      left: calc(#{$labelWidthWithoutCount} + #{$sumReadColsWidth} + #{$sumWriteColsWidth});
+    }
    }
  }
  
@@ -204,13 +223,26 @@
    width: $sumReadColsWidth;
  }
  
+ .readHeaderWithoutCount {
+  width: $sumReadColsWidthWithoutCount;
+  }
+
  .writeHeader {
    width: $sumWriteColsWidth;
  }
  
+ .writeHeaderWithoutCount {
+  width: $sumWriteColsWidthWithoutCount;
+}
+
  .addHeader {
    width: $addFieldColWidth;
    border-right: 1px solid white;
+ }
+
+ .addHeaderWithoutCount {
+  width: $addFieldColWidthWithoutCount;
+  border-right: 1px solid white;
  }
  
  .advanced {

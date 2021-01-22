@@ -126,6 +126,7 @@ export default class SecurityDialog extends React.Component {
           validateEntry={entry => 
             validateEntry(this.props.userPointers, entry, parseServerSupportsPointerPermissions)}
           onCancel={this.handleClose}
+          parseVersion={this.context.currentApp.serverInfo}
           onConfirm={perms => 
             this.props.onChangeCLP(perms).then(this.handleClose)}
         />

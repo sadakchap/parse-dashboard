@@ -842,6 +842,9 @@ class Browser extends DashboardView {
   }
 
   handleCLPChange(clp) {
+    const { serverInfo } = this.context.currentApp;
+    if (typeof serverInfo.parseServerVersion !== 'undefined' && serverInfo.parseServerVersion < '2.6') delete clp.count
+
     let p = this.props.schema.dispatch(ActionTypes.SET_CLP, {
       className: this.props.params.className,
       clp,
