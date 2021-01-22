@@ -43,7 +43,7 @@ let Button = (props) => {
   }
   return (
     <a
-      href='javascript:;'
+      href='#'
       role='button'
       style={styleOverride}
       className={classes.join(' ')}

@@ -14,13 +14,14 @@ export default class SettingsData extends React.Component {
     super();
 
     this.state = {
-      fields: undefined
+      fields: undefined,
+      loadingSettings: true
     };
   }
 
   componentDidMount() {
     this.context.currentApp.fetchSettingsFields().then(({ fields }) => {
-      this.setState({ fields });
+      this.setState({ ...fields, loadingSettings: false });
     });
   }
 
@@ -28,7 +29,7 @@ export default class SettingsData extends React.Component {
     if (this.context !== context) {
       this.setState({ fields: undefined });
       context.currentApp.fetchSettingsFields().then(({ fields }) => {
-        this.setState({ fields });
+        this.setState({ ...fields, loadingSettings: false });
       });
     }
   }
@@ -45,7 +46,8 @@ export default class SettingsData extends React.Component {
   render() {
     return this.props.children({
       initialFields: this.state.fields,
-      saveChanges: this.saveChanges.bind(this)
+      saveChanges: this.saveChanges.bind(this),
+      loadingSettings: this.state.loadingSettings
     })
   }
 }
