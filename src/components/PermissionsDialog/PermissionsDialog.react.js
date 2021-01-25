@@ -578,7 +578,9 @@ export default class PermissionsDialog extends React.Component {
     this.suggestInput = this.suggestInput.bind(this);
     this.buildLabel = this.buildLabel.bind(this);
 
+    let currentApp = (this.props && this.props.parseVersion ? this.props.parseVersion : null);
     let uniqueKeys = [...(advanced ? ['requiresAuthentication'] : []), '*'];
+
     let perms = {};
     for (let k in permissions) {
       if (
@@ -597,7 +599,6 @@ export default class PermissionsDialog extends React.Component {
 
           // requireAuthentication is only available for CLP
           if (advanced) {
-            const currentApp = this.props.parseVersion
             if (!permissions[k].requiresAuthentication || currentApp.parseServerVersion < '2.3') {
               permissions[k].requiresAuthentication = false;
             }
@@ -646,8 +647,9 @@ export default class PermissionsDialog extends React.Component {
         );
       }
     }
+
     // preserve protectedFields
-    if (permissions.protectedFields) {
+    if (currentApp && currentApp.parseServerVersion > '3.7' && permissions.protectedFields) {
       perms.protectedFields = permissions.protectedFields;
     }
 
@@ -664,7 +666,7 @@ export default class PermissionsDialog extends React.Component {
       newEntry: '',
       entryError: null,
       newKeys: [], // Order for new entries
-      parseVersion: this.props.parseVersion
+      parseVersion: currentApp
     };
   }
 
@@ -1203,7 +1205,7 @@ export default class PermissionsDialog extends React.Component {
       classes.push(styles.advanced);
     }
 
-    const { parseServerVersion } = this.state.parseVersion
+    const parseServerVersion = (this.state.parseVersion ? this.state.parseVersion.parseServerVersion : null)
 
     let placeholderText = '';
     if (this.props.advanced && this.props.enablePointerPermissions) {
