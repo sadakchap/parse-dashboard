@@ -581,7 +581,7 @@ export default class GeneralSettings extends DashboardView {
               setWebAppURL={setField.bind(this, 'webAppURL')}
               otherURL={fields.otherURL}
               setOtherURL={setField.bind(this, 'otherURL')} />
-            {this.props.loadingSettings ? <CollaboratorsFields
+            <CollaboratorsFields
               collaborators={fields.collaborators}
               waiting_collaborators={fields.waiting_collaborators}
               ownerEmail={this.props.initialFields.owner_email}
@@ -589,7 +589,6 @@ export default class GeneralSettings extends DashboardView {
               addCollaborator={setCollaborators.bind(undefined, setField)}
               removeCollaborator={setCollaborators.bind(undefined, setField)}
               editCollaborator={setCollaborators.bind(undefined, setField)}/>
-              : null}
             <ManageAppFields
               mongoURL={fields.mongoURL}
               isCollaborator={AccountManager.currentUser().email !== this.props.initialFields.owner_email}
