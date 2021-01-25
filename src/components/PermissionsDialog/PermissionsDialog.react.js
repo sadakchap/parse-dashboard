@@ -50,7 +50,7 @@ function resolvePermission(perms, rowId, column) {
   };
 }
 
-function resolvePointerPermission(perms, pointerPerms, rowId, column) {
+function resolvePointerPermission(perms, pointerPerms, rowId, column, parseVersion) {
   let publicAccess = perms.get(column) && perms.get(column).get('*');
   let auth = perms.get(column).get('requiresAuthentication');
 
@@ -81,7 +81,8 @@ function resolvePointerPermission(perms, pointerPerms, rowId, column) {
   };
 }
 
-function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
+function renderAdvancedCheckboxes(rowId, perms, advanced, onChange, currentApp) {
+  const { parseServerVersion } = currentApp;
   let get = resolvePermission(perms, rowId, 'get');
   let find = resolvePermission(perms, rowId, 'find');
   let count = resolvePermission(perms, rowId, 'count');
@@ -89,10 +90,32 @@ function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
   let update = resolvePermission(perms, rowId, 'update');
   let del = resolvePermission(perms, rowId, 'delete');
   let addField = resolvePermission(perms, rowId, 'addField');
+  let readChecked;
+
+  let style = {
+    second: styles.second,
+    third: styles.third,
+    fourth: styles.fourth,
+    fifth: styles.fifth,
+    sixth: styles.sixth,
+    seventh: styles.seventh,
+    eighth: styles.eighth
+  }
+
+  const showCount = (typeof parseServerVersion !== 'undefined' && parseServerVersion > '2.6')
+
+  if (showCount){
+    readChecked = find.checked && get.checked && count.checked;
+  } else {
+    style.fifth = styles.fifthWithoutCount;
+    style.sixth = styles.sixthWithoutCount;
+    style.seventh = styles.seventhWithoutCount;
+    readChecked = find.checked && get.checked;
+  }
 
   if (advanced) {
-    return [
-      <div key="second" className={[styles.check, styles.second].join(' ')}>
+    let columns = [
+      <div key="second" className={[styles.check, style.second].join(' ')}>
         {get.editable ? (
           <Checkbox
             label="Get"
@@ -103,7 +126,7 @@ function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
           <Icon name="check" width={20} height={20} />
         )}
       </div>,
-      <div key="third" className={[styles.check, styles.third].join(' ')}>
+      <div key="third" className={[styles.check, style.third].join(' ')}>
         {find.editable ? (
           <Checkbox
             label="Find"
@@ -113,19 +136,27 @@ function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
         ) : (
           <Icon name="check" width={20} height={20} />
         )}
-      </div>,
-      <div key="fourth" className={[styles.check, styles.fourth].join(' ')}>
-        {count.editable ? (
-          <Checkbox
-            label="Count"
-            checked={count.checked}
-            onChange={value => onChange(rowId, 'count', value)}
-          />
-        ) : (
-          <Icon name="check" width={20} height={20} />
-        )}
-      </div>,
-      <div key="fifth" className={[styles.check, styles.fifth].join(' ')}>
+      </div>
+    ]
+
+    if (showCount) {
+      columns.push(
+        <div key="fourth" className={[styles.check, style.fourth].join(' ')}>
+          {count.editable ? (
+            <Checkbox
+              label="Count"
+              checked={count.checked}
+              onChange={value => onChange(rowId, 'count', value)}
+            />
+          ) : (
+              <Icon name="check" width={20} height={20} />
+            )}
+        </div>
+      )
+    }
+
+    columns.push([
+      <div key="fifth" className={[styles.check, style.fifth].join(' ')}>
         {create.editable ? (
           <Checkbox
             label="Create"
@@ -136,7 +167,7 @@ function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
           <Icon name="check" width={20} height={20} />
         )}
       </div>,
-      <div key="sixth" className={[styles.check, styles.sixth].join(' ')}>
+      <div key="sixth" className={[styles.check, style.sixth].join(' ')}>
         {update.editable ? (
           <Checkbox
             label="Update"
@@ -147,7 +178,7 @@ function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
           <Icon name="check" width={20} height={20} />
         )}
       </div>,
-      <div key="seventh" className={[styles.check, styles.seventh].join(' ')}>
+      <div key="seventh" className={[styles.check, style.seventh].join(' ')}>
         {del.editable ? (
           <Checkbox
             label="Delete"
@@ -158,7 +189,7 @@ function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
           <Icon name="check" width={20} height={20} />
         )}
       </div>,
-      <div key="eighth" className={[styles.check, styles.eighth].join(' ')}>
+      <div key="eighth" className={[styles.check, style.eighth].join(' ')}>
         {addField.editable ? (
           <Checkbox
             label="Add field"
@@ -169,13 +200,14 @@ function renderAdvancedCheckboxes(rowId, perms, advanced, onChange) {
           <Icon name="check" width={20} height={20} />
         )}
       </div>
-    ];
+    ]);
+
+    return columns;
   }
 
   let showReadCheckbox = find.editable || get.editable || count.editable;
   let showWriteCheckbox = create.editable || update.editable || del.editable;
 
-  let readChecked = find.checked && get.checked && count.checked;
   let writeChecked = create.checked && update.checked && del.checked;
 
   let indeterminateRead =
@@ -546,7 +578,9 @@ export default class PermissionsDialog extends React.Component {
     this.suggestInput = this.suggestInput.bind(this);
     this.buildLabel = this.buildLabel.bind(this);
 
+    let currentApp = (this.props && this.props.parseVersion ? this.props.parseVersion : null);
     let uniqueKeys = [...(advanced ? ['requiresAuthentication'] : []), '*'];
+
     let perms = {};
     for (let k in permissions) {
       if (
@@ -565,7 +599,7 @@ export default class PermissionsDialog extends React.Component {
 
           // requireAuthentication is only available for CLP
           if (advanced) {
-            if (!permissions[k].requiresAuthentication) {
+            if (!permissions[k].requiresAuthentication || currentApp.parseServerVersion < '2.3') {
               permissions[k].requiresAuthentication = false;
             }
           }
@@ -613,8 +647,9 @@ export default class PermissionsDialog extends React.Component {
         );
       }
     }
+
     // preserve protectedFields
-    if (permissions.protectedFields) {
+    if (currentApp && currentApp.parseServerVersion > '3.7' && permissions.protectedFields) {
       perms.protectedFields = permissions.protectedFields;
     }
 
@@ -630,7 +665,8 @@ export default class PermissionsDialog extends React.Component {
       columns,
       newEntry: '',
       entryError: null,
-      newKeys: [] // Order for new entries
+      newKeys: [], // Order for new entries
+      parseVersion: currentApp
     };
   }
 
@@ -1047,7 +1083,8 @@ export default class PermissionsDialog extends React.Component {
           key,
           this.state.perms,
           this.state.level === 'Advanced',
-          this.toggleField.bind(this)
+          this.toggleField.bind(this),
+          this.state.parseVersion
         );
       } else {
         content = renderSimpleCheckboxes(
@@ -1089,7 +1126,8 @@ export default class PermissionsDialog extends React.Component {
         '*',
         this.state.perms,
         this.state.level === 'Advanced',
-        this.toggleField.bind(this)
+        this.toggleField.bind(this),
+        this.state.parseVersion
       );
     }
     return renderSimpleCheckboxes(
@@ -1108,7 +1146,8 @@ export default class PermissionsDialog extends React.Component {
         'requiresAuthentication',
         this.state.perms,
         this.state.level === 'Advanced',
-        this.toggleField.bind(this)
+        this.toggleField.bind(this),
+        this.state.parseVersion
       );
     }
     return null;
@@ -1165,6 +1204,8 @@ export default class PermissionsDialog extends React.Component {
     if (this.state.level === 'Advanced') {
       classes.push(styles.advanced);
     }
+
+    const parseServerVersion = (this.state.parseVersion ? this.state.parseVersion.parseServerVersion : null)
 
     let placeholderText = '';
     if (this.props.advanced && this.props.enablePointerPermissions) {
@@ -1223,9 +1264,9 @@ export default class PermissionsDialog extends React.Component {
             </div>
           </SliderWrap>
           <div className={styles.headers}>
-            <div className={styles.readHeader}>Read</div>
-            <div className={styles.writeHeader}>Write</div>
-            <div className={styles.addHeader}>Add</div>
+            <div className={parseServerVersion < '2.6' ? styles.readHeaderWithoutCount : styles.readHeader}>Read</div>
+            <div className={parseServerVersion < '2.6' ? styles.writeHeaderWithoutCount : styles.writeHeader}>Write</div>
+            <div className={parseServerVersion < '2.6' ? styles.addHeaderWithoutCount : styles.addHeader}>Add</div>
           </div>
           <div
             className={styles.tableWrap}
@@ -1237,13 +1278,15 @@ export default class PermissionsDialog extends React.Component {
               <div className={[styles.overlay, styles.second].join(' ')} />
               <div className={[styles.overlay, styles.fourth].join(' ')} />
               <div className={[styles.overlay, styles.sixth].join(' ')} />
-              <div className={[styles.overlay, styles.eighth].join(' ')} />
-
+              {parseServerVersion > '2.6' ?
+                <div className={[styles.overlay, styles.eighth].join(' ')} /> :
+                <div className={[styles.overlay, styles.eighthWithoutCount].join(' ')} />
+              }
               <div className={[styles.public, styles.row].join(' ')}>
                 <div className={styles.label}>Public</div>
                 {this.renderPublicCheckboxes()}
               </div>
-              {this.props.advanced ? (
+              {this.props.advanced && parseServerVersion > '2.3' ? (
                 <div className={[styles.public, styles.row].join(' ')}>
                   <div className={styles.label}>Authenticated</div>
                   {this.renderAuthenticatedCheckboxes()}
