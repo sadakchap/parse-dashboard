@@ -283,11 +283,11 @@ export default class GeneralSettings extends DashboardView {
   }
 
   async componentDidMount(){
-    try{
-      await this.context.currentApp.checkCurrentUser()
-    } catch (e){
-      window.location.reload()
-    }
+    // try{
+    //   await this.context.currentApp.checkCurrentUser()
+    // } catch (e){
+    //   window.location.reload()
+    // }
   }
 
   renderContent() {
