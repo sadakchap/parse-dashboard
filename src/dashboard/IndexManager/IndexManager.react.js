@@ -255,7 +255,7 @@ class IndexManager extends DashboardView {
       const classes = {
         [className]: Object.keys(schema)
       }
-      return <IndexForm classes={classes} onConfirm={this.createIndexes} onCancel={this.closeIndexForm} />
+      return <IndexForm classes={classes} dataTypes={schema} onConfirm={this.createIndexes} onCancel={this.closeIndexForm} />
     }
     return null
   }
