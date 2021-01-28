@@ -156,6 +156,8 @@ class IndexForm extends Component {
         key = '_created_at'
       } else if (key === 'email_verify_token' && selectedClass === "_User") {
         key = '_email_verify_token'
+      } else if (key === 'session_token' && selectedClass === "_Session") {
+        key = '_session_token'
       } else {
         // Check if column is a pointer
         if (dataTypes[key].type === "Pointer") key = `_p_${key}`
