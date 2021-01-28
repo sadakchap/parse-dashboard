@@ -141,7 +141,7 @@ class IndexForm extends Component {
   }
 
   createIndex() {
-    const { indexFields, indexName: name, sparse, unique, weights = {} } = this.state
+    const { indexFields, indexName: name, sparse, unique, weights = {}, selectedClass } = this.state
     const { dataTypes } = this.props;
 
     const index = {}
@@ -154,7 +154,7 @@ class IndexForm extends Component {
         key = '_updated_at'
       } else if (key === 'createdAt') {
         key = '_created_at'
-      } else if (key === 'email_verify_token') {
+      } else if (key === 'email_verify_token' && selectedClass === "_User") {
         key = '_email_verify_token'
       } else {
         // Check if column is a pointer
