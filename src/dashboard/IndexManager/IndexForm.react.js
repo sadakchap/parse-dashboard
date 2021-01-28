@@ -141,7 +141,8 @@ class IndexForm extends Component {
   }
 
   createIndex() {
-    const { indexFields, indexName: name, sparse, unique, weights = {} } = this.state
+    const { indexFields, indexName: name, sparse, unique, weights = {}, selectedClass } = this.state
+    const { dataTypes } = this.props;
 
     const index = {}
     // If the index is ascending (1) or descending (-1), we need to convert it to number
@@ -149,6 +150,17 @@ class IndexForm extends Component {
       // objectId does not exists on the database, only _id does
       if (key === 'objectId') {
         key = '_id'
+      } else if (key === 'updatedAt') {
+        key = '_updated_at'
+      } else if (key === 'createdAt') {
+        key = '_created_at'
+      } else if (key === 'email_verify_token' && selectedClass === "_User") {
+        key = '_email_verify_token'
+      } else if (key === 'session_token' && selectedClass === "_Session") {
+        key = '_session_token'
+      } else {
+        // Check if column is a pointer
+        if (dataTypes[key].type === "Pointer") key = `_p_${key}`
       }
       if (value === '-1') {
         index[key] = -1
