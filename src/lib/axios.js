@@ -10,12 +10,12 @@ const checkCurrentUser = async() =>{
   return result;
 }
 
-instance.interceptors.request.use((request) => {
-  const username = localStorage.getItem("username");
-  const useremail = localStorage.getItem("useremail");
-  if (!baseURL && !username && !useremail) window.location = '/login'
-  return request;
-})
+// instance.interceptors.request.use((request) => {
+//   const username = localStorage.getItem("username");
+//   const useremail = localStorage.getItem("useremail");
+//   if (!baseURL && !username && !useremail) window.location = '/login'
+//   return request;
+// })
 
 instance.interceptors.response.use((response) => {
   debugger
