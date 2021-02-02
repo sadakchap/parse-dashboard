@@ -8,7 +8,7 @@
 import * as AJAX      from 'lib/AJAX';
 import encodeFormData from 'lib/encodeFormData';
 import Parse          from 'parse';
-import axios          from 'axios';
+import axios          from 'lib/axios';
 import csv            from 'csvtojson';
 
 function setEnablePushSource(setting, enable) {
