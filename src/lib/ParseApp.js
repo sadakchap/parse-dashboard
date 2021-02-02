@@ -347,24 +347,19 @@ export default class ParseApp {
     return promise;
   }
 
-  fetchSettingsFields() {
+  async fetchSettingsFields() {
     // Cache it for a minute
     // if (new Date() - this.settings.lastFetched < 60000) {
     //   return Promise.resolve(this.settings.fields);
     // }
     let path = '/apps/' + this.slug + '/dashboard_ajax/settings';
-    return AJAX.get(path).then((fields) => {
-      for (let f in fields) {
-        this.settings.fields[f] = fields[f];
-        this.settings.lastFetched = new Date();
-      }
-      return Promise.resolve(fields);
-    });
-  }
-
-  checkCurrentUser(){
-    let path = '/me';
-    return AJAX.get(path);
+    let fields = await axios.get(path);
+    fields = fields.data;
+    for (let f in fields) {
+      this.settings.fields[f] = fields[f];
+      this.settings.lastFetched = new Date();
+    }
+    return Promise.resolve(fields);
   }
 
   cleanUpFiles() {

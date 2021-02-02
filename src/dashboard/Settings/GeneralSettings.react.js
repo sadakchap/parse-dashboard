@@ -282,14 +282,6 @@ export default class GeneralSettings extends DashboardView {
     };
   }
 
-  async componentDidMount(){
-    // try{
-    //   await this.context.currentApp.checkCurrentUser()
-    // } catch (e){
-    //   window.location.reload()
-    // }
-  }
-
   renderContent() {
     if (!this.props.initialFields) {
       return <Toolbar section='Settings' subsection='General' />

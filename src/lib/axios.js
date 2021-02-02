@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as AJAX  from './AJAX';
 
 const baseURL = process.env.BACKEND_URL;
 const instance = axios.create({
@@ -6,28 +7,23 @@ const instance = axios.create({
 });
 
 const checkCurrentUser = async() =>{
-  let result = axios.get('/me');
-  return result;
+  try {
+    let result = await AJAX.get(`${b4aSettings.BACK4APP_API_PATH}/me`);
+    if (!result.username) window.location = '/'
+  } catch (err){
+    if (err.message == "Unauthorized!") window.location = '/'
+  }
 }
 
-instance.interceptors.request.use((request) => {
-//   const username = localStorage.getItem("username");
-//   const useremail = localStorage.getItem("useremail");
-//   if (!baseURL && !username && !useremail) window.location = '/login'
-  return request;
-})
-
-instance.interceptors.response.use((response) => {
-  debugger
+instance.interceptors.response.use(async (response) => {
+  const { data, status } = response;
+  if (status === 200 && typeof data !== "object"){
+    await checkCurrentUser();
+  }
   return response;
 }, async (error) => {
-    let result = await checkCurrentUser();
-     console.log(result)
-     debugger
-    if (401 === error.response.status) {
-    } else {
-      return Promise.reject(error);
-    }
+    await checkCurrentUser();
+    return Promise.reject(error);
   }
 )
 
