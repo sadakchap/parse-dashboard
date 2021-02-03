@@ -359,7 +359,7 @@ export default class ParseApp {
       this.settings.fields[f] = fields[f];
       this.settings.lastFetched = new Date();
     }
-    return Promise.resolve(fields);
+    return fields;
   }
 
   cleanUpFiles() {
