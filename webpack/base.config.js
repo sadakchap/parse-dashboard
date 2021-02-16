@@ -16,6 +16,7 @@ var fs = require('fs');
 var json = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 var version = json.version;
 var settings = require('@back4app/back4app-settings');
+var BACK4APP_API_PATH = process.env.ENVIRONMENT == "local" ? settings.BACK4APP_API_PATH : undefined
 
 module.exports = {
   context: path.join(__dirname, '../src'),
@@ -87,7 +88,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        'version' : JSON.stringify(version)
+        'version' : JSON.stringify(version),
+        'BACKEND_URL':  JSON.stringify(BACK4APP_API_PATH)
       },
       b4aSettings: JSON.stringify(settings)
     }),

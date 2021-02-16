@@ -134,7 +134,7 @@
     "webpack-cli": "3.3.10"
   },
   "scripts": {
-    "dev": "nodemon ./Parse-Dashboard/index.js & webpack --config webpack/build.config.js --devtool eval-source-map --progress --watch",
+    "dev": "nodemon ./Parse-Dashboard/index.js & cross-env ENVIRONMENT='local' webpack --config webpack/build.config.js --env.local --devtool eval-source-map --progress --watch",
     "dashboard": "node ./Parse-Dashboard/index.js & webpack --config webpack/build.config.js --progress --watch",
     "pig": "http-server ./PIG -p 4041 -s & webpack --config webpack/PIG.config.js --progress --watch",
     "build": "cross-env NODE_ENV=production webpack --config webpack/production.config.js && webpack --config webpack/PIG.config.js && cross-env NODE_ENV=production webpack --config webpack/publish.config.js --progress",
