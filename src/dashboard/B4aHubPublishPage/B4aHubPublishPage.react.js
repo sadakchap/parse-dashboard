@@ -112,6 +112,19 @@ class B4aHubPublishPage extends DashboardView {
                         }])
                         return;
                       }
+                      if (this.context.currentApp.custom.isGDPR) {
+                        Swal.queue([{
+                          type: 'error',
+                          html: ReactDOMServer.renderToStaticMarkup(
+                            <div className={`${styles['elements-wrapper']} ${styles['congrats-box']}`}>
+                              <p className={styles['congrats-message']}>
+                                Sorry, you can not publish a GDRP App.
+                              </p>
+                            </div>
+                          )
+                        }])
+                        return;
+                      }
                       B4aHubPublishModal.show(this.context.currentApp, result => {
                         this.setState({
                           isDatabasePublic: true,
