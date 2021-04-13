@@ -118,7 +118,7 @@ class B4aHubPublishPage extends DashboardView {
                           html: ReactDOMServer.renderToStaticMarkup(
                             <div className={`${styles['elements-wrapper']} ${styles['congrats-box']}`}>
                               <p className={styles['congrats-message']}>
-                                Sorry, you can not publish a GDRP App.
+                                Sorry, you can not publish a GDPR App.
                               </p>
                             </div>
                           )
