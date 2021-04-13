@@ -393,7 +393,6 @@ export default class ParseApp {
       delimiter: 'auto',
       ignoreEmpty: true,
       nullObject: true,
-      checkType: true
     }).on('header', header => fieldNames = header).fromString(text);
 
     if (className) {
