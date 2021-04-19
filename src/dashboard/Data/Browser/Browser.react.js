@@ -1158,7 +1158,16 @@ class Browser extends DashboardView {
     for (const object of objects) {
       toClone.push(object.clone());
     }
-    await Parse.Object.saveAll(toClone, { useMasterKey: true });
+    try {
+      await Parse.Object.saveAll(toClone, { useMasterKey: true });
+    } catch (error) {
+      this.setState({
+        selection: {},
+        showCloneSelectedRowsDialog: false
+      });
+      this.showNote(error.message, true);
+      return;
+    }
     this.setState({
       selection: {},
       data: [
