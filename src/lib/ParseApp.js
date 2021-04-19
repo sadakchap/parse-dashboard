@@ -389,14 +389,32 @@ export default class ParseApp {
     }));
 
     let fieldNames;
-    const jsonArray = await csv({
+    let jsonArray = await csv({
       delimiter: 'auto',
       ignoreEmpty: true,
       nullObject: true,
+      checkType: true
     }).on('header', header => fieldNames = header).fromString(text);
 
     if (className) {
       const schema = await (new Parse.Schema(className)).get();
+      
+      const customParser = {};
+      fieldNames.forEach(field => {
+        customParser[field] = function(item, head) {
+          if (schema.fields[head].type === "Number") return Number(item);
+          return item;
+        };
+      });
+      
+      jsonArray = await csv({
+        delimiter: "auto",
+        ignoreEmpty: true,
+        nullObject: true,
+        checkType: true,
+        colParser: customParser
+      }).fromString(text);
+
       const fields = fieldNames.filter(fieldName => fieldName.indexOf('.') < 0).reduce((fields, fieldName) => ({
         ...fields,
         [fieldName]: schema.fields[fieldName] || { type: undefined }
