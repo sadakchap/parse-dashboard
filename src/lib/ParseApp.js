@@ -389,20 +389,15 @@ export default class ParseApp {
     }));
 
     let fieldNames;
-    let jsonArray = await csv({
-      delimiter: 'auto',
-      ignoreEmpty: true,
-      nullObject: true,
-      checkType: true
-    }).on('header', header => fieldNames = header).fromString(text);
+    let jsonArray;
 
     if (className) {
       const schema = await (new Parse.Schema(className)).get();
       
       const customParser = {};
-      fieldNames.forEach(field => {
-        customParser[field] = function(item, head) {
-          if (schema.fields[head].type === "Number") return Number(item);
+      Object.keys(schema.fields).forEach(fieldName => {
+        customParser[fieldName] = function (item) {
+          if (schema.fields[fieldName].type === "Number") return Number(item);
           return item;
         };
       });
@@ -413,7 +408,9 @@ export default class ParseApp {
         nullObject: true,
         checkType: true,
         colParser: customParser
-      }).fromString(text);
+      })
+        .on("header", header => (fieldNames = header))
+        .fromString(text);
 
       const fields = fieldNames.filter(fieldName => fieldName.indexOf('.') < 0).reduce((fields, fieldName) => ({
         ...fields,
@@ -448,6 +445,15 @@ export default class ParseApp {
           }
         });
       });
+    } else{
+      jsonArray = await csv({
+        delimiter: "auto",
+        ignoreEmpty: true,
+        nullObject: true,
+        checkType: true
+      })
+        .on("header", header => (fieldNames = header))
+        .fromString(text);
     }
 
     return new Blob([JSON.stringify({ results: jsonArray })], { type: 'text/plain' });
