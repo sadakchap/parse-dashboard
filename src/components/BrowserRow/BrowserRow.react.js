@@ -3,6 +3,7 @@ import encode from 'parse/lib/browser/encode';
 import React, { Component } from 'react';
 
 import BrowserCell from 'components/BrowserCell/BrowserCell.react';
+import Button from 'components/Button/Button.react';
 import styles from 'dashboard/Data/Browser/Browser.scss';
 
 export default class BrowserRow extends Component {
@@ -90,6 +91,15 @@ export default class BrowserRow extends Component {
               onEditSelectedRow={onEditSelectedRow} />
           );
         })}
+        {row === -1 && (
+          <Button
+            value='Cancel'
+            primary={true}
+            onClick={this.props.onAbortAddRow}
+            width='75px'
+            additionalStyles={{ fontSize: '14px', verticalAlign: 'top', height: '20px', lineHeight: '20px', margin: '5px 10px'}}
+          />
+        )}
       </div>
     );
   }

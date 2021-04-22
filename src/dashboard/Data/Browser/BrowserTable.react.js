@@ -140,7 +140,8 @@ export default class BrowserTable extends React.Component {
               setRelation={this.props.setRelation}
               setCopyableValue={this.props.setCopyableValue}
               setContextMenu={this.props.setContextMenu}
-              onEditSelectedRow={this.props.onEditSelectedRow} />
+              onEditSelectedRow={this.props.onEditSelectedRow}
+              onAbortAddRow={this.props.onAbortAddRow} />
           </div>
         );
       }
