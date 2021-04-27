@@ -910,7 +910,7 @@ class Browser extends DashboardView {
       obj.set(attr, value);
     }
     obj.save(null, { useMasterKey: true }).then((objectSaved) => {
-      const createdOrUpdated = isNewObject ? 'created' : 'updated';
+      const createdOrUpdated = isNewObject || isEditCloneObj ? 'created' : 'updated';
       let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' ' + createdOrUpdated;
       this.showNote(msg, false);
 
@@ -954,7 +954,6 @@ class Browser extends DashboardView {
         }
       }
       if(isEditCloneObj){
-        console.log(obj);
         state.editCloneRows = state.editCloneRows.filter(
           cloneObj => cloneObj._localId !== obj._localId
         );
@@ -971,7 +970,7 @@ class Browser extends DashboardView {
       if (msg) {
         msg = msg[0].toUpperCase() + msg.substr(1);
       }
-      if (!isNewObject) {
+      if (!isNewObject && !isEditCloneObj) {
         obj.set(attr, prev);
         this.setState({ data: this.state.data });
       }
