@@ -79,10 +79,12 @@ class Browser extends DashboardView {
       filters: new List(),
       ordering: '-createdAt',
       selection: {},
+      uniqueClassFields: new List(),
 
       data: null,
       lastMax: -1,
       newObject: null,
+      editCloneRows: null,
 
       lastError: null,
       lastNote: null,
@@ -99,6 +101,7 @@ class Browser extends DashboardView {
     this.fetchData = this.fetchData.bind(this);
     this.fetchRelation = this.fetchRelation.bind(this);
     this.fetchRelationCount = this.fetchRelationCount.bind(this);
+    this.fetchClassIndexes = this.fetchClassIndexes.bind(this);
     this.fetchNextPage = this.fetchNextPage.bind(this);
     this.updateFilters = this.updateFilters.bind(this);
     this.showRemoveColumn = this.showRemoveColumn.bind(this);
@@ -141,6 +144,7 @@ class Browser extends DashboardView {
     this.closeEditRowDialog = this.closeEditRowDialog.bind(this);
     this.handleShowAcl = this.handleShowAcl.bind(this);
     this.onDialogToggle = this.onDialogToggle.bind(this);
+    this.addEditCloneRows = this.addEditCloneRows.bind(this);
   }
 
   getFooterMenuButtons() {
@@ -421,6 +425,7 @@ class Browser extends DashboardView {
       this.fetchRelation(relation, filters);
     } else if (className) {
       this.fetchData(className, filters);
+      this.fetchClassIndexes(className);
     }
   }
 
@@ -596,6 +601,12 @@ class Browser extends DashboardView {
     }
   }
 
+  addEditCloneRows(cloneRows) {
+    this.setState({
+      editCloneRows: cloneRows
+    });
+  }
+
   abortAddRow() {
     if (this.state.newObject) {
       this.setState({
@@ -647,7 +658,8 @@ class Browser extends DashboardView {
       newObject: null,
       lastMax: -1,
       selection: {},
-      relation: null
+      relation: null,
+      editCloneRows: null
     };
     if (relation) {
       await this.setState(initialState);
@@ -731,6 +743,24 @@ class Browser extends DashboardView {
 
   async fetchRelationCount(relation) {
     return await this.context.currentApp.getRelationCount(relation);
+  }
+
+  async fetchClassIndexes(className){
+    try {
+      const data = await this.context.currentApp.getIndexes(className);
+      if(data){
+        this.setState({
+          uniqueClassFields: data
+            .filter(idxObj => idxObj.unique)
+            .map(obj => Object.keys(JSON.parse(obj.index)))
+            .flat()
+        });
+      }
+    } catch (error) {
+      this.setState({
+        uniqueClassFields: []
+      });
+    }
   }
 
   fetchNextPage() {
@@ -860,11 +890,15 @@ class Browser extends DashboardView {
   }
 
   updateRow(row, attr, value) {
-    let isNewObject = row < 0;
+    let isNewObject = row === -1;
+    let isEditCloneObj = row < -1;
     let obj = isNewObject ? this.state.newObject : this.state.data[row];
     if (!obj && isNewObject) {
       obj = this.getLastCreatedObject(this.state.data)
       isNewObject = false
+    }
+    if(isEditCloneObj){
+      obj = this.state.editCloneRows[row + (this.state.editCloneRows.length+1)];
     }
     const prev = obj.get(attr);
     if (value === prev) {
@@ -880,7 +914,7 @@ class Browser extends DashboardView {
       let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' ' + createdOrUpdated;
       this.showNote(msg, false);
 
-      const state = { data: this.state.data };
+      const state = { data: this.state.data, editCloneRows: this.state.editCloneRows };
 
       if (isNewObject) {
         const relation = this.state.relation;
@@ -918,6 +952,18 @@ class Browser extends DashboardView {
           }
           this.state.counts[obj.className] += 1;
         }
+      }
+      if(isEditCloneObj){
+        console.log(obj);
+        state.editCloneRows = state.editCloneRows.filter(
+          cloneObj => cloneObj._localId !== obj._localId
+        );
+        if(state.editCloneRows.length === 0)
+          state.editCloneRows = null;
+        if (this.props.params.className === obj.className) {
+          this.state.data.unshift(obj);
+        }
+        this.state.counts[obj.className] += 1;
       }
       this.setState(state);
     }, (error) => {
@@ -1161,6 +1207,17 @@ class Browser extends DashboardView {
     try {
       await Parse.Object.saveAll(toClone, { useMasterKey: true });
     } catch (error) {
+      if(error.code === 137){
+        const newClonedObjects = [];
+        toClone.forEach(cloneObj => {
+          this.state.uniqueClassFields.forEach(field => {
+            const fieldType =  typeof cloneObj.get(field);
+            cloneObj.set(field, fieldType === 'string' ? '' : undefined);
+          });
+          newClonedObjects.push(cloneObj);
+        });
+        this.addEditCloneRows(newClonedObjects);
+      }
       this.setState({
         selection: {},
         showCloneSelectedRowsDialog: false
@@ -1348,6 +1405,7 @@ class Browser extends DashboardView {
             uniqueField={this.state.uniqueField}
             count={count}
             perms={this.state.clp[className]}
+            editCloneRows={this.state.editCloneRows}
             schema={this.props.schema}
             filters={this.state.filters}
             onFilterChange={this.updateFilters}
