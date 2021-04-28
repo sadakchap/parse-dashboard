@@ -23,7 +23,7 @@ const MAX_ROWS = 200; // Number of rows to render at any time
 const ROWS_OFFSET = 160;
 const ROW_HEIGHT = 31;
 
-const READ_ONLY = [ 'objectId', 'createdAt', 'updatedAt', 'sessionToken'];
+const READ_ONLY = [ 'objectId', 'createdAt', 'updatedAt'];
 
 export default class BrowserTable extends React.Component {
   constructor() {
@@ -182,6 +182,14 @@ export default class BrowserTable extends React.Component {
               setCopyableValue={this.props.setCopyableValue}
               setContextMenu={this.props.setContextMenu}
               onEditSelectedRow={this.props.onEditSelectedRow} />
+
+              <Button
+                value='Cancel'
+                primary={false}
+                onClick={this.props.onAbortAddRow}
+                width='55px'
+                additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
+              />
           </div>
         );
       }
@@ -275,7 +283,7 @@ export default class BrowserTable extends React.Component {
             wrapTop = ROW_HEIGHT * (this.props.current.row + (this.props.editCloneRows.length + 1));
           }
           if (this.props.current.row > -1 && this.props.newObject) {
-            wrapTop += 60;
+            wrapTop += 90;
           }
           if(this.props.current.row >= -1 && this.props.editCloneRows){
             wrapTop += ROW_HEIGHT * (this.props.editCloneRows.length + 1);

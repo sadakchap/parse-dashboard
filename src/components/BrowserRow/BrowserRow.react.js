@@ -62,6 +62,11 @@ export default class BrowserRow extends Component {
           if(name === 'expiresAt' && className === '_Session'){
             readOnly = true;
           }
+          if(name === "sessionToken"){
+            if (className === "_User" || className === "_Session") {
+              readOnly = true;
+            }
+          }
 
           return (
             <BrowserCell
