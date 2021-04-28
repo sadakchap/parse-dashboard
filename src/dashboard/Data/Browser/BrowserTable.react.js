@@ -141,6 +141,14 @@ export default class BrowserTable extends React.Component {
               setCopyableValue={this.props.setCopyableValue}
               setContextMenu={this.props.setContextMenu}
               onEditSelectedRow={this.props.onEditSelectedRow} />
+
+              <Button
+                value='Cancel'
+                primary={false}
+                onClick={this.props.onAbortAddRow}
+                width='55px'
+                additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
+              />
           </div>
         );
       }
@@ -228,7 +236,7 @@ export default class BrowserTable extends React.Component {
           }
           let wrapTop = Math.max(0, this.props.current.row * ROW_HEIGHT);
           if (this.props.current.row > -1 && this.props.newObject) {
-            wrapTop += 60;
+            wrapTop += 90;
           }
           let wrapLeft = 30;
           for (let i = 0; i < this.props.current.col; i++) {
