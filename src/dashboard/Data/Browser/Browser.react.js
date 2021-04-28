@@ -145,6 +145,7 @@ class Browser extends DashboardView {
     this.handleShowAcl = this.handleShowAcl.bind(this);
     this.onDialogToggle = this.onDialogToggle.bind(this);
     this.addEditCloneRows = this.addEditCloneRows.bind(this);
+    this.abortEditCloneRows = this.abortEditCloneRows.bind(this);
   }
 
   getFooterMenuButtons() {
@@ -605,6 +606,14 @@ class Browser extends DashboardView {
     this.setState({
       editCloneRows: cloneRows
     });
+  }
+
+  abortEditCloneRows(){
+    if (this.state.editCloneRows) {
+      this.setState({
+        editCloneRows: null
+      });
+    }
   }
 
   abortAddRow() {
@@ -1442,6 +1451,7 @@ class Browser extends DashboardView {
             onAbortAddRow={this.abortAddRow}
             onAddRowWithModal={this.addRowWithModal}
             onAddClass={this.showCreateClass}
+            onAbortEditCloneRows={this.abortEditCloneRows}
             err={this.state.err}
             showNote={this.showNote}
             onClickIndexManager={this.onClickIndexManager} />

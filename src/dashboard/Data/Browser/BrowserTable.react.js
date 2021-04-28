@@ -153,6 +153,13 @@ export default class BrowserTable extends React.Component {
               );
             }
             )}
+            <Button
+                value='Cancel'
+                primary={false}
+                onClick={this.props.onAbortEditCloneRows}
+                width='55px'
+                additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
+              />
           </div>
         );
       }
@@ -286,7 +293,7 @@ export default class BrowserTable extends React.Component {
             wrapTop += 90;
           }
           if(this.props.current.row >= -1 && this.props.editCloneRows){
-            wrapTop += ROW_HEIGHT * (this.props.editCloneRows.length + 1);
+            wrapTop += ROW_HEIGHT * (this.props.editCloneRows.length + 1) + 30;
           }          
           let wrapLeft = 30;
           for (let i = 0; i < this.props.current.col; i++) {
