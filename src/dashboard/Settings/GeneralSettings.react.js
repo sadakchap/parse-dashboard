@@ -484,7 +484,7 @@ export default class GeneralSettings extends DashboardView {
       textModal={true}>
       <span>We have removed <strong>{joinWithFinal('', this.state.removedCollaborators.map(c => c.userName || c.userEmail), ', ', ' and ')}</strong> from this app. If they had saved the master key, they may still have access via an SDK or the API. To be sure, you can reset your master key in the Keys section of app settings.</span>
     </Modal> : null;
-    let setCollaborators = (setField, unused, allCollabs) => {
+    let setCollaborators = (setField, _, allCollabs) => {
       let addedCollaborators = setDifference(allCollabs, initialFields.collaborators, compareCollaborators);
       let removedCollaborators = setDifference(initialFields.collaborators, allCollabs, compareCollaborators);
       if (addedCollaborators.length === 0 && removedCollaborators.length === 0) {
@@ -513,7 +513,7 @@ export default class GeneralSettings extends DashboardView {
           if (changes.inProduction !== undefined) {
             promiseList.push(this.context.currentApp.setInProduction(changes.inProduction));
           }
-
+          
           let removedCollaborators;
           if (changes.collaborators !== undefined) {
             let addedCollaborators = setDifference(changes.collaborators, initialFields.collaborators, compareCollaborators);
