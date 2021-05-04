@@ -14,8 +14,8 @@ import Pill                      from 'components/Pill/Pill.react';
 import React, { Component }      from 'react';
 import styles                    from 'components/BrowserCell/BrowserCell.scss';
 import Tooltip                   from 'components/Tooltip/PopperTooltip.react';
+import PropTypes                 from "lib/PropTypes";
 import { unselectable }          from 'stylesheets/base.scss';
-import PropTypes                 from 'lib/PropTypes';
 
 class BrowserCell extends Component {
   constructor() {
@@ -305,9 +305,9 @@ class BrowserCell extends Component {
     if (current) {
       classes.push(styles.current);
     }
-    return (
-      readonly ?
-      <Tooltip placement="bottom" tooltip="Read only (CTRL+C to copy)" tooltipShown={this.state.showTooltip}>
+    
+    return readonly ? (
+      <Tooltip placement='bottom' tooltip='Read only (CTRL+C to copy)' visible={this.state.showTooltip}>
         <span
           ref={this.cellRef}
           className={classes.join(' ')}
@@ -317,36 +317,43 @@ class BrowserCell extends Component {
             setCopyableValue(hidden ? undefined : this.copyableValue);
           }}
           onDoubleClick={() => {
-            this.setState({ showTooltip: true });
-            setTimeout(() => {
-              this.setState({ showTooltip: false });
-            }, 2000);
-          }}>
-          {row < 0 ? '(auto)' : content}
+            if (field === 'objectId' && onEditSelectedRow) {
+              onEditSelectedRow(true, value);
+            } else {
+              this.setState({ showTooltip: true });
+              setTimeout(() => {
+                this.setState({ showTooltip: false });
+              }, 2000);
+            }
+          }}
+        >
+          {content}
         </span>
-      </Tooltip> :
-        <span
-          ref={this.cellRef}
-          className={classes.join(' ')}
-          style={{ width }}
-          onClick={() => {
-            onSelect({ row, col });
-            setCopyableValue(hidden ? undefined : this.copyableValue);
-          }}
-          onDoubleClick={() => {
-            if (type !== 'Relation') {
-              onEditChange(true)
+      </Tooltip>
+    ) : (
+      <span
+        ref={this.cellRef}
+        className={classes.join(' ')}
+        style={{ width }}
+        onClick={() => {
+          onSelect({ row, col });
+          setCopyableValue(hidden ? undefined : this.copyableValue);
+        }}
+        onDoubleClick={() => {
+          // Since objectId can't be edited, double click event opens edit row dialog
+          if (field === 'objectId' && onEditSelectedRow) {
+            onEditSelectedRow(true, value);
+          } else if (type !== 'Relation') {
+            onEditChange(true)
+          }
+        }}
+        onTouchEnd={e => {
+          if (current && type !== 'Relation') {
+            // The touch event may trigger an unwanted change in the column value
+            if (['ACL', 'Boolean', 'File'].includes(type)) {
+              e.preventDefault();
             }
-          }}
-          onTouchEnd={e => {
-            if (current && type !== 'Relation') {
-              // The touch event may trigger an unwanted change in the column value
-              if (['ACL', 'Boolean', 'File'].includes(type)) {
-                e.preventDefault();
-              }
-              onEditChange(true);
-            }
-          }}>
+          }}}>
           {content}
         </span>
     );

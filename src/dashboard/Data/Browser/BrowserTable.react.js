@@ -256,6 +256,9 @@ export default class BrowserTable extends React.Component {
               readonly = true;
             }
           }
+          if(name === 'expiresAt' && this.props.className === '_Session'){
+            readonly = true;
+          }
           let obj = this.props.current.row < 0 ? this.props.newObject : this.props.data[this.props.current.row];
           if(!obj && this.props.current.row < -1){
             obj = this.props.editCloneRows[this.props.current.row + this.props.editCloneRows.length + 1];
