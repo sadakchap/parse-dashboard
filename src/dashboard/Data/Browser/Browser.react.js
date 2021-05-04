@@ -219,6 +219,11 @@ class Browser extends DashboardView {
     `;
     const steps = [
       {
+        eventId: 'Connect to Back4App',
+        intro: `Congratulations, you’ve created your App Backend on Back4App. As a next step, we recommend <a href="https://www.back4app.com/docs/get-started/parse-sdk" style="color: #169CEE">adding Back4App to your App Project.</a>`,
+        position: 'center'
+      },
+      {
         eventId: 'Database Browser Section',
         element: () => document.querySelector('[class^="section_contents"] > div > div'),
         intro: `This is the <b>Database Browser</b> section where you can create classes and manage your data using this Dashboard.`,
@@ -301,16 +306,17 @@ class Browser extends DashboardView {
 
         switch(this._currentStep) {
           case 0:
+          case 1:
             let nextButton = getNextButton();
             if (nextButton) {
               nextButton.innerHTML = "Next";
             }
             break;
-          case 1:
+          case 2:
             nextButton = getNextButton();
             nextButton.innerHTML = "Run";
             break;
-          case 2:
+          case 3:
             if (!getCustomVehicleClassLink() && !unexpectedErrorThrown) {
               schema.dispatch(ActionTypes.CREATE_CLASS, {
                 className: 'B4aVehicle',
@@ -322,12 +328,13 @@ class Browser extends DashboardView {
               }).then(() => {
                 return context.currentApp.apiRequest('POST', '/classes/B4aVehicle', { name: 'Corolla', price: 19499, color: 'black' }, { useMasterKey: true });
               }).then(() => {
-                introItems[2].element = getCustomVehicleClassLink();
+                introItems[3].element = getCustomVehicleClassLink();
                 this.nextStep();
               }).catch(e => {
                 if (!unexpectedErrorThrown) {
-                  introItems.splice(2, 2);
-                  for (let i=2; i<introItems.length; i++) {
+                  console.log(introItems);
+                  introItems.splice(3, 2);
+                  for (let i=3; i<introItems.length; i++) {
                     introItems[i].step -= 2;
                   }
                   unexpectedErrorThrown = true;
@@ -346,17 +353,17 @@ class Browser extends DashboardView {
               history.push(context.generatePath('browser/B4aVehicle'));
             }
             break;
-          case 3:
+          case 4:
             if (!unexpectedErrorThrown) {
-              this._introItems[3].element = document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2)');
+              this._introItems[4].element = document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2)');
             }
             break;
-          case 4:
+          case 5:
             if(unexpectedErrorThrown) {
               targetElement.style.backgroundColor = 'inherit';
             }
             break;
-          case 6:
+          case 7:
             targetElement.style.backgroundColor = 'inherit';
             break;
         }
@@ -370,11 +377,11 @@ class Browser extends DashboardView {
               targetElement.style.backgroundColor = 'inherit';
             }
             break;
-          case 1:
+          case 2:
             const numberLayer = document.querySelector('.introjs-helperNumberLayer');
             numberLayer.style.marginLeft = '20px';
             break;
-          case 2:
+          case 3:
             if (!unexpectedErrorThrown) {
               targetElement.style.backgroundColor = "#0e69a0";
             }
