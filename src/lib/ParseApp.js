@@ -397,7 +397,18 @@ export default class ParseApp {
       const customParser = {};
       Object.keys(schema.fields).forEach(fieldName => {
         customParser[fieldName] = function (item) {
-          if (schema.fields[fieldName].type === "Number") return Number(item);
+          if (schema.fields[fieldName].type === 'Number') return Number(item);
+          if (schema.fields[fieldName].type === 'Boolean') return item.toLowerCase() === 'false' ? false :  true;
+          if (schema.fields[fieldName].type === 'Array'){
+            item = item.replaceAll('“', '"');
+            item = item.replaceAll('”', '"');
+            return JSON.parse(item);
+          }
+          if (schema.fields[fieldName].type === 'Object'){
+            item = item.replaceAll('“', '"');
+            item = item.replaceAll('”', '"');
+            return JSON.parse(item);
+          }
           return item;
         };
       });
