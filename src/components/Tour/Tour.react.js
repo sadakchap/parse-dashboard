@@ -2,21 +2,14 @@ import React, { Component } from 'react';
 import introJs from 'intro.js'
 import introStyle from 'stylesheets/introjs.css';
 
-const getComponentReadyPromise = conditionFn => {
-  return new Promise((resolve, reject) => {
-    let retry = 0;
-    const checkComponent = () => {
-      if (conditionFn()) {
-        resolve();
-      } else{
-        if (++retry > 10) {
-          return reject();
-        }
-        setTimeout(checkComponent, 500);
-      }
-    };
-    checkComponent();
-  });
+const getComponentReadyPromise = async conditionFn => {
+  for (let i = 1; i <= 20; i++) {
+    if (conditionFn()) {
+      return;
+    }
+    await new Promise(resolve => setTimeout(resolve, i * 500));
+  }
+  throw new Error("Component not ready");
 };
 
 export default class Tour extends Component {
