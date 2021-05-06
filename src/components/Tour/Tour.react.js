@@ -12,7 +12,7 @@ const getComponentReadyPromise = conditionFn => {
         if (++retry > 10) {
           return reject();
         }
-        setTimeout(checkComponent, 50);
+        setTimeout(checkComponent, 500);
       }
     };
     checkComponent();
