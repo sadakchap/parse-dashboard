@@ -300,7 +300,7 @@ class BrowserCell extends Component {
     }
 
     // Set read only style
-    if (readonly && content !== '(hidden)')
+    if (readonly && content !== '(hidden)' && row > -1)
       classes.push(styles.readonly)
     if (current) {
       classes.push(styles.current);
@@ -327,7 +327,7 @@ class BrowserCell extends Component {
             }
           }}
         >
-          {content}
+          {row < 0 ? '(auto)' : content}
         </span>
       </Tooltip>
     ) : (
