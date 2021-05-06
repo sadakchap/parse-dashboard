@@ -146,6 +146,7 @@ class Browser extends DashboardView {
     this.onDialogToggle = this.onDialogToggle.bind(this);
     this.addEditCloneRows = this.addEditCloneRows.bind(this);
     this.abortEditCloneRows = this.abortEditCloneRows.bind(this);
+    this.preventScrollOnTour = this.preventScrollOnTour.bind(this);
   }
 
   getFooterMenuButtons() {
@@ -159,6 +160,12 @@ class Browser extends DashboardView {
       this.setState({ renderFooterMenu: false });
     } else {
       this.setState({ renderFooterMenu: true });
+    }
+  }
+
+  preventScrollOnTour() {
+    if(this.state.showTour){
+      window.scrollTo(0, 0);
     }
   }
 
@@ -176,10 +183,12 @@ class Browser extends DashboardView {
       this.prefetchData(this.props, this.context);
     }
     window.addEventListener('resize', this.windowResizeHandler);
+    window.addEventListener('scroll', this.preventScrollOnTour);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.windowResizeHandler);
+    window.addEventListener('scroll', this.preventScrollOnTour);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
