@@ -355,7 +355,7 @@ class Browser extends DashboardView {
             break;
           case 4:
             if (!unexpectedErrorThrown) {
-              this._introItems[4].element = document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2)');
+              this._introItems[4].element = document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2) span');
             }
             break;
           case 5:
