@@ -18,6 +18,7 @@ import React               from 'react';
 import TextInput           from 'components/TextInput/TextInput.react';
 import validateEmailFormat from 'lib/validateEmailFormat';
 import PermissionsCollaboratorDialog from 'components/PermissionsCollaboratorDialog/PermissionsCollaboratorDialog.react';
+import Swal                from 'sweetalert2'
 
 import lodash from 'lodash'
 
@@ -181,7 +182,20 @@ export default class Collaborators extends React.Component {
 
   handleDelete(collaborator) {
     let newCollaborators = this.props.collaborators.filter(oldCollaborator => oldCollaborator.userEmail !== collaborator.userEmail);
-    this.props.onRemove(collaborator, newCollaborators);
+    Swal.mixin().queue([
+      {
+        html: `<p style="text-align: center; margin-bottom: 16px;">Are you sure you want to remove <span style="font-weight: bold; color: #169cee">${collaborator.userEmail}</span> as a collaborator.</p>`,
+        type: "warning",
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#ff395e",
+        showCancelButton: true,
+        reverseButtons: true,
+        preConfirm: () => {
+          this.props.onRemove(collaborator, newCollaborators);
+          Swal.close();
+        }
+      }
+    ]);
   }
 
   handleEdit(collaborator) {
