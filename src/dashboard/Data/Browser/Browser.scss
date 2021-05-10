@@ -170,6 +170,31 @@ body:global(.expanded) {
   @include animation('fade-out 0.2s ease-out');
 }
 
+.spinnerBorder {
+  @include animation('spinner-border .75s linear infinite');
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  vertical-align: text-bottom;
+  border: .2em solid #1769a0;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+.tourLoadingBtn {
+  padding: 0 !important;
+  width: 60px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+@include keyframes(spinner-border) {
+  100% {
+    @include transform(rotate(360deg));
+  }
+}
+
 @include keyframes(fade-in) {
   0% {
     @include transform(scale(0.9));

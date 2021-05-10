@@ -291,6 +291,16 @@ class Browser extends DashboardView {
       return document.querySelector('[class^=class_list] [title="B4aVehicle"]');
     };
 
+    const getNextComponentReadyPromise = async conditionFn => {
+      for (let i = 1; i <= 20; i++) {
+        if (conditionFn()) {
+          return;
+        }
+        await new Promise(resolve => setTimeout(resolve, i * 50));
+      }
+      throw new Error("Component not ready");
+    };
+
     return {
       steps,
       onBeforeStart: () => {
@@ -392,6 +402,17 @@ class Browser extends DashboardView {
             break;
           case 3:
             if (!unexpectedErrorThrown) {
+              if (!document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2) span')){
+                // next row has not rendered yet
+                let nextButton = getNextButton();
+                nextButton.innerHTML = `<div class="${styles.spinnerBorder}" role="status"></div>`;
+                nextButton.classList.add('introjs-disabled', styles.tourLoadingBtn);
+                getNextComponentReadyPromise(() => document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2) span'))
+                  .then(() => {
+                    nextButton.innerHTML = 'Next';
+                    nextButton.classList.remove('introjs-disabled', styles.tourLoadingBtn);
+                  })
+              }
               targetElement.style.backgroundColor = "#0e69a0";
             }
             break;
