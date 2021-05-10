@@ -1242,7 +1242,8 @@ class Browser extends DashboardView {
     for (const objectId in this.state.selection) {
       objectIds.push(objectId);
     }
-    const query = new Parse.Query(this.props.params.className);
+    const className = this.props.params.className;
+    const query = new Parse.Query(className);
     query.containedIn('objectId', objectIds);
     const objects = await query.find({ useMasterKey: true });
     const toClone = [];
@@ -1251,6 +1252,15 @@ class Browser extends DashboardView {
     }
     try {
       await Parse.Object.saveAll(toClone, { useMasterKey: true });
+      return this.setState({
+        selection: {},
+        data: [...toClone, ...this.state.data],
+        showCloneSelectedRowsDialog: false,
+        counts: {
+          ...this.state.counts,
+          [className]: this.state.counts[className] + toClone.length
+        }
+      });
     } catch (error) {
       if(error.code === 137){
         const newClonedObjects = [];
@@ -1270,14 +1280,6 @@ class Browser extends DashboardView {
       this.showNote(error.message, true);
       return;
     }
-    this.setState({
-      selection: {},
-      data: [
-        ...toClone,
-        ...this.state.data,
-      ],
-      showCloneSelectedRowsDialog: false,
-    });
   }
 
   getClassRelationColumns(className) {
