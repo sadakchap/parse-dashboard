@@ -118,7 +118,7 @@ export default class BrowserTable extends React.Component {
       let editCloneRows = null;
       if(this.props.editCloneRows){
         editCloneRows = (
-          <div style={{ marginBottom: 30, borderBottom: "1px solid #169CEE" }}>
+          <div style={{ borderBottom: "1px solid #169CEE" }}>
             {this.props.editCloneRows.map((cloneRow, idx) => {
               let index = (this.props.editCloneRows.length + 1) * -1 + idx;
               const currentCol = this.props.current && this.props.current.row === index ? this.props.current.col : undefined;
@@ -167,7 +167,7 @@ export default class BrowserTable extends React.Component {
       if (this.props.newObject && this.state.offset <= 0) {
         const currentCol = this.props.current && this.props.current.row === -1 ? this.props.current.col : undefined;
         newRow = (
-          <div style={{ marginBottom: 30, borderBottom: '1px solid #169CEE' }}>
+          <div style={{ borderBottom: '1px solid #169CEE' }}>
             <BrowserRow
               key={-1}
               className={this.props.className}
@@ -290,13 +290,16 @@ export default class BrowserTable extends React.Component {
           }
           let wrapTop = Math.max(0, this.props.current.row * ROW_HEIGHT);
           if(this.props.current.row < -1 && this.props.editCloneRows){
+            //for edit cloned rows
             wrapTop = ROW_HEIGHT * (this.props.current.row + (this.props.editCloneRows.length + 1));
           }
           if (this.props.current.row > -1 && this.props.newObject) {
-            wrapTop += 90;
+            //for simple data rows when there's new row
+            wrapTop += 60;
           }
           if(this.props.current.row >= -1 && this.props.editCloneRows){
-            wrapTop += ROW_HEIGHT * (this.props.editCloneRows.length + 1) + 30;
+            //for simple data rows & new row when there's edit clone rows
+            wrapTop += ROW_HEIGHT * (this.props.editCloneRows.length + 1);
           }          
           let wrapLeft = 30;
           for (let i = 0; i < this.props.current.col; i++) {
