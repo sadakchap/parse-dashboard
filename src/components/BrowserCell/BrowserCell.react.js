@@ -316,11 +316,25 @@ class BrowserCell extends Component {
             onSelect({ row, col });
             setCopyableValue(hidden ? undefined : this.copyableValue);
           }}
-          onDoubleClick={() => {
-            this.setState({ showTooltip: true });
-            setTimeout(() => {
+          onMouseEnter={() => {
+            if (field === "objectId") {
+              this.setState({ showTooltip: true });
+            }
+          }}
+          onMouseLeave={() => {
+            if (field === "objectId") {
               this.setState({ showTooltip: false });
-            }, 2000);
+            }
+          }}
+          onDoubleClick={() => {
+            if (field === "objectId" && onEditSelectedRow) {
+              onEditSelectedRow(true, value);
+            } else {
+              this.setState({ showTooltip: true });
+              setTimeout(() => {
+                this.setState({ showTooltip: false });
+              }, 2000);
+            }
           }}
         >
           {row < 0 ? '(auto)' : content}
