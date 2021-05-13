@@ -83,7 +83,7 @@ const AccountSettingsPage = () => (
 
 async function fetchHubUser() {
   try {
-    return (await axios.get(`${b4aSettings.BACK4APP_API_PATH}/me/hub`)).data;
+    return (await axios.get(`${b4aSettings.BACK4APP_API_PATH}/me/hub`, { withCredentials: true })).data;
   } catch (err) {
     throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
   }
