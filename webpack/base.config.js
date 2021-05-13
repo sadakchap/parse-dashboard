@@ -89,7 +89,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'version' : JSON.stringify(version),
-        'BACKEND_URL':  JSON.stringify(BACK4APP_API_PATH)
+        'BACKEND_URL':  JSON.stringify(BACK4APP_API_PATH),
+        'SOLUCX_API_KEY': JSON.stringify(settings.SOLUCX_API_KEY)
       },
       b4aSettings: JSON.stringify(settings)
     }),

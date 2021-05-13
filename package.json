@@ -36,7 +36,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "7.13.10",
-    "@back4app/back4app-settings": "^1.2.0",
+    "@back4app/back4app-settings": "latest",
     "axios": "^0.18.0",
     "bcryptjs": "2.3.0",
     "body-parser": "1.19.0",
