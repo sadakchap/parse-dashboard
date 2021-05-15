@@ -388,6 +388,7 @@ class Browser extends DashboardView {
         }
       },
       onAfterChange: function(targetElement) {
+        window.scrollTo(0, 0);
         switch(this._currentStep) {
           case 0:
             if (this._introItems.length === 1) {
