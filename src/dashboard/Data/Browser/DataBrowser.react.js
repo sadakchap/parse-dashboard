@@ -146,12 +146,26 @@ export default class DataBrowser extends React.Component {
     if (this.props.disableKeyControls) {
       return;
     }
-    if (this.props.newObject) { // creating new row
+    if (!this.state.editing && this.props.newObject) {
+      // for cancelling new row
       if (e.keyCode === 27) { // ESC
         this.props.onAbortAddRow();
         e.preventDefault();
       }
+      return;
     }
+
+    if (this.state.editing && this.props.newObject && this.state.current.row === -1) {
+      // if user is editing new row and want to cancel editing a cell
+      if (e.keyCode === 27) { // ESC
+        this.setState({
+          editing: false
+        });
+        e.preventDefault();
+      }
+      return;
+    }
+
     if (this.state.editing) {
       switch (e.keyCode) {
         case 27: // ESC
