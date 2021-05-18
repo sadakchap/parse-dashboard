@@ -121,7 +121,25 @@ export default class DashboardView extends React.Component {
         name: 'Logs',
         link: '/logs'
       });
-    }    
+    }
+
+    let apiSubSections = [];
+
+    apiSubSections.push({
+      name: "Connect",
+      link: "/connections"
+    });
+
+    apiSubSections.push({
+      name: 'Console',
+      link: '/api_console',
+    });
+
+    apiSubSections.push({
+      name: 'API Reference',
+      icon: 'api-reference',
+      link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`,
+    });
 
     //webhooks requires removal of heroku link code, then it should work.
     // if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
@@ -259,11 +277,6 @@ export default class DashboardView extends React.Component {
 
     if (databaseSubsections.length > 0) {
       appSidebarSections.push({
-        name: 'API Reference',
-        icon: 'api-reference',
-        link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`,
-      });
-      appSidebarSections.push({
         name: 'Database',
         icon: 'core',
         link: '/browser',
@@ -276,6 +289,13 @@ export default class DashboardView extends React.Component {
       icon: 'core',
       link: '/cloud_code',
       subsections: cloudCodeSubSections,
+    })
+
+    appSidebarSections.push({
+      name: 'API',
+      icon: 'core',
+      link: '/connections',
+      subsections: apiSubSections
     })
 
     appSidebarSections.push({

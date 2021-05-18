@@ -12,8 +12,8 @@ import DashboardView from 'dashboard/DashboardView.react';
 export default class ApiConsole extends DashboardView {
   constructor() {
     super();
-    this.section = 'Core';
-    this.subsection = 'API Console';
+    this.section = 'API';
+    this.subsection = 'Console';
   }
 
   renderSidebar() {
@@ -24,9 +24,9 @@ export default class ApiConsole extends DashboardView {
         current={current}
         linkPrefix={'api_console/'}
         categories={[
-          { name: 'REST Console', id: 'rest' },
-          { name: 'GraphQL Console', id: 'graphql' },
-          { name: 'JS Console', id: 'js_console' }
+          { name: 'REST', id: 'rest' },
+          { name: 'GraphQL', id: 'graphql' },
+          { name: 'Javascript', id: 'js_console' }
         ]}
       />
     );

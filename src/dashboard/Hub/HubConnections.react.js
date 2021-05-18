@@ -13,8 +13,8 @@ class HubConnections extends DashboardView {
   constructor(props, context) {
     super(props, context);
 
-    this.section = 'Core';
-    this.subsection = 'Connections';
+    this.section = 'API';
+    this.subsection = 'Connect';
 
     this.state = {
       data: null,
