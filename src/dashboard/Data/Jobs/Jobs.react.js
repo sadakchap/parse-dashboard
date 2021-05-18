@@ -64,7 +64,7 @@ export default
 class Jobs extends TableView {
   constructor() {
     super();
-    this.section = 'Core';
+    this.section = 'Cloud Code';
     this.subsection = 'Jobs';
 
     this.state = {

@@ -100,33 +100,34 @@ export default class DashboardView extends React.Component {
       link: '/index'
     })
 
+    let cloudCodeSubSections = [];
     // Show cloud code to all parse versions
-    //if (features.cloudCode && features.cloudCode.viewCode) {
-      // coreSubsections.push({
-      //   name: 'Cloud Code Functions',
-      //   link: '/cloud_code'
-      // });
-    //}
+    // if (features.cloudCode && features.cloudCode.viewCode) {
+    cloudCodeSubSections.push({
+      name: 'Functions & Web Hosting',
+      link: '/cloud_code'
+    });
+    // }
+
+    if (features.cloudCode && features.cloudCode.jobs) {
+      cloudCodeSubSections.push({
+        name: 'Jobs',
+        link: '/jobs'
+      });
+    }
+
+    if (features.logs && Object.keys(features.logs).some(key => features.logs[key])) {
+      cloudCodeSubSections.push({
+        name: 'Logs',
+        link: '/logs'
+      });
+    }    
 
     //webhooks requires removal of heroku link code, then it should work.
     // if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
     //   coreSubsections.push({
     //     name: 'Webhooks',
     //     link: '/webhooks'
-    //   });
-    // }
-
-    // if (features.cloudCode && features.cloudCode.jobs) {
-    //   coreSubsections.push({
-    //     name: 'Jobs',
-    //     link: '/jobs'
-    //   });
-    // }
-
-    // if (features.logs && Object.keys(features.logs).some(key => features.logs[key])) {
-    //   coreSubsections.push({
-    //     name: 'Logs',
-    //     link: '/logs'
     //   });
     // }
 
@@ -269,6 +270,13 @@ export default class DashboardView extends React.Component {
         subsections: databaseSubsections,
       });
     }
+
+    appSidebarSections.push({
+      name: 'Cloud Code',
+      icon: 'core',
+      link: '/cloud_code',
+      subsections: cloudCodeSubSections,
+    })
 
     appSidebarSections.push({
       name: 'Publish on Hub',

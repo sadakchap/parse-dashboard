@@ -26,8 +26,8 @@ import Icon            from 'components/Icon/Icon.react';
 class B4ACloudCode extends CloudCode {
   constructor() {
     super();
-    this.section = 'Core';
-    this.subsection = 'Cloud Code Functions';
+    this.section = 'Cloud Code';
+    this.subsection = 'Functions & Web Hosting';
 
     this.appsPath = 'parse-app'
 

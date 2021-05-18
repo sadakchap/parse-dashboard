@@ -21,8 +21,8 @@ function getPath(params) {
 export default class CloudCode extends DashboardView {
   constructor() {
     super();
-    this.section = 'Core';
-    this.subsection = 'Cloud Code';
+    this.section = 'Cloud Code';
+    this.subsection = 'Functions & Web Hosting';
 
     this.state = {
       files: undefined,
