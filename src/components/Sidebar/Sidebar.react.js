@@ -63,6 +63,26 @@ class Sidebar extends React.Component {
     isSidebarFixed = this.state.fixed;
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!!nextProps.showTour && this.state.collapsed) {
+      // if showing tour then open sidebar
+      this.setState({
+        mobileFriendly: false,
+        collapsed: false,
+        fixed: true
+      });
+    }
+    
+    if (this.props.showTour && !nextProps.showTour && isMobile()) {
+      // Tour is over and on mobile device
+      this.setState({
+        mobileFriendly: true,
+        collapsed: true,
+        fixed: false
+      });
+    }    
+  }
+
   windowResizeHandler() {
     if (isMobile()) {
       if (document.body.className.indexOf(' expanded') === -1) {
@@ -124,7 +144,7 @@ class Sidebar extends React.Component {
         document.body.className += ' expanded';
       }
 
-      return <div className={sidebarClasses.join(' ')} onMouseEnter={!this.state.mobileFriendly && (() => this.setState({ collapsed: false }))}>
+      return <div className={sidebarClasses.join(' ')} onMouseEnter={!this.state.mobileFriendly ? (() => this.setState({ collapsed: false })) : undefined}>
         <div className={styles.pinContainer} onClick={this.state.mobileFriendly && (() => this.setState({ collapsed: false }))}>
           <Icon className={styles.sidebarPin}
             name={this.state.mobileFriendly ? 'expand' : 'pin'}

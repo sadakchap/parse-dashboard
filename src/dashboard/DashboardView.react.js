@@ -328,6 +328,7 @@ export default class DashboardView extends React.Component {
 
     let sidebar = (
     <Sidebar
+      showTour={this.state.showTour}
       sections={appSidebarSections}
       appSelector={true}
       section={this.section}

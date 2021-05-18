@@ -150,7 +150,7 @@ class Browser extends DashboardView {
   }
 
   getFooterMenuButtons() {
-    return this.state.renderFooterMenu ? [
+    return this.state.renderFooterMenu || this.state.showTour ? [
       <a key={0} onClick={() => this.setState({ showTour: true })}>Play intro</a>
     ] : null;
   }
@@ -273,7 +273,7 @@ class Browser extends DashboardView {
       },
       {
         eventId: 'Play Intro Button',
-        element: document.querySelector('[class^="footer"] [class^="more"]'),
+        element: () => document.querySelector('[class^="footer"] [class^="more"]'),
         intro: `You can find this tour and play it again by pressing this button and selecting <b>"Play intro"</b>.`,
         position: 'right'
       }
@@ -388,6 +388,7 @@ class Browser extends DashboardView {
         }
       },
       onAfterChange: function(targetElement) {
+        window.scrollTo(0, 0);
         switch(this._currentStep) {
           case 0:
             if (this._introItems.length === 1) {
