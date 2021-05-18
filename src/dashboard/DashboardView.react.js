@@ -251,6 +251,10 @@ export default class DashboardView extends React.Component {
         link: '/settings/keys'
       });
     // }
+    settingsSections.push({
+      name: 'Server Settings',
+      link: '/server-settings',
+    });
     /*
     if (features.usersSettings) {
       settingsSections.push({
@@ -297,6 +301,15 @@ export default class DashboardView extends React.Component {
       link: '/connections',
       subsections: apiSubSections
     })
+
+    if (settingsSections.length > 0) {
+      appSidebarSections.push({
+        name: 'App Settings',
+        icon: 'gear-solid',
+        link: '/settings',
+        subsections: settingsSections
+      });
+    }
 
     appSidebarSections.push({
       name: 'Publish on Hub',
