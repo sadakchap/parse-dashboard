@@ -74,84 +74,84 @@ export default class DashboardView extends React.Component {
 
     const { showAdminPage } = this.context.currentApp.custom
 
-    let coreSubsections = [];
+    let databaseSubsections = [];
     if (features.schemas &&
       features.schemas.addField &&
       features.schemas.removeField &&
       features.schemas.addClass &&
       features.schemas.removeClass) {
-      coreSubsections.push({
-        name: 'Database Browser',
+      databaseSubsections.push({
+        name: 'Browser',
         link: '/browser'
       });
     }
 
-    coreSubsections.push({
-      name: 'Connections',
-      link: '/connections',
-      badge: {
-        label: 'NEW',
-        color: 'green'
-      }
-    })
+    // coreSubsections.push({
+    //   name: 'Connections',
+    //   link: '/connections',
+    //   badge: {
+    //     label: 'NEW',
+    //     color: 'green'
+    //   }
+    // })
 
-    coreSubsections.push({
+    databaseSubsections.push({
       name: 'Index Manager',
       link: '/index'
     })
 
     // Show cloud code to all parse versions
     //if (features.cloudCode && features.cloudCode.viewCode) {
-      coreSubsections.push({
-        name: 'Cloud Code Functions',
-        link: '/cloud_code'
-      });
+      // coreSubsections.push({
+      //   name: 'Cloud Code Functions',
+      //   link: '/cloud_code'
+      // });
     //}
 
     //webhooks requires removal of heroku link code, then it should work.
-    if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
-      coreSubsections.push({
-        name: 'Webhooks',
-        link: '/webhooks'
-      });
-    }
+    // if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
+    //   coreSubsections.push({
+    //     name: 'Webhooks',
+    //     link: '/webhooks'
+    //   });
+    // }
 
-    if (features.cloudCode && features.cloudCode.jobs) {
-      coreSubsections.push({
-        name: 'Jobs',
-        link: '/jobs'
-      });
-    }
+    // if (features.cloudCode && features.cloudCode.jobs) {
+    //   coreSubsections.push({
+    //     name: 'Jobs',
+    //     link: '/jobs'
+    //   });
+    // }
 
-    if (features.logs && Object.keys(features.logs).some(key => features.logs[key])) {
-      coreSubsections.push({
-        name: 'Logs',
-        link: '/logs'
-      });
-    }
+    // if (features.logs && Object.keys(features.logs).some(key => features.logs[key])) {
+    //   coreSubsections.push({
+    //     name: 'Logs',
+    //     link: '/logs'
+    //   });
+    // }
 
-    if (features.globalConfig &&
-      features.globalConfig.create &&
-      features.globalConfig.read &&
-      features.globalConfig.update &&
-      features.globalConfig.delete) {
-      coreSubsections.push({
-        name: 'Config',
-        link: '/config'
-      });
-    }
+    // if (features.globalConfig &&
+    //   features.globalConfig.create &&
+    //   features.globalConfig.read &&
+    //   features.globalConfig.update &&
+    //   features.globalConfig.delete) {
+    //   coreSubsections.push({
+    //     name: 'Config',
+    //     link: '/config'
+    //   });
+    // }
 
-    coreSubsections.push({
-      name: 'API Console',
-      link: '/api_console',
-    });
+    // coreSubsections.push({
+    //   name: 'API Console',
+    //   link: '/api_console',
+    // });
 
-    if (this.context.currentApp.migration) {
-      coreSubsections.push({
-        name: 'Migration',
-        link: '/migration',
-      });
-    }
+    // if (this.context.currentApp.migration) {
+    //   coreSubsections.push({
+    //     name: 'Migration',
+    //     link: '/migration',
+    //   });
+    // }
 
     let pushSubsections = [];
 
@@ -256,17 +256,17 @@ export default class DashboardView extends React.Component {
 
     let appSidebarSections = []
 
-    if (coreSubsections.length > 0) {
+    if (databaseSubsections.length > 0) {
       appSidebarSections.push({
         name: 'API Reference',
         icon: 'api-reference',
         link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`,
       });
       appSidebarSections.push({
-        name: 'Core',
+        name: 'Database',
         icon: 'core',
         link: '/browser',
-        subsections: coreSubsections,
+        subsections: databaseSubsections,
       });
     }
 

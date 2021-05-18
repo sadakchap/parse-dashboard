@@ -54,8 +54,8 @@ export default
 class Browser extends DashboardView {
   constructor() {
     super();
-    this.section = 'Core';
-    this.subsection = 'Database Browser'
+    this.section = 'Database';
+    this.subsection = 'Browser'
     this.noteTimeout = null;
 
     const user = AccountManager.currentUser();
