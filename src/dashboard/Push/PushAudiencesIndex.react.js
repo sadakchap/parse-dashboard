@@ -9,6 +9,7 @@ import * as PushAudiencesStore  from 'lib/stores/PushAudiencesStore';
 import * as SchemaStore         from 'lib/stores/SchemaStore';
 import * as PushConstants       from './PushConstants';
 import Button                   from 'components/Button/Button.react';
+import CategoryList             from 'components/CategoryList/CategoryList.react';
 import DashboardView            from 'dashboard/DashboardView.react';
 import EmptyState               from 'components/EmptyState/EmptyState.react';
 import FormModal                from 'components/FormModal/FormModal.react';
@@ -35,8 +36,8 @@ export default
 class PushAudiencesIndex extends DashboardView {
   constructor() {
     super();
-    this.section = 'Push';
-    this.subsection = 'Audiences';
+    this.section = 'More';
+    this.subsection = 'Push';
     this.action = new SidebarAction('Create an audience', this.handleCreateAudienceClick.bind(this));
     this.state = {
       availableDevices: [],
@@ -47,6 +48,19 @@ class PushAudiencesIndex extends DashboardView {
       deleteionAudienceName: null,
       showCreateAudienceModal: false,
     }
+  }
+
+  renderSidebar() {
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    return (
+      <CategoryList current={current} linkPrefix={'push/'} categories={[
+       /* { name: 'Scheduled Jobs', id: 'scheduled' }, */
+        { name: 'Send New Push', id: 'new' },
+        { name: 'Past Pushes', id: 'activity' },
+        { name: 'Audiences', id: 'audiences' },
+      ]} />
+    );
   }
 
   getAudienceData(createdAudiences = 0) {

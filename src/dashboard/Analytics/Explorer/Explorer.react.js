@@ -47,8 +47,8 @@ export default
 class Explorer extends DashboardView {
   constructor() {
     super();
-    this.section = 'Analytics';
-    this.subsection = 'Explorer';
+    this.section = 'More';
+    this.subsection = 'Analytics';
 
     this.displaySize = {
       width: 800,

@@ -23,7 +23,8 @@ const EMAIL_VERIFICATION_URL = `${b4aSettings.BACK4APP_API_PATH}/email-verificat
 class B4aAdminPage extends DashboardView {
   constructor() {
     super()
-    this.section = 'Admin App';
+    this.section = 'More';
+    this.subsection = 'Admin App';
     this.adminDomain = b4aSettings.ADMIN_DOMAIN
     this.protocol = 'https://'
 

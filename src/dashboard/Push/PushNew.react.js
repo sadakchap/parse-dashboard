@@ -10,6 +10,7 @@ import * as PushConstants      from './PushConstants';
 import * as PushHelper         from './PushComposerHelper.react';
 import * as SchemaStore        from 'lib/stores/SchemaStore';
 import Button                  from 'components/Button/Button.react';
+import CategoryList            from 'components/CategoryList/CategoryList.react';
 import DashboardView           from 'dashboard/DashboardView.react';
 import DateTimeInput           from 'components/DateTimeInput/DateTimeInput.react';
 import Dropdown                from 'components/Dropdown/Dropdown.react';
@@ -128,8 +129,8 @@ class PushNew extends DashboardView {
   constructor() {
     super();
     this.xhrs = [];
-    this.section = 'Push';
-    this.subsection = 'Send New Push';
+    this.section = 'More';
+    this.subsection = 'Push';
     this.state = {
       pushAudiencesFetched: false,
       deviceCount: null,
@@ -172,6 +173,19 @@ class PushNew extends DashboardView {
     this.setState({
       loadingLocale: false
     });
+  }
+
+  renderSidebar() {
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    return (
+      <CategoryList current={current} linkPrefix={'push/'} categories={[
+       /* { name: 'Scheduled Jobs', id: 'scheduled' }, */
+        { name: 'Send New Push', id: 'new' },
+        { name: 'Past Pushes', id: 'activity' },
+        { name: 'Audiences', id: 'audiences' },
+      ]} />
+    );
   }
 
   componentWillUnmount() {

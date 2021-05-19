@@ -125,10 +125,10 @@ export default class DashboardView extends React.Component {
 
     let apiSubSections = [];
 
-    apiSubSections.push({
-      name: "Connect",
-      link: "/connections"
-    });
+    // apiSubSections.push({
+    //   name: "Connect",
+    //   link: "/connections"
+    // });
 
     apiSubSections.push({
       name: 'Console',
@@ -141,13 +141,47 @@ export default class DashboardView extends React.Component {
       link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`,
     });
 
+    let moreSubSection = [];
+    if (features.globalConfig &&
+      features.globalConfig.create &&
+      features.globalConfig.read &&
+      features.globalConfig.update &&
+      features.globalConfig.delete) {
+      moreSubSection.push({
+        name: 'Config',
+        link: '/config'
+      });
+    }
+
     //webhooks requires removal of heroku link code, then it should work.
-    // if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
-    //   coreSubsections.push({
-    //     name: 'Webhooks',
-    //     link: '/webhooks'
-    //   });
-    // }
+    if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
+      moreSubSection.push({
+        name: 'Webhooks',
+        link: '/webhooks'
+      });
+    }
+
+    if (features.push) {
+      moreSubSection.push({
+        name: 'Push',
+        link: '/push'
+      });
+    }
+
+    moreSubSection.push({
+      name: 'Analytics',
+      link: '/analytics'
+    })
+
+    moreSubSection.push({
+      name: 'Database HUB',
+      link: '/connections'
+    })
+
+    moreSubSection.push({
+      name: 'Admin App',
+      link: '/admin'
+    })
 
     // if (features.globalConfig &&
     //   features.globalConfig.create &&
@@ -174,66 +208,66 @@ export default class DashboardView extends React.Component {
 
     let pushSubsections = [];
 
-    if (features.push && features.push.immediatePush) {
-      pushSubsections.push({
-        name: 'Send New Push',
-        link: '/push/new'
-      });
-    }
+    // if (features.push && features.push.immediatePush) {
+    //   pushSubsections.push({
+    //     name: 'Send New Push',
+    //     link: '/push/new'
+    //   });
+    // }
 
-    if (features.push && features.push.storedPushData) {
-      pushSubsections.push({
-        name: 'Past Pushes',
-        link: '/push/activity'
-      });
-    }
+    // if (features.push && features.push.storedPushData) {
+    //   pushSubsections.push({
+    //     name: 'Past Pushes',
+    //     link: '/push/activity'
+    //   });
+    // }
 
-    if (features.push && features.push.pushAudiences) {
-      pushSubsections.push({
-        name: 'Audiences',
-        link: '/push/audiences'
-      });
-    }
+    // if (features.push && features.push.pushAudiences) {
+    //   pushSubsections.push({
+    //     name: 'Audiences',
+    //     link: '/push/audiences'
+    //   });
+    // }
 
     let analyticsSidebarSections = [];
 
     //These analytics pages may never make it into parse server
 
-    if (features.analytics && features.analytics.overviewAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Overview',
-        link: '/analytics/overview'
-      });
-    }
+    // if (features.analytics && features.analytics.overviewAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Overview',
+    //     link: '/analytics/overview'
+    //   });
+    // }
 
-    if (features.analytics && features.analytics.explorerAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Explorer',
-        link: '/analytics/explorer'
-      });
-    }
+    // if (features.analytics && features.analytics.explorerAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Explorer',
+    //     link: '/analytics/explorer'
+    //   });
+    // }
 
-    //These ones might, but require some endpoints to added to Parse Server
-    if (features.analytics && features.analytics.retentionAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Retention',
-        link: '/analytics/retention'
-      });
-    }
+    // //These ones might, but require some endpoints to added to Parse Server
+    // if (features.analytics && features.analytics.retentionAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Retention',
+    //     link: '/analytics/retention'
+    //   });
+    // }
 
-    if (features.analytics && features.analytics.performanceAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Performance',
-        link: '/analytics/performance'
-      });
-    }
+    // if (features.analytics && features.analytics.performanceAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Performance',
+    //     link: '/analytics/performance'
+    //   });
+    // }
 
-    if (features.analytics && features.analytics.slowQueries) {
-      analyticsSidebarSections.push({
-        name: 'Slow Requests',
-        link: '/analytics/slow_requests'
-      });
-    }
+    // if (features.analytics && features.analytics.slowQueries) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Slow Requests',
+    //     link: '/analytics/slow_requests'
+    //   });
+    // }
 
     let settingsSections = [];
 
@@ -312,60 +346,47 @@ export default class DashboardView extends React.Component {
     }
 
     appSidebarSections.push({
-      name: 'Publish on Hub',
-      icon: 'database-hub',
-      link: '/hub-publish',
-      badgeParams: {
-        label: 'NEW',
-        color: 'green'
-      }
+      name: 'More',
+      icon: 'core',
+      link: '/config',
+      subsections: moreSubSection
     })
 
-    appSidebarSections.push({
-      name: 'Admin App',
-      icon: 'admin-app',
-      link: '/admin'
-    })
+    // appSidebarSections.push({
+    //   name: 'Publish on Hub',
+    //   icon: 'database-hub',
+    //   link: '/hub-publish',
+    //   badgeParams: {
+    //     label: 'NEW',
+    //     color: 'green'
+    //   }
+    // })
 
-    appSidebarSections.push({
-      name: 'App Templates',
-      icon: 'icon-app-templates',
-      link: '/app-templates'
-    })
 
-    if (pushSubsections.length > 0) {
-      appSidebarSections.push({
-        name: 'Push',
-        icon: 'push-outline',
-        link: '/push',
-        style: {paddingLeft: '16px'},
-        subsections: pushSubsections,
-      });
-    }
+    // appSidebarSections.push({
+    //   name: 'App Templates',
+    //   icon: 'icon-app-templates',
+    //   link: '/app-templates'
+    // })
 
-    if (analyticsSidebarSections.length > 0) {
-      appSidebarSections.push({
-        name: 'Analytics',
-        icon: 'analytics-outline',
-        link: '/analytics',
-        subsections: analyticsSidebarSections
-      });
-    }
+    // if (pushSubsections.length > 0) {
+    //   appSidebarSections.push({
+    //     name: 'Push',
+    //     icon: 'push-outline',
+    //     link: '/push',
+    //     style: {paddingLeft: '16px'},
+    //     subsections: pushSubsections,
+    //   });
+    // }
 
-    appSidebarSections.push({
-      name: 'Server Settings',
-      icon: 'server-settings-icon',
-      link: '/server-settings',
-    });
-
-    if (settingsSections.length > 0) {
-      appSidebarSections.push({
-        name: 'App Settings',
-        icon: 'gear-solid',
-        link: '/settings',
-        subsections: settingsSections
-      });
-    }
+    // if (analyticsSidebarSections.length > 0) {
+    //   appSidebarSections.push({
+    //     name: 'Analytics',
+    //     icon: 'analytics-outline',
+    //     link: '/analytics',
+    //     subsections: analyticsSidebarSections
+    //   });
+    // }
 
     let sidebar = (
     <Sidebar

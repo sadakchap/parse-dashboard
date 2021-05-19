@@ -24,7 +24,7 @@ import Toolbar                from 'components/Toolbar/Toolbar.react';
 class Config extends TableView {
   constructor() {
     super();
-    this.section = 'Core';
+    this.section = 'More';
     this.subsection = 'Config';
     this.action = new SidebarAction('Create a parameter', this.createParameter.bind(this));
     this.state = {

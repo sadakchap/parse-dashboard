@@ -1,5 +1,6 @@
 import React            from 'react'
 import ReactDOMServer       from 'react-dom/server'
+import CategoryList from "components/CategoryList/CategoryList.react";
 import DashboardView    from 'dashboard/DashboardView.react'
 import Toolbar          from 'components/Toolbar/Toolbar.react'
 import Fieldset         from 'components/Fieldset/Fieldset.react';
@@ -16,7 +17,8 @@ import LoaderContainer  from 'components/LoaderContainer/LoaderContainer.react'
 class B4aHubPublishPage extends DashboardView {
   constructor() {
     super()
-    this.section = 'Publish on Hub'
+    this.section = 'More',
+    this.subsection = 'Database HUB'
     this.state = {
       url: undefined
     }
@@ -43,6 +45,18 @@ class B4aHubPublishPage extends DashboardView {
       publicDatabaseURL: publicDatabase && publicDatabase.author && `https://www.back4app.com/database/${publicDatabase.author.slug}/${publicDatabase.slug}`
     })
   }
+
+  renderSidebar() {
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    return (
+      <CategoryList current={current} linkPrefix={''} categories={[
+        { name: 'Connections', id: 'connections' },
+        { name: 'Publish', id: 'hub-publish' }
+      ]} />
+    );
+  }
+
 
   renderContent() {
     return (

@@ -229,8 +229,8 @@ let getPushTime = (pushTime, updatedAt) => {
 export default class PushIndex extends DashboardView {
   constructor() {
     super();
-    this.section = 'Push';
-    this.subsection = 'Past Pushes'
+    this.section = 'More';
+    this.subsection = 'Push'
     this.action = new SidebarAction('Send a push', this.navigateToNew.bind(this));
     this.state = {
       pushes: [],
