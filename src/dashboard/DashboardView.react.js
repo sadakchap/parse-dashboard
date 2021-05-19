@@ -316,7 +316,7 @@ export default class DashboardView extends React.Component {
     if (databaseSubsections.length > 0) {
       appSidebarSections.push({
         name: 'Database',
-        icon: 'core',
+        icon: 'database',
         link: '/browser',
         subsections: databaseSubsections,
       });
@@ -324,15 +324,15 @@ export default class DashboardView extends React.Component {
 
     appSidebarSections.push({
       name: 'Cloud Code',
-      icon: 'core',
+      icon: 'cloud-code',
       link: '/cloud_code',
       subsections: cloudCodeSubSections,
     })
 
     appSidebarSections.push({
       name: 'API',
-      icon: 'core',
-      link: '/connections',
+      icon: 'api',
+      link: '/api_console',
       subsections: apiSubSections
     })
 
@@ -347,7 +347,7 @@ export default class DashboardView extends React.Component {
 
     appSidebarSections.push({
       name: 'More',
-      icon: 'core',
+      icon: 'more',
       link: '/config',
       subsections: moreSubSection
     })
