@@ -180,8 +180,7 @@ class PushNew extends DashboardView {
     const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
     return (
       <CategoryList current={current} linkPrefix={'push/'} categories={[
-       /* { name: 'Scheduled Jobs', id: 'scheduled' }, */
-        { name: 'Send New Push', id: 'new' },
+        { name: 'Send New Push', id: 'new', currentActive: current === 'new' },
         { name: 'Past Pushes', id: 'activity' },
         { name: 'Audiences', id: 'audiences' },
       ]} />

@@ -9,6 +9,7 @@ import * as PushAudiencesStore  from 'lib/stores/PushAudiencesStore';
 import * as SchemaStore         from 'lib/stores/SchemaStore';
 import * as PushConstants       from './PushConstants';
 import Button                   from 'components/Button/Button.react';
+import CategoryItemAction       from 'components/CategoryList/CategoryItemAction.js';
 import CategoryList             from 'components/CategoryList/CategoryList.react';
 import DashboardView            from 'dashboard/DashboardView.react';
 import EmptyState               from 'components/EmptyState/EmptyState.react';
@@ -38,7 +39,6 @@ class PushAudiencesIndex extends DashboardView {
     super();
     this.section = 'More';
     this.subsection = 'Push';
-    this.action = new SidebarAction('Create an audience', this.handleCreateAudienceClick.bind(this));
     this.state = {
       availableDevices: [],
       loading: true,
@@ -54,12 +54,23 @@ class PushAudiencesIndex extends DashboardView {
     const { path } = this.props.match;
     const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
     return (
-      <CategoryList current={current} linkPrefix={'push/'} categories={[
-       /* { name: 'Scheduled Jobs', id: 'scheduled' }, */
-        { name: 'Send New Push', id: 'new' },
-        { name: 'Past Pushes', id: 'activity' },
-        { name: 'Audiences', id: 'audiences' },
-      ]} />
+      <CategoryList
+        current={current}
+        linkPrefix={"push/"}
+        categories={[
+          { name: "Send New Push", id: "new" },
+          { name: "Past Pushes", id: "activity" },
+          {
+            name: "Audiences",
+            id: "audiences",
+            currentActive: current === "audiences",
+            action: new CategoryItemAction(
+              "Create an audience",
+              this.handleCreateAudienceClick.bind(this)
+            )
+          }
+        ]}
+      />
     );
   }
 
