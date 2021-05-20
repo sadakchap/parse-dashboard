@@ -33,8 +33,7 @@ class B4aConnectPage extends DashboardView {
         <div className={styles["connect-page"]}>
           <Toolbar section="Connect" />
           <Fieldset
-            legend="Connect"
-            description="Learn how to connect your app to your project chosen framework or API"
+            legend="Get started by adding Back4App to your app"
           >
             <div className={styles["frameworkList-container"]}>
               <a

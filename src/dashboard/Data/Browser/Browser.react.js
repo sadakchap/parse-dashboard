@@ -240,7 +240,7 @@ class Browser extends DashboardView {
       },
       {
         eventId: 'Custom Class and Object Creation',
-        element: () => document.querySelector('[class^="section_header"][href*="/apidocs"]'),
+        element: () => document.querySelector('.toolbar-help-section > a'),
         intro: `It’s very simple to save data on Back4App from your front-end.<br /><br />
         On the <b>API Reference</b> section, you can find the auto-generated code below that creates a class and persist data on it.<br />
         ${createClassCode}
@@ -280,6 +280,7 @@ class Browser extends DashboardView {
     ];
     const { context } = this;
     const { schema } = this.props;
+    const { className } = this.props.params;
     const user = AccountManager.currentUser();
 
     let unexpectedErrorThrown = false;
@@ -305,7 +306,10 @@ class Browser extends DashboardView {
       steps,
       onBeforeStart: () => {
         document.querySelector('[class^="section_contents"] > div > div').style.backgroundColor = "#0e69a0";
-        document.querySelector('[class^="section_header"][href*="/apidocs"]').style.backgroundColor = "#0c5582";
+        // document.querySelector('[class^="section_header"][href*="/apidocs"]').style.backgroundColor = "#0c5582";
+        if (className !== '_User' && className.indexOf('_') !== -1) {
+          history.push(context.generatePath("browser/_User"));
+        }
         post(`/tutorial`, { databaseBrowser: true });
 
         // Updates the current logged user so that the tutorial won't be played
@@ -332,6 +336,9 @@ class Browser extends DashboardView {
             }
             break;
           case 2:
+            this._introItems[2].element = document.querySelector(
+              ".toolbar-help-section > a"
+            );
             nextButton = getNextButton();
             nextButton.innerHTML = "Run";
             break;
@@ -396,10 +403,6 @@ class Browser extends DashboardView {
               document.querySelector('.introjs-button.introjs-prevbutton').classList.add('introjs-disabled');
               targetElement.style.backgroundColor = 'inherit';
             }
-            break;
-          case 2:
-            const numberLayer = document.querySelector('.introjs-helperNumberLayer');
-            numberLayer.style.marginLeft = '20px';
             break;
           case 3:
             if (!unexpectedErrorThrown) {

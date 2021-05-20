@@ -18,7 +18,8 @@ const DESCRIPTION = 'Before starting your project, you can find out if someone h
 class B4aAppTemplates extends DashboardView {
   constructor() {
     super()
-
+    this.section = 'More';
+    this.subsection = 'App Templates';
     this.state = {
       loading: true,
       appTemplates: [],

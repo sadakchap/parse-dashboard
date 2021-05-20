@@ -196,11 +196,13 @@ class Sidebar extends React.Component {
         <div className={styles.submenu}>
           {subsections.map(({name, link, badge}) => {
             const active = subsection === name;
+            // If link points to another component, adds the prefix
+            link = link.startsWith('/') ? prefix + link : link;
             return (
               <SidebarSubItem
                 key={name}
                 name={name}
-                link={prefix + link}
+                link={link}
                 action={action || null}
                 actionHandler={active ? actionHandler : null}
                 active={active}
