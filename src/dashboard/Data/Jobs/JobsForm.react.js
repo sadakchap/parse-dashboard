@@ -28,7 +28,7 @@ import { hoursFrom, dateStringUTC }  from 'lib/DateUtils';
 export default class JobsForm extends DashboardView {
   constructor(props) {
     super(props);
-    this.section = 'Core';
+    this.section = 'Cloud Code';
     this.subsection = 'Jobs';
   }
 

@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 import Button                    from 'components/Button/Button.react';
+import CategoryList              from 'components/CategoryList/CategoryList.react';
 import Chart                     from 'components/Chart/Chart.react';
 import { ChartColorSchemes }     from 'lib/Constants';
 import DashboardView             from 'dashboard/DashboardView.react';
@@ -66,8 +67,8 @@ const PERFORMANCE_QUERIES = [
 export default class Performance extends DashboardView {
   constructor() {
     super();
-    this.section = 'Analytics';
-    this.subsection = 'Performance'
+    this.section = 'More';
+    this.subsection = 'Analytics'
 
     this.displaySize = {
       width: 800,
@@ -155,6 +156,18 @@ export default class Performance extends DashboardView {
         mutated: false
       });
     });
+  }
+
+  renderSidebar() {
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    return (
+      <CategoryList current={current} linkPrefix={'analytics/'} categories={[
+        { name: 'Explorer', id: 'explorer' },
+        { name: 'Performance', id: 'performance' },
+        { name: 'Slow Requests', id: 'slow_requests' },
+      ]} />
+    );
   }
 
   renderContent() {

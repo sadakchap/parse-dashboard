@@ -40,8 +40,8 @@ let retentionChartColor = percent => {
 export default class Retention extends DashboardView {
   constructor() {
     super();
-    this.section = 'Analytics';
-    this.subsection = 'Retention'
+    this.section = 'More';
+    this.subsection = 'Analytics'
     this.xhrHandles = [];
 
     this.state = {

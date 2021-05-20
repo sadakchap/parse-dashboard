@@ -34,7 +34,7 @@ export default
 class Webhooks extends TableView {
   constructor() {
     super();
-    this.section = 'Core';
+    this.section = 'More';
     this.subsection = 'Webhooks';
     this.action = new SidebarAction('Create a webhook', this.openNewWebhookModal.bind(this));
     this.state = {

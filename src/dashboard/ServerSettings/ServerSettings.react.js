@@ -21,8 +21,8 @@ const handleMessage = ({ data }) => {
 export default class ServerSettings extends DashboardView {
   constructor () {
     super();
-    this.section = 'Server Settings';
-    this.subsection = 'General';
+    this.section = 'App Settings';
+    this.subsection = 'Server Settings';
   }
 
   componentWillMount() {

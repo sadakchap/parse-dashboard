@@ -14,7 +14,7 @@ import styles from './Playground.scss';
 export default class Playground extends Component {
   constructor() {
     super();
-    this.section = 'Core';
+    this.section = 'API';
     this.subsection = 'JS Console';
     this.localKey = 'parse-dashboard-playground-code';
     this.state = {

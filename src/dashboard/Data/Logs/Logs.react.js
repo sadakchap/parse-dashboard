@@ -24,7 +24,7 @@ let subsections = {
 export default class Logs extends DashboardView {
   constructor() {
     super();
-    this.section = 'Core';
+    this.section = 'Cloud Code';
     this.subsection = 'Logs';
 
     this.state = {

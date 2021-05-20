@@ -8,6 +8,7 @@
 import * as AnalyticsQueryStore from 'lib/stores/AnalyticsQueryStore';
 import * as SchemaStore         from 'lib/stores/SchemaStore';
 import Button                   from 'components/Button/Button.react';
+import CategoryList             from 'components/CategoryList/CategoryList.react';
 import DateRange                from 'components/DateRange/DateRange.react';
 import EmptyState               from 'components/EmptyState/EmptyState.react';
 import FlowFooter               from 'components/FlowFooter/FlowFooter.react';
@@ -42,8 +43,8 @@ export default
 class SlowQueries extends TableView {
   constructor() {
     super();
-    this.section = 'Analytics';
-    this.subsection = 'Slow Requests';
+    this.section = 'More';
+    this.subsection = 'Analytics';
 
     let date = new Date();
     this.state = {
@@ -74,6 +75,18 @@ class SlowQueries extends TableView {
       respTime: undefined
     };
     this.xhrHandles = [];
+  }
+
+    renderSidebar() {
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    return (
+      <CategoryList current={current} linkPrefix={'analytics/'} categories={[
+        { name: 'Explorer', id: 'explorer' },
+        { name: 'Performance', id: 'performance' },
+        { name: 'Slow Requests', id: 'slow_requests' },
+      ]} />
+    );
   }
 
   componentWillMount() {

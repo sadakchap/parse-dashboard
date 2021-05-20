@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import Swal from 'sweetalert2'
 import Button from 'components/Button/Button.react';
+import CategoryList from 'components/CategoryList/CategoryList.react';
 import EmptyState from 'components/EmptyState/EmptyState.react'
 import Icon from 'components/Icon/Icon.react'
 import DashboardView from 'dashboard/DashboardView.react'
@@ -13,8 +14,8 @@ class HubConnections extends DashboardView {
   constructor(props, context) {
     super(props, context);
 
-    this.section = 'Core';
-    this.subsection = 'Connections';
+    this.section = 'More';
+    this.subsection = 'Database HUB';
 
     this.state = {
       data: null,
@@ -27,6 +28,17 @@ class HubConnections extends DashboardView {
   async componentDidMount() {
     const data = await this.context.currentApp.fetchHubConnections();
     this.setState({ data });
+  }
+
+  renderSidebar() {
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    return (
+      <CategoryList current={current} linkPrefix={''} categories={[
+        { name: 'Connections', id: 'connections' },
+        { name: 'Publish', id: 'hub-publish' }
+      ]} />
+    );
   }
 
   renderRows() {

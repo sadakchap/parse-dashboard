@@ -19,7 +19,7 @@ class IndexManager extends DashboardView {
   constructor(props, context) {
     super(props, context);
 
-    this.section = 'Core';
+    this.section = 'Database';
     this.subsection = 'Index Manager'
 
     this.state = {

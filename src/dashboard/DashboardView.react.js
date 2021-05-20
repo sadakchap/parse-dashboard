@@ -74,147 +74,200 @@ export default class DashboardView extends React.Component {
 
     const { showAdminPage } = this.context.currentApp.custom
 
-    let coreSubsections = [];
+    let databaseSubsections = [];
     if (features.schemas &&
       features.schemas.addField &&
       features.schemas.removeField &&
       features.schemas.addClass &&
       features.schemas.removeClass) {
-      coreSubsections.push({
-        name: 'Database Browser',
+      databaseSubsections.push({
+        name: 'Browser',
         link: '/browser'
       });
     }
 
-    coreSubsections.push({
-      name: 'Connections',
-      link: '/connections',
-      badge: {
-        label: 'NEW',
-        color: 'green'
-      }
-    })
+    // coreSubsections.push({
+    //   name: 'Connections',
+    //   link: '/connections',
+    //   badge: {
+    //     label: 'NEW',
+    //     color: 'green'
+    //   }
+    // })
 
-    coreSubsections.push({
+    databaseSubsections.push({
       name: 'Index Manager',
       link: '/index'
     })
 
+    let cloudCodeSubSections = [];
     // Show cloud code to all parse versions
-    //if (features.cloudCode && features.cloudCode.viewCode) {
-      coreSubsections.push({
-        name: 'Cloud Code Functions',
-        link: '/cloud_code'
-      });
-    //}
-
-    //webhooks requires removal of heroku link code, then it should work.
-    if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
-      coreSubsections.push({
-        name: 'Webhooks',
-        link: '/webhooks'
-      });
-    }
+    // if (features.cloudCode && features.cloudCode.viewCode) {
+    cloudCodeSubSections.push({
+      name: 'Functions & Web Hosting',
+      link: '/cloud_code'
+    });
+    // }
 
     if (features.cloudCode && features.cloudCode.jobs) {
-      coreSubsections.push({
+      cloudCodeSubSections.push({
         name: 'Jobs',
         link: '/jobs'
       });
     }
 
     if (features.logs && Object.keys(features.logs).some(key => features.logs[key])) {
-      coreSubsections.push({
+      cloudCodeSubSections.push({
         name: 'Logs',
         link: '/logs'
       });
     }
 
+    let apiSubSections = [];
+
+    // apiSubSections.push({
+    //   name: "Connect",
+    //   link: "/connections"
+    // });
+
+    apiSubSections.push({
+      name: 'Console',
+      link: '/api_console',
+    });
+
+    apiSubSections.push({
+      name: 'API Reference',
+      icon: 'api-reference',
+      link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`,
+    });
+
+    let moreSubSection = [];
     if (features.globalConfig &&
       features.globalConfig.create &&
       features.globalConfig.read &&
       features.globalConfig.update &&
       features.globalConfig.delete) {
-      coreSubsections.push({
+      moreSubSection.push({
         name: 'Config',
         link: '/config'
       });
     }
 
-    coreSubsections.push({
-      name: 'API Console',
-      link: '/api_console',
-    });
-
-    if (this.context.currentApp.migration) {
-      coreSubsections.push({
-        name: 'Migration',
-        link: '/migration',
+    //webhooks requires removal of heroku link code, then it should work.
+    if (features.hooks && features.hooks.create && features.hooks.read && features.hooks.update && features.hooks.delete) {
+      moreSubSection.push({
+        name: 'Webhooks',
+        link: '/webhooks'
       });
     }
+
+    if (features.push) {
+      moreSubSection.push({
+        name: 'Push',
+        link: '/push'
+      });
+    }
+
+    moreSubSection.push({
+      name: 'Analytics',
+      link: '/analytics'
+    })
+
+    moreSubSection.push({
+      name: 'Database HUB',
+      link: '/connections'
+    })
+
+    moreSubSection.push({
+      name: 'Admin App',
+      link: '/admin'
+    })
+
+    // if (features.globalConfig &&
+    //   features.globalConfig.create &&
+    //   features.globalConfig.read &&
+    //   features.globalConfig.update &&
+    //   features.globalConfig.delete) {
+    //   coreSubsections.push({
+    //     name: 'Config',
+    //     link: '/config'
+    //   });
+    // }
+
+    // coreSubsections.push({
+    //   name: 'API Console',
+    //   link: '/api_console',
+    // });
+
+    // if (this.context.currentApp.migration) {
+    //   coreSubsections.push({
+    //     name: 'Migration',
+    //     link: '/migration',
+    //   });
+    // }
 
     let pushSubsections = [];
 
-    if (features.push && features.push.immediatePush) {
-      pushSubsections.push({
-        name: 'Send New Push',
-        link: '/push/new'
-      });
-    }
+    // if (features.push && features.push.immediatePush) {
+    //   pushSubsections.push({
+    //     name: 'Send New Push',
+    //     link: '/push/new'
+    //   });
+    // }
 
-    if (features.push && features.push.storedPushData) {
-      pushSubsections.push({
-        name: 'Past Pushes',
-        link: '/push/activity'
-      });
-    }
+    // if (features.push && features.push.storedPushData) {
+    //   pushSubsections.push({
+    //     name: 'Past Pushes',
+    //     link: '/push/activity'
+    //   });
+    // }
 
-    if (features.push && features.push.pushAudiences) {
-      pushSubsections.push({
-        name: 'Audiences',
-        link: '/push/audiences'
-      });
-    }
+    // if (features.push && features.push.pushAudiences) {
+    //   pushSubsections.push({
+    //     name: 'Audiences',
+    //     link: '/push/audiences'
+    //   });
+    // }
 
     let analyticsSidebarSections = [];
 
     //These analytics pages may never make it into parse server
 
-    if (features.analytics && features.analytics.overviewAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Overview',
-        link: '/analytics/overview'
-      });
-    }
+    // if (features.analytics && features.analytics.overviewAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Overview',
+    //     link: '/analytics/overview'
+    //   });
+    // }
 
-    if (features.analytics && features.analytics.explorerAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Explorer',
-        link: '/analytics/explorer'
-      });
-    }
+    // if (features.analytics && features.analytics.explorerAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Explorer',
+    //     link: '/analytics/explorer'
+    //   });
+    // }
 
-    //These ones might, but require some endpoints to added to Parse Server
-    if (features.analytics && features.analytics.retentionAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Retention',
-        link: '/analytics/retention'
-      });
-    }
+    // //These ones might, but require some endpoints to added to Parse Server
+    // if (features.analytics && features.analytics.retentionAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Retention',
+    //     link: '/analytics/retention'
+    //   });
+    // }
 
-    if (features.analytics && features.analytics.performanceAnalysis) {
-      analyticsSidebarSections.push({
-        name: 'Performance',
-        link: '/analytics/performance'
-      });
-    }
+    // if (features.analytics && features.analytics.performanceAnalysis) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Performance',
+    //     link: '/analytics/performance'
+    //   });
+    // }
 
-    if (features.analytics && features.analytics.slowQueries) {
-      analyticsSidebarSections.push({
-        name: 'Slow Requests',
-        link: '/analytics/slow_requests'
-      });
-    }
+    // if (features.analytics && features.analytics.slowQueries) {
+    //   analyticsSidebarSections.push({
+    //     name: 'Slow Requests',
+    //     link: '/analytics/slow_requests'
+    //   });
+    // }
 
     let settingsSections = [];
 
@@ -232,6 +285,10 @@ export default class DashboardView extends React.Component {
         link: '/settings/keys'
       });
     // }
+    settingsSections.push({
+      name: 'Server Settings',
+      link: '/server-settings',
+    });
     /*
     if (features.usersSettings) {
       settingsSections.push({
@@ -256,66 +313,28 @@ export default class DashboardView extends React.Component {
 
     let appSidebarSections = []
 
-    if (coreSubsections.length > 0) {
+    if (databaseSubsections.length > 0) {
       appSidebarSections.push({
-        name: 'API Reference',
-        icon: 'api-reference',
-        link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`,
-      });
-      appSidebarSections.push({
-        name: 'Core',
-        icon: 'core',
+        name: 'Database',
+        icon: 'database',
         link: '/browser',
-        subsections: coreSubsections,
+        subsections: databaseSubsections,
       });
     }
 
     appSidebarSections.push({
-      name: 'Publish on Hub',
-      icon: 'database-hub',
-      link: '/hub-publish',
-      badgeParams: {
-        label: 'NEW',
-        color: 'green'
-      }
+      name: 'Cloud Code',
+      icon: 'cloud-code',
+      link: '/cloud_code',
+      subsections: cloudCodeSubSections,
     })
 
     appSidebarSections.push({
-      name: 'Admin App',
-      icon: 'admin-app',
-      link: '/admin'
+      name: 'API',
+      icon: 'api',
+      link: '/api_console',
+      subsections: apiSubSections
     })
-
-    appSidebarSections.push({
-      name: 'App Templates',
-      icon: 'icon-app-templates',
-      link: '/app-templates'
-    })
-
-    if (pushSubsections.length > 0) {
-      appSidebarSections.push({
-        name: 'Push',
-        icon: 'push-outline',
-        link: '/push',
-        style: {paddingLeft: '16px'},
-        subsections: pushSubsections,
-      });
-    }
-
-    if (analyticsSidebarSections.length > 0) {
-      appSidebarSections.push({
-        name: 'Analytics',
-        icon: 'analytics-outline',
-        link: '/analytics',
-        subsections: analyticsSidebarSections
-      });
-    }
-
-    appSidebarSections.push({
-      name: 'Server Settings',
-      icon: 'server-settings-icon',
-      link: '/server-settings',
-    });
 
     if (settingsSections.length > 0) {
       appSidebarSections.push({
@@ -325,6 +344,49 @@ export default class DashboardView extends React.Component {
         subsections: settingsSections
       });
     }
+
+    appSidebarSections.push({
+      name: 'More',
+      icon: 'more',
+      link: '/config',
+      subsections: moreSubSection
+    })
+
+    // appSidebarSections.push({
+    //   name: 'Publish on Hub',
+    //   icon: 'database-hub',
+    //   link: '/hub-publish',
+    //   badgeParams: {
+    //     label: 'NEW',
+    //     color: 'green'
+    //   }
+    // })
+
+
+    // appSidebarSections.push({
+    //   name: 'App Templates',
+    //   icon: 'icon-app-templates',
+    //   link: '/app-templates'
+    // })
+
+    // if (pushSubsections.length > 0) {
+    //   appSidebarSections.push({
+    //     name: 'Push',
+    //     icon: 'push-outline',
+    //     link: '/push',
+    //     style: {paddingLeft: '16px'},
+    //     subsections: pushSubsections,
+    //   });
+    // }
+
+    // if (analyticsSidebarSections.length > 0) {
+    //   appSidebarSections.push({
+    //     name: 'Analytics',
+    //     icon: 'analytics-outline',
+    //     link: '/analytics',
+    //     subsections: analyticsSidebarSections
+    //   });
+    // }
 
     let sidebar = (
     <Sidebar

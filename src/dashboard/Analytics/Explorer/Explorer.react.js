@@ -47,8 +47,8 @@ export default
 class Explorer extends DashboardView {
   constructor() {
     super();
-    this.section = 'Analytics';
-    this.subsection = 'Explorer';
+    this.section = 'More';
+    this.subsection = 'Analytics';
 
     this.displaySize = {
       width: 800,
@@ -313,14 +313,36 @@ class Explorer extends DashboardView {
   }
 
   renderSidebar() {
-    let current = this.props.params.displayType || '';
+    let currentDisplay = this.props.params.displayType || '';
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    let subCategory = (
+      <CategoryList
+        current={currentDisplay}
+        linkPrefix={"analytics/explorer/"}
+        categories={[
+          { name: "Chart", id: "chart" }
+          // TODO: Enable table and json as data representation model
+          //{ name: 'Table', id: 'table' },
+          //{ name: 'JSON', id: 'json' }
+        ]}
+      />
+    );
     return (
-      <CategoryList current={current} linkPrefix={'analytics/explorer/'} categories={[
-        { name: 'Chart', id: 'chart' },
-        // TODO: Enable table and json as data representation model
-        //{ name: 'Table', id: 'table' },
-        //{ name: 'JSON', id: 'json' }
-      ]} />
+      <CategoryList
+        current={current}
+        linkPrefix={"analytics/"}
+        categories={[
+          {
+            name: "Explorer",
+            id: "explorer",
+            currentActive: current === ":displayType",
+            subCategories: subCategory
+          },
+          { name: "Performance", id: "performance" },
+          { name: "Slow Requests", id: "slow_requests" }
+        ]}
+      />
     );
   }
 

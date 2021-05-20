@@ -60,10 +60,28 @@ export default class CategoryList extends React.Component {
           let link = this.context.generatePath(
             (this.props.linkPrefix || '') + (c.link || id)
           );
+          let categoryActive = c.currentActive;
+          let action = c.action;
+          if (categoryActive) {
+            return (
+              <div ref="listWrapper" className={styles.sub_class_list}>
+                <div className={styles.action_div} >
+                  {c.name}
+                  {action
+                    ? React.isValidElement(action)
+                      ? action
+                      : action.renderButton()
+                    : null}
+                </div>
+                {c.subCategories}
+              </div>
+            );
+          }
           return (
             <Link title={c.name} to={{ pathname: link }} className={className} key={id} >
               <span>{count}</span>
               <span>{c.name}</span>
+              {c.subCategories}
             </Link>
           );
         })}
