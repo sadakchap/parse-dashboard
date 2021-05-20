@@ -66,6 +66,7 @@ import { Helmet } from 'react-helmet';
 import Playground from './Data/Playground/Playground.react';
 import axios from "lib/axios";
 import moment from 'moment';
+import B4aConnectPage from './B4aConnectPage/B4aConnectPage.react';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -369,6 +370,7 @@ export default class Dashboard extends React.Component {
             <PushDetails {...props} params={props.match.params} />
           )} />
           <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
+          <Route path={ match.path + '/connect' } component={B4aConnectPage} />
           <Route path={ match.path + '/admin' } component={B4aAdminPage} />
           <Route path={ match.path + '/app-templates' } component={B4aAppTemplates} />
           <Route path={ match.path + '/server-settings/:targetPage?' } render={(props) => (
