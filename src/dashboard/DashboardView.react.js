@@ -137,8 +137,7 @@ export default class DashboardView extends React.Component {
 
     apiSubSections.push({
       name: 'API Reference',
-      icon: 'api-reference',
-      link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`,
+      link: `${b4aSettings.DASHBOARD_PATH}/apidocs/${this.context.currentApp.applicationId}`
     });
 
     let moreSubSection = [];
@@ -182,6 +181,12 @@ export default class DashboardView extends React.Component {
       name: 'Admin App',
       link: '/admin'
     })
+
+    moreSubSection.push({
+      name: 'App Templates',
+      link: '/app-templates'
+    })
+
 
     // if (features.globalConfig &&
     //   features.globalConfig.create &&
@@ -332,7 +337,7 @@ export default class DashboardView extends React.Component {
     appSidebarSections.push({
       name: 'API',
       icon: 'api',
-      link: '/api_console',
+      link: '/connect',
       subsections: apiSubSections
     })
 
@@ -360,13 +365,6 @@ export default class DashboardView extends React.Component {
     //     label: 'NEW',
     //     color: 'green'
     //   }
-    // })
-
-
-    // appSidebarSections.push({
-    //   name: 'App Templates',
-    //   icon: 'icon-app-templates',
-    //   link: '/app-templates'
     // })
 
     // if (pushSubsections.length > 0) {
