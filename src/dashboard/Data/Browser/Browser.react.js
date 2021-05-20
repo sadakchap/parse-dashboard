@@ -240,7 +240,7 @@ class Browser extends DashboardView {
       },
       {
         eventId: 'Custom Class and Object Creation',
-        element: () => document.querySelector('[class^="section_header"][href*="/apidocs"]'),
+        element: () => document.querySelector('.toolbar-help-section > a'),
         intro: `It’s very simple to save data on Back4App from your front-end.<br /><br />
         On the <b>API Reference</b> section, you can find the auto-generated code below that creates a class and persist data on it.<br />
         ${createClassCode}
@@ -305,7 +305,7 @@ class Browser extends DashboardView {
       steps,
       onBeforeStart: () => {
         document.querySelector('[class^="section_contents"] > div > div').style.backgroundColor = "#0e69a0";
-        document.querySelector('[class^="section_header"][href*="/apidocs"]').style.backgroundColor = "#0c5582";
+        // document.querySelector('[class^="section_header"][href*="/apidocs"]').style.backgroundColor = "#0c5582";
         post(`/tutorial`, { databaseBrowser: true });
 
         // Updates the current logged user so that the tutorial won't be played
