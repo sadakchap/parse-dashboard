@@ -125,10 +125,10 @@ export default class DashboardView extends React.Component {
 
     let apiSubSections = [];
 
-    // apiSubSections.push({
-    //   name: "Connect",
-    //   link: "/connections"
-    // });
+    apiSubSections.push({
+      name: "Connect",
+      link: "/connect"
+    });
 
     apiSubSections.push({
       name: 'Console',
@@ -390,7 +390,7 @@ export default class DashboardView extends React.Component {
 
     let sidebar = (
     <Sidebar
-      showTour={this.state.showTour}
+      showTour={this.state && this.state.showTour}
       sections={appSidebarSections}
       appSelector={true}
       section={this.section}
