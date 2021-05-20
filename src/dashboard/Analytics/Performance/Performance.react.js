@@ -163,7 +163,6 @@ export default class Performance extends DashboardView {
     const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
     return (
       <CategoryList current={current} linkPrefix={'analytics/'} categories={[
-       /* { name: 'Scheduled Jobs', id: 'scheduled' }, */
         { name: 'Explorer', id: 'explorer' },
         { name: 'Performance', id: 'performance' },
         { name: 'Slow Requests', id: 'slow_requests' },
