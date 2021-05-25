@@ -1,4 +1,8 @@
 .hubConnections {
+  position: relative;
+  height: calc(100vh - 51px);
+  overflow: auto;
+  
   .headerContainer {
     display: flex;
     justify-content: space-between;
