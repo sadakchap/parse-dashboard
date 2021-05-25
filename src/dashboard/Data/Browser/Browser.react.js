@@ -45,9 +45,22 @@ import * as queryString                   from 'query-string';
 import { Helmet }                         from 'react-helmet';
 import PropTypes                          from 'lib/PropTypes';
 import ParseApp                           from 'lib/ParseApp';
+import Cookies                            from 'js-cookie';
+import Swal                               from 'sweetalert2';
+import withReactContent                   from 'sweetalert2-react-content';
+import postgresqlImg                      from './postgresql.png'
 
 // The initial and max amount of rows fetched by lazy loading
 const MAX_ROWS_FETCHED = 200;
+// Alert Content
+const MySwal = withReactContent(Swal);
+const postgresqlAlert = {
+  text:
+    "Your App was created over MongoDB, you'll be notified as soon as Postgresql become available. We are just finishing its implementation at Back4App",
+  imageUrl: postgresqlImg,
+  imageWidth: 200,
+  imageAlt: "Postgresql Image"  
+};
 
 export default
 @subscribeTo('Schema', 'schema')
@@ -94,7 +107,8 @@ class Browser extends DashboardView {
       isUnique: false,
       uniqueField: null,
       showTour: !isMobile() && user && user.playDatabaseBrowserTutorial,
-      renderFooterMenu: !isMobile()
+      renderFooterMenu: !isMobile(),
+      showPostgresqlModal: !!Cookies.get('isPostgresql')
     };
 
     this.prefetchData = this.prefetchData.bind(this);
@@ -182,6 +196,18 @@ class Browser extends DashboardView {
     } else if (this.props.params.className) {
       this.prefetchData(this.props, this.context);
     }
+    if (this.state.showPostgresqlModal) {
+      MySwal.fire({
+        ...postgresqlAlert,
+        onAfterClose: () => {
+          Cookies.remove("isPostgresql", { path: "/" });
+          this.setState({
+            showPostgresqlModal: false
+          });
+        }
+      });
+    }
+
     window.addEventListener('resize', this.windowResizeHandler);
     window.addEventListener('scroll', this.preventScrollOnTour);
   }
