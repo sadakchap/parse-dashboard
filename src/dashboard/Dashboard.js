@@ -161,7 +161,7 @@ export default class Dashboard extends React.Component {
             email: userDetail.username,
             journey: isFlow1 ? 'csat-back4app' : 'nps-back4app'
           },
-          { CollectInterval: 30, RetryAttempts: 1, RetryInterval: 5 }
+          { collectInterval: 30, retryAttempts: 1, retryInterval: 5 }
         );
       });
 
