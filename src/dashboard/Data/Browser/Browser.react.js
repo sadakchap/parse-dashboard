@@ -200,7 +200,7 @@ class Browser extends DashboardView {
       MySwal.fire({
         ...postgresqlAlert,
         onAfterClose: () => {
-          Cookies.remove("isPostgresql", { path: "/" });
+          Cookies.remove('isPostgresql', { domain: 'back4app.com' });
           this.setState({
             showPostgresqlModal: false
           });
