@@ -39,7 +39,8 @@ export default class AddColumnDialog extends React.Component {
       name: '',
       required: false,
       defaultValue: undefined,
-      isDefaultValueValid: true
+      isDefaultValueValid: true,
+      uploadingFile: false
     };
     this.renderDefaultValueInput = this.renderDefaultValueInput.bind(this)
     this.handleDefaultValueChange = this.handleDefaultValueChange.bind(this)
@@ -77,13 +78,20 @@ export default class AddColumnDialog extends React.Component {
     if (file) {
       let base64 = await this.getBase64(file);
       const parseFile = new Parse.File(file.name, { base64 });
+      this.setState({
+        uploadingFile: true
+      });
       try {
         await parseFile.save();
         return parseFile;
       } catch (error) {
         this.props.showNote(error.message, true);
         return parseFile;
-      }      
+      } finally {
+        this.setState({
+          uploadingFile: false
+        });
+      }
     }
   }
 
@@ -173,6 +181,7 @@ export default class AddColumnDialog extends React.Component {
       case 'File':
         return <FileInput
           value={this.state.defaultValue ? this.state.defaultValue._name : ''}
+          uploading={this.state.uploadingFile}
           onChange={async (defaultValue) => await this.handleDefaultValueChange(defaultValue)} />
     }
   }

@@ -59,9 +59,13 @@ export default class FileInput extends React.Component {
     return (
       <div className={styles.input}>
         <div className={buttonStyles.join(' ')}>
-          {label ?
-            <span>Change file</span> :
-            <span>Upload a file</span>}
+          {this.props.uploading ? (
+            <div className={styles.spinner}></div>
+          ) : label ? (
+            <span>Change file</span>
+          ) : (
+            <span>Upload a file</span>
+          )}
           <input {...inputProps} />
         </div>
         {label}
