@@ -56,10 +56,10 @@ const MAX_ROWS_FETCHED = 200;
 const MySwal = withReactContent(Swal);
 const postgresqlAlert = {
   text:
-    "Your App was created over MongoDB, you'll be notified as soon as Postgresql become available. We are just finishing its implementation at Back4App",
+    "Thank you for your interest in using Back4App with PostgreSQL. We are working hard to make this database available and will notify you once we release it. In the meantime, we’ve just created your App using MongoDB 3.6, so you can use Back4App.",
   imageUrl: postgresqlImg,
   imageWidth: 200,
-  imageAlt: "Postgresql Image"  
+  imageAlt: "Postgresql Image"
 };
 
 export default
