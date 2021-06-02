@@ -120,6 +120,7 @@ let B4ABrowserToolbar = ({
     menu = (
       <BrowserMenu title='Edit' icon='edit-solid'>
         <MenuItem text='Security' onClick={onClickSecurity} />
+        <Separator />
         <MenuItem text='Add a row' onClick={onAddRow} />
         {enableColumnManipulation ? <MenuItem text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem text='Add a class' onClick={onAddClass} /> : <noscript />}
@@ -147,6 +148,7 @@ let B4ABrowserToolbar = ({
         {enableImport ? <MenuItem text='Import data' onClick={onImport} /> : <noscript />}
         {enableImport ? <MenuItem text='Import relation data' onClick={onImportRelation} /> : <noscript />}
         {enableExportClass ? <MenuItem text='Export this data' onClick={onExport} /> : <noscript />}
+        <Separator />
         <MenuItem text='Index Manager' onClick={onClickIndexManager} />
       </BrowserMenu>
     );
