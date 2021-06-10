@@ -13,12 +13,15 @@ import LogViewEntry  from 'components/LogView/LogViewEntry.react';
 import React         from 'react';
 import ReleaseInfo   from 'components/ReleaseInfo/ReleaseInfo';
 import Toolbar       from 'components/Toolbar/Toolbar.react';
+import Icon          from 'components/Icon/Icon.react';
 
 import styles        from 'dashboard/Data/Logs/Logs.scss';
 
 let subsections = {
+  access: 'Access',
   info: 'Info',
-  error: 'Error'
+  error: 'Error',
+  system: 'System'
 };
 
 export default class Logs extends DashboardView {
@@ -46,6 +49,16 @@ export default class Logs extends DashboardView {
   }
 
   fetchLogs(app, type) {
+    let serverLogType = ['access', 'system'];
+    if (serverLogType.includes(type)) {
+      app.fetchServerLogs().then(res => {
+        this.setState({ logs: [] });
+        this.setState({
+          logs: type === 'access' ? res.access : res.docker
+        });
+      }, err => this.setState({ logs: [] }));
+      return;
+    }
     let typeParam = (type || 'INFO').toUpperCase();
     app.getLogs(typeParam).then(
       (logs) => {
@@ -72,15 +85,17 @@ export default class Logs extends DashboardView {
     let current = this.props.params.type || '';
     return (
       <CategoryList current={current} linkPrefix={'logs/'} categories={[
+        { name: 'Access', id: 'access' },
         { name: 'Info', id: 'info' },
-        { name: 'Error', id: 'error' }
+        { name: 'Error', id: 'error' },
+        { name: 'System', id: 'system' },
       ]} />
     );
   }
 
   renderContent() {
     // Send track event
-    back4AppNavigation && back4AppNavigation.atParseLogsEvent()
+    // back4AppNavigation && back4AppNavigation.atParseLogsEvent()
 
     let toolbar = null;
     if (subsections[this.props.params.type]) {
