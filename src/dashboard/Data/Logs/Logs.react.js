@@ -34,6 +34,8 @@ export default class Logs extends DashboardView {
       logs: undefined,
       release: undefined
     };
+
+    this.refreshLogs = this.refreshLogs.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +69,12 @@ export default class Logs extends DashboardView {
       },
       () => this.setState({ logs: [] })
     );
+  }
+
+  refreshLogs(e) {
+    e.preventDefault();
+    this.setState({ logs: undefined });
+    this.fetchLogs(this.context.currentApp, this.props.params.type);
   }
 
   // As parse-server doesn't support (yet?) versioning, we are disabling
@@ -103,7 +111,11 @@ export default class Logs extends DashboardView {
         <Toolbar
           section='Logs'
           subsection={subsections[this.props.params.type]}
-          details={ReleaseInfo({ release: this.state.release })}>
+          details={ReleaseInfo({ release: this.state.release })}
+          >
+          <a className={styles.toolbarButton} onClick={this.refreshLogs} title='Refresh'>
+            <Icon name='refresh' width={30} height={26} />
+          </a>
         </Toolbar>
       );
     }
