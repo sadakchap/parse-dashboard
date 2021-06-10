@@ -102,10 +102,10 @@ export default class Logs extends DashboardView {
     let current = this.props.params.type || '';
     return (
       <CategoryList current={current} linkPrefix={'logs/'} categories={[
-        { name: 'Access', id: 'access' },
+        { name: 'System', id: 'system' },
         { name: 'Info', id: 'info' },
         { name: 'Error', id: 'error' },
-        { name: 'System', id: 'system' },
+        { name: 'Access', id: 'access' },
       ]} />
     );
   }
