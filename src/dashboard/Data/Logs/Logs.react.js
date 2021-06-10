@@ -111,9 +111,13 @@ export default class Logs extends DashboardView {
 
   renderContent() {
     // Send track event
-    back4AppNavigation && back4AppNavigation.atParseLogsEvent()
-    
+    // back4AppNavigation && back4AppNavigation.atParseLogsEvent()
+
     let type = this.props.params.type;
+    let refreshIconStyles = styles.toolbarButton;
+    if (this.state.loading) {
+      refreshIconStyles += ` ${styles.toolbarButtonDisabled}`;
+    }
     let toolbar = null;
     if (subsections[type]) {
       toolbar = (
@@ -122,7 +126,7 @@ export default class Logs extends DashboardView {
           subsection={subsections[type]}
           details={ReleaseInfo({ release: this.state.release })}
           >
-          <a className={styles.toolbarButton} onClick={this.refreshLogs} title='Refresh'>
+          <a className={refreshIconStyles} onClick={this.refreshLogs} title='Refresh'>
             <Icon name='refresh' width={30} height={26} />
           </a>
         </Toolbar>

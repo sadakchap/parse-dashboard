@@ -45,3 +45,12 @@
     line-height: 14px;
   }
 }
+
+.toolbarButtonDisabled {
+  cursor: not-allowed;
+  color: #66637A;
+
+  &:hover svg {
+    fill: #9a99a5;
+  }
+}
