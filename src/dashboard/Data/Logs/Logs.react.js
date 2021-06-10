@@ -15,6 +15,7 @@ import ReleaseInfo     from 'components/ReleaseInfo/ReleaseInfo';
 import Toolbar         from 'components/Toolbar/Toolbar.react';
 import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
 import Icon            from 'components/Icon/Icon.react';
+import ServerLogsView  from '../../../components/ServerLogsView/ServerLogsView.react';
 
 import styles          from 'dashboard/Data/Logs/Logs.scss';
 
@@ -34,6 +35,7 @@ export default class Logs extends DashboardView {
     this.state = {
       loading: false,
       logs: [],
+      serverLogs: '',
       release: undefined
     };
 
@@ -61,7 +63,7 @@ export default class Logs extends DashboardView {
     if (serverLogType.includes(type)) {
       app.fetchServerLogs().then(res => {
         this.setState({
-          logs: type === 'access' ? res.access : res.docker,
+          serverLogs: type === 'access' ? res.access : res.docker,
           loading: false
         });
       }, err => this.setState({ logs: [], loading: false }));
@@ -110,13 +112,14 @@ export default class Logs extends DashboardView {
   renderContent() {
     // Send track event
     back4AppNavigation && back4AppNavigation.atParseLogsEvent()
-
+    
+    let type = this.props.params.type;
     let toolbar = null;
-    if (subsections[this.props.params.type]) {
+    if (subsections[type]) {
       toolbar = (
         <Toolbar
           section='Logs'
-          subsection={subsections[this.props.params.type]}
+          subsection={subsections[type]}
           details={ReleaseInfo({ release: this.state.release })}
           >
           <a className={styles.toolbarButton} onClick={this.refreshLogs} title='Refresh'>
@@ -126,29 +129,38 @@ export default class Logs extends DashboardView {
       );
     }
     let content = null;
-    content = (
-      <LoaderContainer loading={this.state.loading} solid={false}>
-        {this.state.logs.length === 0 && !this.state.loading ? (
-          <div className={styles.content}>
-            <EmptyState
-              icon='files-outline'
-              title='No logs in the last 30 days'
-              description='When you start using Cloud Code, your logs will show up here.'
-              cta='Learn more'
-              action={() => window.location = 'http://docs.parseplatform.org/cloudcode/guide'} />
-          </div>
-        ) : (
-          <div className={styles.content}>
-            <LogView>
-              {this.state.logs.map(({ message, timestamp }) => <LogViewEntry
-                key={timestamp}
-                text={message}
-                timestamp={timestamp} />)}
-            </LogView>
-          </div>
-        )}
-      </LoaderContainer>
-    );
+    if (type === 'access' || type === 'system') {
+      content = (
+        <LoaderContainer loading={this.state.loading} solid={false}>
+          <ServerLogsView type={type} logs={this.state.serverLogs} />
+        </LoaderContainer>
+      );
+    } else {
+      content = (
+        <LoaderContainer loading={this.state.loading} solid={false}>
+          {this.state.logs.length === 0 && !this.state.loading ? (
+            <div className={styles.content}>
+              <EmptyState
+                icon='files-outline'
+                title='No logs in the last 30 days'
+                description='When you start using Cloud Code, your logs will show up here.'
+                cta='Learn more'
+                action={() => window.location = 'http://docs.parseplatform.org/cloudcode/guide'} />
+            </div>
+          ) : (
+            <div className={styles.content}>
+              <LogView>
+                {this.state.logs.map(({ message, timestamp }) => <LogViewEntry
+                  key={timestamp}
+                  text={message}
+                  timestamp={timestamp} />)}
+              </LogView>
+            </div>
+          )}
+        </LoaderContainer>
+      );
+    }
+    
     return (
       <div>
         {content}
