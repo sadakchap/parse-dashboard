@@ -16,6 +16,7 @@ import Toolbar         from 'components/Toolbar/Toolbar.react';
 import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
 import Icon            from 'components/Icon/Icon.react';
 import ServerLogsView  from '../../../components/ServerLogsView/ServerLogsView.react';
+import B4AAlert        from 'components/B4AAlert/B4AAlert.react';
 
 import styles          from 'dashboard/Data/Logs/Logs.scss';
 
@@ -111,7 +112,7 @@ export default class Logs extends DashboardView {
 
   renderContent() {
     // Send track event
-    // back4AppNavigation && back4AppNavigation.atParseLogsEvent()
+    back4AppNavigation && back4AppNavigation.atParseLogsEvent()
 
     let type = this.props.params.type;
     let refreshIconStyles = styles.toolbarButton;
