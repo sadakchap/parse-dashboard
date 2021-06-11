@@ -32,6 +32,8 @@ import Loader             from 'components/Loader/Loader.react';
 import Logs               from './Data/Logs/Logs.react';
 import InfoLogs           from './Data/Logs/InfoLogs.react';
 import ErrorLogs          from './Data/Logs/ErrorLogs.react';
+import AccessLogs         from './Data/Logs/AccessLogs.react';
+import SystemLogs         from './Data/Logs/SystemLogs.react';
 import Migration          from './Data/Migration/Migration.react';
 import ParseApp           from 'lib/ParseApp';
 import Performance        from './Analytics/Performance/Performance.react';
@@ -312,8 +314,8 @@ export default class Dashboard extends React.Component {
         <Route path={ match.path + '/info' } component={InfoLogs} />
         <Route path={ match.path + '/error' } component={ErrorLogs} />
         <Redirect exact from={ match.path } to='/apps/:appId/logs/Info' />
-        {/* <Route path={ match.path + '/system' } component={SystemLogs} />
-        <Route path={ match.path + '/access' } component={AccessLogs} /> */}
+        <Route path={ match.path + '/system' } component={SystemLogs} />
+        <Route path={ match.path + '/access' } component={AccessLogs} /> 
       </Switch>
     );
 
