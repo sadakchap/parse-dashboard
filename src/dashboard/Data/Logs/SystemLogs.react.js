@@ -113,7 +113,7 @@ export default class SystemLogs extends DashboardView {
       >
         <a
           className={refreshIconStyles}
-          onClick={this.refreshLogs}
+          onClick={!this.state.loading ? this.refreshLogs : undefined}
           title="Refresh"
         >
           <Icon name="refresh" width={30} height={26} />

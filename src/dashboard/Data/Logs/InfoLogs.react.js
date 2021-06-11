@@ -111,7 +111,7 @@ export default class InfoLogs extends DashboardView {
         subsection='Info'
         details={ReleaseInfo({ release: this.state.release })}
         >
-        <a className={refreshIconStyles} onClick={this.refreshLogs} title='Refresh'>
+        <a className={refreshIconStyles} onClick={!this.state.loading ? this.refreshLogs : undefined} title='Refresh'>
           <Icon name='refresh' width={30} height={26} />
         </a>
       </Toolbar>
