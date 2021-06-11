@@ -30,6 +30,8 @@ import Jobs               from './Data/Jobs/Jobs.react';
 import JobsData           from 'dashboard/Data/Jobs/JobsData.react';
 import Loader             from 'components/Loader/Loader.react';
 import Logs               from './Data/Logs/Logs.react';
+import InfoLogs           from './Data/Logs/InfoLogs.react';
+import ErrorLogs          from './Data/Logs/ErrorLogs.react';
 import Migration          from './Data/Migration/Migration.react';
 import ParseApp           from 'lib/ParseApp';
 import Performance        from './Analytics/Performance/Performance.react';
@@ -305,6 +307,16 @@ export default class Dashboard extends React.Component {
       </Switch>
     );
 
+    const logsRoute = ({ match }) => (
+      <Switch>
+        <Route path={ match.path + '/info' } component={InfoLogs} />
+        <Route path={ match.path + '/error' } component={ErrorLogs} />
+        <Redirect exact from={ match.path } to='/apps/:appId/logs/Info' />
+        {/* <Route path={ match.path + '/system' } component={SystemLogs} />
+        <Route path={ match.path + '/access' } component={AccessLogs} /> */}
+      </Switch>
+    );
+
     const BrowserRoute = (props) => {
       if (ShowSchemaOverview) {
         return <SchemaOverview {...props} params={props.match.params} />
@@ -348,10 +360,7 @@ export default class Dashboard extends React.Component {
 
           <Route path={ match.path + '/jobs' } component={JobsRoute}/>
 
-          <Route path={ match.path + '/logs/:type' } render={(props) => (
-            <Logs {...props} params={props.match.params} />
-          )} />
-          <Redirect from={ match.path + '/logs' } to='/apps/:appId/logs/info' />
+          <Route path={ match.path + '/logs' } component={logsRoute}/>
 
           <Route path={ match.path + '/config' } component={Config} />
           <Route path={ match.path + '/api_console' } component={ApiConsoleRoute} />
