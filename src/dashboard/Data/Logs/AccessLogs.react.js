@@ -5,11 +5,10 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
+import B4AAlert        from 'components/B4AAlert/B4AAlert.react';
 import CategoryList    from 'components/CategoryList/CategoryList.react';
 import DashboardView   from 'dashboard/DashboardView.react';
 import EmptyState      from 'components/EmptyState/EmptyState.react';
-import LogView         from 'components/LogView/LogView.react';
-import LogViewEntry    from 'components/LogView/LogViewEntry.react';
 import React           from 'react';
 import ReleaseInfo     from 'components/ReleaseInfo/ReleaseInfo';
 import Toolbar         from 'components/Toolbar/Toolbar.react';
@@ -19,7 +18,22 @@ import ServerLogsView  from 'components/ServerLogsView/ServerLogsView.react';
 
 import styles          from 'dashboard/Data/Logs/Logs.scss';
 
-
+let alertWhatIsMessage = (
+  <div>
+    <p style={{ height: "auto" }}>
+      Here you will find a detailed extract of all requests made to your server,
+      including the request time, type, response time, size, and more. Check our{" "}
+      <a
+        href="https://www.back4app.com/docs/platform/parse-server-logs"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        doc
+      </a>{" "}
+      to know more about the logs.
+    </p>
+  </div>
+);
 export default class AccessLogs extends DashboardView {
   constructor() {
     super();
@@ -29,10 +43,12 @@ export default class AccessLogs extends DashboardView {
     this.state = {
       loading: false,
       logs: '',
-      release: undefined
+      release: undefined,
+      showWhatIs: localStorage.getItem('showAccessLogsBox') !== 'false'
     };
 
     this.refreshLogs = this.refreshLogs.bind(this);
+    this.handleAlertClose = this.handleAlertClose.bind(this);
   }
 
   componentDidMount() {
@@ -93,9 +109,14 @@ export default class AccessLogs extends DashboardView {
     );
   }
 
+  handleAlertClose() {
+    localStorage.setItem('showAccessLogsBox', false);
+    this.setState({
+      showWhatIs: false
+    });
+  }
+
   renderContent() {
-    // Send track event
-    back4AppNavigation && back4AppNavigation.atParseLogsEvent()
 
     let refreshIconStyles = styles.toolbarButton;
     if (this.state.loading) {
@@ -114,6 +135,14 @@ export default class AccessLogs extends DashboardView {
       </Toolbar>
     );
     let content = null;
+    let alertWhatIs = (
+      <B4AAlert
+        show={this.state.showWhatIs}
+        handlerCloseEvent={this.handleAlertClose}
+        title="What are Access Logs(Gostei)"
+        description={alertWhatIsMessage}
+      />
+    );
     content = (
     <LoaderContainer loading={this.state.loading} solid={false}>
         {!this.state.loading && this.state.logs === '' ? (
@@ -127,7 +156,8 @@ export default class AccessLogs extends DashboardView {
         </div>
         ) : (
         <div className={styles.content}>
-            <ServerLogsView type="access" logs={this.state.logs} />
+          {alertWhatIs}
+          <ServerLogsView type="access" logs={this.state.logs} />
         </div>
         )}
     </LoaderContainer>
