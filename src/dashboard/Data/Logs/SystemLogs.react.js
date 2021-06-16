@@ -28,6 +28,7 @@ let alertWhatIsMessage = (
       <a
         href="https://www.back4app.com/docs/platform/parse-server-logs"
         target="_blank"
+        rel="noopener noreferrer"
       >
         doc
       </a>{" "}
@@ -159,11 +160,10 @@ export default class SystemLogs extends DashboardView {
             <EmptyState
               icon="files-outline"
               title="No System logs in the last 30 days"
-              description="When you start using Cloud Code, your logs will show up here."
               cta="Learn more"
               action={() =>
                 (window.location =
-                  "http://docs.parseplatform.org/cloudcode/guide")
+                  "https://www.back4app.com/docs/platform/parse-server-logs")
               }
             />
           </div>

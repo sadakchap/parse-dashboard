@@ -150,9 +150,8 @@ export default class AccessLogs extends DashboardView {
             <EmptyState
             icon='files-outline'
             title='No Access logs in the last 30 days'
-            description='When you start using Cloud Code, your logs will show up here.'
             cta='Learn more'
-            action={() => window.location = 'http://docs.parseplatform.org/cloudcode/guide'} />
+            action={() => window.location = 'https://www.back4app.com/docs/platform/parse-server-logs'} />
         </div>
         ) : (
         <div className={styles.content}>
