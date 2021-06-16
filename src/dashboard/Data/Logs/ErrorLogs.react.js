@@ -5,6 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
+import B4AAlert        from 'components/B4AAlert/B4AAlert.react';
 import CategoryList    from 'components/CategoryList/CategoryList.react';
 import DashboardView   from 'dashboard/DashboardView.react';
 import EmptyState      from 'components/EmptyState/EmptyState.react';
@@ -25,6 +26,23 @@ let subsections = {
   system: 'System'
 };
 
+let alertWhatIsMessage = (
+  <div>
+    <p style={{ height: "auto" }}>
+      In this section, you will track general Parse Server errors. For example,
+      when the user hasn’t defined its password correctly, Parse Server will log
+      an error message here. Check our{" "}
+      <a
+        href="https://www.back4app.com/docs/platform/parse-server-logs"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        doc
+      </a>{" "}
+      to know more about the logs.
+    </p>
+  </div>
+);
 export default class InfoLogs extends DashboardView {
   constructor() {
     super();
@@ -34,10 +52,12 @@ export default class InfoLogs extends DashboardView {
     this.state = {
       loading: false,
       logs: [],
-      release: undefined
+      release: undefined,
+      showWhatIs: localStorage.getItem('showErrorLogsBox') !== 'false'
     };
 
     this.refreshLogs = this.refreshLogs.bind(this);
+    this.handleAlertClose = this.handleAlertClose.bind(this);
   }
 
   componentDidMount() {
@@ -96,6 +116,13 @@ export default class InfoLogs extends DashboardView {
     );
   }
 
+  handleAlertClose() {
+    localStorage.setItem('showErrorLogsBox', false);
+    this.setState({
+      showWhatIs: false
+    });
+  }
+
   renderContent() {
     // Send track event
     back4AppNavigation && back4AppNavigation.atParseLogsEvent()
@@ -117,6 +144,14 @@ export default class InfoLogs extends DashboardView {
       </Toolbar>
     );
     let content = null;
+    let alertWhatIs = (
+      <B4AAlert
+        show={this.state.showWhatIs}
+        handlerCloseEvent={this.handleAlertClose}
+        title="What are Error Logs"
+        description={alertWhatIsMessage}
+      />
+    );
     content = (
     <LoaderContainer loading={this.state.loading} solid={false}>
         {!this.state.loading && this.state.logs.length === 0 ? (
@@ -130,6 +165,7 @@ export default class InfoLogs extends DashboardView {
         </div>
         ) : (
         <div className={styles.content}>
+          {alertWhatIs}
             <LogView>
             {this.state.logs.map(({ message, timestamp }) => <LogViewEntry
                 key={timestamp}
