@@ -122,8 +122,6 @@ export default class SystemLogs extends DashboardView {
   }
 
   renderContent() {
-    // Send track event
-    back4AppNavigation && back4AppNavigation.atParseLogsEvent()
 
     let refreshIconStyles = styles.toolbarButton;
     if (this.state.loading) {
