@@ -139,7 +139,7 @@ export default class AccessLogs extends DashboardView {
       <B4AAlert
         show={this.state.showWhatIs}
         handlerCloseEvent={this.handleAlertClose}
-        title="What are Access Logs(Gostei)"
+        title="What are Access Logs"
         description={alertWhatIsMessage}
       />
     );
