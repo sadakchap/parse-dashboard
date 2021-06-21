@@ -246,27 +246,22 @@ class Explorer extends DashboardView {
     let csvRows = this.state.activeQueries.map((query) => {
       switch (this.props.params.displayType) {
         case 'chart':
-          let columns = ['time'];
           let csvValues = [];
           // Transform:
           // {
-          //   foo: [[123, bar], [456, baz]]
-          //   a: [[123, b], [456, c]]
+          //   name: 'Name'
+          //   result: [[123, bar], [456, baz]]
           // }
           // into
-          // [[time, foo, a], [123, bar, b], [456, baz, c]]
-          for (let key in query.result) {
-            let result = query.result[key];
-            columns.push(key);
-            result.forEach((value, index) => {
-              if (csvValues[index] === undefined) {
-                // Push the time.
-                csvValues[index] = [value[0]];
-              }
-              csvValues[index].push(value[1]);
-            });
+          // ['Name', 'Time,123,456', 'No of Requests,bar,baz']
+          let csvValues=[];
+          csvValues.push(q.name);
+          let timeStr = 'Time,', noOfRequestStr = 'No of Requests,';
+          for(let val of q.result){
+              timeStr += val[0] + ',';
+              noOfRequestStr += val[1] + ',';
           }
-          csvValues.unshift(columns);
+          csvValues.push(timeStr, noOfRequestStr);
           return csvValues.join('\n');
         case 'table':
           return query.result.join('\n');
