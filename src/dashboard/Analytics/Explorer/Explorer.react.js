@@ -42,6 +42,20 @@ let buildFriendlyName = (query) => {
   return name.join(' ');
 };
 
+let inverseMatrix = (matrix) => {
+  let matrixInverted = [[]];
+  matrix.forEach(
+    (innerArray, indexOut) =>
+      innerArray.forEach(
+        (valueIn, indexIn) => {
+          if(matrixInverted[indexIn] === undefined) matrixInverted[indexIn] = []  
+          matrixInverted[indexIn][indexOut] = valueIn
+        }
+      )
+  )
+  return matrixInverted;
+}
+
 export default
 @subscribeTo('AnalyticsQuery', 'customQueries')
 class Explorer extends DashboardView {
@@ -243,29 +257,49 @@ class Explorer extends DashboardView {
 
   handleDownload() {
     const csvDeclaration = 'data:text/csv;charset=utf-8,';
-    let csvRows = this.state.activeQueries.map((query) => {
-      switch (this.props.params.displayType) {
-        case 'chart':
-          let csvValues = [];
-          // Transform:
-          // {
-          //   name: 'Name'
-          //   result: [[123, bar], [456, baz]]
-          // }
-          // into
-          // ['Name', 'Time,123,456', 'No of Requests,bar,baz']
-          let csvValues=[];
-          csvValues.push(q.name);
-          let timeStr = 'Time,', noOfRequestStr = 'No of Requests,';
-          for(let val of q.result){
-              timeStr += val[0] + ',';
-              noOfRequestStr += val[1] + ',';
+    switch (this.props.params.displayType) {
+      case 'chart': {
+        // Transform to [[Time, a, b], [name1, c, f], [name2, d, r]]
+        let rows = [];
+        // create time column, since time will be same for all queries
+        // we can take time from first query
+        let timeArr = ['Time'];
+        this.state.activeQueries[0].result.forEach(val => {
+          timeArr.push(new Date(val[0]).toDateString());
+        });
+        rows.push(timeArr);
+
+        // now the request queries 
+        this.state.activeQueries.forEach(q => {
+          let arr = [];
+          arr.push(q.name);
+          for (let val of q.result) {
+            arr.push(val[1]);
           }
-          csvValues.push(timeStr, noOfRequestStr);
-          return csvValues.join('\n');
-        case 'table':
+          rows.push(arr);
+        });
+        
+        // now transform [[Time, a, b], [name1, c, d], [name2, e, f]]
+        // to [[Time, name1, name2], [a, c, e], [b, d, f]]
+        // to get vertical columns in csv file
+        let csvContent = '';
+        inverseMatrix(rows).forEach(function(rowArray) {
+          let row = rowArray.join(',');
+          csvContent += row + '\r\n';
+        });
+
+        window.open(encodeURI( csvDeclaration + csvContent));
+        return;
+      }
+      case 'table': {
+        let csvRows = this.state.activeQueries.map((query) => {
           return query.result.join('\n');
-        case 'json':
+        });
+        window.open(encodeURI(csvDeclaration + csvRows.join('\n\n')));
+        return;
+      }
+      case 'json': {
+        let csvRows = this.state.activeQueries.map((query) => {
           let keys = [];
           if (query.result.length > 0) {
             keys = Object.keys(query.result[0]);
@@ -278,15 +312,16 @@ class Explorer extends DashboardView {
           // ]
           // into
           // [[foo, a], [bar, b], [baz, c]]
-          csvArray = csvArray.concat(query.result.map((result) => (
-            keys.map((key) => result[key])
-          )));
+          csvArray = csvArray.concat(
+            query.result.map(result => keys.map(key => result[key]))
+          );
 
-          return csvArray.join('\n');
+          return csvArray.join("\n");
+        });
+        window.open(encodeURI(csvDeclaration + csvRows.join('\n\n')));
+        return;
       }
-    });
-
-    window.open(encodeURI(csvDeclaration + csvRows.join('\n\n')));
+    }    
   }
 
   buildCustomQueryPayload(query) {
