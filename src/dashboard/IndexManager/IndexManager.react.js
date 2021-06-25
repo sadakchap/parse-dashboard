@@ -14,6 +14,20 @@ import styles from './IndexManager.scss'
 import subscribeTo from 'lib/subscribeTo'
 import Swal from 'sweetalert2'
 
+const listenToPendingIndexes = async (func, indexName) => {
+  for (let i = 1; i <= 20; i++) {
+    const response = await func();
+    for (const cls in response) {
+      for (const [k, val] of response[cls]) {
+        if( k === indexName && val['status'] === 'SUCCESS' ) {
+          return;
+        }
+      }
+    }
+    await new Promise(resolve => setTimeout(resolve, i * 1000));
+  }
+}
+
 @subscribeTo('Schema', 'schema')
 class IndexManager extends DashboardView {
   constructor(props, context) {
@@ -210,6 +224,20 @@ class IndexManager extends DashboardView {
           this.setState({ data });
 
           // start listening to status of that index
+          listenToPendingIndexes(
+            this.context.currentApp.getPendingIndexes.bind(
+              this.context.currentApp,
+              className
+            ),
+            indexOptions.name
+          )
+            .then(() => {
+              let newIndexes = (this.state.data.find(
+                index => index.name === indexOptions.name
+              ).status = 'SUCCESS');
+              this.setState({ data: newIndexes });
+            })
+            .catch(err => console.log(err));
         }).catch(e => {
           Swal.insertQueueStep({
             title: 'Index creation failure',
