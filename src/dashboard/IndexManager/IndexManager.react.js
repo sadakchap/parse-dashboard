@@ -198,11 +198,18 @@ class IndexManager extends DashboardView {
       const { className } = this.props.params
       return this.context.currentApp.createIndex(className, indexConfiguration)
         .then(() => {
-          Swal.insertQueueStep({
-            title: 'Index created successfully',
-            type: 'success'
+          // add new index row with status PENDING
+          let data = this.state.data;
+          data.push({
+            creationType: 'Manual',
+            index: JSON.stringify(indexConfiguration.index),
+            ...indexOptions,
+            status: 'PENDING',
+            updatedAt: '-',
           });
-          this.refresh();
+          this.setState({ data });
+
+          // start listening to status of that index
         }).catch(e => {
           Swal.insertQueueStep({
             title: 'Index creation failure',
