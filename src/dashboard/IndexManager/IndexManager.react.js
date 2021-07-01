@@ -38,6 +38,7 @@ class IndexManager extends DashboardView {
     this.closeIndexForm = this.closeIndexForm.bind(this)
     this.createIndexes = this.createIndexes.bind(this)
     this.dropIndexes = this.dropIndexes.bind(this)
+    this.allowCollaboratorToCreate = this.allowCollaboratorToCreate.bind(this)
   }
 
   componentWillMount() {
@@ -58,17 +59,22 @@ class IndexManager extends DashboardView {
     // if not owner then check for collaborator
     if (!this.context.currentApp.custom.isOwner) {
       let currentEmail = AccountManager.currentUser().email;
-      this.context.currentApp.fetchSettingsFields().then(({ fields }) => {
-        let collaborators = fields.collaborators;
-        let isCollab = collaborators.findIndex(
-          collab => collab.userEmail === currentEmail
-        );
 
-        if (isCollab !== -1) {
-          this.setState({
-            canCreate: true
-          });
-        }
+      if (Object.keys(this.context.currentApp.settings.fields).length !== 0) { // if collaborators field is already loaded
+        this.allowCollaboratorToCreate(this.context.currentApp.settings.fields.fields.collaborators, currentEmail);
+      } else {
+        this.context.currentApp.fetchSettingsFields().then(({ fields }) => {
+          this.allowCollaboratorToCreate(fields.collaborators, currentEmail)
+        });
+      }
+    }
+  }
+
+  allowCollaboratorToCreate (collaborators, currentEmail) {
+    let isCollab = collaborators.findIndex(collab => collab.userEmail === currentEmail);
+    if (isCollab !== -1) {
+      this.setState({
+        canCreate: true
       });
     }
   }
