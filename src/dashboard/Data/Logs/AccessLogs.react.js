@@ -150,6 +150,7 @@ export default class AccessLogs extends DashboardView {
             <EmptyState
               icon="files-outline"
               title="No Access logs in the last 30 days"
+              description="Here you will find a detailed extract of all requests made to your server, including the request time, type, response time, size, and more."
               cta="Learn more"
               action={() =>
                 (window.location =

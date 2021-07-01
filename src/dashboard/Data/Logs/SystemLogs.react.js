@@ -160,6 +160,7 @@ export default class SystemLogs extends DashboardView {
               <EmptyState
                 icon="files-outline"
                 title="No System logs in the last 30 days"
+                description={`In this section, you will find the messages related to general logs of your Parse Server application and all logging levels associated with either success or error of your Cloud Code Functions provided by options like console.log() or console.error()`}
                 cta="Learn more"
                 action={() =>
                   (window.location =
