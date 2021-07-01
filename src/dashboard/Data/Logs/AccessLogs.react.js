@@ -159,7 +159,7 @@ export default class AccessLogs extends DashboardView {
             />
           )}
           {!this.state.loading && this.state.logs !== "" && (
-            <div className={styles.content}>
+            <div>
               {alertWhatIs}
               <ServerLogsView type="access" logs={this.state.logs} />
             </div>
