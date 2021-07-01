@@ -280,7 +280,7 @@ export default class Dashboard extends React.Component {
       <Switch>
         <Route path={ match.path + '/info' } component={InfoLogs} />
         <Route path={ match.path + '/error' } component={ErrorLogs} />
-        <Redirect exact from={ match.path } to='/apps/:appId/logs/Info' />
+        <Redirect exact from={ match.path } to='/apps/:appId/logs/system' />
         <Route path={ match.path + '/system' } component={SystemLogs} />
         <Route path={ match.path + '/access' } component={AccessLogs} /> 
       </Switch>

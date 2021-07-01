@@ -154,17 +154,17 @@ export default class InfoLogs extends DashboardView {
     );
     content = (
     <LoaderContainer loading={this.state.loading} solid={false}>
-        {!this.state.loading && this.state.logs.length === 0 ? (
-        <div className={styles.content}>
-            <EmptyState
-            icon='files-outline'
-            title='No Info logs in the last 30 days'
-            description='When you start using Cloud Code, your logs will show up here.'
-            cta='Learn more'
-            action={() => window.location = 'http://docs.parseplatform.org/cloudcode/guide'} />
-        </div>
-        ) : (
-        <div className={styles.content}>
+      <div className={styles.content}>
+        {!this.state.loading && this.state.logs.length === 0 && (
+          <EmptyState
+          icon='files-outline'
+          title='No Info logs in the last 30 days'
+          description='When you start using Cloud Code, your logs will show up here.'
+          cta='Learn more'
+          action={() => window.location = 'https://www.back4app.com/docs/platform/parse-server-logs'} />
+        )}
+        {!this.state.loading && this.state.logs.length !== 0 && (
+          <div>
             {alertWhatIs}
             <LogView>
             {this.state.logs.map(({ message, timestamp }) => <LogViewEntry
@@ -174,6 +174,7 @@ export default class InfoLogs extends DashboardView {
             </LogView>
         </div>
         )}
+      </div>
     </LoaderContainer>
     );
     
