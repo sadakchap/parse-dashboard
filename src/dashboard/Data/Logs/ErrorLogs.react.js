@@ -163,7 +163,7 @@ export default class InfoLogs extends DashboardView {
               cta="Learn more"
               action={() =>
                 (window.location =
-                  "http://docs.parseplatform.org/cloudcode/guide")
+                  "https://www.back4app.com/docs/platform/parse-server-logs")
               }
             />
           )}
