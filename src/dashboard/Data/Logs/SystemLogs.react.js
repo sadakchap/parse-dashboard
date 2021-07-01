@@ -155,24 +155,25 @@ export default class SystemLogs extends DashboardView {
     />
     content = (
       <LoaderContainer loading={this.state.loading} solid={false}>
-        {!this.state.loading && this.state.logs === "" ? (
-          <div className={styles.content}>
-            <EmptyState
-              icon="files-outline"
-              title="No System logs in the last 30 days"
-              cta="Learn more"
-              action={() =>
-                (window.location =
-                  "https://www.back4app.com/docs/platform/parse-server-logs")
-              }
-            />
-          </div>
-        ) : (
-          <div className={styles.content}>
-            {alertWhatIs}
-            <ServerLogsView type="system" logs={this.state.logs} />
-          </div>
-        )}
+        <div className={styles.content}>
+          {!this.state.loading && this.state.logs === "" && (
+              <EmptyState
+                icon="files-outline"
+                title="No System logs in the last 30 days"
+                cta="Learn more"
+                action={() =>
+                  (window.location =
+                    "https://www.back4app.com/docs/platform/parse-server-logs")
+                }
+              />
+          )} 
+          {!this.state.loading && this.state.logs !== "" && (
+            <div>
+              {alertWhatIs}
+              <ServerLogsView type="system" logs={this.state.logs} />
+            </div>
+          )}
+        </div>
       </LoaderContainer>
     );
 

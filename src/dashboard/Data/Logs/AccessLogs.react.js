@@ -144,22 +144,27 @@ export default class AccessLogs extends DashboardView {
       />
     );
     content = (
-    <LoaderContainer loading={this.state.loading} solid={false}>
-        {!this.state.loading && this.state.logs === '' ? (
+      <LoaderContainer loading={this.state.loading} solid={false}>
         <div className={styles.content}>
+          {!this.state.loading && this.state.logs === "" && (
             <EmptyState
-            icon='files-outline'
-            title='No Access logs in the last 30 days'
-            cta='Learn more'
-            action={() => window.location = 'https://www.back4app.com/docs/platform/parse-server-logs'} />
+              icon="files-outline"
+              title="No Access logs in the last 30 days"
+              cta="Learn more"
+              action={() =>
+                (window.location =
+                  "https://www.back4app.com/docs/platform/parse-server-logs")
+              }
+            />
+          )}
+          {!this.state.loading && this.state.logs !== "" && (
+            <div className={styles.content}>
+              {alertWhatIs}
+              <ServerLogsView type="access" logs={this.state.logs} />
+            </div>
+          )}
         </div>
-        ) : (
-        <div className={styles.content}>
-          {alertWhatIs}
-          <ServerLogsView type="access" logs={this.state.logs} />
-        </div>
-        )}
-    </LoaderContainer>
+      </LoaderContainer>
     );
     
     return (
