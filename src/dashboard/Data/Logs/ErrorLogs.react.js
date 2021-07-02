@@ -161,10 +161,7 @@ export default class InfoLogs extends DashboardView {
               title="No Error logs in the last 30 days"
               description="When you start using Cloud Code, your logs will show up here."
               cta="Learn more"
-              action={() =>
-                (window.location =
-                  "https://www.back4app.com/docs/platform/parse-server-logs")
-              }
+              action={"https://www.back4app.com/docs/platform/parse-server-logs"}
             />
           )}
           {!this.state.loading && this.state.logs.length !== 0 && (
