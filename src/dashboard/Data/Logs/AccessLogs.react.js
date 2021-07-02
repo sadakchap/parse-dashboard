@@ -152,10 +152,7 @@ export default class AccessLogs extends DashboardView {
               title="No Access logs in the last 30 days"
               description="Here you will find a detailed extract of all requests made to your server, including the request time, type, response time, size, and more."
               cta="Learn more"
-              action={() =>
-                (window.location =
-                  "https://www.back4app.com/docs/platform/parse-server-logs")
-              }
+              action={"https://www.back4app.com/docs/platform/parse-server-logs"}
             />
           )}
           {!this.state.loading && this.state.logs !== "" && (
