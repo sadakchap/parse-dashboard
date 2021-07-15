@@ -65,12 +65,13 @@ let AppCard = ({
   app,
   icon,
 }) => {
-  let canBrowse = app.serverInfo.error ? null : () => history.push(html`/apps/${app.slug}/browser`);
+  let canBrowse = app.serverInfo.error || app.serverInfo.status === 'LOADING' ? null : () => history.push(html`/apps/${app.slug}/browser`);
   let versionMessage = app.serverInfo.error ?
     <div className={styles.serverVersion}>Server not reachable: <span className={styles.ago}>{app.serverInfo.error.toString()}</span></div>:
     <div className={styles.serverVersion}>
     Server URL: <span className={styles.ago}>{app.serverURL || 'unknown'}</span>
     Server version: <span className={styles.ago}>{app.serverInfo.parseServerVersion || 'unknown'}</span>
+    Status: <span className={styles.ago}>{app.serverInfo.status}</span>
     </div>;
 
   return <li onClick={canBrowse} style={{ background: app.primaryBackgroundColor }}>
@@ -124,7 +125,7 @@ export default class AppsIndex extends React.Component {
 
   render() {
     let search = this.state.search.toLowerCase();
-    let apps = AppsManager.apps();
+    let apps = this.props.apps;
     if (apps.length === 0) {
       return (
         <div className={styles.empty}>
@@ -163,10 +164,12 @@ export default class AppsIndex extends React.Component {
             filter&hellip;' />
         </div>
         <ul className={styles.apps}>
-          {apps.map(app =>
+          {apps.map(app => {
+            return (
             app.name.toLowerCase().indexOf(search) > -1 ?
               <AppCard key={app.slug} app={app} icon={app.icon ? app.icon : null}/> :
-              null
+              null)
+            }
           )}
         </ul>
         {upgradePrompt}
