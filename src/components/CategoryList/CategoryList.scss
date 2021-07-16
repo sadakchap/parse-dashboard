@@ -24,7 +24,7 @@
       color: white;
     }
 
-    &:hover{
+    &:hover {
       color: white;
     }
 
@@ -59,13 +59,14 @@
     position: relative;
     font-weight: 600;
     letter-spacing: .01rem;
+
     & a {
       border-left: none;
       color: white;
-    }    
+    }
   }
 
-  & > div:last-of-type {
+  &>div:last-of-type {
     margin-bottom: 0;
   }
 
@@ -82,7 +83,7 @@
       color: white;
     }
 
-    &:hover{
+    &:hover {
       color: white;
     }
 

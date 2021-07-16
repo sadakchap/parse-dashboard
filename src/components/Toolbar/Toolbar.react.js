@@ -42,10 +42,13 @@ let Toolbar = (props) => {
             <span className={styles.subsection}>
               {props.subsection}
             </span>
-            <span className={styles.details}>
-              {props.details}
-            </span>
+            <div className={styles.seperatorVertical}></div>
             {props.helpsection}
+            {/* Public read and write access */}
+            <div className={styles.publicAccess} onClick={() => props.onClickSecurity(true)}>
+              <img className={styles.publicAccessIcon} src={props.lockIcon} />
+              <a href="javascript:void(0)"><small>{props.readWritePermissions}</small></a>
+            </div>
           </div>
         </div>
       </div>
