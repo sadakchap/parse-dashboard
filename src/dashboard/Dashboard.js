@@ -165,6 +165,8 @@ export default class Dashboard extends React.Component {
           email: userDetail.username,
           journey: isFlow1 ? 'csat-back4app' : 'nps-back4app',          
         };
+        let retryInterval = isFlow1 ? 5 : 45;
+        let collectInterval = isFlow1 ? 30 : 90;
         options.param_requestdata = encodeURIComponent(JSON.stringify({
           userDetail,
           options,
@@ -174,7 +176,7 @@ export default class Dashboard extends React.Component {
           process.env.SOLUCX_API_KEY,
           'bottomBoxLeft',
           options,
-          { collectInterval: 30, retryAttempts: 1, retryInterval: 5 }
+          { collectInterval, retryAttempts: 1, retryInterval }
         );
       });
 
