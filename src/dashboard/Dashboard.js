@@ -130,6 +130,13 @@ const PARSE_DOT_COM_SERVER_INFO = {
   parseServerVersion: 'Parse.com',
 }
 
+const monthQuarter = {
+  '0': 'Q1',
+  '1': 'Q2',
+  '2': 'Q3',
+  '3': 'Q4'
+};
+
 export default class Dashboard extends React.Component {
   constructor(props) {
     super();
@@ -156,7 +163,8 @@ export default class Dashboard extends React.Component {
         const isFlow1 = hourDiff <= 720 ? true : false;
         let transactionId = userDetail.id;
         if(!isFlow1){
-          transactionId += `${now.year()}${now.month()+1}`;
+          const quarter = monthQuarter[parseInt(now.month()/3)];
+          transactionId += `${now.year()}${quarter}`;
         }
         const options = {
           transaction_id: transactionId,
