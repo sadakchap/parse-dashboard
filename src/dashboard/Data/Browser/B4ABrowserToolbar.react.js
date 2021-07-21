@@ -156,6 +156,10 @@ let B4ABrowserToolbar = ({
         {enableExportClass ? <MenuItem text='Export this data' onClick={onExport} /> : <noscript />}
         <Separator />
         <MenuItem text='Index Manager' onClick={onClickIndexManager} />
+        <MenuItem text="API Reference" onClick={() => {
+          back4AppNavigation && back4AppNavigation.atApiReferenceClassesEvent()
+          window.open(`${b4aSettings.DASHBOARD_PATH}/apidocs/${applicationId}${classApiId}`, '_blank')
+        }} />
       </BrowserMenu>
     );
   }
