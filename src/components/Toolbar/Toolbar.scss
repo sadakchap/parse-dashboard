@@ -107,10 +107,14 @@ body:global(.expanded) {
   display: inline-flex;
   margin-left: 15px;
   align-items: center;
+  cursor: pointer;
   .publicAccessIcon {
     height: 15px;
     width: 15px;
     margin-right: 5px;
+  }
+  .publicAccessLink {
+    cursor: pointer;
   }
   a {
     cursor: default;
@@ -119,4 +123,8 @@ body:global(.expanded) {
     text-decoration: underline;
     color: white;
   }
+}
+
+.mr5 {
+  margin-right: 5px;
 }
