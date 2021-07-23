@@ -177,6 +177,7 @@ export default class Dashboard extends React.Component {
           { collectInterval: 30, retryAttempts: 1, retryInterval: 5 }
         );
       });
+
       AccountManager.setCurrentUser({ user });
       this.setState({ newFeaturesInLatestVersion });
       let appInfoPromises = apps.map(app => {
@@ -323,7 +324,7 @@ export default class Dashboard extends React.Component {
         <Route path={ match.path + '/error' } component={ErrorLogs} />
         <Redirect exact from={ match.path } to='/apps/:appId/logs/system' />
         <Route path={ match.path + '/system' } component={SystemLogs} />
-        <Route path={ match.path + '/access' } component={AccessLogs} />
+        <Route path={ match.path + '/access' } component={AccessLogs} /> 
       </Switch>
     );
 

@@ -94,7 +94,7 @@ TextInput.propTypes = {
   placeholder: PropTypes.string.describe(
     'A placeholder string, for when the input is empty'
   ),
-  value: PropTypes.any.describe(
+  value: PropTypes.string.describe(
     'The current value of the controlled input'
   ),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).describe(
