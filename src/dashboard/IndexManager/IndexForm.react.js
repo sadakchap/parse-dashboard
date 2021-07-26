@@ -195,6 +195,7 @@ class IndexForm extends Component {
       type: 'warning',
       showLoaderOnConfirm: true,
       confirmButtonText: 'Confirm',
+      showLoaderOnConfirm: true,
       preConfirm: () => {
         return this.props.onConfirm(indexConfiguration)
       },
