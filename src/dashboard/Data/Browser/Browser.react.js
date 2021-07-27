@@ -289,12 +289,6 @@ class Browser extends DashboardView {
         position: 'bottom'
       },
       {
-        eventId: 'Contextual Help',
-        element: () => document.querySelector('.toolbar-help-section'),
-        intro: `At any time, you can get specific help accessing this contextual section.`,
-        position: 'bottom'
-      },
-      {
         eventId: 'Play Intro Button',
         element: () => document.querySelector('[class^="footer"] [class^="more"]'),
         intro: `You can find this tour and play it again by pressing this button and selecting <b>"Play intro"</b>.`,
