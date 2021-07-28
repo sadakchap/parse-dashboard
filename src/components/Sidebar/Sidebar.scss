@@ -162,6 +162,12 @@
     line-height: 26px;
     margin: 0 5px;
     align-items: center;
+    float: right;
+    & > img {
+      width: 20px;
+      height: 20px;
+      @include animation('spin .75s linear infinite');
+    }
   }
 
   > *:last-child {
@@ -464,5 +470,14 @@ a.subitem {
 @include keyframes(spinner-border) {
   100% {
     @include transform(rotate(360deg));
+  }
+}
+
+@include keyframes(spin) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+  100% {
+    @include transform(rotate(359deg));
   }
 }
