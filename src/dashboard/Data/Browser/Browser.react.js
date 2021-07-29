@@ -237,16 +237,16 @@ class Browser extends DashboardView {
         <br/>
         <pre>vehicle.set('name', <span class="intro-code-string">'Corolla'</span>);</pre>
         <pre>vehicle.set('price', <span class="intro-code-number">19499</span>);</pre>
-        <pre>vehicle.set('color' <span class="intro-code-string">'black'</span>);</pre>
+        <pre>vehicle.set('color', <span class="intro-code-string">'black'</span>);</pre>
         <br/>
-        <pre>vehicle.save().then(savedObject => {</pre>
+        <pre>try {</pre>
+        <pre> const savedObject = await vehicle.save(); </pre>
         <pre>  <span class="intro-code-comment">// The class is automatically created on</span></pre>
         <pre>  <span class="intro-code-comment">// the back-end when saving the object!</span></pre>
         <pre>  console.log(savedObject);</pre>
-        <pre>},</pre>
-        <pre>error => {</pre>
+        <pre>} catch(error) {</pre>
         <pre>  console.error(error);</pre>
-        <pre>});</pre>
+        <pre>};</pre>
       </section>
     `;
     const steps = [
@@ -263,7 +263,7 @@ class Browser extends DashboardView {
       },
       {
         eventId: 'Custom Class and Object Creation',
-        element: () => document.querySelector('.toolbar-help-section > a'),
+        element: () => document.querySelectorAll('[class^=section__]')[2],
         intro: `It’s very simple to save data on Back4App from your front-end.<br /><br />
         On the <b>API Reference</b> section, you can find the auto-generated code below that creates a class and persist data on it.<br />
         ${createClassCode}
@@ -353,9 +353,8 @@ class Browser extends DashboardView {
             }
             break;
           case 2:
-            this._introItems[2].element = document.querySelector(
-              ".toolbar-help-section > a"
-            );
+            const stepElement = document.querySelector('.introjs-helperNumberLayer');
+            stepElement.style.marginLeft = '20px';
             nextButton = getNextButton();
             nextButton.innerHTML = "Run";
             break;
