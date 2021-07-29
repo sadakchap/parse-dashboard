@@ -240,7 +240,7 @@ class Browser extends DashboardView {
         <pre>vehicle.set('color', <span class="intro-code-string">'black'</span>);</pre>
         <br/>
         <pre>try {</pre>
-        <pre> const savedObject = await vehicle.save(); </pre>
+        <pre>  const savedObject = await vehicle.save(); </pre>
         <pre>  <span class="intro-code-comment">// The class is automatically created on</span></pre>
         <pre>  <span class="intro-code-comment">// the back-end when saving the object!</span></pre>
         <pre>  console.log(savedObject);</pre>
