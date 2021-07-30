@@ -239,12 +239,12 @@ class Browser extends DashboardView {
         <pre>vehicle.set('price', <span class="intro-code-number">19499</span>);</pre>
         <pre>vehicle.set('color', <span class="intro-code-string">'black'</span>);</pre>
         <br/>
-        <pre>try {</pre>
-        <pre>  const savedObject = await vehicle.save(); </pre>
+        <pre><span class="intro-code-keyword">try</span> {</pre>
+        <pre>  <span class="intro-code-keyword">const</span> savedObject = <span class="intro-code-keyword">await</span> vehicle.save(); </pre>
         <pre>  <span class="intro-code-comment">// The class is automatically created on</span></pre>
         <pre>  <span class="intro-code-comment">// the back-end when saving the object!</span></pre>
         <pre>  console.log(savedObject);</pre>
-        <pre>} catch(error) {</pre>
+        <pre>} <span class="intro-code-keyword">catch </span>(error) {</pre>
         <pre>  console.error(error);</pre>
         <pre>};</pre>
       </section>
@@ -268,7 +268,8 @@ class Browser extends DashboardView {
         On the <b>API Reference</b> section, you can find the auto-generated code below that creates a class and persist data on it.<br />
         ${createClassCode}
         <p class="intro-code-run">Click on the <b>Run</b> button to execute this code.</p>`,
-        position: 'right'
+        position: 'right',
+        tooltipClass: 'tourThirdStepStyle'
       },
       {
         eventId: 'Custom Class Link',
