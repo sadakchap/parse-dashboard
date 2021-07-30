@@ -356,3 +356,13 @@ tr.introjs-showElement > th {
 .intro-code-comment {
   color: darkgrey;
 }
+
+@media only screen and (max-width: 1440px) {
+  .tourThirdStepStyle {
+    top: -375px !important;
+  }
+
+  .tourThirdStepStyle > div.introjs-arrow.left-bottom {
+    bottom: 95px !important;
+  }
+}
