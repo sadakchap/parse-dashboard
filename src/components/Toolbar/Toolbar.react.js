@@ -41,10 +41,15 @@ let Toolbar = (props) => {
             !props.readWritePermissions &&
             <div className={styles.section}>{props.section}</div>
           }
-          <div style={{ display: 'flex' }}>
-            <span className={styles.subsection}>
-              {props.subsection}
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className={styles.subsection} >
+              <span className={styles.subsectionName}>
+                {props.subsection}
+              </span>
+              <span className={styles.details}>
+                {props.details}
+              </span>
+            </div>
             { props.readWritePermissions && <div>  <div className={styles.seperatorVertical}></div>
             {props.helpsection}
             {/* Public read and write access */}

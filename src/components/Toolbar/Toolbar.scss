@@ -80,10 +80,16 @@ body:global(.expanded) {
   text-transform: uppercase;
   font-size: 8px;
   letter-spacing: 1.6px;
-  margin-bottom: 5px;
 }
 
 .subsection {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.subsectionName {
   font-size: 18px;
   vertical-align: bottom;
   margin-right: 10px;
@@ -91,7 +97,8 @@ body:global(.expanded) {
 
 .details {
   color: #80848f;
-  font-size: 12px;
+  font-size: 10px;
+  margin-bottom: 2px;
 }
 
 .actions {
