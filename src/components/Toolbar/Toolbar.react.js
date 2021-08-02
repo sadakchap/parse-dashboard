@@ -36,17 +36,14 @@ let Toolbar = (props) => {
         <div className={styles.nav}>
           {backButton}
         </div>
-        <div className={styles.titleText}>
-          {
-            !props.readWritePermissions &&
-            <div className={styles.section}>{props.section}</div>
-          }
+        <div className={styles.titleText}>          
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div className={styles.subsection} >
               <span className={styles.subsectionName}>
                 {props.subsection}
               </span>
               <span className={styles.details}>
+                {!props.readWritePermissions && <div className={styles.section}>{props.section}</div>}
                 {props.details}
               </span>
             </div>
