@@ -194,6 +194,7 @@ export default class Dashboard extends React.Component {
 
       AccountManager.setCurrentUser({ user });
       const stateApps = [];
+      let isSingleApp = apps.length === 1;
       apps.forEach(app => {
         app.serverInfo = { status: 'LOADING' };
         AppsManager.addApp(app);
@@ -210,11 +211,12 @@ export default class Dashboard extends React.Component {
           app.serverInfo = PARSE_DOT_COM_SERVER_INFO;
           AppsManager.updateApp(app);
         } else {
+          let updatedApp;
           try {
             const serverInfo = await (new ParseApp(app).apiRequest('GET', 'serverInfo', {}, { useMasterKey: true }));
             app.serverInfo = { ...serverInfo, status: 'SUCCESS' };
-            AppsManager.updateApp(app);
-            this.updateApp(app);
+            updatedApp = await AppsManager.updateApp(app, isSingleApp);
+            this.updateApp(updatedApp);
           } catch (error) {
             if (error.code === 100) {
               app.serverInfo = {
@@ -238,8 +240,12 @@ export default class Dashboard extends React.Component {
                 status: 'ERROR'
               }
             }
-            AppsManager.updateApp(app);
-            this.updateApp(app);
+            updatedApp = await AppsManager.updateApp(app);
+            this.updateApp(updatedApp);
+          }
+          if (isSingleApp) {
+            history.push(`/apps/${updatedApp.slug}/browser`);
+            return;
           }
         }
       });
@@ -253,9 +259,9 @@ export default class Dashboard extends React.Component {
 
   updateApp(app) {
     const updatedApps = [...this.state.apps];
-    const appIdx = updatedApps.findIndex(ap => ap.applicationId === app.appId);
+    const appIdx = updatedApps.findIndex(ap => ap.applicationId === app.applicationId);
     if (appIdx === -1) return;
-    updatedApps[appIdx] = new ParseApp(app);
+    updatedApps[appIdx] = app;
     this.setState({
       apps: updatedApps
     });
