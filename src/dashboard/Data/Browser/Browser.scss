@@ -85,6 +85,7 @@ body:global(.expanded) {
   gap: 5px;
   color: white;
   background: #66637A;
+  margin: 0 4px;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -112,6 +113,7 @@ body:global(.expanded) {
   border: 1px solid #66637A;
   font-size: 14px;
   padding: 2px;
+  margin: 0 4px;
 
   svg {
     vertical-align: middle;
@@ -131,6 +133,7 @@ body:global(.expanded) {
   height: 26px;
   border: 1px solid #66637A;
   border-radius: 2px;
+  margin: 0 4px;
 }
 
 .toolbarButtonDisabled {
