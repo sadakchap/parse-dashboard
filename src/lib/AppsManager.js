@@ -22,10 +22,22 @@ const AppsManager = {
     return appsStore;
   },
 
-  updateApp(app) {
+  async updateApp(app, isSingleApp) {
     const appIdx = appsStore.findIndex(ap => ap.applicationId === app.appId);
     if (appIdx === -1) return;
-    appsStore[appIdx] = new ParseApp(app);
+    const parseApp = new ParseApp(app);
+    appsStore[appIdx] = parseApp;
+    if (app.serverInfo.status === 'SUCCESS' && !isSingleApp) {
+      // Fetch the latest usage and request info for the apps index
+      let installationCount = await parseApp.getClassCount("_Installation");
+      let userCount = await parseApp.getClassCount("_User");
+      
+      parseApp.installations = installationCount;
+      parseApp.users = userCount;
+      appsStore[appIdx] = parseApp;
+      return parseApp;
+    }
+    return parseApp;
   },
 
   findAppBySlugOrName(slugOrName) {
