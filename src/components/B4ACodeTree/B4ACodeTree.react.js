@@ -69,12 +69,6 @@ export default class B4ACodeTree extends React.Component {
   }
 
   handleFiles(files) {
-    // handle empty files
-    let fileObj = files.fileList['0'];
-    if (fileObj && fileObj.size === 0) {
-      let fileType = fileObj.type || 'plain/text';
-      files.base64[0] = `data:${fileType};base64,`;
-    }
     this.setState({ newFile: files })
     this.loadFile()
   }
