@@ -22,22 +22,10 @@ const AppsManager = {
     return appsStore;
   },
 
-  async updateApp(app, isSingleApp) {
+  updateApp(app) {
     const appIdx = appsStore.findIndex(ap => ap.applicationId === app.appId);
     if (appIdx === -1) return;
-    const parseApp = new ParseApp(app);
-    appsStore[appIdx] = parseApp;
-    if (app.serverInfo.status === 'SUCCESS' && !isSingleApp) {
-      // Fetch the latest usage and request info for the apps index
-      let installationCount = await parseApp.getClassCount("_Installation");
-      let userCount = await parseApp.getClassCount("_User");
-      
-      parseApp.installations = installationCount;
-      parseApp.users = userCount;
-      appsStore[appIdx] = parseApp;
-      return parseApp;
-    }
-    return parseApp;
+    appsStore[appIdx] = new ParseApp(app);
   },
 
   findAppBySlugOrName(slugOrName) {
@@ -78,14 +66,15 @@ const AppsManager = {
   // Fetch the latest usage and request info for the apps index
   getAllAppsIndexStats() {
     return Promise.all(this.apps().map(app => {
-      if (app.serverInfo.status === 'SUCCESS') {
-        return Promise.all(
-          [
-            app.getClassCount('_Installation').then(count => app.installations = count),
-            app.getClassCount('_User').then(count => app.users = count)
-          ]
-        );
+      if (app.serverInfo.error) {
+        return;
       }
+      return Promise.all(
+        [
+          app.getClassCount('_Installation').then(count => app.installations = count),
+          app.getClassCount('_User').then(count => app.users = count)
+        ]
+      );
     }));
   },
 
