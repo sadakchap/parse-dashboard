@@ -412,8 +412,8 @@ export default class Dashboard extends React.Component {
         <Switch>
           <Route path={ match.path + '/getting_started' } component={Empty} />
           <Route path={ match.path + '/browser/:className/:entityId/:relationName' } component={BrowserRoute} />
-          <Route path={ match.path + '/browser/:className' } component={BrowserRoute} />
-          <Route path={ match.path + '/browser' } component={BrowserRoute} />
+          <Route path={ match.path + '/browser/:className' } render={BrowserRoute} />
+          <Route path={ match.path + '/browser' } render={BrowserRoute} />
           <Route path={ match.path + '/cloud_code' } render={(props) => (
             <CloudCode {...props} params={match.params} />
           )} />
@@ -465,8 +465,8 @@ export default class Dashboard extends React.Component {
       <div>
         <Switch>
           <Redirect exact from='/apps/:appId' to='/apps/:appId/browser' />
-          <Route exact path='/apps' component={AppsIndexPage} />
-          <Route path='/apps/:appId' component={AppRoute} />
+          <Route exact path='/apps' render={AppsIndexPage} />
+          <Route path='/apps/:appId' render={AppRoute} />
         </Switch>
       </div>
     )
@@ -477,7 +477,7 @@ export default class Dashboard extends React.Component {
             <title>Parse Dashboard</title>
           </Helmet>
           <Switch>
-            <Route path='/apps' component={Index} />
+            <Route path='/apps' render={Index} />
             <Route path='/account/overview' component={AccountSettingsPage} />
             <Redirect from='/account' to='/account/overview' />
             <Redirect from='/' to='/apps' />
