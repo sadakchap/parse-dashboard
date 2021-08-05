@@ -76,23 +76,26 @@ let AppCard = ({
 
   let appStatusIcon;
   let appNameStyles = [styles.appname];
+  let appIconStyle = [styles.icon];
 
   if (app.serverInfo.status === 'LOADING') {
     appStatusIcon = <img src={loadingImg} alt="loading..." className={styles.loadingIcon} />
     appNameStyles.push(styles.disabled);
+    appIconStyle.push(styles.disabled);
   }
 
   if (app.serverInfo.status === 'ERROR') {
     appStatusIcon = <Icon name='warn-triangle-outline' fill='#F2C94C' width={18} height={18} />
     appNameStyles.push(styles.disabled);
+    appIconStyle.push(styles.disabled);
   }
 
-  return <li onClick={canBrowse} style={{ background: app.primaryBackgroundColor }}>
-    <a className={styles.icon}>
+  return <li onClick={canBrowse} style={{ background: app.primaryBackgroundColor, cursor: app.serverInfo.status === 'SUCCESS' ? 'pointer': 'auto' }}>
+    <span className={appIconStyle.join(' ')}>
       {icon ? <img src={'appicons/' + icon} width={56} height={56}/> : <Icon width={56} height={56} name='blank-app-outline' fill='#1E384D' />}
-    </a>
+    </span>
     <div className={styles.details}>
-      <a className={appNameStyles.join(' ')}>{app.name} {appStatusIcon}</a>
+      <span className={appNameStyles.join(' ')}>{app.name} {appStatusIcon}</span>
       {versionMessage}
     </div>
     <CountsSection className={styles.glance} title='At a glance'>
