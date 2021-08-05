@@ -111,15 +111,23 @@ export default class AppsIndex extends React.Component {
   }
 
   componentWillMount() {
-    if (AppsManager.apps().length === 1) {
-      const [app] = AppsManager.apps();
+    document.body.addEventListener('keydown', this.focusField);
+    // AppsManager.getAllAppsIndexStats().then(() => {
+    //   this.forceUpdate();
+    // });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // If single app, then redirect to browser
+    if (nextProps.apps.length === 1 && nextProps.apps[0].serverInfo === 'SUCCESS') {
+      const [app] = nextProps.apps;
       history.push(`/apps/${app.slug}/browser`);
       return;
     }
-    document.body.addEventListener('keydown', this.focusField);
-    AppsManager.getAllAppsIndexStats().then(() => {
-      this.forceUpdate();
-    });
+    // compare nextProps with prevProps to know for which app's serverInfo changed
+    // to SUCCESS then, make _User & _Installation class count request
+    // and update that app
+    
   }
 
   componentWillUnmount() {

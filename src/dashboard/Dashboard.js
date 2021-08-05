@@ -212,12 +212,13 @@ export default class Dashboard extends React.Component {
           app.serverInfo = PARSE_DOT_COM_SERVER_INFO;
           AppsManager.updateApp(app);
         } else {
+          let updatedApp;
           try {
             const serverInfo = await (new ParseApp(app).apiRequest('GET', 'serverInfo', {}, { useMasterKey: true }));
             app.serverInfo = { ...serverInfo, status: 'SUCCESS' };
-            AppsManager.updateApp(app);
-            this.updateApp(app);
-          } catch (err) {
+            updatedApp = AppsManager.updateApp(app);
+            this.updateApp(updatedApp);
+          } catch (error) {
             if (error.code === 100) {
               app.serverInfo = {
                 error: 'unable to connect to server',
@@ -240,8 +241,8 @@ export default class Dashboard extends React.Component {
                 status: 'ERROR'
               }
             }
-            AppsManager.updateApp(app);
-            this.updateApp(app);
+            updatedApp = AppsManager.updateApp(app);
+            this.updateApp(updatedApp);
           }
         }
       });     
@@ -255,9 +256,9 @@ export default class Dashboard extends React.Component {
 
    updateApp(app) {
     const updatedApps = [...this.state.apps];
-    const appIdx = updatedApps.findIndex(ap => ap.applicationId === app.appId);
+    const appIdx = updatedApps.findIndex(ap => ap.applicationId === app.applicationId);
     if (appIdx === -1) return;
-    updatedApps[appIdx] = new ParseApp(app);
+    updatedApps[appIdx] = app;
     this.setState({
       apps: updatedApps
     });
@@ -404,7 +405,7 @@ export default class Dashboard extends React.Component {
         );
       }
       return (
-        <AppData params={ match.params }>
+        <AppData params={ match.params } apps={this.state.apps} >
           <Switch>
             <Route path={ match.path + '/getting_started' } component={Empty} />
             <Route path={ match.path + '/browser/:className/:entityId/:relationName' } component={BrowserRoute} />
