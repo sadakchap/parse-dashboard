@@ -169,6 +169,10 @@ export default class AppsIndex extends React.Component {
   render() {
     let search = this.state.search.toLowerCase();
     let apps = this.props.apps;
+    let sortedApps = apps.sort(function (app1, app2) {
+      return app1.name.localeCompare(app2.name);
+    });
+
     if (apps.length === 0) {
       return (
         <div className={styles.empty}>
@@ -207,7 +211,7 @@ export default class AppsIndex extends React.Component {
             filter&hellip;' />
         </div>
         <ul className={styles.apps}>
-          {apps.map(app =>
+          {sortedApps.map(app =>
             app.name.toLowerCase().indexOf(search) > -1 ?
               <AppCard key={app.slug} app={app} icon={app.icon ? app.icon : null}/> :
               null
