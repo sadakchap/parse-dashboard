@@ -41,7 +41,6 @@ let B4ABrowserToolbar = ({
     relation,
     setCurrent,
     onFilterChange,
-    onAbortAddRow,
     onAddColumn,
     onAddRow,
     onAddClass,
@@ -72,8 +71,7 @@ let B4ABrowserToolbar = ({
     applicationId,
     onClickIndexManager,
     onClickSecurity,
-    columns,
-    newObject
+    columns
   }) => {
   let selectionLength = Object.keys(selection).length;
   let details = [], lockIcon = false;
@@ -108,7 +106,7 @@ let B4ABrowserToolbar = ({
   let menu = null;
   if (relation) {
     menu = (
-      <BrowserMenu title='Edit' icon='more-icon'>
+      <BrowserMenu title='Edit' icon='edit-solid'>
         <MenuItem
           text={`Create ${relation.targetClassName} and attach`}
           onClick={onAddRow}
@@ -127,7 +125,7 @@ let B4ABrowserToolbar = ({
     );
   } else {
     menu = (
-      <BrowserMenu title='Edit' icon='more-icon'>
+      <BrowserMenu title='Edit' icon='edit-solid'>
         <MenuItem text='Security' onClick={onClickSecurity} />
         <Separator />
         <MenuItem text='Add a row' onClick={onAddRow} />
@@ -173,7 +171,7 @@ let B4ABrowserToolbar = ({
   } else if (subsection.length > 30) {
     subsection = subsection.substr(0, 30) + '\u2026';
   }
-  const classes = [styles.addBtn];
+  const classes = [styles.toolbarButton];
   let onClick = onAddRow;
   if (isUnique) {
     classes.push(styles.toolbarButtonDisabled);
@@ -237,26 +235,8 @@ let B4ABrowserToolbar = ({
       subsection={subsection}
       details={relation ? details.join(' \u2022 ') : details.join(' \u2022 ')}
       helpsection={helpsection}>
-      {onAddRow && (
-        <a className={classes.join(' ')} onClick={onClick}>
-          <Icon name='add-outline' width={14} height={14} />
-          <span>Row</span>
-        </a>
-      )}
-      {onAddColumn && (
-        <a className={classes.join(' ')} onClick={onAddColumn}>
-          <Icon name='add-outline' width={14} height={14} />
-          <span>Column</span>
-        </a>
-      )}
-      {onAbortAddRow && (
-        <a className={styles.deleteBtn + ` ${newObject && styles.active}`} onClick={onAbortAddRow}>
-          <Icon name='delete-icon' width={24} height={20} />
-        </a>
-      )}
-      <div className={styles.verticalSeparator}></div>
       <a className={styles.toolbarButton} onClick={onRefresh} title='Refresh'>
-        <Icon name='refresh-icon' width={30} height={22} />
+        <Icon name='refresh' width={30} height={26} />
       </a>
       <BrowserFilter
         setCurrent={setCurrent}
