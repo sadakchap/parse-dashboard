@@ -22,12 +22,6 @@ const AppsManager = {
     return appsStore;
   },
 
-  updateApp(app) {
-    const appIdx = appsStore.findIndex(ap => ap.applicationId === app.appId);
-    if (appIdx === -1) return;
-    appsStore[appIdx] = new ParseApp(app);
-  },
-
   findAppBySlugOrName(slugOrName) {
     let apps = this.apps();
     for (let i = apps.length; i--;) {

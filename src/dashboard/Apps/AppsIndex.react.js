@@ -18,7 +18,6 @@ import styles        from 'dashboard/Apps/AppsIndex.scss';
 import { center }    from 'stylesheets/base.scss';
 import AppBadge      from 'components/AppBadge/AppBadge.react';
 import EmptyState from '../../components/EmptyState/EmptyState.react';
-import loadingImg from './loadingIcon.png';
 
 function dash(value, content) {
   if (value === undefined) {
@@ -66,32 +65,20 @@ let AppCard = ({
   app,
   icon,
 }) => {
-  let canBrowse = app.serverInfo.error || app.serverInfo.status === 'LOADING' ? null : () => history.push(html`/apps/${app.slug}/browser`);
+  let canBrowse = app.serverInfo.error ? null : () => history.push(html`/apps/${app.slug}/browser`);
   let versionMessage = app.serverInfo.error ?
     <div className={styles.serverVersion}>Server not reachable: <span className={styles.ago}>{app.serverInfo.error.toString()}</span></div>:
     <div className={styles.serverVersion}>
     Server URL: <span className={styles.ago}>{app.serverURL || 'unknown'}</span>
     Server version: <span className={styles.ago}>{app.serverInfo.parseServerVersion || 'unknown'}</span>
     </div>;
-  let appStatusIcon;
-  let appNameStyles = [styles.appname];
-
-  if (app.serverInfo.status === 'LOADING') {
-    appStatusIcon = <img src={loadingImg} alt="loading..." className={styles.loadingIcon} />
-    appNameStyles.push(styles.disabled);
-  }
-
-  if (app.serverInfo.status === 'ERROR') {
-    appStatusIcon = <Icon name='warn-triangle-outline' fill='#F2C94C' width={18} height={18} />
-    appNameStyles.push(styles.disabled);
-  }
 
   return <li onClick={canBrowse} style={{ background: app.primaryBackgroundColor }}>
     <a className={styles.icon}>
       {icon ? <img src={'appicons/' + icon} width={56} height={56}/> : <Icon width={56} height={56} name='blank-app-outline' fill='#1E384D' />}
     </a>
     <div className={styles.details}>
-      <a className={appNameStyles.join(' ')}>{app.name} {appStatusIcon}</a>
+      <a className={styles.appname}>{app.name}</a>
       {versionMessage}
     </div>
     <CountsSection className={styles.glance} title='At a glance'>
@@ -137,7 +124,7 @@ export default class AppsIndex extends React.Component {
 
   render() {
     let search = this.state.search.toLowerCase();
-    let apps = this.props.apps;
+    let apps = AppsManager.apps();
     if (apps.length === 0) {
       return (
         <div className={styles.empty}>
@@ -176,12 +163,10 @@ export default class AppsIndex extends React.Component {
             filter&hellip;' />
         </div>
         <ul className={styles.apps}>
-          {apps.map(app => {
-            return (
+          {apps.map(app =>
             app.name.toLowerCase().indexOf(search) > -1 ?
               <AppCard key={app.slug} app={app} icon={app.icon ? app.icon : null}/> :
-              null)
-            }
+              null
           )}
         </ul>
         {upgradePrompt}
