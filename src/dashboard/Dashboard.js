@@ -283,7 +283,7 @@ export default class Dashboard extends React.Component {
 
     const AppsIndexPage = () => (
       <AccountView section='Your Apps' style={{top: '0px'}}>
-        <AppsIndex apps={this.state.apps} newFeaturesInLatestVersion={this.state.newFeaturesInLatestVersion}/>
+        <AppsIndex apps={this.state.apps} updateApp={this.updateApp} newFeaturesInLatestVersion={this.state.newFeaturesInLatestVersion}/>
       </AccountView>
     );
 

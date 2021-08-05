@@ -108,6 +108,7 @@ export default class AppsIndex extends React.Component {
     super();
     this.state = { search: '' };
     this.focusField = this.focusField.bind(this);
+    this.getAppsIndexStats = this.getAppsIndexStats.bind(this);
   }
 
   componentWillMount() {
@@ -127,11 +128,29 @@ export default class AppsIndex extends React.Component {
     // compare nextProps with prevProps to know for which app's serverInfo changed
     // to SUCCESS then, make _User & _Installation class count request
     // and update that app
+    for (let idx = 0; idx < nextProps.apps.length; idx++) {
+      const nextApp = nextProps.apps[idx];
+      const prevApp = this.props.apps.find(ap => ap.applicationId === nextApp.applicationId);
+
+      if (nextApp.serverInfo.status !== prevApp.serverInfo.status && nextApp.serverInfo.status === 'SUCCESS') {
+        // app's status changed
+        this.getAppsIndexStats(nextApp);
+      }      
+    }
     
   }
 
   componentWillUnmount() {
     document.body.removeEventListener('keydown', this.focusField);
+  }
+
+  // Fetch the latest usage and request info for the apps index
+  async getAppsIndexStats(app) {
+    let installationCount = await app.getClassCount('_Installation');
+    let userCount = await app.getClassCount('_User');
+    app.installations = installationCount;
+    app.users = userCount;
+    this.props.updateApp(app);
   }
 
   updateSearch(e) {
@@ -146,7 +165,7 @@ export default class AppsIndex extends React.Component {
 
   render() {
     let search = this.state.search.toLowerCase();
-    let apps = AppsManager.apps();
+    let apps = this.props.apps;
     if (apps.length === 0) {
       return (
         <div className={styles.empty}>
