@@ -105,7 +105,7 @@ body:global(.expanded) {
 }
 
 .deleteBtn {
-  cursor: pointer;
+  cursor: auto;  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,6 +122,7 @@ body:global(.expanded) {
   }
 
   &.active {
+    cursor: pointer;
     background: #169CEE;
     border: 1px solid #169CEE;
     svg {
