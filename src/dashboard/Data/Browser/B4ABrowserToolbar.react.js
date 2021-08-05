@@ -249,8 +249,8 @@ let B4ABrowserToolbar = ({
           <span>Column</span>
         </a>
       )}
-      {onAbortAddRow && (
-        <a className={styles.deleteBtn + ` ${newObject && styles.active}`} onClick={onAbortAddRow}>
+      {(
+        <a className={styles.deleteBtn + ` ${(selectionLength >= 1) && styles.active}`} onClick={() => onDeleteRows(selection)}>
           <Icon name='delete-icon' width={24} height={20} />
         </a>
       )}
