@@ -12,6 +12,7 @@ import AppsManager from 'lib/AppsManager';
 import history     from 'dashboard/history';
 import ParseApp    from 'lib/ParseApp';
 import createClass from 'create-react-class';
+import lodash      from 'lodash';
 
 let AppData = createClass({
   childContextTypes: {
@@ -22,7 +23,7 @@ let AppData = createClass({
   getChildContext() {
     return {
       generatePath: this.generatePath,
-      currentApp: AppsManager.findAppBySlugOrName(this.props.params.appId)
+      currentApp: this.props.apps.find(ap => ap.slug === this.props.params.appId)
     };
   },
 
@@ -30,12 +31,26 @@ let AppData = createClass({
     return '/apps/' + this.props.params.appId + '/' + path;
   },
 
+  // shouldComponentUpdate(nextProps) {
+  //   console.log('should update getting called');
+  //   // update component only if changes are in currentApp
+  //   if (this.props.params.appId !== nextProps.params.appId) {
+  //     return true;
+  //   }
+  //   let updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.params.appId);
+  //   let prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.params.appId);
+
+  //   const shouldUpdate = lodash.isEqual(updatedCurrentApp, prevCurrentApp);
+
+  //   return !shouldUpdate;
+  // },
+
   render() {
     if (this.props.params.appId === '_') {
       return <AppSelector />;
     }
     //Find by name to catch edge cases around escaping apostrophes in URLs
-    let current = AppsManager.findAppBySlugOrName(this.props.params.appId);
+    let current = this.props.apps.find(ap => ap.slug === this.props.params.appId);
     if (current) {
       current.setParseKeys();
     } else {

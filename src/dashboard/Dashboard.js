@@ -201,7 +201,7 @@ export default class Dashboard extends React.Component {
         stateApps.push(new ParseApp(app));
       })
       this.setState({ newFeaturesInLatestVersion, apps: stateApps, configLoadingState: AsyncStatus.SUCCESS });
-      
+
       apps.forEach(async (app) => {
         // Set master key as a default string to avoid undefined value access issues
         if (!app.masterKey) app.masterKey = "******"
@@ -408,7 +408,7 @@ export default class Dashboard extends React.Component {
         );
       }
       return (
-      <AppData params={ match.params }>
+      <AppData params={ match.params } apps={this.state.apps} >
         <Switch>
           <Route path={ match.path + '/getting_started' } component={Empty} />
           <Route path={ match.path + '/browser/:className/:entityId/:relationName' } component={BrowserRoute} />
@@ -418,7 +418,7 @@ export default class Dashboard extends React.Component {
             <CloudCode {...props} params={match.params} />
           )} />
           <Redirect from={ match.path + '/cloud_code/*' } to='/apps/:appId/cloud_code' />
-          <Route path={ match.path + '/webhooks' } component={Webhooks} />
+          <Route path={ match.path + '/webhooks' } render={() => <Webhooks/>} />
 
           <Route path={ match.path + '/jobs' } component={JobsRoute}/>
 
