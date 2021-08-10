@@ -367,8 +367,7 @@ export default class Dashboard extends React.Component {
     )
 
     const AppRoute = ({ match }) => {
-      const appId = match.params.appId;
-      let currentApp = AppsManager.findAppBySlugOrName(appId);
+      const user = AccountManager.currentUser();
       return(
         <AppData params={ match.params }>
           <Switch>
@@ -410,7 +409,7 @@ export default class Dashboard extends React.Component {
               <ServerSettings params={props.match.params} />
             )} />
             
-            {currentApp.custom.allowHubPublish && (
+            {user.allowHubPublish && (
               <>
                 <Route exact path={ match.path + '/connections' } component={HubConnections} />
                 <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
