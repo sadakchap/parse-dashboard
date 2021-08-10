@@ -86,7 +86,7 @@ class DataBrowserHeader extends React.Component {
         onMouseEnter={() => this.setState({ showTooltip: true })}
         onMouseLeave={() => this.setState({ showTooltip: false })}
       >
-        <Tooltip tooltip={tooltipContent} visible={this.state.showTooltip}>
+        <Tooltip placement="top" tooltip={tooltipContent} visible={this.state.showTooltip}>
           <div className={styles.name}>{name}</div>
           <div className={styles.type}>{required && <span>*</span>}</div>
         </Tooltip>
