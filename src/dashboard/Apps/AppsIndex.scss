@@ -128,6 +128,9 @@
   margin-right: 15px;
   border-radius: 10px;
   overflow: hidden;
+  &.disabled {
+    cursor: auto;
+  }
 }
 
 .appname {
@@ -136,6 +139,15 @@
   display: inline-block;
   font-size: 22px;
   color: white;
+  &.disabled {
+    color: #788c97 !important;
+    cursor: auto;
+  }
+
+  & > img, svg {
+    vertical-align: middle;
+    margin-left: 4px;
+  }
 }
 
 .details {
@@ -205,5 +217,21 @@
 
   &:hover {
     background: $blue;
+  }
+}
+
+.loadingIcon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  @include animation('spin .75s linear infinite');
+}
+
+@include keyframes(spin) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+  100% {
+    @include transform(rotate(360deg));
   }
 }

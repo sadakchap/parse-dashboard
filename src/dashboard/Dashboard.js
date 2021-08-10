@@ -71,6 +71,7 @@ import Playground from './Data/Playground/Playground.react';
 import axios from "lib/axios";
 import moment from 'moment';
 import B4aConnectPage from './B4aConnectPage/B4aConnectPage.react';
+import EmptyState from 'components/EmptyState/EmptyState.react';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -128,6 +129,7 @@ const PARSE_DOT_COM_SERVER_INFO = {
     }
   },
   parseServerVersion: 'Parse.com',
+  status: 'SUCCESS'
 }
 
 const monthQuarter = {
@@ -144,8 +146,10 @@ export default class Dashboard extends React.Component {
       configLoadingError: '',
       configLoadingState: AsyncStatus.PROGRESS,
       newFeaturesInLatestVersion: [],
+      apps: []
     };
     setBasePath(props.path);
+    this.updateApp = this.updateApp.bind(this);
   }
 
   componentDidMount() {
@@ -188,69 +192,75 @@ export default class Dashboard extends React.Component {
         );
       });
 
+      const stateApps = [];
+      apps.forEach(app => {
+        app.serverInfo = { status: 'LOADING' };
+        AppsManager.addApp(app);
+        stateApps.push(new ParseApp(app));
+      });
+
       AccountManager.setCurrentUser({ user });
-      this.setState({ newFeaturesInLatestVersion });
-      let appInfoPromises = apps.map(app => {
+      this.setState({ newFeaturesInLatestVersion, apps: stateApps, configLoadingState: AsyncStatus.SUCCESS });
+
+      // fetch serverInfo request for each app
+      apps.forEach(async (app) => {
         // Set master key as a default string to avoid undefined value access issues
         if (!app.masterKey) app.masterKey = "******"
         if (app.serverURL.startsWith('https://api.parse.com/1')) {
           //api.parse.com doesn't have feature availability endpoint, fortunately we know which features
           //it supports and can hard code them
           app.serverInfo = PARSE_DOT_COM_SERVER_INFO;
-          return Promise.resolve(app);
+          AppsManager.updateApp(app);
         } else {
-          app.serverInfo = {}
-          return new ParseApp(app).apiRequest(
-            'GET',
-            'serverInfo',
-            {},
-            { useMasterKey: true }
-          ).then(serverInfo => {
-            app.serverInfo = serverInfo;
-            return app;
-          }, error => {
+          let updatedApp;
+          try {
+            const serverInfo = await (new ParseApp(app).apiRequest('GET', 'serverInfo', {}, { useMasterKey: true }));
+            app.serverInfo = { ...serverInfo, status: 'SUCCESS' };
+            updatedApp = AppsManager.updateApp(app);
+            this.updateApp(updatedApp);
+          } catch (error) {
             if (error.code === 100) {
               app.serverInfo = {
                 error: 'unable to connect to server',
                 enabledFeatures: {},
-                parseServerVersion: 'unknown'
+                parseServerVersion: 'unknown',
+                status: 'ERROR'
               }
-              return Promise.resolve(app);
             } else if (error.code === 107) {
               app.serverInfo = {
                 error: 'server version too low',
                 enabledFeatures: {},
-                parseServerVersion: 'unknown'
+                parseServerVersion: 'unknown',
+                status: 'ERROR'
               }
-              return Promise.resolve(app);
             } else {
               app.serverInfo = {
                 error: error.message || 'unknown error',
                 enabledFeatures: {},
-                parseServerVersion: 'unknown'
+                parseServerVersion: 'unknown',
+                status: 'ERROR'
               }
-              return Promise.resolve(app);
             }
-          });
+            updatedApp = AppsManager.updateApp(app);
+            this.updateApp(updatedApp);
+          }
         }
-      });
-      return Promise.all(appInfoPromises);
-    }).then(function(resolvedApps) {
-      if(resolvedApps && Array.isArray(resolvedApps)) {
-        resolvedApps.forEach(app => {
-          AppsManager.addApp(app);
-        });
-      } else {
-        Array.prototype.slice.call(arguments).forEach(app => {
-          AppsManager.addApp(app);
-        });
-      }
-      this.setState({ configLoadingState: AsyncStatus.SUCCESS });
-    }.bind(this)).catch(({ error }) => {
+      });     
+    }).catch(({ error }) => {
       this.setState({
         configLoadingError: error,
         configLoadingState: AsyncStatus.FAILED
       });
+    });
+  }
+
+   updateApp(app) {
+    const updatedApps = [...this.state.apps];
+    const appIdx = updatedApps.findIndex(ap => ap.applicationId === app.applicationId);
+    if (appIdx === -1) return;
+    updatedApps[appIdx] = app;
+    this.setState({
+      apps: updatedApps
     });
   }
 
@@ -273,7 +283,7 @@ export default class Dashboard extends React.Component {
 
     const AppsIndexPage = () => (
       <AccountView section='Your Apps' style={{top: '0px'}}>
-        <AppsIndex newFeaturesInLatestVersion={this.state.newFeaturesInLatestVersion}/>
+        <AppsIndex apps={this.state.apps} updateApp={this.updateApp} newFeaturesInLatestVersion={this.state.newFeaturesInLatestVersion}/>
       </AccountView>
     );
 
@@ -366,65 +376,94 @@ export default class Dashboard extends React.Component {
       </Switch>
     )
 
-    const AppRoute = ({ match }) => (
-      <AppData params={ match.params }>
-        <Switch>
-          <Route path={ match.path + '/getting_started' } component={Empty} />
-          <Route path={ match.path + '/browser/:className/:entityId/:relationName' } component={BrowserRoute} />
-          <Route path={ match.path + '/browser/:className' } component={BrowserRoute} />
-          <Route path={ match.path + '/browser' } component={BrowserRoute} />
-          <Route path={ match.path + '/cloud_code' } render={(props) => (
-            <CloudCode {...props} params={match.params} />
-          )} />
-          <Redirect from={ match.path + '/cloud_code/*' } to='/apps/:appId/cloud_code' />
-          <Route path={ match.path + '/webhooks' } component={Webhooks} />
+    const AppRoute = ({ match }) => {
+      const appId = match.params.appId;
+      let currentApp = this.state.apps.find(ap => ap.slug === appId);
+      if (!currentApp) return <div />;
+      if (currentApp.serverInfo.status === 'LOADING') {
+        return (
+          <div className={center}>
+            <Loader />
+          </div>
+        );
+      }
+      if (currentApp.serverInfo.error) {
+        return (
+          <div className={center}>
+            <div style={{ height: "800px", position: "relative" }}>
+              <EmptyState
+                icon={"cloud-surprise"}
+                title={"Couldn't load this app"}
+                description={
+                  "Something went wrong while loading this app, could you please try opening another app."
+                }
+                cta={"Go to apps"}
+                action={() => (window.location = "/apps")}
+              ></EmptyState>
+            </div>
+          </div>
+        );
+      }
+      return (
+        <AppData params={ match.params } apps={this.state.apps} >
+          <Switch>
+            <Route path={ match.path + '/getting_started' } component={Empty} />
+            <Route path={ match.path + '/browser/:className/:entityId/:relationName' } component={BrowserRoute} />
+            <Route path={ match.path + '/browser/:className' } render={BrowserRoute} />
+            <Route path={ match.path + '/browser' } render={BrowserRoute} />
+            <Route path={ match.path + '/cloud_code' } render={(props) => (
+              <CloudCode {...props} params={match.params} />
+            )} />
+            <Redirect from={ match.path + '/cloud_code/*' } to='/apps/:appId/cloud_code' />
+            <Route path={ match.path + '/webhooks' } component={Webhooks} />
 
-          <Route path={ match.path + '/jobs' } component={JobsRoute}/>
+            <Route path={ match.path + '/jobs' } component={JobsRoute}/>
 
-          <Route path={ match.path + '/logs' } component={logsRoute}/>
+            <Route path={ match.path + '/logs' } component={logsRoute}/>
 
-          <Route path={ match.path + '/config' } component={Config} />
-          <Route path={ match.path + '/api_console' } component={ApiConsoleRoute} />
-          <Route path={ match.path + '/migration' } component={Migration} />
+            <Route path={ match.path + '/config' } component={Config} />
+            <Route path={ match.path + '/api_console' } component={ApiConsoleRoute} />
+            <Route path={ match.path + '/migration' } component={Migration} />
 
 
-          <Redirect exact from={ match.path + '/push' } to='/apps/:appId/push/new' />
-          <Redirect exact from={ match.path + '/push/activity' } to='/apps/:appId/push/activity/all'  />
+            <Redirect exact from={ match.path + '/push' } to='/apps/:appId/push/new' />
+            <Redirect exact from={ match.path + '/push/activity' } to='/apps/:appId/push/activity/all'  />
 
-          <Route path={ match.path + '/push/activity/:category' } render={(props) => (
-            <PushIndex {...props} params={props.match.params} />
-          )} />
-          <Route path={ match.path + '/push/audiences' } component={PushAudiencesIndex} />
-          <Route path={ match.path + '/push/new' } component={PushNew} />
-          <Route path={ match.path + '/push/:pushId' } render={(props) => (
-            <PushDetails {...props} params={props.match.params} />
-          )} />
-          <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
-          <Route path={ match.path + '/connect' } component={B4aConnectPage} />
-          <Route path={ match.path + '/admin' } component={B4aAdminPage} />
-          <Route path={ match.path + '/app-templates' } component={B4aAppTemplates} />
-          <Route path={ match.path + '/server-settings/:targetPage?' } render={(props) => (
-            <ServerSettings params={props.match.params} />
-          )} />
-          <Route exact path={ match.path + '/connections' } component={HubConnections} />
-          <Route exact path={ match.path + '/index' } render={props => <IndexManager {...props} params={props.match.params} />} />
-          <Route path={ match.path + '/index/:className'} render={props => <IndexManager {...props} params={props.match.params} />} />
+            <Route path={ match.path + '/push/activity/:category' } render={(props) => (
+              <PushIndex {...props} params={props.match.params} />
+            )} />
+            <Route path={ match.path + '/push/audiences' } component={PushAudiencesIndex} />
+            <Route path={ match.path + '/push/new' } component={PushNew} />
+            <Route path={ match.path + '/push/:pushId' } render={(props) => (
+              <PushDetails {...props} params={props.match.params} />
+            )} />
+            <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
+            <Route path={ match.path + '/connect' } component={B4aConnectPage} />
+            <Route path={ match.path + '/admin' } component={B4aAdminPage} />
+            <Route path={ match.path + '/app-templates' } component={B4aAppTemplates} />
+            <Route path={ match.path + '/server-settings/:targetPage?' } render={(props) => (
+              <ServerSettings params={props.match.params} />
+            )} />
+            <Route exact path={ match.path + '/connections' } component={HubConnections} />
+            <Route exact path={ match.path + '/index' } render={props => <IndexManager {...props} params={props.match.params} />} />
+            <Route path={ match.path + '/index/:className'} render={props => <IndexManager {...props} params={props.match.params} />} />
 
-          {/* Unused routes... */}
-          <Redirect exact from={ match.path + '/analytics' } to='/apps/:appId/analytics/performance' />
-          <Route path={ match.path + '/analytics' } component={AnalyticsRoute}/>
-          <Redirect exact from={ match.path + '/settings' } to='/apps/:appId/settings/general' />
-          <Route path={ match.path + '/settings' } component={SettingsRoute}/>
-        </Switch>
-      </AppData>
-    )
+            {/* Unused routes... */}
+            <Redirect exact from={ match.path + '/analytics' } to='/apps/:appId/analytics/performance' />
+            <Route path={ match.path + '/analytics' } component={AnalyticsRoute}/>
+            <Redirect exact from={ match.path + '/settings' } to='/apps/:appId/settings/general' />
+            <Route path={ match.path + '/settings' } component={SettingsRoute}/>
+          </Switch>
+        </AppData>
+      )
+    }
 
     const Index = () => (
       <div>
         <Switch>
           <Redirect exact from='/apps/:appId' to='/apps/:appId/browser' />
-          <Route exact path='/apps' component={AppsIndexPage} />
-          <Route path='/apps/:appId' component={AppRoute} />
+          <Route exact path='/apps' render={AppsIndexPage} />
+          <Route path='/apps/:appId' render={AppRoute} />
         </Switch>
       </div>
     )
@@ -435,7 +474,7 @@ export default class Dashboard extends React.Component {
             <title>Parse Dashboard</title>
           </Helmet>
           <Switch>
-            <Route path='/apps' component={Index} />
+            <Route path='/apps' render={Index} />
             <Route path='/account/overview' component={AccountSettingsPage} />
             <Redirect from='/account' to='/account/overview' />
             <Redirect from='/' to='/apps' />
