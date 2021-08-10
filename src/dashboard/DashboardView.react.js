@@ -174,7 +174,6 @@ export default class DashboardView extends React.Component {
     })
 
     if (user.allowHubPublish) {
-      console.log('add db hub')
       moreSubSection.push({
         name: 'Database HUB',
         link: '/connections'
