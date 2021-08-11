@@ -166,9 +166,15 @@ export default class B4ACodeTree extends React.Component {
   }
 
   componentDidMount() {
-    let config = B4ATreeActions.getConfig(this.state.files)
-    $('#tree').jstree(config)
+    let config = B4ATreeActions.getConfig(this.state.files);
+    $('#tree').jstree(config);
     this.watchSelectedNode();
+    $('#tree').on('changed.jstree', function (){
+      B4ATreeActions.refreshEmptyFolderIcons();
+    });
+    $('#tree').on('create_node.jstree', function (){
+      B4ATreeActions.refreshEmptyFolderIcons();
+    });
   }
 
   render(){
@@ -235,8 +241,8 @@ export default class B4ACodeTree extends React.Component {
                 this.state.isImage ?
                   <img src={this.state.source} /> :
                   <B4ACloudCodeView
-                  source={this.state.source || "Select a file to view your Cloud Code"}
-                  extension={this.state.extension} />
+                    source={this.state.source || "Select a file to view your Cloud Code"}
+                    extension={this.state.extension} />
               }
             </Resizable>
           </div>
