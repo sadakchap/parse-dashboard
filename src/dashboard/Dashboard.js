@@ -378,9 +378,13 @@ export default class Dashboard extends React.Component {
 
     const AppRoute = ({ match }) => {
       const appId = match.params.appId;
-      let currentApp = this.state.apps.find(ap => ap.slug === appId);
       const user = AccountManager.currentUser();
-      if (!currentApp) return <div />;
+      
+      let currentApp = this.state.apps.find(ap => ap.slug === appId);
+      if (!currentApp) {
+        history.replace('/apps');
+        return <div />
+      };
       if (currentApp.serverInfo.status === 'LOADING') {
         return (
           <div className={center}>
