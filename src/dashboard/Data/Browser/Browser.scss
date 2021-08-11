@@ -253,6 +253,20 @@ body:global(.expanded) {
   align-items: center;
 }
 
+@media (max-width: 550px) {
+  .addBtn {
+    display: none;
+  }
+
+  .deleteBtn {
+    display: none;
+  }
+
+  .verticalSeparator {
+    display: none;
+  }
+}
+
 @include keyframes(spinner-border) {
   100% {
     @include transform(rotate(360deg));
