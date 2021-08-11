@@ -352,7 +352,7 @@ export default class Dashboard extends React.Component {
       if (ShowSchemaOverview) {
         return <SchemaOverview {...props} params={props.match.params} />
       }
-      return <Browser {...props} params={ props.match.params } />
+      return <Browser {...props} params={ props.match.params } apps={this.state.apps} />
     }
 
     const ApiConsoleRoute = (props) => (
