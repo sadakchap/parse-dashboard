@@ -115,7 +115,6 @@ class B4ACloudCode extends CloudCode {
     let tree = [];
     // Get current files on tree
     let currentCode = getFiles();
-    debugger;
     const missingFileModal = (
       <Modal
         type={Modal.Types.DANGER}
