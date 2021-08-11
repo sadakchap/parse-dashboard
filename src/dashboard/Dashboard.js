@@ -379,6 +379,7 @@ export default class Dashboard extends React.Component {
     const AppRoute = ({ match }) => {
       const appId = match.params.appId;
       let currentApp = this.state.apps.find(ap => ap.slug === appId);
+      const user = AccountManager.currentUser();
       if (!currentApp) return <div />;
       if (currentApp.serverInfo.status === 'LOADING') {
         return (
@@ -437,14 +438,21 @@ export default class Dashboard extends React.Component {
             <Route path={ match.path + '/push/:pushId' } render={(props) => (
               <PushDetails {...props} params={props.match.params} />
             )} />
-            <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
+            
             <Route path={ match.path + '/connect' } component={B4aConnectPage} />
             <Route path={ match.path + '/admin' } component={B4aAdminPage} />
             <Route path={ match.path + '/app-templates' } component={B4aAppTemplates} />
             <Route path={ match.path + '/server-settings/:targetPage?' } render={(props) => (
               <ServerSettings params={props.match.params} />
             )} />
-            <Route exact path={ match.path + '/connections' } component={HubConnections} />
+            
+            {user.allowHubPublish && (
+              <>
+                <Route exact path={ match.path + '/connections' } component={HubConnections} />
+                <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
+              </>
+            )}
+            
             <Route exact path={ match.path + '/index' } render={props => <IndexManager {...props} params={props.match.params} />} />
             <Route path={ match.path + '/index/:className'} render={props => <IndexManager {...props} params={props.match.params} />} />
 
