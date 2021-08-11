@@ -99,28 +99,25 @@ const getExtension = (fileName) => {
 }
 
 // Function used to add files on tree.
-const addFilesOnTree = async (files, currentCode) => {
+const addFilesOnTree = async (files, currentCode, selectedFolder) => {
   let newTreeNodes = [];
   let folder
   for (let i = 0; i < files.fileList.length; i++) {
     newTreeNodes = readFile({ name: files.fileList[i], code: files.base64[i] }, newTreeNodes);
   }
 
-  let extension
-
   for (let j = 0; j < newTreeNodes.length; j++ ) {
-    extension = getExtension(newTreeNodes[j].text.name);
     if (currentCode === '#') {
+      let extension = getExtension(newTreeNodes[j].text.name);
       let inst = $.jstree.reference(currentCode)
       let obj = inst.get_node(currentCode);
 
       // Select the folder to insert based on file extension. If is a js file,
       // insert on "cloud" folder, else insert on "public" folder. This logic is
       // a legacy from the old Cloud Code page
-      if (extension === 'js' || extension === 'json') {
+      folder = obj.children[selectedFolder]
+      if ( extension === 'json') {
         folder = obj.children[0]
-      } else {
-        folder = obj.children[1]
       }
     }
     await verifyFileNames(folder, newTreeNodes[j]);

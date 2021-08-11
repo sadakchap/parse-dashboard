@@ -55,7 +55,8 @@ export default class B4ACodeTree extends React.Component {
       source: '',
       nodeId: '',
       files: this.props.files,
-      isImage: false
+      isImage: false,
+      selectedFolder: 0
     }
   }
 
@@ -105,6 +106,8 @@ export default class B4ACodeTree extends React.Component {
     let nodeId = ''
     let extension = ''
     let isImage = false
+    let selectedFolder = 0;
+
     if (data.selected && data.selected.length === 1) {
       selected = data.instance.get_node(data.selected[0]);
       // if is code
@@ -148,11 +151,17 @@ export default class B4ACodeTree extends React.Component {
           extension = B4ATreeActions.getExtension(selectedFile)
         }
       } else {
-        if (selected.text === 'cloud') source = cloudFolderPlaceholder
-        else if (selected.text === 'public') source = publicFolderPlaceholder
+        if (selected.text === 'cloud') {
+          source = cloudFolderPlaceholder
+          selectedFolder = 0;
+        }
+        else if (selected.text === 'public') {
+          source = publicFolderPlaceholder
+          selectedFolder = 1;
+        }
       }
     }
-    this.setState({ source, selectedFile, nodeId, extension, isImage })
+    this.setState({ source, selectedFile, nodeId, extension, isImage, selectedFolder })
   }
 
   // method to identify the selected tree node
