@@ -417,7 +417,7 @@ export default class Dashboard extends React.Component {
             <Route path={ match.path + '/browser/:className' } render={BrowserRoute} />
             <Route path={ match.path + '/browser' } render={BrowserRoute} />
             <Route path={ match.path + '/cloud_code' } render={(props) => (
-              <CloudCode {...props} params={match.params} />
+              <CloudCode {...props} params={match.params} apps={this.state.apps} />
             )} />
             <Redirect from={ match.path + '/cloud_code/*' } to='/apps/:appId/cloud_code' />
             <Route path={ match.path + '/webhooks' } component={Webhooks} />
@@ -426,7 +426,7 @@ export default class Dashboard extends React.Component {
 
             <Route path={ match.path + '/logs' } component={logsRoute}/>
 
-            <Route path={ match.path + '/config' } component={Config} />
+            <Route path={ match.path + '/config' } component={Config} apps={this.state.apps} />
             <Route path={ match.path + '/api_console' } component={ApiConsoleRoute} />
             <Route path={ match.path + '/migration' } component={Migration} />
 
