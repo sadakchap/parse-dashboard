@@ -338,13 +338,13 @@ export default class Dashboard extends React.Component {
       </Switch>
     );
 
-    const logsRoute = ({ match }) => (
+    const logsRoute = (props) => (
       <Switch>
-        <Route path={ match.path + '/info' } component={InfoLogs} />
-        <Route path={ match.path + '/error' } component={ErrorLogs} />
-        <Redirect exact from={ match.path } to='/apps/:appId/logs/system' />
-        <Route path={ match.path + '/system' } component={SystemLogs} />
-        <Route path={ match.path + '/access' } component={AccessLogs} /> 
+        <Route path={ props.match.path + '/info' } render={(props) => <InfoLogs {...props} apps={this.state.apps} />} />
+        <Route path={ props.match.path + '/error' } render={(props) => <ErrorLogs {...props} apps={this.state.apps} />} />
+        <Redirect exact from={ props.match.path } to='/apps/:appId/logs/system' />
+        <Route path={ props.match.path + '/system' } render={(props) => <SystemLogs {...props} apps={this.state.apps} />} />
+        <Route path={ props.match.path + '/access' } render={(props) => <AccessLogs {...props} apps={this.state.apps} /> } />
       </Switch>
     );
 
@@ -420,11 +420,11 @@ export default class Dashboard extends React.Component {
               <CloudCode {...props} params={match.params} apps={this.state.apps} />
             )} />
             <Redirect from={ match.path + '/cloud_code/*' } to='/apps/:appId/cloud_code' />
-            <Route path={ match.path + '/webhooks' } component={Webhooks} />
+            <Route path={ match.path + '/webhooks' } render={() => <Webhooks params={match.params} apps={this.state.apps} />} />
 
             <Route path={ match.path + '/jobs' } component={JobsRoute}/>
 
-            <Route path={ match.path + '/logs' } component={logsRoute}/>
+            <Route path={ match.path + '/logs' } render={logsRoute}/>
 
             <Route path={ match.path + '/config' } component={Config} apps={this.state.apps} />
             <Route path={ match.path + '/api_console' } component={ApiConsoleRoute} />
