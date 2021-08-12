@@ -288,7 +288,7 @@ export default class Dashboard extends React.Component {
     );
 
     const SettingsRoute = ({ match }) => (
-      <SettingsData params={ match.params }>
+      <SettingsData params={ match.params } apps={this.state.apps}>
         {settingsDataProps => (
           <>
             <Route path={ match.url + '/general' } render={props => (
@@ -464,7 +464,7 @@ export default class Dashboard extends React.Component {
             <Redirect exact from={ match.path + '/analytics' } to='/apps/:appId/analytics/performance' />
             <Route path={ match.path + '/analytics' } render={AnalyticsRoute}/>
             <Redirect exact from={ match.path + '/settings' } to='/apps/:appId/settings/general' />
-            <Route path={ match.path + '/settings' } component={SettingsRoute}/>
+            <Route path={ match.path + '/settings' } render={SettingsRoute}/>
           </Switch>
         </AppData>
       )
