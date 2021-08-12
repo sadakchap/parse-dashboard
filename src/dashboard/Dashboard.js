@@ -317,7 +317,7 @@ export default class Dashboard extends React.Component {
         )} />
         <Route path={ props.match.path + '/:section' } render={(props) => (
           <JobsData {...props} params={props.match.params}>
-            <Jobs {...props} params={props.match.params}/>
+            <Jobs {...props} params={props.match.params} apps={this.state.apps} />
           </JobsData>
         )} />
         <Redirect from={ props.match.path } to='/apps/:appId/jobs/all' />
@@ -422,7 +422,7 @@ export default class Dashboard extends React.Component {
             <Redirect from={ match.path + '/cloud_code/*' } to='/apps/:appId/cloud_code' />
             <Route path={ match.path + '/webhooks' } render={() => <Webhooks params={match.params} apps={this.state.apps} />} />
 
-            <Route path={ match.path + '/jobs' } component={JobsRoute}/>
+            <Route path={ match.path + '/jobs' } render={JobsRoute}/>
 
             <Route path={ match.path + '/logs' } render={logsRoute}/>
 
