@@ -77,8 +77,8 @@ class DataBrowserHeader extends React.Component {
       classes.push(styles.dragging);
     }
     const tooltipContent = (
-      <span style={{ fontSize: "12px"}} >
-        Format: <span style={{ color: "#169CEE"}} >{targetClass ? `${type} <${targetClass}>` : type}</span>
+      <span style={{ fontSize: "12px", letterSpacing: '.07em' }} >
+        Format: <span style={{ color: "#169CEE", letterSpacing: '1px'}} >{targetClass ? `${type} <${targetClass}>` : type}</span>
       </span>
     );
     return connectDragSource(connectDropTarget(
