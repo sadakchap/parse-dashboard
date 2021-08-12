@@ -329,12 +329,12 @@ export default class Dashboard extends React.Component {
         <Route path={ match.path + '/overview' } component={AnalyticsOverview} />
         <Redirect exact from={ match.path + '/explorer' } to='/apps/:appId/analytics/explorer/chart' />
         <Route path={ match.path + '/explorer/:displayType' } render={props => (
-          <Explorer {...props} params={props.match.params} />
+          <Explorer {...props} params={props.match.params} apps={this.state.apps} />
         )} />
-        <Route path={ match.path + '/retention' } component={Retention} />
-        <Route path={ match.path + '/performance' } component={Performance} />
-        <Route path={ match.path + '/slow_queries' } component={SlowQueries} />
-        <Route path={ match.path + '/slow_requests' } component={SlowQueries} />
+        <Route path={ match.path + '/retention' } render={props => <Retention {...props} apps={this.state.apps} />} />
+        <Route path={ match.path + '/performance' } render={props => <Performance {...props} apps={this.state.apps} />} />
+        <Route path={ match.path + '/slow_queries' } render={props => <SlowQueries {...props} apps={this.state.apps} />} />
+        <Route path={ match.path + '/slow_requests' } render={props => <SlowQueries {...props} apps={this.state.apps} />} />
       </Switch>
     );
 
@@ -462,7 +462,7 @@ export default class Dashboard extends React.Component {
 
             {/* Unused routes... */}
             <Redirect exact from={ match.path + '/analytics' } to='/apps/:appId/analytics/performance' />
-            <Route path={ match.path + '/analytics' } component={AnalyticsRoute}/>
+            <Route path={ match.path + '/analytics' } render={AnalyticsRoute}/>
             <Redirect exact from={ match.path + '/settings' } to='/apps/:appId/settings/general' />
             <Route path={ match.path + '/settings' } component={SettingsRoute}/>
           </Switch>
