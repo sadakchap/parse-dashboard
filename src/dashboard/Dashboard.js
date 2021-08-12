@@ -427,7 +427,7 @@ export default class Dashboard extends React.Component {
             <Route path={ match.path + '/logs' } render={logsRoute}/>
 
             <Route path={ match.path + '/config' } render={(props) => <Config {...props} apps={this.state.apps} />} />
-            <Route path={ match.path + '/api_console' } component={ApiConsoleRoute} />
+            <Route path={ match.path + '/api_console' } render={ApiConsoleRoute} />
             <Route path={ match.path + '/migration' } component={Migration} />
 
 
