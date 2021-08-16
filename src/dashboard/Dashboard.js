@@ -413,7 +413,7 @@ export default class Dashboard extends React.Component {
         <AppData params={ match.params } apps={this.state.apps} >
           <Switch>
             <Route path={ match.path + '/getting_started' } component={Empty} />
-            <Route path={ match.path + '/browser/:className/:entityId/:relationName' } component={BrowserRoute} />
+            <Route path={ match.path + '/browser/:className/:entityId/:relationName' } render={BrowserRoute} />
             <Route path={ match.path + '/browser/:className' } render={BrowserRoute} />
             <Route path={ match.path + '/browser' } render={BrowserRoute} />
             <Route path={ match.path + '/cloud_code' } render={(props) => (
