@@ -451,21 +451,20 @@ export default class Dashboard extends React.Component {
               <ServerSettings params={props.match.params} />
             )} />
 
+            <Route exact path={ match.path + '/index' } render={props => <IndexManager {...props} params={props.match.params} />} />
+            <Route path={ match.path + '/index/:className'} render={props => <IndexManager {...props} params={props.match.params} />} />
+
+            <Redirect exact from={ match.path + '/analytics' } to='/apps/:appId/analytics/performance' />
+            <Route path={ match.path + '/analytics' } render={AnalyticsRoute}/>
+            <Redirect exact from={ match.path + '/settings' } to='/apps/:appId/settings/general' />
+            <Route path={ match.path + '/settings' } render={SettingsRoute}/>
+
             {user.allowHubPublish && (
               <>
                 <Route exact path={ match.path + '/connections' } component={HubConnections} />
                 <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
               </>
             )}
-
-            <Route exact path={ match.path + '/index' } render={props => <IndexManager {...props} params={props.match.params} />} />
-            <Route path={ match.path + '/index/:className'} render={props => <IndexManager {...props} params={props.match.params} />} />
-
-            {/* Unused routes... */}
-            <Redirect exact from={ match.path + '/analytics' } to='/apps/:appId/analytics/performance' />
-            <Route path={ match.path + '/analytics' } render={AnalyticsRoute}/>
-            <Redirect exact from={ match.path + '/settings' } to='/apps/:appId/settings/general' />
-            <Route path={ match.path + '/settings' } render={SettingsRoute}/>
           </Switch>
         </AppData>
       )
