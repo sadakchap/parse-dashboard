@@ -236,7 +236,10 @@ export default class BrowserTable extends React.Component {
           setRelation={this.props.setRelation}
           setCopyableValue={this.props.setCopyableValue}
           setContextMenu={this.props.setContextMenu}
-          onEditSelectedRow={this.props.onEditSelectedRow} />
+          onEditSelectedRow={this.props.onEditSelectedRow}
+          onAddRow={this.props.onAddRow}
+          onAddColumn={this.props.onAddColumn}
+          onDeleteRows={this.props.onDeleteRows} />
       }
 
       if (this.props.editing) {
