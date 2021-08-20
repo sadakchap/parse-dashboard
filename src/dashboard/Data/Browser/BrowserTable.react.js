@@ -239,7 +239,8 @@ export default class BrowserTable extends React.Component {
           onEditSelectedRow={this.props.onEditSelectedRow}
           onAddRow={this.props.onAddRow}
           onAddColumn={this.props.onAddColumn}
-          onDeleteRows={this.props.onDeleteRows} />
+          onDeleteRows={this.props.onDeleteRows}
+          onDeleteSelectedColumn={this.props.onDeleteSelectedColumn} />
       }
 
       if (this.props.editing) {

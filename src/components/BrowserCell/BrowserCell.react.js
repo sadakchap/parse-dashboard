@@ -16,6 +16,7 @@ import styles                    from 'components/BrowserCell/BrowserCell.scss';
 import Tooltip                   from 'components/Tooltip/PopperTooltip.react';
 import PropTypes                 from "lib/PropTypes";
 import { unselectable }          from 'stylesheets/base.scss';
+import { DefaultColumns }        from 'lib/Constants';
 
 class BrowserCell extends Component {
   constructor() {
@@ -97,7 +98,7 @@ class BrowserCell extends Component {
   }
 
   getContextMenuOptions(constraints) {
-    let { onEditSelectedRow, onAddRow, onAddColumn, onDeleteRows } = this.props;
+    let { onEditSelectedRow, onAddRow, onAddColumn, onDeleteRows, onDeleteSelectedColumn, field, className } = this.props;
     const contextMenuOptions = [];
 
     const setFilterContextMenuOption = this.getSetFilterContextMenuOption(constraints);
@@ -133,6 +134,18 @@ class BrowserCell extends Component {
         let { objectId } = this.props;
         onDeleteRows({ [objectId]: true });
       }
+    });
+
+    let isTouchableColumn = true;
+    isTouchableColumn = !(DefaultColumns.All.includes(field));
+    if (className[0] === '_' && DefaultColumns[className].includes(field)) {
+      isTouchableColumn = false;
+    }
+    isTouchableColumn && onDeleteSelectedColumn && contextMenuOptions.push({
+      text: 'Delete this column',
+      callback: () => {
+        onDeleteSelectedColumn(field);
+      },
     });
 
     return contextMenuOptions;

@@ -51,6 +51,7 @@ import withReactContent                   from 'sweetalert2-react-content';
 import postgresqlImg                      from './postgresql.png';
 import PermissionsDialog                  from 'components/PermissionsDialog/PermissionsDialog.react';
 import validateEntry                      from 'lib/validateCLPEntry.js';
+import ConfirmDeleteColumnDialog from './ConfirmDeleteColumnDialog.react';
 
 // The initial and max amount of rows fetched by lazy loading
 const MAX_ROWS_FETCHED = 200;
@@ -86,6 +87,7 @@ class Browser extends DashboardView {
       showAttachRowsDialog: false,
       showEditRowDialog: false,
       rowsToDelete: null,
+      columnToDelete: null,
 
       relation: null,
       counts: {},
@@ -166,6 +168,7 @@ class Browser extends DashboardView {
     this.addEditCloneRows = this.addEditCloneRows.bind(this);
     this.abortEditCloneRows = this.abortEditCloneRows.bind(this);
     this.onClickSecurity = this.onClickSecurity.bind(this);
+    this.showColumnDelete = this.showColumnDelete.bind(this);
   }
 
   getFooterMenuButtons() {
@@ -562,6 +565,10 @@ class Browser extends DashboardView {
     this.setState({ rowsToDelete: rows });
   }
 
+  showColumnDelete(name) {
+    this.setState({ columnToDelete: name });
+  }
+
   showDropClass() {
     this.setState({ showDropClassDialog: true });
   }
@@ -728,7 +735,7 @@ class Browser extends DashboardView {
     this.showEditRowDialog();
   }
 
-  removeColumn(name) {
+  removeColumn(name, selectedColumn = false) {
     let payload = {
       className: this.props.params.className,
       name: name
@@ -738,10 +745,13 @@ class Browser extends DashboardView {
       if (error.code === 403) errorDeletingNote = error.message;
 
       this.showNote(errorDeletingNote, true);
-      this.setState({ showRemoveColumnDialog: false });
+      if (selectedColumn) 
+        this.setState({ columnToDelete: null });
+      else 
+        this.setState({ showRemoveColumnDialog: false });
 
     }).finally(() => {
-      let state = { showRemoveColumnDialog: false };
+      let state = selectedColumn ? { columnToDelete : null } : {showRemoveColumnDialog: false };
       if (this.state.ordering === name || this.state.ordering === '-' + name) {
         state.ordering = '-createdAt';
       }
@@ -1529,7 +1539,7 @@ class Browser extends DashboardView {
         }
         browser = (
           <DataBrowser
-            ref='dataBrowser'
+            ref="dataBrowser"
             isUnique={this.state.isUnique}
             uniqueField={this.state.uniqueField}
             count={count}
@@ -1539,6 +1549,7 @@ class Browser extends DashboardView {
             filters={this.state.filters}
             onFilterChange={this.updateFilters}
             onRemoveColumn={this.showRemoveColumn}
+            onDeleteSelectedColumn={this.showColumnDelete}
             onDeleteRows={this.showDeleteRows}
             onDropClass={this.showDropClass}
             onExport={this.showExport}
@@ -1576,7 +1587,8 @@ class Browser extends DashboardView {
             err={this.state.err}
             showNote={this.showNote}
             onClickIndexManager={this.onClickIndexManager}
-            onClickSecurity={this.onClickSecurity} />
+            onClickSecurity={this.onClickSecurity}
+          />
         );
       }
     }
@@ -1805,6 +1817,14 @@ class Browser extends DashboardView {
           }
         />
       );
+    } else if (this.state.columnToDelete) {
+      extras = (
+        <ConfirmDeleteColumnDialog 
+          field={this.state.columnToDelete}
+          onCancel={() => this.setState({ columnToDelete: null })}
+          onConfirm={() => this.removeColumn(this.state.columnToDelete, true)}
+        />
+      )
     }
 
     let notification = null;
