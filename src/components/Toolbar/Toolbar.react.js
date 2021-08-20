@@ -43,7 +43,7 @@ let Toolbar = (props) => {
                 {props.subsection}
               </span>
               <span className={styles.details}>
-                {!props.readWritePermissions && <div className={styles.section}>{props.section}</div>}
+                {/* {!props.readWritePermissions && <div className={styles.section}>{props.section}</div>} */}
                 {props.details}
               </span>
             </div>
