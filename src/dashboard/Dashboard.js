@@ -185,7 +185,7 @@ export default class Dashboard extends React.Component {
           localStorage: localStorage.getItem('solucxWidgetLog-' + userDetail.username)
         }));
         // eslint-disable-next-line no-undef
-        createSoluCXWidget(
+        typeof createSoluCXWidget === 'function' && createSoluCXWidget(
           process.env.SOLUCX_API_KEY,
           'bottomBoxLeft',
           options,
