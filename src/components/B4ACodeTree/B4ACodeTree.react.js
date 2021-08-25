@@ -142,7 +142,6 @@ export default class B4ACodeTree extends React.Component {
             selectedFile = selected.text
             nodeId = selected.id
             extension = B4ATreeActions.getExtension(selectedFile)
-            // this.setState({ source, selectedFile, nodeId, extension, isImage })
           }
         } else {
           source = selected.data.code;
@@ -151,13 +150,12 @@ export default class B4ACodeTree extends React.Component {
           extension = B4ATreeActions.getExtension(selectedFile)
         }
       } else {
+        selectedFolder = selected.id;
         if (selected.text === 'cloud') {
           source = cloudFolderPlaceholder
-          selectedFolder = 0;
         }
         else if (selected.text === 'public') {
           source = publicFolderPlaceholder
-          selectedFolder = 1;
         }
       }
     }
