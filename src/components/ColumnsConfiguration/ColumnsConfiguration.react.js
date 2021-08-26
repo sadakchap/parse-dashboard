@@ -77,7 +77,7 @@ export default class ColumnsConfiguration extends React.Component {
                           name,
                           visible
                         };
-                        handleColumnsOrder(updatedOrder);
+                        handleColumnsOrder(updatedOrder, visible);
                       }}
                       handleColumnDragDrop={handleColumnDragDrop} />
                   })}
