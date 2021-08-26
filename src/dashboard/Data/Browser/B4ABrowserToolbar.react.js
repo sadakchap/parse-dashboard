@@ -266,7 +266,8 @@ let B4ABrowserToolbar = ({
       <ColumnsConfiguration
         handleColumnsOrder={handleColumnsOrder}
         handleColumnDragDrop={handleColumnDragDrop}
-        order={order} />
+        order={order}
+        className={classNameForEditors} />
       {menu}
     </Toolbar>
   );
