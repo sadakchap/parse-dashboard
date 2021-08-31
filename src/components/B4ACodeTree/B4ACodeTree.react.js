@@ -9,6 +9,7 @@ import B4ACloudCodeView             from 'components/B4ACloudCodeView/B4ACloudCo
 import B4ATreeActions               from 'components/B4ACodeTree/B4ATreeActions';
 import 'jstree/dist/themes/default/style.css'
 import 'components/B4ACodeTree/B4AJsTree.css'
+import { concatAST } from 'graphql';
 
 const getCloudFolderPlaceholder = (appId, restKey) => "// The first deployed file must be named main.js and must be placed on the root of the cloud folder.\n" +
   "// The example below shows you how a cloud code function looks like.\n\n" +
@@ -114,7 +115,6 @@ export default class B4ACodeTree extends React.Component {
       if (selected.data && selected.data.code && selected.type != 'folder') {
         // index of file on tree.
         const fileList = this.state.filesOnTree?.fileList ? Array.from(this.state.filesOnTree?.fileList) : [];
-        let selectedFile;
         fileList.map( (file ) => {
           if ( file.name === selected.text ) {
             selectedFile = file;
@@ -127,7 +127,7 @@ export default class B4ACodeTree extends React.Component {
           if ( selectedFile instanceof Blob ) {
             fr.onload = () => {
               source = fr.result;
-              selectedFile = selected.text
+              selectedFile = selected.text;
               nodeId = selected.id
               extension = B4ATreeActions.getExtension(selectedFile)
               this.setState({ source, selectedFile, nodeId, extension, isImage })
@@ -172,6 +172,26 @@ export default class B4ACodeTree extends React.Component {
     return this.props.parentState({ unsavedChanges: true })
   }
 
+  getUpdatedFiles(files, value) {
+    return files.map( (file) => {
+      if ( this.state.selectedFile === file.text && file.data ) {
+        file.data.code = value;
+      }
+      // children.
+      if ( file.children && file.children.length > 0 ) {
+        file.children = this.getUpdatedFiles(file.children, value);
+      }
+      return file;
+    });
+  }
+
+  async updateSelectedFileContent(value) {
+    const ecodedValue = await B4ATreeActions.encodeFile(value, 'data:plain/text;base64');
+    let updatedFiles = this.getUpdatedFiles(this.state.files, ecodedValue);
+    this.setState({ files: updatedFiles, source: value });
+    this.props.setCurrentCode(updatedFiles);
+  }
+
   componentDidMount() {
     let config = B4ATreeActions.getConfig(this.state.files);
     $('#tree').jstree(config);
@@ -182,6 +202,9 @@ export default class B4ACodeTree extends React.Component {
     $('#tree').on('create_node.jstree', function (){
       B4ATreeActions.refreshEmptyFolderIcons();
     });
+
+    // current code.
+    this.props.setCurrentCode(this.state.files);
   }
 
   render(){
@@ -222,7 +245,7 @@ export default class B4ACodeTree extends React.Component {
         <div className={styles.filePreview}>
           <div className={`${styles['files-box']}`}>
             <div className={styles['files-header']} >
-              <p>{typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
+              <p>{ typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
               <Button
                 value={<div><i className="zmdi zmdi-minus"></i> REMOVE</div>}
                 primary={true}
@@ -248,6 +271,7 @@ export default class B4ACodeTree extends React.Component {
                 this.state.isImage ?
                   <img src={this.state.source} /> :
                   <B4ACloudCodeView
+                    onCodeChange={value => this.updateSelectedFileContent(value)}
                     source={this.state.source || "Select a file to view your Cloud Code"}
                     extension={this.state.extension} />
               }
