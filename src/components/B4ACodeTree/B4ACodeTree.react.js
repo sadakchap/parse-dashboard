@@ -1,5 +1,5 @@
 import React                        from 'react';
-import $                            from 'jquery'
+import $                            from 'jquery';
 import Resizable                    from 're-resizable';
 import jstree                       from 'jstree';
 import ReactFileReader              from 'react-file-reader';
@@ -57,7 +57,9 @@ export default class B4ACodeTree extends React.Component {
       nodeId: '',
       files: this.props.files,
       isImage: false,
-      selectedFolder: 0
+      selectedFolder: 0,
+      updatedFiles: [],
+      selectedNodeData: null
     }
   }
 
@@ -130,6 +132,8 @@ export default class B4ACodeTree extends React.Component {
               selectedFile = selected.text;
               nodeId = selected.id
               extension = B4ATreeActions.getExtension(selectedFile)
+              const fileUpdated = this.state.updatedFiles.find( f => f.file === this.state.selectedFile);
+              source = fileUpdated ? fileUpdated.updatedContent : source;
               this.setState({ source, selectedFile, nodeId, extension, isImage })
             }
 
@@ -159,13 +163,18 @@ export default class B4ACodeTree extends React.Component {
         }
       }
     }
+    const fileUpdated = this.state.updatedFiles.find( f => f.file === this.state.selectedFile);
+    source = fileUpdated ? fileUpdated.updatedContent : source;
     this.setState({ source, selectedFile, nodeId, extension, isImage, selectedFolder })
   }
 
   // method to identify the selected tree node
   watchSelectedNode() {
     $('#tree').on('select_node.jstree', async (e, data) => this.selectNode(data))
-    $('#tree').on('changed.jstree', (e, data) => this.selectNode(data))
+    $('#tree').on('changed.jstree', (e, data) => {
+      this.selectNode(data);
+      this.setState({ selectedNodeData: data });
+    })
   }
 
   handleTreeChanges() {
@@ -186,10 +195,12 @@ export default class B4ACodeTree extends React.Component {
   }
 
   async updateSelectedFileContent(value) {
+    const updatedData = { file: this.state.selectedFile, updatedContent: value };
     const ecodedValue = await B4ATreeActions.encodeFile(value, 'data:plain/text;base64');
     let updatedFiles = this.getUpdatedFiles(this.state.files, ecodedValue);
-    this.setState({ files: updatedFiles, source: value });
+    this.setState({ updatedFiles: [...this.state.updatedFiles.filter( f => f.file !== this.state.selectedFile ), updatedData], files: updatedFiles, source: value });
     this.props.setCurrentCode(updatedFiles);
+    this.state.selectedNodeData?.instance.set_icon(this.state.selectedNodeData.node, require('./icons/file.png').default);
   }
 
   componentDidMount() {
@@ -272,7 +283,7 @@ export default class B4ACodeTree extends React.Component {
                   <img src={this.state.source} /> :
                   <B4ACloudCodeView
                     onCodeChange={value => this.updateSelectedFileContent(value)}
-                    source={this.state.source || "Select a file to view your Cloud Code"}
+                    source={this.state.source}
                     extension={this.state.extension} />
               }
             </Resizable>
