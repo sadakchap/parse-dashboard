@@ -23,6 +23,9 @@
 }
 
 .entry {
+  height: 30px;
+  padding: 8px;
+
   svg {
     fill: white;
   }
@@ -35,6 +38,15 @@
       fill: #66637A;
     }
   }
+
+  &.active {
+    background: $orange;
+    border-radius: 5px;
+
+    svg {
+      fill: white;
+    }
+  }
 }
 
 .title {
@@ -45,20 +57,28 @@
   svg {
     fill: white;
   }
+
+  &.active {
+    background: $orange;
+    border-radius: 5px;
+  }
 }
 
 .entry, .title {
   @include NotoSansFont;
+  position: relative;
+  bottom: -4px;
   font-size: 14px;
   color: #ffffff;
   cursor: pointer;
 
   svg {
-    vertical-align: middle;
+    vertical-align: top;
+    margin-right: 4px;
   }
 
   span {
-    vertical-align: middle;
+    vertical-align: top;
     height: 14px;
     line-height: 14px;
   }

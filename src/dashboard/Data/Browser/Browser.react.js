@@ -24,6 +24,7 @@ import AttachRowsDialog                   from 'dashboard/Data/Browser/AttachRow
 import AttachSelectedRowsDialog           from 'dashboard/Data/Browser/AttachSelectedRowsDialog.react';
 import CloneSelectedRowsDialog            from 'dashboard/Data/Browser/CloneSelectedRowsDialog.react';
 import EditRowDialog                      from 'dashboard/Data/Browser/EditRowDialog.react';
+import ExportSelectedRowsDialog           from 'dashboard/Data/Browser/ExportSelectedRowsDialog.react';
 import history                            from 'dashboard/history';
 import { List, Map }                      from 'immutable';
 import Notification                       from 'dashboard/Data/Browser/Notification.react';
@@ -89,6 +90,7 @@ class Browser extends DashboardView {
       showEditRowDialog: false,
       rowsToDelete: null,
       columnToDelete: null,
+      rowsToExport: null,
 
       relation: null,
       counts: {},
@@ -118,6 +120,11 @@ class Browser extends DashboardView {
       openSecurityDialog: false,
 
       showPointerKeyDialog: false,
+      markRequiredFieldRow: 0,
+      requiredColumnFields: [],
+
+      useMasterKey: true,
+      currentUser: Parse.User.current()
     };
 
     this.prefetchData = this.prefetchData.bind(this);
@@ -133,6 +140,9 @@ class Browser extends DashboardView {
     this.showExport = this.showExport.bind(this);
     this.showImport = this.showImport.bind(this);
     this.showImportRelation = this.showImportRelation.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+    this.toggleMasterKeyUsage = this.toggleMasterKeyUsage.bind(this);
     this.showAttachRowsDialog = this.showAttachRowsDialog.bind(this);
     this.cancelAttachRows = this.cancelAttachRows.bind(this);
     this.confirmAttachRows = this.confirmAttachRows.bind(this);
@@ -142,6 +152,9 @@ class Browser extends DashboardView {
     this.showCloneSelectedRowsDialog = this.showCloneSelectedRowsDialog.bind(this);
     this.confirmCloneSelectedRows = this.confirmCloneSelectedRows.bind(this);
     this.cancelCloneSelectedRows = this.cancelCloneSelectedRows.bind(this);
+    this.showExportSelectedRowsDialog = this.showExportSelectedRowsDialog.bind(this);
+    this.confirmExportSelectedRows = this.confirmExportSelectedRows.bind(this);
+    this.cancelExportSelectedRows = this.cancelExportSelectedRows.bind(this);
     this.getClassRelationColumns = this.getClassRelationColumns.bind(this);
     this.showCreateClass = this.showCreateClass.bind(this);
     this.refresh = this.refresh.bind(this);
@@ -169,12 +182,16 @@ class Browser extends DashboardView {
     this.closeEditRowDialog = this.closeEditRowDialog.bind(this);
     this.handleShowAcl = this.handleShowAcl.bind(this);
     this.onDialogToggle = this.onDialogToggle.bind(this);
-    this.addEditCloneRows = this.addEditCloneRows.bind(this);
-    this.abortEditCloneRows = this.abortEditCloneRows.bind(this);
     this.onClickSecurity = this.onClickSecurity.bind(this);
     this.showPointerKeyDialog = this.showPointerKeyDialog.bind(this);
     this.onChangeDefaultKey = this.onChangeDefaultKey.bind(this);
     this.showColumnDelete = this.showColumnDelete.bind(this);
+    this.saveNewRow = this.saveNewRow.bind(this);
+    this.addEditCloneRows = this.addEditCloneRows.bind(this);
+    this.abortEditCloneRows = this.abortEditCloneRows.bind(this);
+    this.abortEditCloneRow = this.abortEditCloneRow.bind(this);
+    this.saveEditCloneRow = this.saveEditCloneRow.bind(this);
+    this.cancelPendingEditRows = this.cancelPendingEditRows.bind(this);
   }
 
   getFooterMenuButtons() {
@@ -490,7 +507,8 @@ class Browser extends DashboardView {
     let relation = this.state.relation;
     if (isRelationRoute && !relation) {
       const parentObjectQuery = new Parse.Query(className);
-      const parent = await parentObjectQuery.get(entityId, { useMasterKey: true });
+      const { useMasterKey } = this.state;
+      const parent = await parentObjectQuery.get(entityId, { useMasterKey });
       relation = parent.relation(relationName);
     }
     await this.setState({
@@ -589,6 +607,25 @@ class Browser extends DashboardView {
 
   showExport() {
     this.setState({ showExportDialog: true });
+  }
+
+  async login(username, password) {
+    if (Parse.User.current()) {
+      await Parse.User.logOut();
+    }
+
+    const currentUser = await Parse.User.logIn(username, password);
+    this.setState({ currentUser: currentUser, useMasterKey: false }, () => this.refresh());
+  }
+
+  async logout() {
+    await Parse.User.logOut();
+    this.setState({ currentUser: null, useMasterKey: true }, () => this.refresh());
+  }
+
+  toggleMasterKeyUsage() {
+    const { useMasterKey } = this.state;
+    this.setState({ useMasterKey: !useMasterKey }, () => this.refresh());
   }
 
   createClass(className) {
@@ -727,18 +764,228 @@ class Browser extends DashboardView {
     }
   }
 
-  abortAddRow() {
-    if (this.state.newObject) {
+  abortAddRow(){
+    if(this.state.newObject){
       this.setState({
-        newObject: null,
+        newObject: null
       });
     }
+    if (this.state.markRequiredFieldRow !== 0) {
+      this.setState({
+        markRequiredFieldRow: 0
+      });
+    }
+  }
+
+  saveNewRow(){
+    const { useMasterKey } = this.state;
+    const obj = this.state.newObject;
+    if (!obj) {
+      return;
+    }
+
+    // check if required fields are missing
+    const className = this.props.params.className;
+    let requiredCols = [];
+    if (className) {
+      let classColumns = this.props.schema.data.get('classes').get(className);
+      classColumns.forEach(({ required }, name) => {
+          if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
+            return;
+          }
+          if (!!required) {
+            requiredCols.push(name);
+          }
+          if (className === '_User' && (name === 'username' || name === 'password')) {
+            if (!obj.get('authData')) {
+              requiredCols.push(name);
+            }
+          }
+          if (className === '_Role' && (name === 'name' || name === 'ACL')) {
+            requiredCols.push(name);
+          }
+        });
+    }
+    if (requiredCols.length) {
+      for (let idx = 0; idx < requiredCols.length; idx++) {
+        const name = requiredCols[idx];
+        if (!obj.get(name)) {
+          this.showNote("Please enter all required fields", true);
+          this.setState({
+            markRequiredFieldRow: -1
+          });
+          return;
+        }
+      }
+    }
+    if (this.state.markRequiredFieldRow) {
+      this.setState({
+        markRequiredFieldRow: 0
+      });
+    }
+    obj.save(null, { useMasterKey }).then(
+      objectSaved => {
+        let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' created';
+        this.showNote(msg, false);
+
+        const state = { data: this.state.data };
+        const relation = this.state.relation;
+        if (relation) {
+          const parent = relation.parent;
+          const parentRelation = parent.relation(relation.key);
+          parentRelation.add(obj);
+          const targetClassName = relation.targetClassName;
+          parent.save(null, { useMasterKey }).then(
+            () => {
+              this.setState({
+                newObject: null,
+                data: [obj, ...this.state.data],
+                relationCount: this.state.relationCount + 1,
+                counts: {
+                  ...this.state.counts,
+                  [targetClassName]: this.state.counts[targetClassName] + 1
+                }
+              });
+            },
+            error => {
+              let msg = typeof error === "string" ? error : error.message;
+              if (msg) {
+                msg = msg[0].toUpperCase() + msg.substr(1);
+              }
+              obj.set(attr, prev);
+              this.setState({ data: this.state.data });
+              this.showNote(msg, true);
+            }
+          );
+        } else {
+          state.newObject = null;
+          if (this.props.params.className === obj.className) {
+            this.state.data.unshift(obj);
+          }
+          this.state.counts[obj.className] += 1;
+        }
+
+        this.setState(state);
+      },
+      error => {
+        let msg = typeof error === "string" ? error : error.message;
+        if (msg) {
+          msg = msg[0].toUpperCase() + msg.substr(1);
+        }
+        this.showNote(msg, true);
+      }
+    );
+  }
+
+  saveEditCloneRow(rowIndex) {
+    let obj;
+    if (rowIndex < -1) {
+      obj = this.state.editCloneRows[
+        rowIndex + (this.state.editCloneRows.length + 1)
+      ];
+    }
+    if (!obj) {
+      return;
+    }
+
+    // check if required fields are missing
+    const className = this.props.params.className;
+    let requiredCols = [];
+    if (className) {
+      let classColumns = this.props.schema.data.get('classes').get(className);
+      classColumns.forEach(({ required }, name) => {
+          if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
+            return;
+          }
+          if (!!required) {
+            requiredCols.push(name);
+          }
+          if (className === '_User' && (name === 'username' || name === 'password')) {
+            if (!obj.get('authData')) {
+              requiredCols.push(name);
+            }
+          }
+          if (className === '_Role' && (name === 'name' || name === 'ACL')) {
+            requiredCols.push(name);
+          }
+        });
+    }
+    if (requiredCols.length) {
+      for (let idx = 0; idx < requiredCols.length; idx++) {
+        const name = requiredCols[idx];
+        if (!obj.get(name)) {
+          this.showNote("Please enter all required fields", true);
+          this.setState({
+            markRequiredFieldRow: rowIndex
+          });
+          return;
+        }
+      }
+    }
+    if (this.state.markRequiredFieldRow) {
+      this.setState({
+        markRequiredFieldRow: 0
+      });
+    }
+
+    obj.save(null, { useMasterKey: true }).then((objectSaved) => {
+      let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' ' + 'created';
+      this.showNote(msg, false);
+
+      const state = { data: this.state.data, editCloneRows: this.state.editCloneRows };
+      state.editCloneRows = state.editCloneRows.filter(
+        cloneObj => cloneObj._localId !== obj._localId
+      );
+      if (state.editCloneRows.length === 0) state.editCloneRows = null;
+      if (this.props.params.className === obj.className) {
+        this.state.data.unshift(obj);
+      }
+      this.state.counts[obj.className] += 1;
+      this.setState(state);
+    }, (error) => {
+      let msg = typeof error === 'string' ? error : error.message;
+      if (msg) {
+        msg = msg[0].toUpperCase() + msg.substr(1);
+      }
+
+      this.showNote(msg, true);
+    });
+  }
+
+  abortEditCloneRow(rowIndex) {
+    let obj;
+    if (rowIndex < -1) {
+      obj = this.state.editCloneRows[
+        rowIndex + (this.state.editCloneRows.length + 1)
+      ];
+    }
+    if (!obj) {
+      return;
+    }
+    const state = { editCloneRows: this.state.editCloneRows };
+    state.editCloneRows = state.editCloneRows.filter(
+      cloneObj => cloneObj._localId !== obj._localId
+    );
+    if (state.editCloneRows.length === 0) state.editCloneRows = null;
+    this.setState(state);
   }
 
   addRowWithModal() {
     this.addRow();
     this.selectRow(undefined, true);
     this.showEditRowDialog();
+  }
+
+  cancelPendingEditRows() {
+    this.setState({
+      editCloneRows: null
+    });
+  }
+
+  addEditCloneRows(cloneRows) {
+    this.setState({
+      editCloneRows: cloneRows
+    });
   }
 
   removeColumn(name, selectedColumn = false) {
@@ -797,6 +1044,7 @@ class Browser extends DashboardView {
   }
 
   async fetchParseData(source, filters) {
+    const { useMasterKey } = this.state;
     const query = queryFromFilters(source, filters);
     const sortDir = this.state.ordering[0] === '-' ? '-' : '+';
     const field = this.state.ordering.substr(sortDir === '-' ? 1 : 0)
@@ -830,10 +1078,18 @@ class Browser extends DashboardView {
       }
     }
 
+    if (field !== 'objectId') {
+      if (sortDir === '-') {
+        query.addDescending('objectId');
+      } else {
+        query.addAscending('objectId');
+      }
+    }
+
     query.limit(MAX_ROWS_FETCHED);
     this.excludeFields(query, source);
 
-    let promise = query.find({ useMasterKey: true });
+    let promise = query.find({ useMasterKey });
     let isUnique = false;
     let uniqueField = null;
     filters.forEach(async (filter) => {
@@ -851,11 +1107,11 @@ class Browser extends DashboardView {
   }
 
   excludeFields(query, className) {
-    let columns = ColumnPreferences.getPreferences(this.context.currentApp.applicationId, className)
+    let columns = ColumnPreferences.getPreferences(this.context.currentApp.applicationId, className);
     if (columns) {
-      columns = columns.filter(clmn => !clmn.visible).map(clmn => clmn.name)
+      columns = columns.filter(clmn => !clmn.visible).map(clmn => clmn.name);
       for (let columnsKey in columns) {
-        query.exclude(columns[columnsKey])
+        query.exclude(columns[columnsKey]);
       }
       ColumnPreferences.updateCachedColumns(this.context.currentApp.applicationId, className);
     }
@@ -863,7 +1119,8 @@ class Browser extends DashboardView {
 
   async fetchParseDataCount(source, filters) {
     const query = queryFromFilters(source, filters);
-    const count = await query.count({ useMasterKey: true });
+    const { useMasterKey } = this.state;
+    const count = await query.count({ useMasterKey });
     return count;
   }
 
@@ -964,7 +1221,8 @@ class Browser extends DashboardView {
     query.limit(MAX_ROWS_FETCHED);
     this.excludeFields(query, source);
 
-    query.find({ useMasterKey: true }).then((nextPage) => {
+    const { useMasterKey } = this.state;
+    query.find({ useMasterKey }).then((nextPage) => {
       if (className === this.props.params.className) {
         this.setState((state) => ({
           data: state.data.concat(nextPage)
@@ -1041,6 +1299,15 @@ class Browser extends DashboardView {
     history.push(this.context.generatePath(`browser/${className}?filters=${encodeURIComponent(filters)}`));
   }
 
+  handlePointerCmdClick({ className, id, field = 'objectId' }) {
+    let filters = JSON.stringify([{
+      field,
+      constraint: 'eq',
+      compareTo: id
+    }]);
+    window.open(this.context.generatePath(`browser/${className}?filters=${encodeURIComponent(filters)}`),'_blank');
+  }
+
   handleCLPChange(clp) {
     const { serverInfo } = this.context.currentApp;
     if (typeof serverInfo.parseServerVersion !== 'undefined') {
@@ -1068,7 +1335,10 @@ class Browser extends DashboardView {
       isNewObject = false
     }
     if(isEditCloneObj){
-      obj = this.state.editCloneRows[row + (this.state.editCloneRows.length+1)];
+      obj = this.state.editCloneRows[row + (this.state.editCloneRows.length + 1)];
+    }
+    if (!obj) {
+      return;
     }
     const prev = obj.get(attr);
     if (value === prev) {
@@ -1079,9 +1349,26 @@ class Browser extends DashboardView {
     } else {
       obj.set(attr, value);
     }
-    obj.save(null, { useMasterKey: true }).then((objectSaved) => {
-      const createdOrUpdated = isNewObject || isEditCloneObj ? 'created' : 'updated';
-      let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' ' + createdOrUpdated;
+
+    if (isNewObject) {
+      this.setState({
+        isNewObject: obj
+      });
+      return;
+    }
+    if (isEditCloneObj) {
+      const editObjIndex = row + (this.state.editCloneRows.length + 1);
+      let cloneRows = [...this.state.editCloneRows];
+      cloneRows.splice(editObjIndex, 1, obj);
+      this.setState({
+        editCloneRows: cloneRows
+      });
+      return;
+    }
+
+    const { useMasterKey } = this.state;
+    obj.save(null, { useMasterKey }).then((objectSaved) => {
+      let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' updated';
       this.showNote(msg, false);
 
       const state = { data: this.state.data, editCloneRows: this.state.editCloneRows };
@@ -1123,12 +1410,11 @@ class Browser extends DashboardView {
           this.state.counts[obj.className] += 1;
         }
       }
-      if(isEditCloneObj){
+      if (isEditCloneObj) {
         state.editCloneRows = state.editCloneRows.filter(
           cloneObj => cloneObj._localId !== obj._localId
         );
-        if(state.editCloneRows.length === 0)
-          state.editCloneRows = null;
+        if (state.editCloneRows.length === 0) state.editCloneRows = null;
         if (this.props.params.className === obj.className) {
           this.state.data.unshift(obj);
         }
@@ -1181,10 +1467,11 @@ class Browser extends DashboardView {
       const toDeleteObjectIds = [];
       toDelete.forEach((obj) => { toDeleteObjectIds.push(obj.id); });
 
+      const { useMasterKey } = this.state;
       let relation = this.state.relation;
       if (relation && toDelete.length) {
         relation.remove(toDelete);
-        relation.parent.save(null, { useMasterKey: true }).then(() => {
+        relation.parent.save(null, { useMasterKey }).then(() => {
           if (this.state.relation === relation) {
             for (let i = 0; i < indexes.length; i++) {
               this.state.data.splice(indexes[i] - i, 1);
@@ -1195,7 +1482,7 @@ class Browser extends DashboardView {
           }
         });
       } else if (toDelete.length) {
-        Parse.Object.destroyAll(toDelete, { useMasterKey: true }).then(() => {
+        Parse.Object.destroyAll(toDelete, { useMasterKey }).then(() => {
           let deletedNote;
 
           if (toDeleteObjectIds.length == 1) {
@@ -1273,7 +1560,8 @@ class Browser extends DashboardView {
       this.state.showAttachSelectedRowsDialog ||
       this.state.showCloneSelectedRowsDialog ||
       this.state.showEditRowDialog ||
-      this.state.showPermissionsDialog
+      this.state.showPermissionsDialog ||
+      this.state.showExportSelectedRowsDialog
     );
   }
 
@@ -1293,11 +1581,12 @@ class Browser extends DashboardView {
     if (!objectIds || !objectIds.length) {
       throw 'No objectId passed';
     }
+    const { useMasterKey } = this.state;
     const relation = this.state.relation;
     const query = new Parse.Query(relation.targetClassName);
     const parent = relation.parent;
     query.containedIn('objectId', objectIds);
-    let objects = await query.find({ useMasterKey: true });
+    let objects = await query.find({ useMasterKey });
     const missedObjectsCount = objectIds.length - objects.length;
     if (missedObjectsCount) {
       const missedObjects = [];
@@ -1311,7 +1600,7 @@ class Browser extends DashboardView {
       throw `${errorSummary} ${JSON.stringify(missedObjects)}`;
     }
     parent.relation(relation.key).add(objects);
-    await parent.save(null, { useMasterKey: true });
+    await parent.save(null, { useMasterKey });
     // remove duplication
     this.state.data.forEach(origin => objects = objects.filter(object => object.id !== origin.id));
     this.setState({
@@ -1337,13 +1626,14 @@ class Browser extends DashboardView {
   }
 
   async confirmAttachSelectedRows(className, targetObjectId, relationName, objectIds, targetClassName) {
+    const { useMasterKey } = this.state;
     const parentQuery = new Parse.Query(className);
-    const parent = await parentQuery.get(targetObjectId, { useMasterKey: true });
+    const parent = await parentQuery.get(targetObjectId, { useMasterKey });
     const query = new Parse.Query(targetClassName || this.props.params.className);
     query.containedIn('objectId', objectIds);
-    const objects = await query.find({ useMasterKey: true });
+    const objects = await query.find({ useMasterKey });
     parent.relation(relationName).add(objects);
-    await parent.save(null, { useMasterKey: true });
+    await parent.save(null, { useMasterKey });
     this.setState({
       selection: {},
     });
@@ -1362,6 +1652,7 @@ class Browser extends DashboardView {
   }
 
   async confirmCloneSelectedRows() {
+    const { useMasterKey } = this.state;
     const objectIds = [];
     for (const objectId in this.state.selection) {
       objectIds.push(objectId);
@@ -1369,14 +1660,19 @@ class Browser extends DashboardView {
     const className = this.props.params.className;
     const query = new Parse.Query(className);
     query.containedIn('objectId', objectIds);
-    const objects = await query.find({ useMasterKey: true });
+    const objects = await query.find({ useMasterKey });
     const toClone = [];
     for (const object of objects) {
-      toClone.push(object.clone());
+      let clonedObj = object.clone();
+      if (className === '_User') {
+        clonedObj.set('username', undefined);
+        clonedObj.set('authData', undefined);
+      }
+      toClone.push(clonedObj);
     }
     try {
-      await Parse.Object.saveAll(toClone, { useMasterKey: true });
-      return this.setState({
+      await Parse.Object.saveAll(toClone, { useMasterKey });
+      this.setState({
         selection: {},
         data: [...toClone, ...this.state.data],
         showCloneSelectedRowsDialog: false,
@@ -1386,24 +1682,131 @@ class Browser extends DashboardView {
         }
       });
     } catch (error) {
-      if(error.code === 137){
-        const newClonedObjects = [];
+      //for duplicate, username missing or required field missing errors
+      if (error.code === 137 || error.code === 200 || error.code === 142) {
+        let failedSaveObj = [];
+        let savedObjects = [];
         toClone.forEach(cloneObj => {
-          this.state.uniqueClassFields.forEach(field => {
-            const fieldType =  typeof cloneObj.get(field);
-            cloneObj.set(field, fieldType === 'string' ? '' : undefined);
-          });
-          newClonedObjects.push(cloneObj);
+          cloneObj.dirty()
+            ? failedSaveObj.push(cloneObj)
+            : savedObjects.push(cloneObj);
         });
-        this.addEditCloneRows(newClonedObjects);
+        if (savedObjects.length) {
+          this.setState({
+            data: [...savedObjects, ...this.state.data],
+            counts: {
+              ...this.state.counts,
+              [className]: this.state.counts[className] + savedObjects.length
+            }
+          });
+        }
+        this.addEditCloneRows(failedSaveObj);
       }
       this.setState({
-        selection: {},
         showCloneSelectedRowsDialog: false
       });
       this.showNote(error.message, true);
-      return;
     }
+  }
+
+  showExportSelectedRowsDialog(rows) {
+    this.setState({
+      rowsToExport: rows
+    });
+  }
+
+  cancelExportSelectedRows() {
+    this.setState({
+      rowsToExport: null
+    });
+  }
+
+  async confirmExportSelectedRows(rows) {
+    this.setState({ rowsToExport: null });
+    const className = this.props.params.className;
+    const query = new Parse.Query(className);
+
+    if (rows['*']) {
+      // Export all
+      query.limit(10000);
+    } else {
+      // Export selected
+      const objectIds = [];
+      for (const objectId in this.state.rowsToExport) {
+        objectIds.push(objectId);
+      }
+      query.containedIn('objectId', objectIds);
+    }
+
+    const classColumns = this.getClassColumns(className, false);
+    // create object with classColumns as property keys needed for ColumnPreferences.getOrder function
+    const columnsObject = {};
+    classColumns.forEach((column) => {
+      columnsObject[column.name] = column;
+    });
+    // get ordered list of class columns
+    const columns = ColumnPreferences.getOrder(
+      columnsObject,
+      this.context.currentApp.applicationId,
+      className
+    ).filter(column => column.visible);
+
+    const objects = await query.find({ useMasterKey: true });
+    let csvString = columns.map(column => column.name).join(',') + '\n';
+    for (const object of objects) {
+      const row = columns.map(column => {
+        const type = columnsObject[column.name].type;
+        if (column.name === 'objectId') {
+          return object.id;
+        } else if (type === 'Relation' || type === 'Pointer') {
+          if (object.get(column.name)) {
+            return  object.get(column.name).id
+          } else {
+            return ''
+          }
+        } else {
+          let colValue;
+          if (column.name === 'ACL') {
+            colValue = object.getACL();
+          } else {
+            colValue = object.get(column.name);
+          }
+          // Stringify objects and arrays
+          if (Object.prototype.toString.call(colValue) === '[object Object]' || Object.prototype.toString.call(colValue) === '[object Array]') {
+            colValue = JSON.stringify(colValue);
+          }
+          if(typeof colValue === 'string') {
+            if (colValue.includes('"')) {
+              // Has quote in data, escape and quote
+              // If the value contains both a quote and delimiter, adding quotes and escaping will take care of both scenarios
+              colValue = colValue.split('"').join('""');
+              return `"${colValue}"`;
+            } else if (colValue.includes(',')) {
+              // Has delimiter in data, surround with quote (which the value doesn't already contain)
+              return `"${colValue}"`;
+            } else {
+              // No quote or delimiter, just include plainly
+              return `${colValue}`;
+            }
+          } else if (colValue === undefined) {
+            // Export as empty CSV field
+            return '';
+          } else {
+            return `${colValue}`;
+          }
+        }
+      }).join(',');
+      csvString += row + '\n';
+    }
+
+    // Deliver to browser to download file
+    const element = document.createElement('a');
+    const file = new Blob([csvString], { type: 'text/csv' });
+    element.href = URL.createObjectURL(file);
+    element.download = `${className}.csv`;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+    document.body.removeChild(element);
   }
 
   getClassRelationColumns(className) {
@@ -1571,7 +1974,7 @@ class Browser extends DashboardView {
             return;
           }
           const info = { type, required: !!required };
-          if (className === '_User' && (name === 'username' || name === 'password')) {
+          if (className === '_User' && (name === 'username' || name === 'password' || name === 'authData')) {
             info.required = true;
           }
           if (className === '_Role' && (name === 'name' || name === 'ACL')) {
@@ -1620,6 +2023,21 @@ class Browser extends DashboardView {
             onEditSelectedRow={this.showEditRowDialog}
             onEditPermissions={this.onDialogToggle}
             onShowPointerKey={this.showPointerKeyDialog}
+            onExportSelectedRows={this.showExportSelectedRowsDialog}
+
+            onSaveNewRow={this.saveNewRow}
+            onAbortAddRow={this.abortAddRow}
+            onSaveEditCloneRow={this.saveEditCloneRow}
+            onAbortEditCloneRow={this.abortEditCloneRow}
+            onCancelPendingEditRows={this.cancelPendingEditRows}
+
+            currentUser={this.state.currentUser}
+            useMasterKey={this.state.useMasterKey}
+            login={this.login}
+            logout={this.logout}
+            toggleMasterKeyUsage={this.toggleMasterKeyUsage}
+            markRequiredFieldRow={this.state.markRequiredFieldRow}
+            requiredColumnFields={this.state.requiredColumnFields}
             columns={columns}
             className={className}
             fetchNextPage={this.fetchNextPage}
@@ -1629,6 +2047,7 @@ class Browser extends DashboardView {
             data={this.state.data}
             ordering={this.state.ordering}
             newObject={this.state.newObject}
+            editCloneRows={this.state.editCloneRows}
             relation={this.state.relation}
             disableKeyControls={this.hasExtras()}
             updateRow={this.updateRow}
@@ -1685,8 +2104,8 @@ class Browser extends DashboardView {
           onCancel={() => this.setState({ showAddColumnDialog: false })}
           onConfirm={this.addColumn}
           onContinue={this.addColumnAndContinue}
-          parseServerVersion={currentApp.serverInfo && currentApp.serverInfo.parseServerVersion}
-          showNote={this.showNote} />
+          showNote={this.showNote}
+          parseServerVersion={currentApp.serverInfo && currentApp.serverInfo.parseServerVersion} />
       );
     } else if (this.state.showRemoveColumnDialog) {
       let currentColumns = this.getClassColumns(className).map(column => column.name);
@@ -1824,6 +2243,7 @@ class Browser extends DashboardView {
           updateRow={this.updateRow}
           confirmAttachSelectedRows={this.confirmAttachSelectedRows}
           schema={this.props.schema}
+          useMasterKey={this.state.useMasterKey}
         />
       )
     } else if (this.state.openSecurityDialog) {
@@ -1893,6 +2313,15 @@ class Browser extends DashboardView {
           onConfirm={() => this.removeColumn(this.state.columnToDelete, true)}
         />
       )
+    } else if (this.state.rowsToExport) {
+      extras = (
+        <ExportSelectedRowsDialog
+          className={SpecialClasses[className] || className}
+          selection={this.state.rowsToExport}
+          onCancel={this.cancelExportSelectedRows}
+          onConfirm={() => this.confirmExportSelectedRows(this.state.rowsToExport)}
+        />
+      );
     }
 
     let notification = null;
