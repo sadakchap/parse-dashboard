@@ -136,10 +136,10 @@ export default class CreateClassDialog extends React.Component {
           )
             : null
         }
-        <div style={{ display: "flex", flexDirection: "column", textAlign: "center", borderBottom: "1px solid #e3e3e3" }}>
-          <span style={{ margin: '1rem' }}>or</span>
-          <a style={{ color: "#169cee" }} href={b4aSettings.HUB_URL} target="_blank">Find a public dataset to connect</a>
-          <span style={{ margin: '1rem' }}>e.g. jobs, countries, industries, colors, zip codes and more...</span>
+        <div style={{ display: "flex", flexDirection: "column", padding: '1em', gap: '10px', borderBottom: "1px solid #e3e3e3" }}>
+          <div style={{ fontWeight: '600', color: '000000de' }} >Or find a public dataset to connect</div >
+          <span style={{ fontSize: '14px' }} >e.g. jobs, countries, industries, colors, zip codes and more...</span>
+          <a style={{ color: "#169cee", fontSize: '14px', textDecoration: 'underline' }} href={b4aSettings.HUB_URL} target="_blank">back4app.com/database</a>
         </div>
       </Modal>
     );
