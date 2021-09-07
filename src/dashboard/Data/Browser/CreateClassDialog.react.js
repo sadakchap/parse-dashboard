@@ -12,6 +12,7 @@ import Modal              from 'components/Modal/Modal.react';
 import Option             from 'components/Dropdown/Option.react';
 import React              from 'react';
 import { SpecialClasses } from 'lib/Constants';
+import styles             from './Browser.scss';
 import TextInput          from 'components/TextInput/TextInput.react';
 import history            from 'dashboard/history';
 
@@ -24,7 +25,8 @@ export default class CreateClassDialog extends React.Component {
     super();
     this.state = {
       type: 'Custom',
-      name: ''
+      name: '',
+      isProtected: true
     };
   }
 
@@ -82,7 +84,7 @@ export default class CreateClassDialog extends React.Component {
         onConfirm={() => {
           let type = this.state.type;
           let className = type === 'Custom' ? this.state.name : '_' + type;
-          this.props.onConfirm(className);
+          this.props.onConfirm(className, this.state.isProtected);
         }}>
         {availableClasses.length > 1 ?
           <Field
@@ -93,9 +95,41 @@ export default class CreateClassDialog extends React.Component {
           input={typeDropdown} /> : null
         }
         {this.state.type === 'Custom' ?
-          <Field
-            label={<Label text='What should we call it?' description={'Don\u2019t use any special characters, and start your name with a letter.'} />}
-            input={<TextInput placeholder='Give it a good name...' value={this.state.name} onChange={(name) => this.setState({ name })} />}/> : null
+          (<>
+            <Field
+              label={<Label text='What should we call it?' description={'Don\u2019t use any special characters, and start your name with a letter.'} />}
+              input={<TextInput placeholder='Give it a good name...' value={this.state.name} onChange={(name) => this.setState({ name })} />}/> 
+            <Field
+              label={<Label text='Add in Protected mode' description={'Your class data is private by default. Client read/write access will only be granted as specified by your CLPs/ACLs security rules.'} />}
+              input={
+                <div className={styles.radiobuttonWrapper} >
+                  <input 
+                    id="CLP_Protected" 
+                    name="CLP"
+                    type="radio"
+                    onChange={() => this.setState({ isProtected: !this.state.isProtected })}
+                    defaultChecked={this.state.isProtected}
+                  /> Protected
+                </div>
+              }
+            />
+            <Field
+              label={<Label text='Add in Public mode' description={'Your class data is open by default. However, you must update your security rules to enable long-term client read/write access.'} />}
+              input={
+                <div className={styles.radiobuttonWrapper}>
+                  <input 
+                    id="CLP_Public" 
+                    name="CLP" 
+                    type="radio"
+                    onChange={() => this.setState({ isProtected: !this.state.isProtected })}
+                    defaultChecked={!this.state.isProtected}
+                  /> Public read and write Enabled
+                </div>
+              }
+            /> 
+            </>
+          )
+            : null
         }
         <div style={{ display: "flex", flexDirection: "column", textAlign: "center", borderBottom: "1px solid #e3e3e3" }}>
           <span style={{ margin: '1rem' }}>or</span>
