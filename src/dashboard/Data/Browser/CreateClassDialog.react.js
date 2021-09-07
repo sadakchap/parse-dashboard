@@ -98,7 +98,7 @@ export default class CreateClassDialog extends React.Component {
           (<>
             <Field
               label={<Label text='What should we call it?' description={'Don\u2019t use any special characters, and start your name with a letter.'} />}
-              input={<TextInput placeholder='Give it a good name...' value={this.state.name} onChange={(name) => this.setState({ name })} />}/> 
+              input={<TextInput className={styles.textInput} placeholder='Give it a good name...' value={this.state.name} onChange={(name) => this.setState({ name })} />}/> 
             <Field
               label={<Label text='Add in Protected mode' description={'Your class data is private by default. Client read/write access will only be granted as specified by your CLPs/ACLs security rules.'} />}
               input={
