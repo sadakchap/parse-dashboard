@@ -56,6 +56,7 @@ export default class CreateClassDialog extends React.Component {
 
     let typeDropdown = (
       <Dropdown
+        currentStyleClassName={styles.dropDown}
         value={this.state.type}
         onChange={(type) => this.setState({ type: type, name: '' })}>
         {availableClasses.map((t) => <Option key={t} value={t}>{t}</Option>)}
