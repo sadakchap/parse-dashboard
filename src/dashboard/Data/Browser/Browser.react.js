@@ -333,6 +333,11 @@ class Browser extends DashboardView {
     const getNextButton = () => {
       return document.querySelector('.introjs-button.introjs-nextbutton');
     };
+
+    const getPrevButton = () => {
+      return document.querySelector('.introjs-button.introjs-prevbutton')
+    }
+
     const getCustomVehicleClassLink = () => {
       return document.querySelector('[class^=class_list] [title="B4aVehicle"]');
     };
@@ -371,7 +376,6 @@ class Browser extends DashboardView {
         } else {
           this._forcedStep = false;
         }
-
         switch(this._currentStep) {
           case 0:
           case 1:
@@ -433,7 +437,14 @@ class Browser extends DashboardView {
               targetElement.style.backgroundColor = 'inherit';
             }
             break;
-          case 7:
+          case 6:
+            let nextBtn = getNextButton();
+            let prevBtn = getPrevButton();
+            // hide prev & next buttons
+            nextBtn.style.display = 'none';
+            prevBtn.style.display = 'none';
+            // move Done button to right
+            prevBtn.parentElement.style.justifyContent = 'end';
             targetElement.style.backgroundColor = 'inherit';
             break;
         }
