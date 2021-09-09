@@ -12,6 +12,7 @@ import DashboardView                     from 'dashboard/DashboardView.react';
 import Dropdown                          from 'components/Dropdown/Dropdown.react';
 import DropdownOption                    from 'components/Dropdown/Option.react';
 import Field                             from 'components/Field/Field.react';
+import FieldSettings                     from 'components/FieldSettings/FieldSettings.react';
 import Fieldset                          from 'components/Fieldset/Fieldset.react';
 import FlowView                          from 'components/FlowView/FlowView.react';
 import FormButton                        from 'components/FormButton/FormButton.react';
@@ -22,6 +23,7 @@ import history                           from 'dashboard/history';
 import joinWithFinal                     from 'lib/joinWithFinal';
 import KeyField                          from 'components/KeyField/KeyField.react';
 import Label                             from 'components/Label/Label.react';
+import LabelSettings                     from 'components/LabelSettings/LabelSettings.react';
 import Modal                             from 'components/Modal/Modal.react';
 import MultiSelect                       from 'components/MultiSelect/MultiSelect.react';
 import MultiSelectOption                 from 'components/MultiSelect/MultiSelectOption.react';
@@ -32,12 +34,18 @@ import renderFlowFooterChanges           from 'lib/renderFlowFooterChanges';
 import setDifference                     from 'lib/setDifference';
 import styles                            from 'dashboard/Settings/Settings.scss';
 import TextInput                         from 'components/TextInput/TextInput.react';
+import TextInputSettings                 from 'components/TextInputSettings/TextInputSettings.react';
 import NumericInput                      from 'components/NumericInput/NumericInput.react';
+import NumericInputSettings              from 'components/NumericInputSettings/NumericInputSettings.react';
 import Toolbar                           from 'components/Toolbar/Toolbar.react';
 import unique                            from 'lib/unique';
 import validateAndSubmitConnectionString from 'lib/validateAndSubmitConnectionString';
 import { cost, features }                from 'dashboard/Settings/GeneralSettings.scss';
 import Toggle                            from 'components/Toggle/Toggle.react';
+import CodeEditor                        from 'components/CodeEditor/CodeEditor.react';
+import {
+  replaceSettingsInJson, validateSettingsFloatMinMax, getSettingsFromKey
+}                                        from 'lib/ParseOptionUtils';
 
 const DEFAULT_SETTINGS_LABEL_WIDTH = 55;
 
@@ -218,210 +226,161 @@ let ManageAppFields = ({
     ];
   }
 
-  const { accountLockout, passwordPolicy } = parseOptions ? JSON.parse(parseOptions) : { accountLockout: {}, passwordPolicy: {} };
+  let parseOptionsJson = { accountLockout: {}, passwordPolicy: {} };
+
+  if ( parseOptions ) {
+    if ( typeof parseOptions === 'string' ) {
+      parseOptionsJson = JSON.parse(parseOptions);
+    }
+    if ( parseOptionsJson instanceof Array ) {
+      parseOptionsJson = parseOptionsJson[0];
+    }
+  }
+
   return (
     <Fieldset
       legend='App Management'
       description='These options will affect your entire app.' >
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-        label={<Label text='Account lockout' />}
+        label={<Label text='Account lockout' description='Manage account lockout policies' />}
         input={
           <div>
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
-              text='Reset Token Validity Duration'
-              description='The duration for which the reset token is valid'
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
+              text='Token Duration'
+              description='Reset token validity duration'
             />}
             input={
-              <NumericInput
+              <NumericInputSettings
                 min={0}
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.resetTokenValidityDuration : '' }
+                defaultValue={ getSettingsFromKey(parseOptionsJson.accountLockout, 'resetTokenValidityDuration') }
                 onChange={resetTokenValidityDuration => {
-                  try {
-                    const resetTokenValidityDurationNum = parseFloat(resetTokenValidityDuration);
-                    if ( resetTokenValidityDurationNum <= 0 || resetTokenValidityDurationNum > 1000 ) {
-                      return;
-                    }
-                  }
-                  catch(e) {
-                    console.error(e);
+                  if(validateSettingsFloatMinMax(resetTokenValidityDuration, 0, 1000) === false)
                     return;
-                  }
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = typeof accountLockout === 'string' ? JSON.parse(accountLockout) : accountLockout;
-                    if ( 'resetTokenValidityDuration' in json ) {
-                      delete json['resetTokenValidityDuration'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, resetTokenValidityDuration } ));
+                  parseOptionsJson.accountLockout.resetTokenValidityDuration = resetTokenValidityDuration;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
-              text='Reset Token Reuse If Valid'
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
+              text='Reuse Reset Token'
               description='Reuse old reset token if the token is valid'
             />}
             input={
               <Toggle
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.resetTokenReuseIfValid : false }
+                additionalStyles={{ display: 'block', textAlign: 'center', margin: '6px 0px 0 0' }}
+                value={ getSettingsFromKey(parseOptionsJson.accountLockout, 'resetTokenReuseIfValid') }
                 onChange={resetTokenReuseIfValid => {
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'resetTokenReuseIfValid' in json ) {
-                      delete json['resetTokenReuseIfValid'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, resetTokenReuseIfValid } ));
+                  parseOptionsJson.accountLockout.resetTokenReuseIfValid = resetTokenReuseIfValid;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Validator Callback'
               description='Callback for the validator'
             />}
             input={
-              <TextInput
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.validatorCallback : '' }
-                onChange={validatorCallback => {
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'validatorCallback' in json ) {
-                      delete json['validatorCallback'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, validatorCallback } ));
-                }} />
+              <CodeEditor
+                placeHolder={getSettingsFromKey(parseOptionsJson.accountLockout, 'validatorCallback')}
+                onCodeChange={ validatorCallback => {
+                  parseOptionsJson.accountLockout.validatorCallback = validatorCallback;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
+                } }
+                fontSize={'10px'}
+                style={{ height: '60px', marginTop: '10px' }}
+              />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Validator Pattern'
               description='The validator pattern'
             />}
             input={
-              <TextInput
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.validatorPattern : '' }
+              <TextInputSettings
+                defaultValue={getSettingsFromKey(parseOptionsJson.accountLockout, 'validatorPattern')}
                 onChange={validatorPattern => {
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'validatorPattern' in json ) {
-                      delete json['validatorPattern'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, validatorPattern } ));
+                  parseOptionsJson.accountLockout.validatorCallback = validatorPattern;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Validation Error'
               description='The validation error'
             />}
             input={
-              <TextInput
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.validationError : '' }
+              <TextInputSettings
+                defaultValue={getSettingsFromKey(parseOptionsJson.accountLockout, 'validationError')}
                 onChange={validationError => {
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'validationError' in json ) {
-                      delete json['validationError'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, validationError } ));
+                  parseOptionsJson.accountLockout.validationError = validationError;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Do Not Allow Username'
               description='Do not allow username'
             />}
             input={
               <Toggle
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.doNotAllowUsername : false }
+                additionalStyles={{ display: 'block', textAlign: 'center', margin: '6px 0px 0 0' }}
+                defaultValue={getSettingsFromKey(parseOptionsJson.accountLockout, 'doNotAllowUsername') || false }
                 onChange={doNotAllowUsername => {
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'doNotAllowUsername' in json ) {
-                      delete json['doNotAllowUsername'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, doNotAllowUsername } ));
+                  parseOptionsJson.accountLockout.doNotAllowUsername = doNotAllowUsername;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Max Password Age'
               description='The maximum password age'
             />}
             input={
-              <NumericInput
+              <NumericInputSettings
                 min={0}
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.maxPasswordAge : false }
+                defaultValue={getSettingsFromKey(parseOptionsJson.accountLockout, 'maxPasswordAge') || false }
                 onChange={maxPasswordAge => {
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'maxPasswordAge' in json ) {
-                      delete json['maxPasswordAge'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, maxPasswordAge } ));
+                  parseOptionsJson.accountLockout.maxPasswordAge = maxPasswordAge;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Max Password History'
               description='The maximum password history'
             />}
             input={
-              <NumericInput
+              <NumericInputSettings
                 min={0}
-                defaultValue={ accountLockout && accountLockout.length > 0 ? accountLockout.maxPasswordHistory : false }
+                defaultValue={ getSettingsFromKey(parseOptionsJson.accountLockout, 'maxPasswordHistory') || false }
                 onChange={maxPasswordHistory => {
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'maxPasswordHistory' in json ) {
-                      delete json['maxPasswordHistory'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, maxPasswordHistory } ));
+                  parseOptionsJson.accountLockout.maxPasswordHistory = maxPasswordHistory;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
@@ -436,16 +395,17 @@ let ManageAppFields = ({
           />}
         input={
           <div>
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Duration'
               description='Account lockout duration'
             />}
             input={
-              <NumericInput
+              <NumericInputSettings
                 min={0}
-                defaultValue={ passwordPolicy && passwordPolicy.length > 0 ? passwordPolicy.duration : '' }
+                defaultValue={getSettingsFromKey(parseOptionsJson.passwordPolicy, 'duration') }
                 onChange={duration => {
                   try {
                     const durationNum = parseInt(duration);
@@ -457,29 +417,22 @@ let ManageAppFields = ({
                     console.error(e);
                     return;
                   }
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'duration' in json ) {
-                      delete json['duration'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, duration } ));
+                  parseOptionsJson.passwordPolicy.duration = duration;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
-          <Field
-            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-            label={<Label
+          <FieldSettings
+            padding={'7px 0px'}
+            labelWidth={'50%'}
+            label={<LabelSettings
               text='Threshold'
               description='Failed login attempts threshold'
             />}
             input={
-              <NumericInput
+              <NumericInputSettings
                 min={0}
-                defaultValue={ passwordPolicy && passwordPolicy.length > 0 ? passwordPolicy.threshold : '' }
+                defaultValue={ getSettingsFromKey(parseOptionsJson.passwordPolicy, 'threshold') }
                 onChange={threshold => {
                   try {
                     const thresholdNum = parseInt(threshold);
@@ -491,16 +444,8 @@ let ManageAppFields = ({
                     console.error(e);
                     return;
                   }
-                  let accountLockoutJson = {};
-                  if ( accountLockout ) {
-                    let json = JSON.parse(accountLockout);
-                    if ( 'threshold' in json ) {
-                      delete json['threshold'];
-                    }
-                    accountLockoutJson = json;
-                  }
-                  const options = typeof parseOptions === 'string' ? JSON.parse(parseOptions) : {};
-                  setParseOptions(JSON.stringify({ ...options, ...accountLockoutJson, threshold } ));
+                  parseOptionsJson.passwordPolicy.threshold = threshold;
+                  setParseOptions(JSON.stringify( parseOptionsJson ));
                 }} />
             }
           />
@@ -759,8 +704,7 @@ export default class GeneralSettings extends DashboardView {
       collaborators: this.props.initialFields.collaborators,
       waiting_collaborators: this.props.initialFields.waiting_collaborators,
       mongoURL: this.context.currentApp.settings.fields.fields.opendb_connection_string,
-      accountLockout: this.context.currentApp.accountLockout,
-      passwordPolicy: this.context.currentApp.passwordPolicy
+      parseOptions: this.context.currentApp.parseOptions,
     };
 
     let collaboratorRemovedWarningModal = this.state.removedCollaborators.length > 0 ? <Modal
@@ -798,7 +742,10 @@ export default class GeneralSettings extends DashboardView {
             promiseList.push(this.context.currentApp.setRequestLimit(changes.requestLimit));
           }
           if (changes.appName !== undefined || changes.parseOptions !== undefined ) {
-            promiseList.push(this.context.currentApp.setAppConfig(changes.appName, changes.parseOptions));
+            const parseOptions = [
+              {...typeof changes.parseOptions == 'string' ? JSON.parse(changes.parseOptions) : {} }
+            ];
+            promiseList.push(this.context.currentApp.setAppConfig(changes.appName, parseOptions));
           }
           if (changes.inProduction !== undefined) {
             promiseList.push(this.context.currentApp.setInProduction(changes.inProduction));

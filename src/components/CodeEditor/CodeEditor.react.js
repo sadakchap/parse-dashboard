@@ -61,6 +61,7 @@ export default class CodeEditor extends React.Component {
         enableSnippets={false}
         showLineNumbers={true}
         tabSize={2}
+        style={this.props.style}
       />
     );
   }
