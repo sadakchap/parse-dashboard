@@ -227,13 +227,18 @@ let ManageAppFields = ({
   }
 
   let parseOptionsJson = { accountLockout: {}, passwordPolicy: {} };
-
   if ( parseOptions ) {
     if ( typeof parseOptions === 'string' ) {
       parseOptionsJson = JSON.parse(parseOptions);
     }
-    if ( parseOptionsJson instanceof Array ) {
-      parseOptionsJson = parseOptionsJson[0];
+    if ( parseOptions instanceof Array ) {
+      parseOptionsJson = {
+        ...parseOptionsJson,
+        ...parseOptions[0]
+      };
+    }
+    else if ( parseOptions instanceof Object ) {
+      parseOptionsJson = parseOptions;
     }
   }
 
@@ -256,7 +261,7 @@ let ManageAppFields = ({
             input={
               <NumericInputSettings
                 min={0}
-                defaultValue={ getSettingsFromKey(parseOptionsJson.accountLockout, 'resetTokenValidityDuration') }
+                defaultValue={getSettingsFromKey(parseOptionsJson.accountLockout, 'resetTokenValidityDuration')}
                 onChange={resetTokenValidityDuration => {
                   if(validateSettingsFloatMinMax(resetTokenValidityDuration, 0, 1000) === false)
                     return;
@@ -742,9 +747,7 @@ export default class GeneralSettings extends DashboardView {
             promiseList.push(this.context.currentApp.setRequestLimit(changes.requestLimit));
           }
           if (changes.appName !== undefined || changes.parseOptions !== undefined ) {
-            const parseOptions = [
-              {...typeof changes.parseOptions == 'string' ? JSON.parse(changes.parseOptions) : {} }
-            ];
+            const parseOptions = {...typeof changes.parseOptions == 'string' ? JSON.parse(changes.parseOptions) : {} };
             promiseList.push(this.context.currentApp.setAppConfig(changes.appName, parseOptions));
           }
           if (changes.inProduction !== undefined) {

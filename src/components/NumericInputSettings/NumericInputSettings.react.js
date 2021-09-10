@@ -59,6 +59,7 @@ export default class NumericInputSettings extends React.Component {
           style={{ height: '40px', width: '85%', borderRadius: '7px' }}
           placeholder={this.props.placeholder}
           value={this.props.value}
+          defaultValue={this.props.defaultValue}
           onChange={this.changeValue.bind(this)}
           onBlur={this.updateValue.bind(this)} />
           <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', right: '30px' }}>
