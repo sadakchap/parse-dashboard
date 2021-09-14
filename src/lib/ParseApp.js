@@ -1232,4 +1232,18 @@ export default class ParseApp {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     }
   }
+
+  async getBlockchainClassNames() {
+    try {
+      return (
+        await axios.get(
+          `${b4aSettings.BACK4APP_API_PATH}/class-names/${this.applicationId}`,
+          { withCredentials: true }
+        )
+      ).data;
+    } catch (err) {
+      throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
+    }
+  }
+
 }
