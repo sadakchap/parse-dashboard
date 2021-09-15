@@ -171,7 +171,7 @@ class BlockChainPage extends DashboardView {
   }
 
   renderForm() {
-    //TODO: filter classes
+    const classes = this.state.classes.filter(name => !this.state.blockChainClasses.includes(name));
 
     return (
       <div className={styles.content}>
@@ -223,7 +223,7 @@ class BlockChainPage extends DashboardView {
                 }
                 value={this.state.selectedClass}
               >
-                {this.state.classes.map((cls, idx) => (
+                {classes.map((cls, idx) => (
                   <Option key={idx} value={cls}>
                     {cls}
                   </Option>
