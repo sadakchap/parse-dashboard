@@ -23,35 +23,39 @@ import styles                     from './BlockChainPage.scss' ;
 import subscribeTo                from 'lib/subscribeTo';
 import MoveToBlockchainModal      from './MoveToBlockchainModal.react';
 import RemoveFromBlockchainModal  from './RemoveFromBlockchainModal.react';
+import Notification               from '../Data/Browser/Notification.react';
 
-@subscribeTo('Schema', 'schema')
+@subscribeTo("Schema", "schema")
 class BlockChainPage extends DashboardView {
   constructor() {
     super();
-    this.section = 'Database';
-    this.subsection = 'BlockChain';
+    this.section = "Database";
+    this.subsection = "BlockChain";
 
     this.state = {
       loading: true,
       appBalanceLoading: true,
       blockChainClassesLoading: true,
       classes: [],
-      appBalance: '',
+      appBalance: "",
       blockChainClasses: [],
-      selectedClass: '',
+      selectedClass: "",
       showAddClassModal: false,
       showRemoveClassModal: false,
       inProgress: false,
+      lastError: "",
+      lastNote: "",
     };
     this.moveClassToBlockChain = this.moveClassToBlockChain.bind(this);
     this.removeClassFromBlockChain = this.removeClassFromBlockChain.bind(this);
+    this.showNote = this.showNote.bind(this);
   }
 
   componentWillMount() {
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
-      if (this.props.schema.data.get('classes')) {
-        let classes = this.props.schema.data.get('classes').keySeq().toArray();
-        this.setState({ loading: false, classes });  
+      if (this.props.schema.data.get("classes")) {
+        let classes = this.props.schema.data.get("classes").keySeq().toArray();
+        this.setState({ loading: false, classes });
       }
     });
 
@@ -60,62 +64,107 @@ class BlockChainPage extends DashboardView {
     });
 
     this.context.currentApp.getBlockchainClassNames().then(({ classNames }) => {
-      this.setState({ blockChainClassesLoading: false, blockChainClasses: classNames });
+      this.setState({
+        blockChainClassesLoading: false,
+        blockChainClasses: classNames,
+      });
     });
+  }
+
+  showNote(message, isError) {
+    if (!message) {
+      return;
+    }
+
+    clearTimeout(this.noteTimeout);
+
+    if (isError) {
+      this.setState({ lastError: message, lastNote: null });
+    } else {
+      this.setState({ lastNote: message, lastError: null });
+    }
+
+    this.noteTimeout = setTimeout(() => {
+      this.setState({ lastError: null, lastNote: null });
+    }, 3500);
   }
 
   moveClassToBlockChain() {
     let selectedClassName = this.state.selectedClass;
     this.setState({
-      inProgress: true
+      inProgress: true,
     });
-    this.context.currentApp.moveClassToBlockchain(selectedClassName)
-      .then((res) => {
+    this.context.currentApp
+      .moveClassToBlockchain(selectedClassName)
+      .then(() => {
         this.setState({
-          showAddClassModal: false,
-          inProgress: false,
-          selectedClass: '',
-          blockChainClasses: [ ...this.state.blockChainClasses, selectedClassName],
+          blockChainClasses: [ ...this.state.blockChainClasses, selectedClassName ],
           classes: this.state.classes.filter(name => name !== selectedClassName)
-        })
+        });
       })
-      .catch(err => console.log(err))
+      .catch((err) => {
+        console.log(err);
+        this.showNote(err.response?.data || err.message, true);
+      })
+      .finally(() => {
+        this.setState({
+          inProgress: false,
+          showAddClassModal: false,
+          selectedClass: ''
+        });
+      })
   }
 
   removeClassFromBlockChain() {
     let selectedClassName = this.state.selectedClass;
     this.setState({
-      inProgress: true
+      inProgress: true,
     });
-    this.context.currentApp.removeFromBlockchain(selectedClassName)
+    this.context.currentApp
+      .removeFromBlockchain(selectedClassName)
       .then(() => {
         this.setState({
-          showAddClassModal: false,
-          inProgress: false,
-          selectedClass: '',
           blockChainClasses: this.state.blockChainClasses.filter(name => name !== selectedClassName),
           classes: [...this.state.classes, selectedClassName]
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.showNote(err.response?.data || err.message, true);
+      })
+      .finally(() => {
+        this.setState({
+          inProgress: false,
+          showRemoveClassModal: false,
+          selectedClass: ''
         })
       })
-      .catch(err => console.log(err))
   }
 
-  renderClassesAtBlockchain(){
+  renderClassesAtBlockchain() {
     return (
       <div>
-        <div className={styles.headerRow} >
+        <div className={styles.headerRow}>
           <div className={styles.className}>Class</div>
           <a className={styles.action}>
-            <Icon name='delete-icon' fill='#169CEE' width={24} height={20} />
+            <Icon name="delete-icon" fill="#169CEE" width={24} height={20} />
           </a>
         </div>
         {this.state.blockChainClasses.map((name, idx) => (
-          <div key={idx} className={styles.row} >
+          <div key={idx} className={styles.row}>
             <div className={styles.className}>{name}</div>
-            <a className={styles.action} onClick={() => this.setState({ showRemoveClassModal: true, selectedClass: name })}>
-              <Icon name='delete-icon' fill='#169CEE' width={24} height={20} />
+            <a
+              className={styles.action}
+              onClick={() =>
+                this.setState({
+                  showRemoveClassModal: true,
+                  selectedClass: name,
+                })
+              }
+            >
+              <Icon name="delete-icon" fill="#169CEE" width={24} height={20} />
             </a>
-          </div>  
+          </div>
         ))}
       </div>
     );
@@ -123,7 +172,7 @@ class BlockChainPage extends DashboardView {
 
   renderForm() {
     //TODO: filter classes
-    
+
     return (
       <div className={styles.content}>
         <Fieldset
@@ -166,11 +215,18 @@ class BlockChainPage extends DashboardView {
             input={
               <Dropdown
                 placeHolder="Select a class to replicate into blockchain"
-                onChange={(value) => this.setState({ selectedClass: value, showAddClassModal: true })}
+                onChange={(value) =>
+                  this.setState({
+                    selectedClass: value,
+                    showAddClassModal: true,
+                  })
+                }
                 value={this.state.selectedClass}
               >
                 {this.state.classes.map((cls, idx) => (
-                  <Option key={idx} value={cls}>{cls}</Option>
+                  <Option key={idx} value={cls}>
+                    {cls}
+                  </Option>
                 ))}
               </Dropdown>
             }
@@ -182,31 +238,52 @@ class BlockChainPage extends DashboardView {
   }
 
   renderContent() {
-
     let extra = null;
     if (this.state.showAddClassModal) {
-      extra = <MoveToBlockchainModal 
-        className={this.state.selectedClass}
-        onConfirm={this.moveClassToBlockChain}
-        onCancel={() => this.setState({ selectedClass: '', showAddClassModal: false })}
-        progress={this.state.inProgress}
-      />
+      extra = (
+        <MoveToBlockchainModal
+          className={this.state.selectedClass}
+          onConfirm={this.moveClassToBlockChain}
+          onCancel={() =>
+            this.setState({ selectedClass: "", showAddClassModal: false })
+          }
+          progress={this.state.inProgress}
+        />
+      );
     } else if (this.state.showRemoveClassModal) {
-      extra = <RemoveFromBlockchainModal
-        className={this.state.selectedClass}
-        onConfirm={this.removeClassFromBlockChain}
-        onCancel={() => this.setState({ selectedClass: '', showRemoveClassModal: false })}
-        progress={this.state.inProgress}
-      />
+      extra = (
+        <RemoveFromBlockchainModal
+          className={this.state.selectedClass}
+          onConfirm={this.removeClassFromBlockChain}
+          onCancel={() =>
+            this.setState({ selectedClass: "", showRemoveClassModal: false })
+          }
+          progress={this.state.inProgress}
+        />
+      );
     }
 
-    return <div>
-      <LoaderContainer loading={this.state.loading}>
-        {this.renderForm()}
-        {extra}
-      </LoaderContainer>
-      <Toolbar details='Settings' subsection='BlockChain' />
-    </div>;
+    let notification = null;
+    if (this.state.lastError) {
+      notification = (
+        <Notification note={this.state.lastError} isErrorNote={true} />
+      );
+    } else if (this.state.lastNote) {
+      notification = (
+        <Notification note={this.state.lastNote} isErrorNote={false} />
+      );
+    }
+
+    return (
+      <div>
+        <LoaderContainer loading={this.state.loading}>
+          {this.renderForm()}
+          {extra}
+          {notification}
+        </LoaderContainer>
+        <Toolbar details="Settings" subsection="BlockChain" />
+      </div>
+    );
   }
 }
 
