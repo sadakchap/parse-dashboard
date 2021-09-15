@@ -359,7 +359,7 @@ body:global(.expanded) {
 
 .radiobuttonWrapper {
   width: 100%;
-  height: 80px;
+  min-height: 100px;
   display: flex;
   justify-content: flex-start;
   align-items: center;

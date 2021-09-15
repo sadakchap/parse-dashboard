@@ -86,7 +86,8 @@ export default class CreateClassDialog extends React.Component {
           let type = this.state.type;
           let className = type === 'Custom' ? this.state.name : '_' + type;
           this.props.onConfirm(className, this.state.isProtected);
-        }}>
+        }}
+        width='580px'>
 
         {this.state.type === 'Custom' && (
           <Field
@@ -110,7 +111,7 @@ export default class CreateClassDialog extends React.Component {
         {this.state.type === 'Custom' ?
           (<>
             <Field
-              label={<Label text='Add in Protected mode' description={'Your class data is private by default. Client read/write access will only be granted as specified by your CLPs/ACLs security rules.'} />}
+              label={<Label text='Add in Protected mode' description={'Your class\'s objects are protected by default. Client read/write access will only be granted when specified by your CLPs/ACLs security rules.'} />}
               input={
                 <div className={styles.radiobuttonWrapper} >
                   <input 
@@ -124,16 +125,16 @@ export default class CreateClassDialog extends React.Component {
               }
             />
             <Field
-              label={<Label text='Add in Public mode' description={'Your class data is open by default. However, you must update your security rules to enable long-term client read/write access.'} />}
+              label={<Label text='Add in Public mode' description={'Your class\'s objects are public by default. Any client has read/write access granted, which is convenient for development but not recommended for most of the production scenarios. You can later strength the security with CLPs/ACLs rules.'} />}
               input={
-                <div className={styles.radiobuttonWrapper}>
+                <div className={styles.radiobuttonWrapper} style={{ height: '120px' }} >
                   <input 
                     id="CLP_Public" 
                     name="CLP" 
                     type="radio"
                     onChange={() => this.setState({ isProtected: !this.state.isProtected })}
                     defaultChecked={!this.state.isProtected}
-                  /> Public read and write Enabled
+                  /> Public Read and Write enabled
                 </div>
               }
             /> 
