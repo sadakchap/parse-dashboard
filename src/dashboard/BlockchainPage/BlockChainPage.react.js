@@ -5,22 +5,24 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import { ActionTypes }    from 'lib/stores/SchemaStore';
-import DashboardView      from 'dashboard/DashboardView.react';
-import Dropdown           from 'components/Dropdown/Dropdown.react';
-import Field              from 'components/Field/Field.react';
-import Fieldset           from 'components/Fieldset/Fieldset.react';
-import Label              from 'components/Label/Label.react';
-import LoaderContainer    from 'components/LoaderContainer/LoaderContainer.react';
-import Option             from 'components/Dropdown/Option.react';
-import ParseApp           from 'lib/ParseApp';
-import PropTypes          from 'lib/PropTypes';
-import React              from 'react';
-import TextInput          from 'components/TextInput/TextInput.react';
-import Toolbar            from 'components/Toolbar/Toolbar.react';
-import styles             from './BlockChainPage.scss' ;
-import subscribeTo        from 'lib/subscribeTo';
-import MoveToBlockchainModal from './MoveToBlockchainModal.react';
+import { ActionTypes }            from 'lib/stores/SchemaStore';
+import DashboardView              from 'dashboard/DashboardView.react';
+import Dropdown                   from 'components/Dropdown/Dropdown.react';
+import Field                      from 'components/Field/Field.react';
+import Fieldset                   from 'components/Fieldset/Fieldset.react';
+import Icon                       from 'components/Icon/Icon.react';
+import Label                      from 'components/Label/Label.react';
+import LoaderContainer            from 'components/LoaderContainer/LoaderContainer.react';
+import Option                     from 'components/Dropdown/Option.react';
+import ParseApp                   from 'lib/ParseApp';
+import PropTypes                  from 'lib/PropTypes';
+import React                      from 'react';
+import TextInput                  from 'components/TextInput/TextInput.react';
+import Toolbar                    from 'components/Toolbar/Toolbar.react';
+import styles                     from './BlockChainPage.scss' ;
+import subscribeTo                from 'lib/subscribeTo';
+import MoveToBlockchainModal      from './MoveToBlockchainModal.react';
+import RemoveFromBlockchainModal  from './RemoveFromBlockchainModal.react';
 
 @subscribeTo('Schema', 'schema')
 class BlockChainPage extends DashboardView {
@@ -42,6 +44,7 @@ class BlockChainPage extends DashboardView {
       inProgress: false,
     };
     this.moveClassToBlockChain = this.moveClassToBlockChain.bind(this);
+    this.removeClassFromBlockChain = this.removeClassFromBlockChain.bind(this);
   }
 
   componentWillMount() {
@@ -77,6 +80,45 @@ class BlockChainPage extends DashboardView {
         })
       })
       .catch(err => console.log(err))
+  }
+
+  removeClassFromBlockChain() {
+    let selectedClassName = this.state.selectedClass;
+    this.setState({
+      inProgress: true
+    });
+    this.context.currentApp.removeFromBlockchain(selectedClassName)
+      .then(() => {
+        this.setState({
+          showAddClassModal: false,
+          inProgress: false,
+          selectedClass: '',
+          blockChainClasses: this.state.blockChainClasses.filter(name => name !== selectedClassName),
+          classes: [...this.state.classes, selectedClassName]
+        })
+      })
+      .catch(err => console.log(err))
+  }
+
+  renderClassesAtBlockchain(){
+    return (
+      <div>
+        <div className={styles.headerRow} >
+          <div className={styles.className}>Class</div>
+          <a className={styles.action}>
+            <Icon name='delete-icon' fill='#169CEE' width={24} height={20} />
+          </a>
+        </div>
+        {this.state.blockChainClasses.map((name, idx) => (
+          <div key={idx} className={styles.row} >
+            <div className={styles.className}>{name}</div>
+            <a className={styles.action} onClick={() => this.setState({ showRemoveClassModal: true, selectedClass: name })}>
+              <Icon name='delete-icon' fill='#169CEE' width={24} height={20} />
+            </a>
+          </div>  
+        ))}
+      </div>
+    );
   }
 
   renderForm() {
@@ -133,6 +175,7 @@ class BlockChainPage extends DashboardView {
               </Dropdown>
             }
           />
+          {this.renderClassesAtBlockchain()}
         </Fieldset>
       </div>
     );
@@ -149,7 +192,12 @@ class BlockChainPage extends DashboardView {
         progress={this.state.inProgress}
       />
     } else if (this.state.showRemoveClassModal) {
-
+      extra = <RemoveFromBlockchainModal
+        className={this.state.selectedClass}
+        onConfirm={this.removeClassFromBlockChain}
+        onCancel={() => this.setState({ selectedClass: '', showRemoveClassModal: false })}
+        progress={this.state.inProgress}
+      />
     }
 
     return <div>

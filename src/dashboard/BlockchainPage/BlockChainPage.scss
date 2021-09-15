@@ -50,6 +50,27 @@
   }
 }
 
+.headerRow, .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  border: 1px solid #eee;
+  background: #fff;
+  color: #000000DE;
+
+  & .className {
+    margin: auto 10px;
+    font-size: 14px;
+  }
+}
+
+.headerRow {
+  & .className {
+    font-weight: 600;
+  }
+}
+
 @include keyframes(spinner-border) {
   100% {
     @include transform(rotate(360deg));

@@ -1272,4 +1272,17 @@ export default class ParseApp {
     }
   }
 
+  async removeFromBlockchain(className) {
+    try {
+      return (
+        await axios.delete(
+          `${b4aSettings.BACK4APP_API_PATH}/blockchain/class-names/${this.applicationId}/${className}`,
+          { withCredentials: true }
+        )
+      ).data;
+    } catch (err) {
+      throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
+    }
+  }
+
 }
