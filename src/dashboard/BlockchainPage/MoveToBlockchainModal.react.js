@@ -52,7 +52,9 @@ export default class MoveToBlockchainModal extends React.Component {
         confirmText='Move selected class to Blockchain'
         disabled={!this.valid()}
         onCancel={this.props.onCancel}
-        onConfirm={this.props.onConfirm}>
+        onConfirm={this.props.onConfirm}
+        progress={this.props.progress}
+      >
         {content}
       </Modal>
     );

@@ -22,11 +22,6 @@ import styles             from './BlockChainPage.scss' ;
 import subscribeTo        from 'lib/subscribeTo';
 import MoveToBlockchainModal from './MoveToBlockchainModal.react';
 
-const BLOCKCHAIN_CLASS_STATUS = {
-  SUCCESS: 'success',
-  PROGRESS: 'progress'
-}
-
 @subscribeTo('Schema', 'schema')
 class BlockChainPage extends DashboardView {
   constructor() {
@@ -43,7 +38,8 @@ class BlockChainPage extends DashboardView {
       blockChainClasses: [],
       selectedClass: '',
       showAddClassModal: false,
-      showRemoveClassModal: false
+      showRemoveClassModal: false,
+      inProgress: false,
     };
     this.moveClassToBlockChain = this.moveClassToBlockChain.bind(this);
   }
@@ -61,20 +57,30 @@ class BlockChainPage extends DashboardView {
     });
 
     this.context.currentApp.getBlockchainClassNames().then(({ classNames }) => {
-      const classes = classNames.map((name) => ({
-        name,
-        status: BLOCKCHAIN_CLASS_STATUS.SUCCESS
-      }))
-      this.setState({ blockChainClassesLoading: false, blockChainClasses: classes });
+      this.setState({ blockChainClassesLoading: false, blockChainClasses: classNames });
     });
   }
 
   moveClassToBlockChain() {
-
+    let selectedClassName = this.state.selectedClass;
+    this.setState({
+      inProgress: true
+    });
+    this.context.currentApp.moveClassToBlockchain(selectedClassName)
+      .then((res) => {
+        this.setState({
+          showAddClassModal: false,
+          inProgress: false,
+          selectedClass: '',
+          blockChainClasses: [ ...this.state.blockChainClasses, selectedClassName],
+          classes: this.state.classes.filter(name => name !== selectedClassName)
+        })
+      })
+      .catch(err => console.log(err))
   }
 
   renderForm() {
-    // filter classes
+    //TODO: filter classes
     
     return (
       <div className={styles.content}>
@@ -140,6 +146,7 @@ class BlockChainPage extends DashboardView {
         className={this.state.selectedClass}
         onConfirm={this.moveClassToBlockChain}
         onCancel={() => this.setState({ selectedClass: '', showAddClassModal: false })}
+        progress={this.state.inProgress}
       />
     } else if (this.state.showRemoveClassModal) {
 
