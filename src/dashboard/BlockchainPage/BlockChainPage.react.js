@@ -11,6 +11,8 @@ import Dropdown           from 'components/Dropdown/Dropdown.react';
 import Field              from 'components/Field/Field.react';
 import Fieldset           from 'components/Fieldset/Fieldset.react';
 import Label              from 'components/Label/Label.react';
+import LoaderContainer    from 'components/LoaderContainer/LoaderContainer.react';
+import Option             from 'components/Dropdown/Option.react';
 import ParseApp           from 'lib/ParseApp';
 import PropTypes          from 'lib/PropTypes';
 import React              from 'react';
@@ -18,6 +20,12 @@ import TextInput          from 'components/TextInput/TextInput.react';
 import Toolbar            from 'components/Toolbar/Toolbar.react';
 import styles             from './BlockChainPage.scss' ;
 import subscribeTo        from 'lib/subscribeTo';
+import MoveToBlockchainModal from './MoveToBlockchainModal.react';
+
+const BLOCKCHAIN_CLASS_STATUS = {
+  SUCCESS: 'success',
+  PROGRESS: 'progress'
+}
 
 @subscribeTo('Schema', 'schema')
 class BlockChainPage extends DashboardView {
@@ -28,27 +36,46 @@ class BlockChainPage extends DashboardView {
 
     this.state = {
       loading: true,
+      appBalanceLoading: true,
+      blockChainClassesLoading: true,
       classes: [],
+      appBalance: '',
       blockChainClasses: [],
+      selectedClass: '',
       showAddClassModal: false,
       showRemoveClassModal: false
     };
+    this.moveClassToBlockChain = this.moveClassToBlockChain.bind(this);
   }
 
   componentWillMount() {
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
       if (this.props.schema.data.get('classes')) {
         let classes = this.props.schema.data.get('classes').keySeq().toArray();
-        this.setState({ classes });  
+        this.setState({ loading: false, classes });  
       }
     });
 
-    // this.context.currentApp.getBlockchainClassNames().then((classes) => {
-    //   this.setState({ loading: false, blockChainClasses: classes });
-    // });
+    this.context.currentApp.getAppBalance().then(({ balance }) => {
+      this.setState({ appBalanceLoading: false, appBalance: balance });
+    });
+
+    this.context.currentApp.getBlockchainClassNames().then(({ classNames }) => {
+      const classes = classNames.map((name) => ({
+        name,
+        status: BLOCKCHAIN_CLASS_STATUS.SUCCESS
+      }))
+      this.setState({ blockChainClassesLoading: false, blockChainClasses: classes });
+    });
+  }
+
+  moveClassToBlockChain() {
+
   }
 
   renderForm() {
+    // filter classes
+    
     return (
       <div className={styles.content}>
         <Fieldset
@@ -68,11 +95,17 @@ class BlockChainPage extends DashboardView {
           <Field
             label={<Label text="Balance" />}
             input={
-              <TextInput
-                value="1.0 ETH (Development)"
-                disabled
-                onChange={() => {}}
-              />
+              this.state.appBalanceLoading ? (
+                <div className={styles.spinnerWrapper}>
+                  <div className={styles.spinner}></div>
+                </div>
+              ) : (
+                <TextInput
+                  value={this.state.appBalance}
+                  disabled
+                  onChange={() => {}}
+                />
+              )
             }
           />
         </Fieldset>
@@ -85,8 +118,13 @@ class BlockChainPage extends DashboardView {
             input={
               <Dropdown
                 placeHolder="Select a class to replicate into blockchain"
-                onChange={() => {}}
-              />
+                onChange={(value) => this.setState({ selectedClass: value, showAddClassModal: true })}
+                value={this.state.selectedClass}
+              >
+                {this.state.classes.map((cls, idx) => (
+                  <Option key={idx} value={cls}>{cls}</Option>
+                ))}
+              </Dropdown>
             }
           />
         </Fieldset>
@@ -98,14 +136,20 @@ class BlockChainPage extends DashboardView {
 
     let extra = null;
     if (this.state.showAddClassModal) {
-      
+      extra = <MoveToBlockchainModal 
+        className={this.state.selectedClass}
+        onConfirm={this.moveClassToBlockChain}
+        onCancel={() => this.setState({ selectedClass: '', showAddClassModal: false })}
+      />
     } else if (this.state.showRemoveClassModal) {
 
     }
 
     return <div>
-      {this.renderForm()}
-      {extra}
+      <LoaderContainer loading={this.state.loading}>
+        {this.renderForm()}
+        {extra}
+      </LoaderContainer>
       <Toolbar details='Settings' subsection='BlockChain' />
     </div>;
   }

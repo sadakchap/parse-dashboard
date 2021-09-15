@@ -1233,11 +1233,24 @@ export default class ParseApp {
     }
   }
 
+  async getAppBalance() {
+    try {
+      return (
+        await axios.get(
+          `${b4aSettings.BACK4APP_API_PATH}/blockchain/balance/${this.applicationId}`,
+          { withCredentials: true }
+        )
+      ).data;
+    } catch (err) {
+      throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
+    }
+  }
+
   async getBlockchainClassNames() {
     try {
       return (
         await axios.get(
-          `${b4aSettings.BACK4APP_API_PATH}/class-names/${this.applicationId}`,
+          `${b4aSettings.BACK4APP_API_PATH}/blockchain/class-names/${this.applicationId}`,
           { withCredentials: true }
         )
       ).data;
