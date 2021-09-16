@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2016-present, Parse, LLC
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ */
+@import 'stylesheets/back4app.scss';
+@import 'stylesheets/globals.scss';
+
+.content {
+  background-color: #f9f9f9;
+  min-height: $content-max-height;
+  padding-top: 48px;
+}
+
+.spinnerWrapper {
+  display: flex;
+  width: 100%;
+  min-height: 80px;
+  justify-content: center;
+  align-items: center;
+  background: #f6fafb;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: .15em solid $blue;
+  vertical-align: bottom;
+  border-right-color: transparent;
+  border-radius: 50%;
+  @include animation('spinner-border .75s linear infinite');
+}
+
+.modalHeadContent {
+  text-align: center;
+  padding: 24px;
+
+  & h4 {
+    margin-bottom: 24px;
+    color: #000000DE;
+    font-weight: 600;
+  }
+
+  & span {
+    font-size: 12px;
+    color: #00000099;
+  }
+}
+
+.headerRow, .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  border: 1px solid #eee;
+  background: #fff;
+  color: #000000DE;
+
+  & .className {
+    margin: auto 10px;
+    font-size: 14px;
+  }
+}
+
+.headerRow {
+  & .className {
+    font-weight: 600;
+  }
+}
+
+.fieldset {
+  margin: 40px 0;
+  text-align: center;
+  & .legendText {
+    text-align: center;
+    font-size: 26px;
+    color: #169cee;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  & .descText {
+    color: #555572;
+    font-weight: 300;
+    line-height: 14px;
+    font-size: 12px;
+  }
+}
+
+@include keyframes(spinner-border) {
+  100% {
+    @include transform(rotate(360deg));
+  }
+}
