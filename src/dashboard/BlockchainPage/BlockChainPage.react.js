@@ -25,12 +25,24 @@ import MoveToBlockchainModal      from './MoveToBlockchainModal.react';
 import RemoveFromBlockchainModal  from './RemoveFromBlockchainModal.react';
 import Notification               from '../Data/Browser/Notification.react';
 
+const sortClasses = (classes) => {
+  return classes.sort((a, b) => {
+    if (a[0] === '_' && b[0] !== '_') {
+      return -1
+    }
+    if (b[0] === '_' && a[0] !== '_') {
+      return 1
+    }
+    return a.toUpperCase() < b.toUpperCase() ? -1 : 1
+  })
+}
+
 @subscribeTo("Schema", "schema")
 class BlockChainPage extends DashboardView {
   constructor() {
     super();
     this.section = "Database";
-    this.subsection = "BlockChain";
+    this.subsection = "Blockchain";
 
     this.state = {
       loading: true,
@@ -55,7 +67,7 @@ class BlockChainPage extends DashboardView {
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
       if (this.props.schema.data.get("classes")) {
         let classes = this.props.schema.data.get("classes").keySeq().toArray();
-        this.setState({ loading: false, classes });
+        this.setState({ loading: false, classes: sortClasses(classes) });
       }
     });
 
@@ -66,7 +78,7 @@ class BlockChainPage extends DashboardView {
     this.context.currentApp.getBlockchainClassNames().then(({ classNames }) => {
       this.setState({
         blockChainClassesLoading: false,
-        blockChainClasses: classNames,
+        blockChainClasses: sortClasses(classNames),
       });
     });
   }
@@ -97,8 +109,9 @@ class BlockChainPage extends DashboardView {
     this.context.currentApp
       .moveClassToBlockchain(selectedClassName)
       .then(() => {
+        let newClassArray = [ ...this.state.blockChainClasses, selectedClassName ];
         this.setState({
-          blockChainClasses: [ ...this.state.blockChainClasses, selectedClassName ],
+          blockChainClasses: sortClasses(newClassArray),
           classes: this.state.classes.filter(name => name !== selectedClassName)
         });
       })
@@ -125,7 +138,6 @@ class BlockChainPage extends DashboardView {
       .then(() => {
         this.setState({
           blockChainClasses: this.state.blockChainClasses.filter(name => name !== selectedClassName),
-          classes: [...this.state.classes, selectedClassName]
         });
       })
       .catch((err) => {
@@ -142,13 +154,14 @@ class BlockChainPage extends DashboardView {
   }
 
   renderClassesAtBlockchain() {
+    if (this.state.blockChainClasses.length === 0) {
+      return null;
+    }
     return (
       <div>
         <div className={styles.headerRow}>
           <div className={styles.className}>Class</div>
-          <a className={styles.action}>
-            <Icon name="delete-icon" fill="#169CEE" width={24} height={20} />
-          </a>
+          <div></div>
         </div>
         {this.state.blockChainClasses.map((name, idx) => (
           <div key={idx} className={styles.row}>
@@ -176,8 +189,8 @@ class BlockChainPage extends DashboardView {
     return (
       <div className={styles.content}>
         <Fieldset
-          legend="Settings"
-          description="Select your app Ethereum Network and see the amount of Ethereum you have in your account."
+          legend="Network"
+          description="You can only connect to a private Ethereum compatible network in this alpha version. Use this network for development purposes at no cost."
         >
           <Field
             label={<Label text="BlockChain Network" />}
@@ -190,7 +203,7 @@ class BlockChainPage extends DashboardView {
             }
           />
           <Field
-            label={<Label text="Balance" />}
+            label={<Label text="Balance ETH(Development)" />}
             input={
               this.state.appBalanceLoading ? (
                 <div className={styles.spinnerWrapper}>
@@ -208,13 +221,13 @@ class BlockChainPage extends DashboardView {
         </Fieldset>
         <Fieldset
           legend="Classes in blockchain"
-          description="Select the classes you want to move  to blockchain."
+          description="After selecting a class, any object created on these classes will be automatically replicated to the Blockchain. Please note that two new fields will be added to these classes’ objects (blockchainStatus and blockchainResult), and it is not permitted to update nor modify blockchain objects."
         >
           <Field
-            label={<Label text="Classes at BlockChain" />}
+            label={<Label text="Add new Classes at Blockchain" />}
             input={
               <Dropdown
-                placeHolder="Select a class to replicate into blockchain"
+                placeHolder="Select a class"
                 onChange={(value) =>
                   this.setState({
                     selectedClass: value,
@@ -281,7 +294,7 @@ class BlockChainPage extends DashboardView {
           {extra}
           {notification}
         </LoaderContainer>
-        <Toolbar details="Settings" subsection="BlockChain" />
+        <Toolbar subsection="Blockchain" />
       </div>
     );
   }

@@ -13,17 +13,6 @@ import React     from 'react';
 import styles    from './BlockChainPage.scss';
 
 export default class MoveToBlockchainModal extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      name: ''
-    }
-  }
-
-  valid() {
-    let className = this.props.className[0] === '_' ? this.props.className.slice(1) : this.props.className;
-    return this.state.name === className;
-  }
 
   render() {
     let content = (
@@ -32,15 +21,6 @@ export default class MoveToBlockchainModal extends React.Component {
           <h4>Do you really want to move these classes to Blockchain? This action could take a while.</h4>
           <span>*This action can only be performed by the App owner.</span>
         </div>
-        <Field
-          label={<Label text="Type the classname" />}
-          input={
-            <TextInput
-              placeholder="Classname"
-              onChange={(name) => this.setState({ name })}
-            />
-          }
-        />
       </div>
     );
 
@@ -50,10 +30,10 @@ export default class MoveToBlockchainModal extends React.Component {
         title='Move class to Blockchain?'
         subtitle='This action will move the selected class to Blockchain, and it could take a while.'
         confirmText='Move selected class to Blockchain'
-        disabled={!this.valid()}
         onCancel={this.props.onCancel}
         onConfirm={this.props.onConfirm}
         progress={this.props.progress}
+        buttonsInCenter={true}
       >
         {content}
       </Modal>

@@ -21,8 +21,7 @@ export default class RemoveFromBlockchainModal extends React.Component {
   }
 
   valid() {
-    let className = this.props.className[0] === '_' ? this.props.className.slice(1) : this.props.className;
-    return this.state.name === className;
+    return this.state.name === this.props.className;
   }
 
   render() {
