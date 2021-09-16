@@ -211,7 +211,7 @@ class BlockChainPage extends DashboardView {
                 </div>
               ) : (
                 <TextInput
-                  value={this.state.appBalance}
+                  value={(Number(this.state.appBalance) / Math.pow(10, 18)).toFixed(2)}
                   disabled
                   onChange={() => {}}
                 />
