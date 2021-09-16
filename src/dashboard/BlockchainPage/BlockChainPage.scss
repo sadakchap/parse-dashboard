@@ -71,6 +71,25 @@
   }
 }
 
+.fieldset {
+  margin: 40px 0;
+  text-align: center;
+  & .legendText {
+    text-align: center;
+    font-size: 26px;
+    color: #169cee;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  & .descText {
+    color: #555572;
+    font-weight: 300;
+    line-height: 14px;
+    font-size: 12px;
+  }
+}
+
 @include keyframes(spinner-border) {
   100% {
     @include transform(rotate(360deg));

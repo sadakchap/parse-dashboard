@@ -188,6 +188,13 @@ class BlockChainPage extends DashboardView {
 
     return (
       <div className={styles.content}>
+        <div className={styles.fieldset}>
+          <div className={styles.legendText}>Blockchain Data Storage</div>
+          <div className={styles.descText}>
+            Save your App’s data on the Blockchain Network of your choice 
+            <br/> NOTE: This feature is on the alpha version.
+          </div>
+        </div>
         <Fieldset
           legend="Network"
           description="You can only connect to a private Ethereum compatible network in this alpha version. Use this network for development purposes at no cost."
