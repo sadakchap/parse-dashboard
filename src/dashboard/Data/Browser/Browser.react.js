@@ -671,18 +671,12 @@ class Browser extends DashboardView {
     });
   }
 
-  newColumn(payload, required) {
-    return this.props.schema.dispatch(ActionTypes.ADD_COLUMN, payload)
-      .then(() => {
-        if (required) {
-          let requiredCols = [...this.state.requiredColumnFields, name];
-          this.setState({
-            requiredColumnFields: requiredCols
-          });
-        }
-      })
-      .catch((err) => {
-        this.showNote(err.message, true);
+  newColumn(payload) {
+    return this.props.schema.dispatch(ActionTypes.ADD_COLUMN, payload).catch(err => {
+        let errorDeletingNote = 'Internal server error';
+        if (err.code === 403) errorDeletingNote = err.message;
+
+        this.showNote(errorDeletingNote, true);
       });
   }
 
@@ -695,7 +689,7 @@ class Browser extends DashboardView {
       required,
       defaultValue
     };
-    this.newColumn(payload, required).finally(() => {
+    this.newColumn(payload).finally(() => {
       this.setState({ showAddColumnDialog: false, keepAddingCols: false });
     });
   }
@@ -709,7 +703,7 @@ class Browser extends DashboardView {
       required,
       defaultValue
     };
-    this.newColumn(payload, required).finally(() => {
+    this.newColumn(payload).finally(() => {
       this.setState({ showAddColumnDialog: false, keepAddingCols: false });
       this.setState({ showAddColumnDialog: true, keepAddingCols: true });
     });
