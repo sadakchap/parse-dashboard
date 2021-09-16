@@ -154,6 +154,9 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
 // Configure the menu that is shown on right-click based on files type
 const customMenu = node => {
   let items = $.jstree.defaults.contextmenu.items();
+  if (node.type === 'folder') {
+    items.create.label = 'Create Folder';
+  }
   items.create.action = function (data) {
     create(data.reference)
   };
