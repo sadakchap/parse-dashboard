@@ -227,7 +227,7 @@ class BlockChainPage extends DashboardView {
           />
         </Fieldset>
         <Fieldset
-          legend="Classes in blockchain"
+          legend="Classes in Blockchain"
           description="After selecting a class, any object created on these classes will be automatically replicated to the Blockchain. Please note that two new fields will be added to these classes’ objects (blockchainStatus and blockchainResult), and it is not permitted to update nor modify blockchain objects."
         >
           <Field
