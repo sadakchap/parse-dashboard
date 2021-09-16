@@ -8,35 +8,15 @@ import Button                       from 'components/Button/Button.react';
 import B4ACloudCodeView             from 'components/B4ACloudCodeView/B4ACloudCodeView.react';
 import B4ATreeActions               from 'components/B4ACodeTree/B4ATreeActions';
 import Swal                         from 'sweetalert2';
+import B4AAlert                     from 'components/B4AAlert/B4AAlert.react';
+
 import 'jstree/dist/themes/default/style.css'
 import 'components/B4ACodeTree/B4AJsTree.css'
-import { concatAST } from 'graphql';
 
-const getCloudFolderPlaceholder = (appId, restKey) => "// The first deployed file must be named main.js and must be placed on the root of the cloud folder.\n" +
-  "// The example below shows you how a cloud code function looks like.\n\n" +
-  "/* Parse Server 3.x"+
-  "\n* Parse.Cloud.define(\"hello\", (request) => {\n" +
-  "* \treturn(\"Hello world!\");\n" +
-  "* });\n*/\n\n" +
-  "/* Parse Server 2.x"+
-  "\n* Parse.Cloud.define(\"hello\", function(request, response){\n" +
-  "* \tresponse.success(\"Hello world!\");\n" +
-  "* });\n*/\n\n" +
-  "// To see it working, you only need to call it through SDK or REST API.\n" +
-  "// Here is how you have to call it via REST API:\n" +
-  "\n/*\n* curl -X POST \\\n" +
-  `* -H \"X-Parse-Application-Id: ${appId}\" \\\n` +
-  `* -H \"X-Parse-REST-API-Key: ${restKey}\" \\\n` +
-  "* -H \"Content-Type: application/json\" \\\n" +
-  "* -d \"{}\" \\\n" +
-  `* ${b4aSettings.PARSE_API_URL}/functions/hello\n*/\n` +
-  "\n// If you have set a function in another cloud code file, called \"test.js\" (for example)\n" +
-  "// you need to refer it in your main.js, as you can see below:\n" +
-  "\n/* require(\"./test.js\"); */"
+const getCloudFolderPlaceholder = (appId, restKey) =>
+  "The Cloud Folder can be used to deploy cloud functions, triggers, and custom Express.js routes.";
 
-const publicFolderPlaceholder = "// Public folder can be used to deploy public static content as html, images, css, etc.\n" +
-  "\n" +
-  "// You have to setup a custom domain or subdomain at Back4App to access the public static content"
+const publicFolderPlaceholder = "Public folder can be used to deploy public static content as html, images, css, etc.\n"
 
 let cloudFolderPlaceholder
 
@@ -234,6 +214,51 @@ export default class B4ACodeTree extends React.Component {
   }
 
   render(){
+    let content;
+    if (this.state.isImage) {
+      content = <img src={this.state.source} />;
+    }
+    else if ( this.state.isFolderSelected === true ) {
+      content = <B4AAlert
+                  hideClose
+                  show={true}
+                  title={typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}
+                  description={this.state.source} />
+    }
+    else {
+      content = <div className={`${styles['files-box']}`}>
+            <div className={styles['files-header']} >
+              <p>{ typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
+              <Button
+                value={<div><i className="zmdi zmdi-minus"></i> REMOVE</div>}
+                primary={true}
+                color={'red'}
+                width='93'
+                disabled={!this.state.nodeId}
+                onClick={this.deleteFile.bind(this)}
+              />
+            </div>
+            <Resizable className={styles['files-text']}
+               defaultSize={{ height: '367px', width: '100%' }}
+               enable={{
+                top:false,
+                right:false,
+                bottom:true,
+                left:false,
+                topRight:false,
+                bottomRight:false,
+                bottomLeft:false,
+                topLeft:false
+              }}>
+              <B4ACloudCodeView
+                  isFolderSelected={this.state.isFolderSelected}
+                  onCodeChange={value => this.updateSelectedFileContent(value)}
+                  source={this.state.source}
+                  extension={this.state.extension} />
+            </Resizable>
+          </div>;
+    }
+
     return (
       <div className={styles.codeContainer}>
         <div className={styles.fileSelector}>
@@ -302,40 +327,7 @@ export default class B4ACodeTree extends React.Component {
           </div>
         </div>
         <div className={styles.filePreview}>
-          <div className={`${styles['files-box']}`}>
-            <div className={styles['files-header']} >
-              <p>{ typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
-              <Button
-                value={<div><i className="zmdi zmdi-minus"></i> REMOVE</div>}
-                primary={true}
-                color={'red'}
-                width='93'
-                disabled={!this.state.nodeId}
-                onClick={this.deleteFile.bind(this)}
-              />
-            </div>
-            <Resizable className={styles['files-text']}
-               defaultSize={{ height: '367px', width: '100%' }}
-               enable={{
-                top:false,
-                right:false,
-                bottom:true,
-                left:false,
-                topRight:false,
-                bottomRight:false,
-                bottomLeft:false,
-                topLeft:false
-              }}>
-              {
-                this.state.isImage ?
-                  <img src={this.state.source} /> :
-                  <B4ACloudCodeView
-                    onCodeChange={value => this.updateSelectedFileContent(value)}
-                    source={this.state.source}
-                    extension={this.state.extension} />
-              }
-            </Resizable>
-          </div>
+          {content}
         </div>
       </div>
     );
