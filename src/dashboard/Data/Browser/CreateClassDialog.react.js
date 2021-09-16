@@ -125,7 +125,7 @@ export default class CreateClassDialog extends React.Component {
               }
             />
             <Field
-              label={<Label text='Add in Public mode' description={'Your class\'s objects are public by default. Any client has read/write access granted, which is convenient for development but not recommended for most of the production scenarios. You can later strength the security with CLPs/ACLs rules.'} />}
+              label={<Label text='Add in Public mode' description={'Your class’s objects are public by default. Any client has read/write access granted, which is convenient for development. We strongly recommend strengthening the security with CLPs/ACLs rules before moving to production.'} />}
               input={
                 <div className={styles.radiobuttonWrapper} style={{ height: '120px' }} >
                   <input 
