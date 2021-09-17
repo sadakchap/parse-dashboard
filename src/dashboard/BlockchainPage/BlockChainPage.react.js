@@ -160,7 +160,7 @@ class BlockChainPage extends DashboardView {
     return (
       <div>
         <div className={styles.headerRow}>
-          <div className={styles.className}>Class</div>
+          <div className={styles.className}>Classes in Blockchain</div>
           <div></div>
         </div>
         {this.state.blockChainClasses.map((name, idx) => (
@@ -187,11 +187,11 @@ class BlockChainPage extends DashboardView {
     const classes = this.state.classes.filter(name => !this.state.blockChainClasses.includes(name));
 
     return (
-      <div className={styles.content}>
+      <div>
         <div className={styles.fieldset}>
           <div className={styles.legendText}>Blockchain Data Storage</div>
           <div className={styles.descText}>
-            Save your App’s data on the Blockchain Network of your choice 
+            Save your App’s data on the Blockchain Network of your choice.
             <br/> NOTE: This feature is on the alpha version.
           </div>
         </div>
@@ -200,7 +200,7 @@ class BlockChainPage extends DashboardView {
           description="You can only connect to a private Ethereum compatible network in this alpha version. Use this network for development purposes at no cost."
         >
           <Field
-            label={<Label text="BlockChain Network" />}
+            label={<Label text="Blockchain Network" />}
             input={
               <TextInput
                 value="Back4App ETH Development"
@@ -210,7 +210,7 @@ class BlockChainPage extends DashboardView {
             }
           />
           <Field
-            label={<Label text="Balance ETH(Development)" />}
+            label={<Label text="Balance (development eth)" />}
             input={
               this.state.appBalanceLoading ? (
                 <div className={styles.spinnerWrapper}>
@@ -228,10 +228,10 @@ class BlockChainPage extends DashboardView {
         </Fieldset>
         <Fieldset
           legend="Classes in Blockchain"
-          description="After selecting a class, any object created on these classes will be automatically replicated to the Blockchain. Please note that two new fields will be added to these classes’ objects (blockchainStatus and blockchainResult), and it is not permitted to update nor modify blockchain objects."
+          description="Replicate new objects to the Blockchain by selecting their classes below. This operation will add two new fields to these classes (blockchainStatus and blockchainResult), and it is not allowed to update nor modify blockchain objects."
         >
           <Field
-            label={<Label text="Add new Classes at Blockchain" />}
+            label={<Label text="Add a new class to Blockchain" />}
             input={
               <Dropdown
                 placeHolder="Select a class"
@@ -295,7 +295,7 @@ class BlockChainPage extends DashboardView {
     }
 
     return (
-      <div>
+      <div className={styles.content}>
         <LoaderContainer loading={this.state.loading}>
           {this.renderForm()}
           {extra}

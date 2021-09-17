@@ -13,13 +13,11 @@ import React     from 'react';
 import styles    from './BlockChainPage.scss';
 
 export default class MoveToBlockchainModal extends React.Component {
-
   render() {
     let content = (
       <div>
         <div className={styles.modalHeadContent}>
-          <h4>Do you really want to move these classes to Blockchain? This action could take a while.</h4>
-          <span>*This action can only be performed by the App owner.</span>
+          <h4>Do you really want to add this class to the Blockchain?</h4>
         </div>
       </div>
     );
@@ -27,9 +25,9 @@ export default class MoveToBlockchainModal extends React.Component {
     return (
       <Modal
         type={Modal.Types.INFO}
-        title='Move class to Blockchain?'
-        subtitle='This action will move the selected class to Blockchain, and it could take a while.'
-        confirmText='Move selected class to Blockchain'
+        title='Add class to Blockchain?'
+        subtitle='This action will add the selected class to the Blockchain and it can take a while to complete.'
+        confirmText='Add selected class to blockchain'
         onCancel={this.props.onCancel}
         onConfirm={this.props.onConfirm}
         progress={this.props.progress}
