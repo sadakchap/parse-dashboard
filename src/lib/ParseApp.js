@@ -1264,6 +1264,7 @@ export default class ParseApp {
       return (
         await axios.post(
           `${b4aSettings.BACK4APP_API_PATH}/blockchain/class-names/${this.applicationId}/${className}`,
+          {},
           { withCredentials: true }
         )
       ).data;
