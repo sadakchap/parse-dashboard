@@ -28,13 +28,13 @@ export default class RemoveFromBlockchainModal extends React.Component {
     let content = (
       <div>
         <div className={styles.modalHeadContent}>
-          <h4>Do you really want to delete this class from Back4App ETH Development?</h4>
+          <h4>Do you really want to remove this class from Back4App ETH Development?</h4>
         </div>
         <Field
-          label={<Label text='Type the classname' />}
+          label={<Label text='Type the class name' />}
           input={
             <TextInput
-              placeholder='Classname'
+              placeholder='Class name'
               onChange={(name) => this.setState({ name })}
             />
           }
@@ -47,7 +47,7 @@ export default class RemoveFromBlockchainModal extends React.Component {
         type={Modal.Types.DANGER}
         title='Remove class from blockchain'
         subtitle='This action will remove this class from Back4App ETH Development.'
-        confirmText='Delete'
+        confirmText='Remove'
         disabled={!this.valid()}
         onCancel={this.props.onCancel}
         onConfirm={this.props.onConfirm}
