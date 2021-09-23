@@ -9,13 +9,9 @@ import React from 'react';
 import Editor from 'react-ace';
 import PropTypes from '../../lib/PropTypes';
 
-import 'ace-builds/src-noconflict/mode-css';
-import 'ace-builds/src-noconflict/mode-html';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-solarized_dark';
 import 'ace-builds/src-noconflict/snippets/javascript';
-import 'ace-builds/src-noconflict/snippets/css';
-import 'ace-builds/src-noconflict/snippets/html';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
 export default class CodeEditor extends React.Component {
@@ -29,6 +25,8 @@ export default class CodeEditor extends React.Component {
     if (this.state.code !== props.code) {
       this.setState({ code: props.code });
     }
+    require(`ace-builds/src-noconflict/mode-${props.mode}`);
+    require(`ace-builds/src-noconflict/snippets/${props.mode}`);
   }
 
   get value() {
