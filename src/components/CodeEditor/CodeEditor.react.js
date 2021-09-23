@@ -9,6 +9,8 @@ import React from 'react';
 import Editor from 'react-ace';
 import PropTypes from '../../lib/PropTypes';
 
+import 'ace-builds/src-noconflict/mode-css';
+import 'ace-builds/src-noconflict/mode-html';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-solarized_dark';
 import 'ace-builds/src-noconflict/snippets/javascript';
@@ -36,12 +38,12 @@ export default class CodeEditor extends React.Component {
   }
 
   render() {
-    const { placeHolder, fontSize = 18 } = this.props;
+    const { placeHolder, fontSize = 18, mode } = this.props;
     const { code } = this.state;
 
     return (
       <Editor
-        mode="javascript"
+        mode={mode}
         theme="solarized_dark"
         onChange={value => {
           this.setState({ code: value });
