@@ -606,6 +606,9 @@ class Browser extends DashboardView {
 
   createClass(className, isProtected) {
     let clp = isProtected ? protectedCLPs : defaultCLPS;
+    if (semver.lte(this.context.currentApp.serverInfo.parseServerVersion, '3.1.1')) {
+      clp = {};
+    }
     this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
       this.state.counts[className] = 0;
       history.push(this.context.generatePath('browser/' + className));
@@ -1672,11 +1675,13 @@ class Browser extends DashboardView {
       );
     }
     if (this.state.showCreateClassDialog) {
+      const { currentApp = {} } = this.context;
       extras = (
         <CreateClassDialog
           currentAppSlug={this.context.currentApp.slug}
           onAddColumn={this.showAddColumn}
           currentClasses={this.props.schema.data.get('classes').keySeq().toArray()}
+          parseServerVersion={currentApp.serverInfo && currentApp.serverInfo.parseServerVersion}
           onCancel={() => this.setState({ showCreateClassDialog: false })}
           onConfirm={this.createClass} />
       );
