@@ -141,7 +141,7 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
       // Select the folder to insert based on file extension. If is a js file,
       // insert on "cloud" folder, else insert on "public" folder. This logic is
       // a legacy from the old Cloud Code page
-      folder = obj.children[selectedFolder]
+      folder = obj.children.find(f => f === selectedFolder);
     }
     await verifyFileNames(folder, newTreeNodes[j]);
     const position = 'inside';
