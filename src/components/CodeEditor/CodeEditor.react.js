@@ -25,8 +25,10 @@ export default class CodeEditor extends React.Component {
     if (this.state.code !== props.code) {
       this.setState({ code: props.code });
     }
-    require(`ace-builds/src-noconflict/mode-${props.mode}`);
-    require(`ace-builds/src-noconflict/snippets/${props.mode}`);
+    if (props.mode) {
+      require(`ace-builds/src-noconflict/mode-${props.mode}`);
+      require(`ace-builds/src-noconflict/snippets/${props.mode}`);
+    }
   }
 
   get value() {
@@ -38,7 +40,7 @@ export default class CodeEditor extends React.Component {
   }
 
   render() {
-    const { placeHolder, fontSize = 18, mode } = this.props;
+    const { placeHolder, fontSize = 18, mode = 'javascript' } = this.props;
     const { code } = this.state;
 
     return (

@@ -146,7 +146,7 @@ export default class Playground extends Component {
     return React.cloneElement(
       <div className={styles['playground-ctn']}>
         <Toolbar section={this.section} subsection={this.subsection} />
-        <div style={{ minHeight: '25vh' }}>
+        <div style={{ height: 'calc(100vh - 96px)' }}>
           <CodeEditor
             placeHolder={`const myObj = new Parse.Object('MyClass');
 myObj.set('myField', 'Hello World!')
