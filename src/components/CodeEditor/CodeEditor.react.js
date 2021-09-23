@@ -14,6 +14,8 @@ import 'ace-builds/src-noconflict/mode-html';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-solarized_dark';
 import 'ace-builds/src-noconflict/snippets/javascript';
+import 'ace-builds/src-noconflict/snippets/css';
+import 'ace-builds/src-noconflict/snippets/html';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
 export default class CodeEditor extends React.Component {
