@@ -109,7 +109,7 @@ export default class CreateClassDialog extends React.Component {
           }
           input={typeDropdown} /> : null
         }
-        {this.state.type === 'Custom' && semver.gt(this.props.parseServerVersion, '2.2.24') ?
+        {this.state.type === 'Custom' && semver.gt(this.props.parseServerVersion, '3.1.1') ?
           (<>
             <Field
               label={<Label text='Add in Protected mode' description={'Your class\'s objects are protected by default. Client read/write access will only be granted when specified by your CLPs/ACLs security rules.'} />}

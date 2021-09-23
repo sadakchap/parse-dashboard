@@ -606,7 +606,7 @@ class Browser extends DashboardView {
 
   createClass(className, isProtected) {
     let clp = isProtected ? protectedCLPs : defaultCLPS;
-    if (semver.lte(this.context.currentApp.serverInfo.parseServerVersion, '2.2.24')) {
+    if (semver.lte(this.context.currentApp.serverInfo.parseServerVersion, '3.1.1')) {
       clp = {};
     }
     this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
