@@ -170,8 +170,10 @@ export default class B4ACodeTree extends React.Component {
   watchSelectedNode() {
     $('#tree').on('select_node.jstree', async (e, data) => this.selectNode(data))
     $('#tree').on('changed.jstree', (e, data) => {
-      this.selectNode(data);
-      this.setState({ selectedNodeData: data });
+      if (data.action !== 'deselect_all') {
+        this.selectNode(data);
+        this.setState({ selectedNodeData: data });
+      }
     })
   }
 
