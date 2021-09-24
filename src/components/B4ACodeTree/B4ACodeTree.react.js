@@ -244,7 +244,7 @@ export default class B4ACodeTree extends React.Component {
                   title={typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}
                   description={this.state.source} /> : <div></div>;
     }
-    else {
+    else if (this.state.selectedFile) {
       content = <div className={`${styles['files-box']}`}>
             <div className={styles['files-header']} >
               <p>{ typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
@@ -276,6 +276,14 @@ export default class B4ACodeTree extends React.Component {
                   extension={this.state.extension} />
             </Resizable>
           </div>;
+    } else {
+      content = (
+        <B4AAlert
+          show={true}
+          hideClose
+          description="Select a file to Preview"
+        />
+      );
     }
 
     return (
