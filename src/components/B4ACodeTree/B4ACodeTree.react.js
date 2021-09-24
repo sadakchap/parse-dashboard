@@ -278,11 +278,7 @@ export default class B4ACodeTree extends React.Component {
           </div>;
     } else {
       content = (
-        <B4AAlert
-          show={true}
-          hideClose
-          description="Select a file to Preview"
-        />
+        <B4AAlert show={true} hideClose description="Select a file to edit" />
       );
     }
 
