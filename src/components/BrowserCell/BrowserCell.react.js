@@ -105,6 +105,7 @@ class BrowserCell extends Component {
           if ( array.length > 1 ) {
             classes.push(styles.hasMore);
           }
+          this.copyableValue = JSON.stringify(this.props.value);
         }
         else {
           this.copyableValue = content = JSON.stringify(this.props.value);
