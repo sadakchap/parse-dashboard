@@ -24,6 +24,17 @@ const overwriteFileModal = {
   confirmButtonText: 'Yes, overwrite it!'
 }
 
+const confirmRemoveFileModal = {
+  title: 'Are you sure?',
+  text: '',
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#169cee',
+  cancelButtonColor: '#ff395e',
+  confirmButtonText: 'Yes, remove it!',
+  reverseButtons: true,
+};
+
 // Function used to force an update on jstree element. Useful to re-render tree
 // after deploy changes
 export const updateTreeContent = async (files) => {
@@ -51,11 +62,21 @@ const create = (data, file) => {
 }
 
 // Remove a node on tree
-const remove = (data) => {
+const remove = (data, showAlert=false) => {
   let inst = $.jstree.reference(data)
   let obj = inst.get_node(data);
-  if (inst.is_selected(obj)) return inst.delete_node(inst.get_selected());
-  else return inst.delete_node(obj);
+  if (showAlert) {
+    confirmRemoveFileModal.text = `Are you sure you want to remove ${obj.text} file?`;
+    MySwal.fire(confirmRemoveFileModal).then((alertResponse) => {
+      if (alertResponse.value) {
+        if (inst.is_selected(obj)) return inst.delete_node(inst.get_selected());
+        else return inst.delete_node(obj);
+      }
+    })
+  } else {
+    if (inst.is_selected(obj)) return inst.delete_node(inst.get_selected());
+    else return inst.delete_node(obj);
+  }
 }
 
 // Decode base64 file content.
@@ -83,7 +104,7 @@ const readFile = (file, newTreeNodes) => {
 const verifyFileNames = async (data, newNode) => {
   let currentCode = getFiles(data)
   currentCode = currentCode && currentCode.children
-
+  let overwrite = true;
   if ( currentCode ) {
     for (let i = 0; i < currentCode.length; i++) {
       if (newNode.text && currentCode[i].text === newNode.text.name) {
@@ -93,10 +114,13 @@ const verifyFileNames = async (data, newNode) => {
         let alertResponse = await MySwal.fire(overwriteFileModal)
         if (alertResponse.value) {
           await remove(`#${currentId}`)
+        } else {
+          overwrite = false;
         }
       }
     }
   }
+  return overwrite;
 }
 
 const getExtension = (fileName) => {
@@ -106,7 +130,7 @@ const getExtension = (fileName) => {
 
 // Function used to add files on tree.
 const addFilesOnTree = async (files, currentCode, selectedFolder) => {
-  let newTreeNodes = [];
+  let newTreeNodes = [], overwrite = true;
   let folder
   for (let i = 0; i < files.fileList.length; i++) {
     newTreeNodes = readFile({ name: files.fileList[i], code: files.base64[i] }, newTreeNodes);
@@ -116,28 +140,40 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
     if (currentCode === '#') {
       let inst = $.jstree.reference(currentCode)
       let obj = inst.get_node(currentCode);
-
       // Select the folder to insert based on file extension. If is a js file,
       // insert on "cloud" folder, else insert on "public" folder. This logic is
       // a legacy from the old Cloud Code page
-      folder = obj.children[selectedFolder]
+      if (typeof selectedFolder === 'number') {
+        folder = obj.children[selectedFolder]
+      } else
+        folder = obj.children.find(f => f === selectedFolder);
     }
-    await verifyFileNames(folder, newTreeNodes[j]);
-    const position = 'inside';
-    const parent = $('#tree').jstree('get_selected');
-    $('#tree').jstree("create_node", parent, { data: newTreeNodes[j].data, type: 'new-file', text: newTreeNodes[j].text.name }, position, false, false);
+    overwrite = await verifyFileNames(folder, newTreeNodes[j]);
+    if ( overwrite === false ) continue;
+    addFileOnSelectedNode(newTreeNodes[j].text.name, newTreeNodes[j].data );
   }
-  return currentCode;
+  return overwrite;
+}
+
+const addFileOnSelectedNode = ( name, data = {code: 'data:plain/text;base64,IA=='} ) => {
+  let parent = $('#tree').jstree('get_selected');
+  if ( ['default', 'file', 'new-file'].includes($('#tree').jstree().get_node(parent).type) ) {
+    parent = $('#tree').jstree().get_node(parent).parent;
+  }
+  $('#tree').jstree("create_node", parent, { data, type: 'new-file', text: name }, 'inside', false, false);
 }
 
 // Configure the menu that is shown on right-click based on files type
 const customMenu = node => {
   let items = $.jstree.defaults.contextmenu.items();
+  if (node.type === 'folder' || node.type === 'new-folder') {
+    items.create.label = 'Create Folder';
+  }
   items.create.action = function (data) {
     create(data.reference)
   };
   items.remove.action = function (data) {
-    remove(data.reference)
+    remove(data.reference, true)
   };
   delete items.ccp;
   if (node.type === 'default' || node.type === 'new-file') {
@@ -226,5 +262,6 @@ export default {
   encodeFile,
   updateTreeContent,
   getExtension,
-  refreshEmptyFolderIcons
+  refreshEmptyFolderIcons,
+  addFileOnSelectedNode
 }

@@ -9,7 +9,7 @@ import React           from 'react';
 import { withRouter }  from 'react-router';
 import history         from 'dashboard/history';
 import $               from 'jquery';
-import axios           from 'axios'
+import axios           from 'axios';
 import B4AAlert        from 'components/B4AAlert/B4AAlert.react';
 import Button          from 'components/Button/Button.react';
 import B4ACodeTree     from 'components/B4ACodeTree/B4ACodeTree.react';
@@ -42,6 +42,7 @@ class B4ACloudCode extends CloudCode {
       loading: true,
       unsavedChanges: false,
       modal: null,
+      codeUpdated: false,
 
       // updated cloudcode files.
       currentCode: [],
@@ -95,6 +96,21 @@ class B4ACloudCode extends CloudCode {
     });
   }
 
+  componentDidUpdate() {
+    if ( this.state.codeUpdated === true ) {
+      console.log('code updated');
+      this.onBeforeUnloadSaveCode = window.onbeforeunload = function() {
+        return '';
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.onBeforeUnloadSaveCode) {
+      window.removeEventListener('onbeforeunload',this.onBeforeUnloadSaveCode);
+    }
+  }
+
   // Format object to expected backend pattern
   formatFiles(nodes, parent) {
     nodes.forEach(node => {
@@ -117,12 +133,15 @@ class B4ACloudCode extends CloudCode {
 
   syncCurCode( nodesOnTree, currentCode ){
     return nodesOnTree.map( (node, idx) => {
-      if (  node.data?.code !== currentCode[idx].data?.code  ) {
-        node.data.code = currentCode[idx].data?.code;
-      }
-      if ( node.children.length > 0 ) {
+      const code = currentCode.find( code => code.text === node.text );
+      if ( node.type === 'folder' || node.type === 'new-folder' ) {
         node.children = this.syncCurCode(node.children, currentCode[idx].children);
       }
+      else if ( code && node.data?.code !== code?.data?.code
+          && node.text == currentCode[idx]?.text) {
+        node.data.code = currentCode[idx].data?.code;
+      }
+
       return node;
     });
   }
@@ -197,7 +216,7 @@ class B4ACloudCode extends CloudCode {
         onConfirm={() => this.setState({ modal: null })}
         />;
       this.setState({ unsavedChanges: false, modal: successModal });
-      $('#tree').jstree(true).refresh();
+      $('#tree').jstree(true).redraw(true);
     } catch (err) {
       const errorModal = <Modal
         type={Modal.Types.DANGER}
@@ -275,6 +294,7 @@ class B4ACloudCode extends CloudCode {
 
       content = <B4ACodeTree
         setCurrentCode={(newCode) => this.setState({ currentCode: newCode })}
+        setCodeUpdated={() => this.setState({ codeUpdated: true })}
         files={this.state.files}
         parentState={this.setState.bind(this)}
         currentApp={this.context.currentApp}

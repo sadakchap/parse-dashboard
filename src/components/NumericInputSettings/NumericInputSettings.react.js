@@ -7,9 +7,15 @@
  */
 import PropTypes from 'lib/PropTypes';
 import React from 'react';
-import styles from 'components/TextInput/TextInput.scss';
+import styles from 'components/NumericInputSettings/NumericInputSettings.scss';
+import Icon from 'components/Icon/Icon.react';
 
-export default class TextInput extends React.Component {
+export default class NumericInputSettings extends React.Component {
+  constructor(){
+    super();
+    this.inputRef = React.createRef();
+  }
+
   componentWillReceiveProps(props) {
     if (props.multiline !== this.props.multiline) {
       const previousInput = this.refs.input;
@@ -41,42 +47,49 @@ export default class TextInput extends React.Component {
     if (this.props.monospace) {
       classes.push(styles.monospace);
     }
-    if (this.props.className) {
-      classes.push(this.props.className);
-    }
-
-    if (this.props.multiline || this.props.multiplelines) {
-      return (
-        <textarea
-          ref="textarea"
+    return (
+      <div style={{ background: '#f6fafb', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+        <input
+          ref={this.inputRef}
           id={this.props.id}
+          type={'number'}
+          min={this.props.min}
           disabled={!!this.props.disabled}
           className={classes.join(' ')}
-          rows={this.props.rows && this.props.rows > 3 ? this.props.rows : null}
-          style={this.props.rows && this.props.rows > 3 ? null : {height: this.props.height || 80}}
+          style={{ height: '40px', width: '85%', borderRadius: '7px' }}
           placeholder={this.props.placeholder}
           value={this.props.value}
+          defaultValue={this.props.defaultValue}
           onChange={this.changeValue.bind(this)}
           onBlur={this.updateValue.bind(this)} />
-      );
-    }
-    return (
-      <input
-        ref="input"
-        id={this.props.id}
-        type={this.props.hidden ? 'password' : 'text'}
-        disabled={!!this.props.disabled}
-        className={classes.join(' ')}
-        style={{height: this.props.height || 80}}
-        placeholder={this.props.placeholder}
-        value={this.props.value}
-        onChange={this.changeValue.bind(this)}
-        onBlur={this.updateValue.bind(this)} />
+          <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', right: '30px' }}>
+            <Icon onClick={() => {
+              if ( this.inputRef?.current ) {
+                let val = this.inputRef?.current.value;
+                if ( val === '' ) {
+                  val = 0;
+                }
+                this.inputRef.current.value = parseInt(val) + 1;
+                this.props.onChange(this.inputRef.current.value);
+              }
+            }} name='input-up-icon' width={20} height={18} fill='#218bec' />
+            <Icon onClick={() => {
+              if ( this.inputRef?.current ) {
+                let val = this.inputRef?.current.value;
+                if ( val === '' ) {
+                  val = 0;
+                }
+                this.inputRef.current.value = parseInt(val) - 1;
+                this.props.onChange(this.inputRef.current.value);
+              }
+            }} name='input-down-icon' width={20} height={18} fill='#218bec' />
+          </div>
+        </div>
     );
   }
 }
 
-TextInput.propTypes = {
+NumericInputSettings.propTypes = {
   monospace: PropTypes.bool.describe(
     'Determines whether the input is formatted with a monospace font'
   ),

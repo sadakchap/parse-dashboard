@@ -7,9 +7,9 @@
  */
 import PropTypes from 'lib/PropTypes';
 import React from 'react';
-import styles from 'components/TextInput/TextInput.scss';
+import styles from 'components/TextInputSettings/TextInputSettings.scss';
 
-export default class TextInput extends React.Component {
+export default class TextInputSettings extends React.Component {
   componentWillReceiveProps(props) {
     if (props.multiline !== this.props.multiline) {
       const previousInput = this.refs.input;
@@ -41,10 +41,6 @@ export default class TextInput extends React.Component {
     if (this.props.monospace) {
       classes.push(styles.monospace);
     }
-    if (this.props.className) {
-      classes.push(this.props.className);
-    }
-
     if (this.props.multiline || this.props.multiplelines) {
       return (
         <textarea
@@ -61,22 +57,24 @@ export default class TextInput extends React.Component {
       );
     }
     return (
-      <input
-        ref="input"
-        id={this.props.id}
-        type={this.props.hidden ? 'password' : 'text'}
-        disabled={!!this.props.disabled}
-        className={classes.join(' ')}
-        style={{height: this.props.height || 80}}
-        placeholder={this.props.placeholder}
-        value={this.props.value}
-        onChange={this.changeValue.bind(this)}
-        onBlur={this.updateValue.bind(this)} />
+      <div style={{ background: '#f6fafb', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+        <input
+          ref="input"
+          id={this.props.id}
+          type={this.props.hidden ? 'password' : 'text'}
+          disabled={!!this.props.disabled}
+          className={classes.join(' ')}
+          style={{height: this.props.height || 40, width: '90%', borderRadius: '10px'}}
+          placeholder={this.props.placeholder}
+          value={this.props.value}
+          onChange={this.changeValue.bind(this)}
+          onBlur={this.updateValue.bind(this)} />
+      </div>
     );
   }
 }
 
-TextInput.propTypes = {
+TextInputSettings.propTypes = {
   monospace: PropTypes.bool.describe(
     'Determines whether the input is formatted with a monospace font'
   ),

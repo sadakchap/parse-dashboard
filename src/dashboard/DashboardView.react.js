@@ -101,6 +101,15 @@ export default class DashboardView extends React.Component {
       link: '/index'
     })
 
+    databaseSubsections.push({
+      name: 'Blockchain',
+      link: '/blockchain',
+      badge: {
+        label: 'NEW',
+        color: 'green'
+      }
+    })
+
     let cloudCodeSubSections = [];
     // Show cloud code to all parse versions
     // if (features.cloudCode && features.cloudCode.viewCode) {
@@ -173,12 +182,10 @@ export default class DashboardView extends React.Component {
       link: '/analytics'
     })
 
-    if (user.allowHubPublish) {
-      moreSubSection.push({
-        name: 'Database HUB',
-        link: '/connections'
-      })
-    }
+    moreSubSection.push({
+      name: 'Database HUB',
+      link: '/connections'
+    })
 
     moreSubSection.push({
       name: 'Admin App',

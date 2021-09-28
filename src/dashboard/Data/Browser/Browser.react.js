@@ -33,6 +33,7 @@ import prettyNumber                       from 'lib/prettyNumber';
 import queryFromFilters                   from 'lib/queryFromFilters';
 import React                              from 'react';
 import RemoveColumnDialog                 from 'dashboard/Data/Browser/RemoveColumnDialog.react';
+import semver                             from 'semver/preload.js';
 import SidebarAction                      from 'components/Sidebar/SidebarAction';
 import stringCompare                      from 'lib/stringCompare';
 import styles                             from 'dashboard/Data/Browser/Browser.scss';
@@ -54,6 +55,7 @@ import PermissionsDialog                  from 'components/PermissionsDialog/Per
 import validateEntry                      from 'lib/validateCLPEntry.js';
 import PointerKeyDialog                   from 'dashboard/Data/Browser/PointerKeyDialog.react';
 import ConfirmDeleteColumnDialog          from './ConfirmDeleteColumnDialog.react';
+import { defaultCLPS, protectedCLPs } from '../../../lib/Constants';
 
 // The initial and max amount of rows fetched by lazy loading
 const MAX_ROWS_FETCHED = 200;
@@ -349,6 +351,11 @@ class Browser extends DashboardView {
     const getNextButton = () => {
       return document.querySelector('.introjs-button.introjs-nextbutton');
     };
+
+    const getPrevButton = () => {
+      return document.querySelector('.introjs-button.introjs-prevbutton')
+    }
+
     const getCustomVehicleClassLink = () => {
       return document.querySelector('[class^=class_list] [title="B4aVehicle"]');
     };
@@ -387,7 +394,6 @@ class Browser extends DashboardView {
         } else {
           this._forcedStep = false;
         }
-
         switch(this._currentStep) {
           case 0:
           case 1:
@@ -449,7 +455,14 @@ class Browser extends DashboardView {
               targetElement.style.backgroundColor = 'inherit';
             }
             break;
-          case 7:
+          case 6:
+            let nextBtn = getNextButton();
+            let prevBtn = getPrevButton();
+            // hide prev & next buttons
+            nextBtn.style.display = 'none';
+            prevBtn.style.display = 'none';
+            // move Done button to right
+            prevBtn.parentElement.style.justifyContent = 'end';
             targetElement.style.backgroundColor = 'inherit';
             break;
         }
@@ -628,8 +641,12 @@ class Browser extends DashboardView {
     this.setState({ useMasterKey: !useMasterKey }, () => this.refresh());
   }
 
-  createClass(className) {
-    this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className }).then(() => {
+  createClass(className, isProtected) {
+    let clp = isProtected ? protectedCLPs : defaultCLPS;
+    if (semver.lte(this.context.currentApp.serverInfo.parseServerVersion, '3.1.1')) {
+      clp = {};
+    }
+    this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
       this.state.counts[className] = 0;
       history.push(this.context.generatePath('browser/' + className));
     }).then(() => {
@@ -695,18 +712,12 @@ class Browser extends DashboardView {
     });
   }
 
-  newColumn(payload, required) {
-    return this.props.schema.dispatch(ActionTypes.ADD_COLUMN, payload)
-      .then(() => {
-        if (required) {
-          let requiredCols = [...this.state.requiredColumnFields, name];
-          this.setState({
-            requiredColumnFields: requiredCols
-          });
-        }
-      })
-      .catch((err) => {
-        this.showNote(err.message, true);
+  newColumn(payload) {
+    return this.props.schema.dispatch(ActionTypes.ADD_COLUMN, payload).catch(err => {
+        let errorDeletingNote = 'Internal server error';
+        if (err.code === 403) errorDeletingNote = err.message;
+
+        this.showNote(errorDeletingNote, true);
       });
   }
 
@@ -719,7 +730,7 @@ class Browser extends DashboardView {
       required,
       defaultValue
     };
-    this.newColumn(payload, required).finally(() => {
+    this.newColumn(payload).finally(() => {
       this.setState({ showAddColumnDialog: false, keepAddingCols: false });
     });
   }
@@ -733,7 +744,7 @@ class Browser extends DashboardView {
       required,
       defaultValue
     };
-    this.newColumn(payload, required).finally(() => {
+    this.newColumn(payload).finally(() => {
       this.setState({ showAddColumnDialog: false, keepAddingCols: false });
       this.setState({ showAddColumnDialog: true, keepAddingCols: true });
     });
@@ -1087,7 +1098,8 @@ class Browser extends DashboardView {
     }
 
     query.limit(MAX_ROWS_FETCHED);
-    this.excludeFields(query, source);
+    semver.gt(this.context.currentApp.serverInfo.parseServerVersion, '3.6.0') &&
+      this.excludeFields(query, source);
 
     let promise = query.find({ useMasterKey });
     let isUnique = false;
@@ -1219,7 +1231,8 @@ class Browser extends DashboardView {
       }
     }
     query.limit(MAX_ROWS_FETCHED);
-    this.excludeFields(query, source);
+    semver.gt(this.context.currentApp.serverInfo.parseServerVersion, '3.6.0') &&
+      this.excludeFields(query, source);
 
     const { useMasterKey } = this.state;
     query.find({ useMasterKey }).then((nextPage) => {
@@ -2081,11 +2094,13 @@ class Browser extends DashboardView {
       );
     }
     if (this.state.showCreateClassDialog) {
+      const { currentApp = {} } = this.context;
       extras = (
         <CreateClassDialog
           currentAppSlug={this.context.currentApp.slug}
           onAddColumn={this.showAddColumn}
           currentClasses={this.props.schema.data.get('classes').keySeq().toArray()}
+          parseServerVersion={currentApp.serverInfo && currentApp.serverInfo.parseServerVersion}
           onCancel={() => this.setState({ showCreateClassDialog: false })}
           onConfirm={this.createClass} />
       );

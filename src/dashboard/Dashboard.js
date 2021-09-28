@@ -72,6 +72,7 @@ import axios from "lib/axios";
 import moment from 'moment';
 import B4aConnectPage from './B4aConnectPage/B4aConnectPage.react';
 import EmptyState from 'components/EmptyState/EmptyState.react';
+import BlockchainPage from './BlockchainPage/BlockChainPage.react';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -466,17 +467,14 @@ export default class Dashboard extends React.Component {
             <Route exact path={ match.path + '/index' } render={props => <IndexManager {...props} params={props.match.params} />} />
             <Route path={ match.path + '/index/:className'} render={props => <IndexManager {...props} params={props.match.params} />} />
 
+            <Route exact path={match.path + '/blockchain' } render={props => <BlockchainPage {...props} params={props.match.params} /> } />
+
             <Redirect exact from={ match.path + '/analytics' } to='/apps/:appId/analytics/performance' />
             <Route path={ match.path + '/analytics' } render={AnalyticsRoute}/>
             <Redirect exact from={ match.path + '/settings' } to='/apps/:appId/settings/general' />
             <Route path={ match.path + '/settings' } render={SettingsRoute}/>
-
-            {user.allowHubPublish && (
-              <>
-                <Route exact path={ match.path + '/connections' } component={HubConnections} />
-                <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />
-              </>
-            )}
+            <Route exact path={ match.path + '/connections' } component={HubConnections} />
+            {user.allowHubPublish && <Route path={ match.path + '/hub-publish' } component={B4aHubPublishPage} />}
           </Switch>
         </AppData>
       )

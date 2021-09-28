@@ -199,6 +199,7 @@ tr.introjs-showElement > th {
 
 .introjs-tooltipbuttons {
   display: flex;
+  color: #fff;
 }
 
 /*
@@ -259,7 +260,7 @@ tr.introjs-showElement > th {
 }
 
 .introjs-disabled, .introjs-disabled:hover, .introjs-disabled:focus {
-  color: #9a9a9a;
+  color: #9a9a9a !important;
   border-color: #d4d4d4;
   box-shadow: none;
   cursor: default;
