@@ -47,6 +47,7 @@ let B4ABrowserToolbar = ({
     onAddClass,
     onAttachRows,
     onAttachSelectedRows,
+    onExportSelectedRows,
     onImport,
     onImportRelation,
     onCloneSelectedRows,
@@ -158,7 +159,9 @@ let B4ABrowserToolbar = ({
         {enableImport || enableExportClass ? <Separator /> : <noscript />}
         {enableImport ? <MenuItem text='Import data' onClick={onImport} /> : <noscript />}
         {enableImport ? <MenuItem text='Import relation data' onClick={onImportRelation} /> : <noscript />}
-        {enableExportClass ? <MenuItem text='Export this data' onClick={onExport} /> : <noscript />}
+        {enableExportClass ? <MenuItem text='Export this data(JSON)' onClick={onExport} /> : <noscript />}
+        {enableExportClass ? <MenuItem disabled={!selectionLength} text={`Export ${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} /> : <noscript />}
+        {enableExportClass ? <MenuItem text='Export all rows(CSV)' onClick={() => onExportSelectedRows({'*': true})} /> : <noscript />}
         <Separator />
         <MenuItem text='Index Manager' onClick={onClickIndexManager} />
         <MenuItem text="API Reference" onClick={() => {
