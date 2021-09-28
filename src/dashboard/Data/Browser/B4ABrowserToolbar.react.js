@@ -1,15 +1,16 @@
-import BrowserFilter  from 'components/BrowserFilter/BrowserFilter.react';
-import BrowserMenu    from 'components/BrowserMenu/BrowserMenu.react';
-import Icon           from 'components/Icon/Icon.react';
-import MenuItem       from 'components/BrowserMenu/MenuItem.react';
-import prettyNumber   from 'lib/prettyNumber';
-import React          from 'react';
-import SecurityDialog from 'dashboard/Data/Browser/SecurityDialog.react';
-import Separator      from 'components/BrowserMenu/Separator.react';
-import styles         from 'dashboard/Data/Browser/Browser.scss';
-import Toolbar        from 'components/Toolbar/Toolbar.react';
-import Button         from 'components/Button/Button.react'
-import VideoTutorialButton from 'components/VideoTutorialButton/VideoTutorialButton.react';
+import BrowserFilter        from 'components/BrowserFilter/BrowserFilter.react';
+import BrowserMenu          from 'components/BrowserMenu/BrowserMenu.react';
+import Icon                 from 'components/Icon/Icon.react';
+import MenuItem             from 'components/BrowserMenu/MenuItem.react';
+import prettyNumber         from 'lib/prettyNumber';
+import React, { useRef }    from 'react';
+import SecurityDialog       from 'dashboard/Data/Browser/SecurityDialog.react';
+import SecureFieldsDialog   from 'dashboard/Data/Browser/SecureFieldsDialog.react';
+import Separator            from 'components/BrowserMenu/Separator.react';
+import styles               from 'dashboard/Data/Browser/Browser.scss';
+import Toolbar              from 'components/Toolbar/Toolbar.react';
+import Button               from 'components/Button/Button.react'
+import VideoTutorialButton  from 'components/VideoTutorialButton/VideoTutorialButton.react';
 import ColumnsConfiguration
                       from 'components/ColumnsConfiguration/ColumnsConfiguration.react';
 
@@ -107,6 +108,13 @@ let B4ABrowserToolbar = ({
       }
     }
   }
+
+  let protectedDialogRef = useRef(null);
+  let loginDialogRef = useRef(null);
+
+  const showProtected = () => protectedDialogRef.current.handleOpen();
+  const showLogin = () => loginDialogRef.current.handleOpen();
+
   let menu = null;
   if (relation) {
     menu = (
@@ -130,7 +138,8 @@ let B4ABrowserToolbar = ({
   } else {
     menu = (
       <BrowserMenu title='Edit' icon='more-icon' setCurrent={setCurrent}>
-        <MenuItem text='Security' onClick={onClickSecurity} />
+        <MenuItem text='Security(CLP)' onClick={onClickSecurity} />
+        <MenuItem text='Security(Protected Fields)' onClick={showProtected} />
         <Separator />
         <MenuItem text='Add a row' onClick={onAddRow} />
         {enableColumnManipulation ? <MenuItem text='Add a column' onClick={onAddColumn} /> : <noscript />}
@@ -274,6 +283,18 @@ let B4ABrowserToolbar = ({
         order={order}
         className={classNameForEditors} />
       {menu}
+      <SecureFieldsDialog
+        ref={protectedDialogRef}
+        columns={columns}
+        disabled={!!relation || !!isUnique}
+        perms={perms}
+        className={classNameForEditors}
+        onChangeCLP={onChangeCLP}
+        userPointers={userPointers}
+        title='ProtectedFields'
+        icon='locked-solid'
+        onEditPermissions={onEditPermissions}
+      />
     </Toolbar>
   );
 };
