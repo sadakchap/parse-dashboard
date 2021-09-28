@@ -110,7 +110,7 @@ let B4ABrowserToolbar = ({
   let menu = null;
   if (relation) {
     menu = (
-      <BrowserMenu title='Edit' icon='more-icon'>
+      <BrowserMenu title='Edit' icon='more-icon' setCurrent={setCurrent}>
         <MenuItem
           text={`Create ${relation.targetClassName} and attach`}
           onClick={onAddRow}
@@ -129,7 +129,7 @@ let B4ABrowserToolbar = ({
     );
   } else {
     menu = (
-      <BrowserMenu title='Edit' icon='more-icon'>
+      <BrowserMenu title='Edit' icon='more-icon' setCurrent={setCurrent}>
         <MenuItem text='Security' onClick={onClickSecurity} />
         <Separator />
         <MenuItem text='Add a row' onClick={onAddRow} />
