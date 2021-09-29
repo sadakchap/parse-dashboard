@@ -1,6 +1,7 @@
 import BrowserFilter        from 'components/BrowserFilter/BrowserFilter.react';
 import BrowserMenu          from 'components/BrowserMenu/BrowserMenu.react';
 import Icon                 from 'components/Icon/Icon.react';
+import LoginDialog          from 'dashboard/Data/Browser/LoginDialog.react';
 import MenuItem             from 'components/BrowserMenu/MenuItem.react';
 import prettyNumber         from 'lib/prettyNumber';
 import React, { useRef }    from 'react';
@@ -9,6 +10,7 @@ import SecureFieldsDialog   from 'dashboard/Data/Browser/SecureFieldsDialog.reac
 import Separator            from 'components/BrowserMenu/Separator.react';
 import styles               from 'dashboard/Data/Browser/Browser.scss';
 import Toolbar              from 'components/Toolbar/Toolbar.react';
+import Toggle               from 'components/Toggle/Toggle.react';
 import Button               from 'components/Button/Button.react'
 import VideoTutorialButton  from 'components/VideoTutorialButton/VideoTutorialButton.react';
 import ColumnsConfiguration
@@ -78,7 +80,12 @@ let B4ABrowserToolbar = ({
     onClickSecurity,
     columns,
     onShowPointerKey,
-    newObject
+    
+    currentUser,
+    useMasterKey,
+    login,
+    logout,
+    toggleMasterKeyUsage,
   }) => {
   let selectionLength = Object.keys(selection).length;
   let isPendingEditCloneRows = editCloneRows && editCloneRows.length > 0;
@@ -143,10 +150,11 @@ let B4ABrowserToolbar = ({
   } else {
     menu = (
       <BrowserMenu title='Edit' icon='more-icon' setCurrent={setCurrent}>
-        {isPendingEditCloneRows ? <MenuItem text="Cancel all pending rows" onClick={onCancelPendingEditRows} /> : <noscript /> }
-        <MenuItem disabled={isPendingEditCloneRows} text='Security(CLP)' onClick={onClickSecurity} />
-        <MenuItem disabled={isPendingEditCloneRows} text='Security(Protected Fields)' onClick={showProtected} />
-        <Separator />
+        {isPendingEditCloneRows ? 
+          <>
+            <MenuItem text="Cancel all pending rows" onClick={onCancelPendingEditRows} />
+            <Separator />
+          </>  : <noscript /> }
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
@@ -295,6 +303,31 @@ let B4ABrowserToolbar = ({
         handleColumnDragDrop={handleColumnDragDrop}
         order={order}
         className={classNameForEditors} />
+      {onAddRow && (
+        <BrowserMenu
+            setCurrent={setCurrent}
+            icon="users-solid"
+            active={!!currentUser}
+            disabled={isPendingEditCloneRows}
+          >
+            <MenuItem text={currentUser ? 'Switch User' : 'As User'} onClick={showLogin} />
+            {currentUser ? <MenuItem text={<span>Use Master Key <Toggle type={Toggle.Types.HIDE_LABELS} value={useMasterKey} onChange={toggleMasterKeyUsage} switchNoMargin={true} additionalStyles={{ display: 'inline', lineHeight: 0, margin: 0, paddingLeft: 5 }} /></span>} onClick={toggleMasterKeyUsage} /> : <noscript />}
+            {currentUser ? <MenuItem text={<span>Stop browsing (<b>{currentUser.get('username')}</b>)</span>} onClick={logout} /> : <noscript />}
+        </BrowserMenu>
+      )}
+      {enableSecurityDialog ? (
+        <BrowserMenu
+          setCurrent={setCurrent}
+          icon="locked-solid"
+          disabled={!!relation || !!isUnique || isPendingEditCloneRows}
+        >
+          <MenuItem text={'Class Level Permissions'} onClick={onClickSecurity} />
+          <MenuItem text={'Protected Fields'} onClick={showProtected} />
+        </BrowserMenu>
+      ) : (
+        <noscript />
+      )}
+      
       {menu}
       <SecureFieldsDialog
         ref={protectedDialogRef}
@@ -308,6 +341,14 @@ let B4ABrowserToolbar = ({
         icon='locked-solid'
         onEditPermissions={onEditPermissions}
       />
+      {onAddRow && (
+        <LoginDialog
+          ref={loginDialogRef}
+          currentUser={currentUser}
+          login={login}
+          logout={logout}
+        />
+      )}
     </Toolbar>
   );
 };
