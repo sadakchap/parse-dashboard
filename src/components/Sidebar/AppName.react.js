@@ -1,17 +1,13 @@
-import React from 'react';
-import Pin from 'components/Sidebar/Pin.react';
-import styles from 'components/Sidebar/Sidebar.scss';
+import React from "react";
+import styles from "components/Sidebar/Sidebar.scss";
 
-const AppName = ({ name, onClick, onPinClick }) => (
-  <div>
-    <div className={styles.currentApp}>
-      <div className={styles.appNameContainer} onClick={onClick}>
-        <div className={styles.currentAppName}>
-          {name}
-        </div>
-      </div>
-      <Pin onClick={onPinClick} />
+const AppName = ({ name, pin, onClick }) => (
+  <div className={styles.currentApp}>
+    <div className={styles.currentAppNameGroup} onClick={onClick}>
+      <div className={styles.currentAppName}>{name}</div>
+      <div className={styles.appsSelectorArrow}></div>
     </div>
+    {pin}
   </div>
 );
 

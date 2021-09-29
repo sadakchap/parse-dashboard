@@ -181,13 +181,7 @@
   justify-content: space-between;
   align-items: center;
 
-    &:after {
-      @include arrow('down', 10px, 7px, #132B39);
-      content: '';
-      margin-left: 10px;
-    }
-
-    &:hover {
+  &:hover{
       &:after {
         border-top-color: white;
       }
@@ -454,26 +448,6 @@ a.subitem {
     .emoji{
       padding-left: 4px;
       padding-right: 2px;
-    }
-  }
-}
-
-.pinContainer {
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #094162;
-
-  svg {
-    cursor: pointer;
-    height: 40px;
-    width: 40px;
-    padding: 10px 10px 10px 10px;
-    fill: #132B39;
-
-    &:hover {
-      fill: white;
     }
   }
 }
