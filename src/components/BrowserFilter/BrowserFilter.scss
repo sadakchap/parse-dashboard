@@ -33,10 +33,14 @@
   
   &.disabled {
     cursor: not-allowed;
-    color: #66637A;
+    color: #bbbbbb;
+
+    svg {
+      fill: #bbbbbb;
+    }
 
     &:hover svg {
-      fill: #66637A;
+      fill: #9593a1;
     }
   }
 }

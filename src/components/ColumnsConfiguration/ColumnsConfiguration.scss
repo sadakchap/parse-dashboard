@@ -116,4 +116,18 @@
     height: 14px;
     line-height: 14px;
   }
+
+  &.disabled {
+    cursor: not-allowed;
+    color: #bbbbbb;
+
+    svg {
+      fill: #bbbbbb;
+    }
+
+    &:hover svg {
+      fill: #9593a1;
+    }
+  }
+
 }

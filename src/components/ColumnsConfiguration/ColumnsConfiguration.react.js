@@ -56,15 +56,14 @@ export default class ColumnsConfiguration extends React.Component {
 
   render() {
     const { handleColumnDragDrop, handleColumnsOrder, order, disabled } = this.props;
-    const [ title, entry ] = [styles.title, `${styles.entry} ${styles.toolbarButton}`].map(className => (
+    let [ title, entry ] = [styles.title, `${styles.entry} ${styles.toolbarButton}`].map(className => (
       <div className={className} onClick={this.toggle.bind(this)} >
         <Icon name='visibility-icon' width={32} height={26} />
       </div>
     ));
     if (disabled) {
-      entry = <div className={styles.entry + ' ' + styles.disabled} onClick={null}>
-        <Icon name='manage-columns' width={14} height={14} />
-        <span>Manage Columns</span>
+      entry = <div className={styles.toolbarButton + ' ' + styles.disabled} onClick={null}>
+        <Icon name='visibility-icon' width={32} height={26} />
       </div>;
     }
 
