@@ -187,9 +187,13 @@ let B4ABrowserToolbar = ({
         {enableImport || enableExportClass ? <Separator /> : <noscript />}
         {enableImport ? <MenuItem disabled={isPendingEditCloneRows} text='Import data' onClick={onImport} /> : <noscript />}
         {enableImport ? <MenuItem disabled={isPendingEditCloneRows} text='Import relation data' onClick={onImportRelation} /> : <noscript />}
-        {enableExportClass ? <MenuItem disabled={isPendingEditCloneRows} text='Export this data(JSON)' onClick={onExport} /> : <noscript />}
-        {enableExportClass && selectionLength ? <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`Export ${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} /> : <noscript />}
-        {enableExportClass ? <MenuItem disabled={isPendingEditCloneRows} text='Export all rows(CSV)' onClick={() => onExportSelectedRows({'*': true})} /> : <noscript />}
+        {enableExportClass ? 
+          <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} >
+            <MenuItem disabled={isPendingEditCloneRows} text='all rows as JSON' onClick={onExport} />
+            <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
+            <MenuItem disabled={isPendingEditCloneRows} text='all rows as csv' onClick={() => onExportSelectedRows({'*': true})} />
+          </SubMenuItem>
+          : <noscript />}
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Index Manager' onClick={onClickIndexManager} />
         <MenuItem disabled={isPendingEditCloneRows} text="API Reference" onClick={() => {

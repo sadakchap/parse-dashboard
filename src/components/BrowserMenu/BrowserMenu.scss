@@ -101,6 +101,10 @@
     background: $blue;
   }
 
+  &.active {
+    background: $blue;
+  }
+
   &.disabled {
     color: rgba(0,0,0,0.2);
     cursor: not-allowed;
@@ -124,4 +128,17 @@
   background: #797592;
   padding: 8px 0;
   font-size: 14px;
+}
+
+.rightArrowIcon {
+  &::before {
+    content: '';
+    position: absolute;
+    @include arrow('right', 8px, 4px, white);
+    top: 8px;
+    right: 10px;
+  }
+  &.active::before {
+    @include arrow('left', 8px, 4px, white);
+  }
 }
