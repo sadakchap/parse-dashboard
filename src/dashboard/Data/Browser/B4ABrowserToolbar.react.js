@@ -161,6 +161,18 @@ let B4ABrowserToolbar = ({
           <MenuItem text="Class Level Permission" onClick={onClickSecurity} />
           <MenuItem text="Protected Fields" onClick={showProtected} />
         </SubMenuItem>
+        {onAddRow && (
+          <SubMenuItem
+            title={currentUser ? 'Browsing' : 'Browse'}
+            setCurrent={setCurrent}
+            active={!!currentUser}
+            disabled={isPendingEditCloneRows}
+          >
+            <MenuItem text={currentUser ? 'Switch User' : 'As User'} onClick={showLogin} />
+            {currentUser ? <MenuItem text={<span>Use Master Key <Toggle type={Toggle.Types.HIDE_LABELS} value={useMasterKey} onChange={toggleMasterKeyUsage} switchNoMargin={true} additionalStyles={{ display: 'inline', lineHeight: 0, margin: 0, paddingLeft: 5 }} /></span>} onClick={toggleMasterKeyUsage} /> : <noscript />}
+            {currentUser ? <MenuItem text={<span>Stop browsing (<b>{currentUser.get('username')}</b>)</span>} onClick={logout} /> : <noscript />}
+          </SubMenuItem>
+        )}
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
         <Separator />
@@ -311,32 +323,7 @@ let B4ABrowserToolbar = ({
         handleColumnsOrder={handleColumnsOrder}
         handleColumnDragDrop={handleColumnDragDrop}
         order={order}
-        className={classNameForEditors} />
-      {onAddRow && (
-        <BrowserMenu
-            setCurrent={setCurrent}
-            icon="users-solid"
-            active={!!currentUser}
-            disabled={isPendingEditCloneRows}
-          >
-            <MenuItem text={currentUser ? 'Switch User' : 'As User'} onClick={showLogin} />
-            {currentUser ? <MenuItem text={<span>Use Master Key <Toggle type={Toggle.Types.HIDE_LABELS} value={useMasterKey} onChange={toggleMasterKeyUsage} switchNoMargin={true} additionalStyles={{ display: 'inline', lineHeight: 0, margin: 0, paddingLeft: 5 }} /></span>} onClick={toggleMasterKeyUsage} /> : <noscript />}
-            {currentUser ? <MenuItem text={<span>Stop browsing (<b>{currentUser.get('username')}</b>)</span>} onClick={logout} /> : <noscript />}
-        </BrowserMenu>
-      )}
-      {enableSecurityDialog ? (
-        <BrowserMenu
-          setCurrent={setCurrent}
-          icon="locked-solid"
-          disabled={!!relation || !!isUnique || isPendingEditCloneRows}
-        >
-          <MenuItem text={'Class Level Permissions'} onClick={onClickSecurity} />
-          <MenuItem text={'Protected Fields'} onClick={showProtected} />
-        </BrowserMenu>
-      ) : (
-        <noscript />
-      )}
-      
+        className={classNameForEditors} />      
       {menu}
       <SecureFieldsDialog
         ref={protectedDialogRef}

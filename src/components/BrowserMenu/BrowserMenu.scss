@@ -101,8 +101,12 @@
     background: $blue;
   }
 
-  &.active {
+  &.open {
     background: $blue;
+  }
+
+  &.active {
+    background: $orange;
   }
 
   &.disabled {
@@ -138,7 +142,7 @@
     top: 8px;
     right: 10px;
   }
-  &.active::before {
+  &.open::before {
     @include arrow('left', 8px, 4px, white);
   }
 }

@@ -35,6 +35,9 @@ export default class SubMenuItem extends React.Component {
   render() {    
     const classes = [styles.item, styles.rightArrowIcon];
     if (this.state.open) {
+      classes.push(styles.open);
+    }
+    if (this.props.active) {
       classes.push(styles.active);
     }
     if (this.props.disabled) {
