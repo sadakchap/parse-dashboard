@@ -29,9 +29,9 @@ export default class BrowserMenu extends React.Component {
     if (this.state.open) {
       let position = Position.inDocument(this.node);
       let titleStyle = [styles.title];
-      if (this.props.active) {
-        titleStyle.push(styles.active);
-      }
+      // if (this.props.active && !this.state.open) {
+      //   titleStyle.push(styles.active);
+      // }
       menu = (
         <Popover fixed={true} position={position} onExternalClick={() => this.setState({ open: false })}>
           <div className={styles.menu}>
@@ -51,7 +51,7 @@ export default class BrowserMenu extends React.Component {
       );
     }
     const classes = [styles.entry];
-    if (this.props.active) {
+    if (this.props.active && !this.state.open) {
       classes.push(styles.active);
     }
     if (this.props.disabled) {
@@ -84,5 +84,8 @@ BrowserMenu.propTypes = {
   ),
   children: PropTypes.arrayOf(PropTypes.node).describe(
     'The contents of the menu when open. It should be a set of MenuItem and Separator components.'
+  ),
+  active: PropTypes.bool.describe(
+    'Indicates whether it has any active item or not.'
   ),
 };

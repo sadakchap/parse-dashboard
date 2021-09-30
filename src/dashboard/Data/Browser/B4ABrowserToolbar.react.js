@@ -150,7 +150,7 @@ let B4ABrowserToolbar = ({
     );
   } else {
     menu = (
-      <BrowserMenu title='Edit' icon='more-icon' setCurrent={setCurrent}>
+      <BrowserMenu title='Edit' icon='more-icon' setCurrent={setCurrent} active={currentUser ? true : false} >
         {isPendingEditCloneRows ? 
           <>
             <MenuItem text="Cancel all pending rows" onClick={onCancelPendingEditRows} />
