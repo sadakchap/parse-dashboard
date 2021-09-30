@@ -15,6 +15,7 @@ import Button               from 'components/Button/Button.react'
 import VideoTutorialButton  from 'components/VideoTutorialButton/VideoTutorialButton.react';
 import ColumnsConfiguration
                       from 'components/ColumnsConfiguration/ColumnsConfiguration.react';
+import SubMenuItem from '../../../components/BrowserMenu/SubMenuItem.react';
 
 const apiDocsButtonStyle = {
   display: 'inline-block',
@@ -156,6 +157,10 @@ let B4ABrowserToolbar = ({
             <Separator />
           </>  : <noscript /> }
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
+        <SubMenuItem title="Security" setCurrent={setCurrent} onClick={null} >
+          <MenuItem text="Class Level Permission" onClick={onClickSecurity} />
+          <MenuItem text="Protected Fields" onClick={showProtected} />
+        </SubMenuItem>
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
         <Separator />
