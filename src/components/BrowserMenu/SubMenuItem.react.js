@@ -5,9 +5,6 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import Popover      from 'components/Popover/Popover.react';
-import Icon         from 'components/Icon/Icon.react';
-import Position     from 'lib/Position';
 import PropTypes    from 'lib/PropTypes';
 import React        from 'react';
 import ReactDOM     from 'react-dom';
@@ -34,7 +31,7 @@ export default class SubMenuItem extends React.Component {
 
   render() {    
     const classes = [styles.item, styles.rightArrowIcon];
-    if (this.state.open) {
+    if (this.state.open && this.props.disabled) {
       classes.push(styles.open);
     }
     if (this.props.active) {
@@ -58,6 +55,7 @@ export default class SubMenuItem extends React.Component {
                   React.cloneElement(child, {
                     ...child.props,
                     onClick: () => {
+                      this.setState({ open: false });
                       child.props.onClick();
                     },
                   })

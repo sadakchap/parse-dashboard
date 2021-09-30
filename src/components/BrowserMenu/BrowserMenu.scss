@@ -109,6 +109,9 @@
 
   &.active {
     background: $orange;
+    &:hover {
+      background: $orange !important;
+    }
   }
 
   &.disabled {

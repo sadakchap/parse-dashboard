@@ -157,7 +157,7 @@ let B4ABrowserToolbar = ({
             <Separator />
           </>  : <noscript /> }
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
-        <SubMenuItem title="Security" setCurrent={setCurrent} onClick={null} >
+        <SubMenuItem title="Security" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
           <MenuItem text="Class Level Permission" onClick={onClickSecurity} />
           <MenuItem text="Protected Fields" onClick={showProtected} />
         </SubMenuItem>
@@ -200,7 +200,7 @@ let B4ABrowserToolbar = ({
         {enableImport ? <MenuItem disabled={isPendingEditCloneRows} text='Import data' onClick={onImport} /> : <noscript />}
         {enableImport ? <MenuItem disabled={isPendingEditCloneRows} text='Import relation data' onClick={onImportRelation} /> : <noscript />}
         {enableExportClass ? 
-          <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} >
+          <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
             <MenuItem disabled={isPendingEditCloneRows} text='all rows as JSON' onClick={onExport} />
             <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
             <MenuItem disabled={isPendingEditCloneRows} text='all rows as csv' onClick={() => onExportSelectedRows({'*': true})} />
