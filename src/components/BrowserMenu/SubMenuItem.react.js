@@ -56,7 +56,7 @@ export default class SubMenuItem extends React.Component {
               className={styles.subMenuBody}
               style={{
                 minWidth: this.node ? this.node.clientWidth : "0",
-                left: this.node ? `-${this.node.clientWidth + 2}px` : "-196px",
+                left: this.node ? `-${this.node.clientWidth + 1}px` : "-196px",
               }}
             >
               {React.Children.map(this.props.children, (child) =>
