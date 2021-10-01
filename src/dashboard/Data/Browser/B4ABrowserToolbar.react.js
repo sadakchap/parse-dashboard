@@ -197,13 +197,17 @@ let B4ABrowserToolbar = ({
         {enableDeleteAllRows ? <MenuItem disabled={isPendingEditCloneRows} text='Delete all rows' onClick={() => onDeleteRows({ '*': true })} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Delete this class' onClick={onDropClass} /> : <noscript />}
         {enableImport || enableExportClass ? <Separator /> : <noscript />}
-        {enableImport ? <MenuItem disabled={isPendingEditCloneRows} text='Import data' onClick={onImport} /> : <noscript />}
-        {enableImport ? <MenuItem disabled={isPendingEditCloneRows} text='Import relation data' onClick={onImportRelation} /> : <noscript />}
+        {enableImport ? 
+          <SubMenuItem title="Import" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
+            <MenuItem disabled={isPendingEditCloneRows} text='Class data' onClick={onImport} />
+            <MenuItem disabled={isPendingEditCloneRows} text='Relation data' onClick={onImportRelation} />
+          </SubMenuItem>
+        : <noscript />}
         {enableExportClass ? 
           <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
             <MenuItem disabled={isPendingEditCloneRows} text='all rows as JSON' onClick={onExport} />
-            <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
-            <MenuItem disabled={isPendingEditCloneRows} text='all rows as csv' onClick={() => onExportSelectedRows({'*': true})} />
+            <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'} as CSV`} onClick={() => onExportSelectedRows(selection)} />
+            <MenuItem disabled={isPendingEditCloneRows} text='all rows as CSV' onClick={() => onExportSelectedRows({'*': true})} />
           </SubMenuItem>
           : <noscript />}
         <Separator />
