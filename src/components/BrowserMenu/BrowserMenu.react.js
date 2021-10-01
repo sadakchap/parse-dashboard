@@ -40,10 +40,13 @@ export default class BrowserMenu extends React.Component {
             </div>
             <div className={styles.body} style={{ minWidth: this.node.clientWidth }}>
               {React.Children.map(this.props.children, (child) => (
-                React.cloneElement(child, { ...child.props, onClick: () => {
-                  this.setState({ open: false });
-                  child.props.onClick();
-                }})
+                React.cloneElement(child, { ...child.props, 
+                  onClose: () => this.setState({ open: false }), 
+                  onClick: () => {
+                    this.setState({ open: false });
+                    child.props.onClick();
+                  }
+                })
               ))}
             </div>
           </div>

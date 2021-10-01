@@ -55,7 +55,8 @@ export default class SubMenuItem extends React.Component {
                   React.cloneElement(child, {
                     ...child.props,
                     onClick: () => {
-                      this.setState({ open: false });
+                      this.setState({ open: false }); // close submenu
+                      this.props.onClose(); // close top menu
                       child.props.onClick();
                     },
                   })
