@@ -43,27 +43,34 @@ export default class SubMenuItem extends React.Component {
 
     return (
       <div>
-        <div className={classes.join(' ')} onClick={this.toggle} title={this.props.title}>
+        <div
+          className={classes.join(" ")}
+          onMouseEnter={() => this.setState({ open: true })}
+          onMouseLeave={() => this.setState({ open: false })}
+          // onClick={this.toggle}
+          title={this.props.title}
+        >
           {this.props.title}
-          {this.state.open ? (
-            <div onClick={(e) => e.stopPropagation()}>
-              <div
-                className={styles.subMenuBody}
-                style={{ minWidth: this.node ? this.node.clientWidth : '0', left: this.node ? `-${this.node.clientWidth + 2}px` : '-196px' }}
-              >
-                {React.Children.map(this.props.children, (child) =>
-                  React.cloneElement(child, {
-                    ...child.props,
-                    onClick: () => {
-                      this.setState({ open: false }); // close submenu
-                      this.props.onClose(); // close top menu
-                      child.props.onClick();
-                    },
-                  })
-                )}
-              </div>
+          <div style={{ display: this.state.open ? 'block' : 'none' }} onClick={(e) => e.stopPropagation()}>
+            <div
+              className={styles.subMenuBody}
+              style={{
+                minWidth: this.node ? this.node.clientWidth : "0",
+                left: this.node ? `-${this.node.clientWidth + 2}px` : "-196px",
+              }}
+            >
+              {React.Children.map(this.props.children, (child) =>
+                React.cloneElement(child, {
+                  ...child.props,
+                  onClick: () => {
+                    this.setState({ open: false }); // close submenu
+                    this.props.onClose(); // close top menu
+                    child.props.onClick();
+                  },
+                })
+              )}
             </div>
-          ) : null}
+          </div>
         </div>
       </div>
     );
