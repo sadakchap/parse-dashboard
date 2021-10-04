@@ -16,13 +16,8 @@ import B4ACodeTree     from 'components/B4ACodeTree/B4ACodeTree.react';
 import {
   getFiles,
   updateTreeContent
-}                             from 'components/B4ACodeTree/B4ATreeActions';
-import LoaderContainer        from 'components/LoaderContainer/LoaderContainer.react';
-import styles                 from 'dashboard/Data/CloudCode/CloudCode.scss';
-import CloudCode              from 'dashboard/Data/CloudCode/CloudCode.react';
-import LoaderDots             from 'components/LoaderDots/LoaderDots.react';
-import Modal                  from 'components/Modal/Modal.react';
-import Icon                   from 'components/Icon/Icon.react';
+}                      from 'components/B4ACodeTree/B4ATreeActions';
+import { Prompt }      from 'react-router';
 import B4ACloudCodeToolbar    from 'dashboard/Data/CloudCode/B4ACloudCodeToolbar.react';
 
 class B4ACloudCode extends CloudCode {
@@ -96,10 +91,13 @@ class B4ACloudCode extends CloudCode {
   }
 
   componentDidUpdate() {
-    if ( this.state.codeUpdated === true ) {
+    if ( this.state.codeUpdated === true || this.state.unsavedChanges === true ) {
+      window.onbeforeunload = function() {
       this.onBeforeUnloadSaveCode = window.onbeforeunload = function() {
         return '';
       }
+    } else {
+      window.onbeforeunload = undefined;
     }
   }
 
@@ -198,7 +196,7 @@ class B4ACloudCode extends CloudCode {
         confirmText='Ok, got it'
         onConfirm={() => this.setState({ modal: null })}
         />;
-      this.setState({ unsavedChanges: false, modal: successModal });
+      this.setState({ unsavedChanges: false, modal: successModal, codeUpdated: false });
       $('#tree').jstree(true).redraw(true);
     } catch (err) {
       const errorModal = <Modal
