@@ -17,8 +17,8 @@ import {
   getFiles,
   updateTreeContent
 }                      from 'components/B4ACodeTree/B4ATreeActions';
-import { Prompt }      from 'react-router';
 import B4ACloudCodeToolbar    from 'dashboard/Data/CloudCode/B4ACloudCodeToolbar.react';
+import CloudCode       from 'dashboard/Data/CloudCode/CloudCode.react';
 
 class B4ACloudCode extends CloudCode {
   constructor() {
@@ -93,8 +93,9 @@ class B4ACloudCode extends CloudCode {
   componentDidUpdate() {
     if ( this.state.codeUpdated === true || this.state.unsavedChanges === true ) {
       window.onbeforeunload = function() {
-      this.onBeforeUnloadSaveCode = window.onbeforeunload = function() {
-        return '';
+        this.onBeforeUnloadSaveCode = window.onbeforeunload = function() {
+          return '';
+        }
       }
     } else {
       window.onbeforeunload = undefined;
