@@ -37,6 +37,11 @@ const sortClasses = (classes) => {
   })
 }
 
+const toFixedDown = (num, fixed) => {
+  var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
+  return num.toString().match(re)[0];
+}
+
 @subscribeTo("Schema", "schema")
 class BlockChainPage extends DashboardView {
   constructor() {
@@ -218,7 +223,7 @@ class BlockChainPage extends DashboardView {
                 </div>
               ) : (
                 <TextInput
-                  value={(Number(this.state.appBalance) / Math.pow(10, 18)).toFixed(2)}
+                  value={toFixedDown(Number(this.state.appBalance) * (10 ** -18), 9)}
                   disabled
                   onChange={() => {}}
                 />
