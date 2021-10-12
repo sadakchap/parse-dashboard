@@ -79,7 +79,7 @@ export default class CreateClassDialog extends React.Component {
         onContinue={async () => {
           let type = this.state.type;
           let className = type === 'Custom' ? this.state.name : '_' + type;
-          await this.props.onConfirm(className);
+          await this.props.onConfirm(className, this.state.isProtected);
           history.push(`/apps/${this.props.currentAppSlug}/browser/${className}`);
           this.props.onAddColumn();
         }}
