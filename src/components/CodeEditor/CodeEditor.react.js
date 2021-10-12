@@ -40,7 +40,7 @@ export default class CodeEditor extends React.Component {
   }
 
   render() {
-    const { placeHolder, fontSize = 18, mode = 'javascript' } = this.props;
+    const { placeHolder, fontSize = 18, mode = 'javascript', height } = this.props;
     const { code } = this.state;
 
     return (
@@ -53,7 +53,7 @@ export default class CodeEditor extends React.Component {
             this.props.onCodeChange(value);
           }
         }}
-        height={'100%'}
+        height={height || '100%'}
         fontSize={fontSize}
         showPrintMargin={true}
         showGutter={true}
@@ -73,5 +73,6 @@ export default class CodeEditor extends React.Component {
 
 CodeEditor.propTypes = {
   fontSize: PropTypes.number.describe('Font size of the editor'),
-  placeHolder: PropTypes.string.describe('Code place holder')
+  placeHolder: PropTypes.string.describe('Code place holder'),
+  height: PropTypes.string.describe('Code Editor height')
 };

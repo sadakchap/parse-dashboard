@@ -1,7 +1,7 @@
 .playground-ctn {
   padding-top: 48px;
   background-color: #002b36;
-  height: 100vh;
+  height: calc(100vh - 48px);
 }
 
 .console-ctn {
