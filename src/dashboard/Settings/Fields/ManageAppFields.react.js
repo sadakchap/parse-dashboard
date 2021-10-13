@@ -133,7 +133,7 @@ export const ManageAppFields = ({
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Parse API Address'
-                description={<a style={{ wordBreak: 'break-all', padding: '10px 0' }} href={appSettings.dashboardAPI}>{appSettings.dashboardAPI}</a>}
+                description={<a style={{ wordBreak: 'break-all', padding: '10px 0' }} href={appSettings?.dashboardAPI}>{appSettings?.dashboardAPI}</a>}
               />}
             />
             <FieldSettings
@@ -141,7 +141,7 @@ export const ManageAppFields = ({
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Parse Version'
-                description={<span>{appSettings.parseVersion}</span>}
+                description={<span>{appSettings?.parseVersion}</span>}
               />}
             />
           </div>}
@@ -157,7 +157,7 @@ export const ManageAppFields = ({
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Database URI'
-                description={<a style={{ wordBreak: 'break-all', padding: '10px 0' }} href={appSettings.databaseURL}>{appSettings.databaseURL}</a>}
+                description={<a style={{ wordBreak: 'break-all', padding: '10px 0' }} href={appSettings?.databaseURL}>{appSettings?.databaseURL}</a>}
               />}
             />
             <FieldSettings
@@ -165,7 +165,7 @@ export const ManageAppFields = ({
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Database Version'
-                description={<span>{appSettings.mongoVersion}</span>}
+                description={<span>{appSettings?.mongoVersion}</span>}
               />}
             />
           </div>}
@@ -371,7 +371,7 @@ export const ManageAppFields = ({
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Client Class Creation'
-                description={<span>{ `Client class creation is ${appSettings.clientClassCreation === true ? 'ALLOWED' : 'BLOCKED'}.`}</span>}
+                description={<span>{ `Client class creation is ${appSettings?.clientClassCreation === true ? 'ALLOWED' : 'BLOCKED'}.`}</span>}
               />}
             />
             <FieldSettings
@@ -379,7 +379,7 @@ export const ManageAppFields = ({
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Push Notification from Client'
-                description={<span>{ `Push Notification from Client is ${appSettings.clientPush === true ? 'ALLOWED' : 'BLOCKED'}.`}</span>}
+                description={<span>{ `Push Notification from Client is ${appSettings?.clientPush === true ? 'ALLOWED' : 'BLOCKED'}.`}</span>}
               />}
             />
           </div>
