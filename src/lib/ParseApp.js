@@ -365,7 +365,7 @@ export default class ParseApp {
   }
 
   async fetchAppSettings() {
-    let path = `${b4aSettings.BACK4APP_API_PATH}/parse-app/settings/${this.slug}`;
+    let path = `${b4aSettings.PARSE_DASHBOARD_PATH}/parse-app/settings/${this.slug}`;
     let response = await axios.get(path);
     return response.data;
   }
@@ -1264,7 +1264,7 @@ export default class ParseApp {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     }
   }
-  
+
   async moveClassToBlockchain(className) {
     try {
       return (
