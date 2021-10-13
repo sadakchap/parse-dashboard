@@ -158,8 +158,8 @@ let B4ABrowserToolbar = ({
           </>  : <noscript /> }
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
         <SubMenuItem title="Security" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
-          <MenuItem text="Class Level Permission" onClick={onClickSecurity} />
-          <MenuItem text="Protected Fields" onClick={showProtected} />
+          <MenuItem text="Class Level Permission" onClick={onClickSecurity} disabled={isPendingEditCloneRows} />
+          <MenuItem text="Protected Fields" onClick={showProtected} disabled={isPendingEditCloneRows} />
         </SubMenuItem>
         {onAddRow && (
           <SubMenuItem
@@ -168,9 +168,9 @@ let B4ABrowserToolbar = ({
             active={!!currentUser}
             disabled={isPendingEditCloneRows}
           >
-            <MenuItem text={currentUser ? 'Switch User' : 'As User'} onClick={showLogin} />
-            {currentUser ? <MenuItem text={<span>Use Master Key <Toggle type={Toggle.Types.HIDE_LABELS} value={useMasterKey} onChange={toggleMasterKeyUsage} switchNoMargin={true} additionalStyles={{ display: 'inline', lineHeight: 0, margin: 0, paddingLeft: 5 }} /></span>} onClick={toggleMasterKeyUsage} /> : <noscript />}
-            {currentUser ? <MenuItem text={<span>Stop browsing (<b>{currentUser.get('username')}</b>)</span>} onClick={logout} /> : <noscript />}
+            <MenuItem text={currentUser ? 'Switch User' : 'As User'} onClick={showLogin} disabled={isPendingEditCloneRows} />
+            {currentUser ? <MenuItem text={<span>Use Master Key <Toggle type={Toggle.Types.HIDE_LABELS} value={useMasterKey} onChange={toggleMasterKeyUsage} switchNoMargin={true} additionalStyles={{ display: 'inline', lineHeight: 0, margin: 0, paddingLeft: 5 }} /></span>} onClick={toggleMasterKeyUsage} disabled={isPendingEditCloneRows} /> : <noscript />}
+            {currentUser ? <MenuItem text={<span>Stop browsing (<b>{currentUser.get('username')}</b>)</span>} onClick={logout} disabled={isPendingEditCloneRows} /> : <noscript />}
           </SubMenuItem>
         )}
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
