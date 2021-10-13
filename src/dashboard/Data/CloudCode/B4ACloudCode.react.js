@@ -21,9 +21,9 @@ import B4ACloudCodeToolbar    from 'dashboard/Data/CloudCode/B4ACloudCodeToolbar
 import CloudCode              from 'dashboard/Data/CloudCode/CloudCode.react';
 import LoaderContainer        from 'components/LoaderContainer/LoaderContainer.react';
 import LoaderDots             from 'components/LoaderDots/LoaderDots.react';
+import styles                 from 'dashboard/Data/CloudCode/CloudCode.scss';
 import Icon                   from 'components/Icon/Icon.react';
 import Modal                  from 'components/Modal/Modal.react';
-import styles                 from 'dashboard/Data/CloudCode/CloudCode.scss';
 
 class B4ACloudCode extends CloudCode {
   constructor() {
@@ -204,6 +204,7 @@ class B4ACloudCode extends CloudCode {
         />;
       this.setState({ unsavedChanges: false, modal: successModal, codeUpdated: false });
       $('#tree').jstree(true).redraw(true);
+      this.fetchSource();
     } catch (err) {
       const errorModal = <Modal
         type={Modal.Types.DANGER}
@@ -227,8 +228,10 @@ class B4ACloudCode extends CloudCode {
   async fetchSource() {
     try {
       let response = await axios.get(this.getPath(), { withCredentials: true })
-      if (response.data && response.data.tree)
+      if (response.data && response.data.tree) {
         this.setState({ files: response.data.tree, loading: false })
+        $('#tree').jstree().refresh(true);
+      }
     } catch(err) {
       console.error(err)
       this.setState({ loading: false })
