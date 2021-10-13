@@ -502,15 +502,15 @@ export default class EditRowDialog extends React.Component {
           )
         }
         subtitle={
-          <div style={{ paddingTop: '5px', fontSize: '12px' }}>
+          <div style={{ fontSize: '12px' }}>
             {selectedObject.createdAt && (
-              <p>
+              <p style={{ height: 'auto', padding: 0 }}>
                 CreatedAt{' '}
                 <strong>{dateStringUTC(selectedObject.createdAt)}</strong>
               </p>
             )}
             {selectedObject.updatedAt && (
-              <p>
+              <p style={{ height: 'auto', padding: 0 }}>
                 UpdatedAt{' '}
                 <strong>{dateStringUTC(selectedObject.updatedAt)}</strong>
               </p>
