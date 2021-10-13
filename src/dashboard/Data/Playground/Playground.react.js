@@ -166,6 +166,7 @@ export default class Playground extends Component {
         <div style={{ height: 'calc(100vh - 96px)' }}>
           <CodeEditor
             code={this.state.code}
+            height={'calc(100% - 60px)'}
             ref={editor => (this.editor = editor)}
           />
           <div className={styles['console-ctn']}>
