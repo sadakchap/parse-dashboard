@@ -70,7 +70,15 @@ export default class DateTimeEditor extends React.Component {
     if (this.state.text === this.props.value.toISOString()) {
       return;
     }
-    let date = new Date(this.state.text);
+    let date;
+    // convert UTC string to date
+    if (this.state.text.endsWith('UTC')) {
+      let dateStr = this.state.text.replace(' at', '');
+      date = new Date(dateStr);
+      this.setState({ value: date, text: date.toISOString() });
+      return;
+    }
+    date = new Date(this.state.text);
     if (isNaN(date.getTime())) {
       this.setState({ value: this.props.value, text: this.props.value.toISOString() });
     } else {
