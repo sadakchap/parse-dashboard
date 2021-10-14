@@ -126,7 +126,7 @@ export default class BrowserTable extends React.Component {
               const currentCol = this.props.current && this.props.current.row === index ? this.props.current.col : undefined;
               const isEditingRow = this.props.current && this.props.current.row === index && !!this.props.editing;
               return (
-                <div key={index} style={{ borderBottom: '1px solid #169CEE' }}>
+                <div key={index} style={{ borderBottom: '1px solid #169CEE', position: 'relative', paddingBottom: `${ROW_HEIGHT}px` }}>
                   <BrowserRow
                     key={index}
                     isEditing={isEditingRow}
@@ -155,22 +155,24 @@ export default class BrowserTable extends React.Component {
                     onEditSelectedRow={this.props.onEditSelectedRow}
                     markRequiredFieldRow={this.props.markRequiredFieldRow}
                   />
-                  <Button
-                    value="Clone"
-                    width="55px"
-                    primary={true}
-                    onClick={() => {
-                      this.props.onSaveEditCloneRow(index);
-                      this.props.setEditing(false);
-                    }}
-                    additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
-                  />
-                  <Button
-                    value="Cancel"
-                    width="55px"
-                    onClick={() => this.props.onAbortEditCloneRow(index)}
-                    additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
-                  />
+                  <div style={{ position: "fixed", height: `${ROW_HEIGHT}px`}}>
+                    <Button
+                      value="Clone"
+                      width="55px"
+                      primary={true}
+                      onClick={() => {
+                        this.props.onSaveEditCloneRow(index);
+                        this.props.setEditing(false);
+                      }}
+                      additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
+                    />
+                    <Button
+                      value="Cancel"
+                      width="55px"
+                      onClick={() => this.props.onAbortEditCloneRow(index)}
+                      additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
+                    />
+                  </div>
                 </div>
               );
             })}
@@ -181,7 +183,7 @@ export default class BrowserTable extends React.Component {
       if (this.props.newObject && this.state.offset <= 0) {
         const currentCol = this.props.current && this.props.current.row === -1 ? this.props.current.col : undefined;
         newRow = (
-          <div style={{ borderBottom: '1px solid #169CEE' }}>
+          <div style={{ borderBottom: '1px solid #169CEE', position: 'relative', paddingBottom: `${ROW_HEIGHT}px` }}>
             <BrowserRow
               key={-1}
               className={this.props.className}
@@ -206,22 +208,24 @@ export default class BrowserTable extends React.Component {
               onEditSelectedRow={this.props.onEditSelectedRow}
               markRequiredFieldRow={this.props.markRequiredFieldRow}
             />
-            <Button
-              value="Add"
-              width="55px"
-              primary={true}
-              onClick={() => {
-                this.props.onSaveNewRow();
-                this.props.setEditing(false);
-              }}
-              additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
-            />
-            <Button
-              value="Cancel"
-              width="55px"
-              onClick={this.props.onAbortAddRow}
-              additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
-            />
+            <div style={{ position: "fixed", height: `${ROW_HEIGHT}px`}}>
+              <Button
+                value="Add"
+                width="55px"
+                primary={true}
+                onClick={() => {
+                  this.props.onSaveNewRow();
+                  this.props.setEditing(false);
+                }}
+                additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
+              />
+              <Button
+                value="Cancel"
+                width="55px"
+                onClick={this.props.onAbortAddRow}
+                additionalStyles={{ fontSize: '12px', height: '20px', lineHeight: '20px', margin: '5px', padding: '0'}}
+              />
+            </div>
           </div>
         );
       }
