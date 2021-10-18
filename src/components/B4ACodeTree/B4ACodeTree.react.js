@@ -185,7 +185,10 @@ export default class B4ACodeTree extends React.Component {
     }
 
     // set updated files.
-    this.cloudCodeChanges.addFile($('#tree').jstree('get_selected', true).pop().text);
+    let selectedFiles = $('#tree').jstree('get_selected', true)
+    if (selectedFiles.length) {
+      this.cloudCodeChanges.addFile(selectedFiles.pop().text);
+    }
     this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
   }
 
