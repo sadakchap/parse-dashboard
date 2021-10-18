@@ -180,11 +180,14 @@ export default class B4ACodeTree extends React.Component {
   }
 
   updateCodeOnNewFile(type, text){
-    if (type === 'new-file') { 
+    if (type === 'delete-file') {
+      this.cloudCodeChanges.removeFile(text);
+      this.props.setCodeUpdated(this.cloudCodeChanges.getFiles());
+    } else if (type === 'new-file') { 
       // incase of new-file, other file or folder is selected
       // so, directly add that file name in cloudCodeChanges
+      text && this.cloudCodeChanges.addFile(text);
       this.props.setCodeUpdated(true);
-      this.cloudCodeChanges.addFile(text);
     } else {
       // set updated files.
       let selectedFiles = $('#tree').jstree('get_selected', true)
@@ -208,7 +211,7 @@ export default class B4ACodeTree extends React.Component {
 
     $('#tree').on('create_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type, parent?.node?.text));
     $('#tree').on('rename_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type));
-    $('#tree').on('delete_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type));
+    $('#tree').on('delete_node.jstree', (node, parent) => this.updateCodeOnNewFile('delete-file', parent?.node?.text));
 
   }
 
