@@ -179,13 +179,19 @@ export default class B4ACodeTree extends React.Component {
     this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
   }
 
-  updateCodeOnNewFile(type){
-    if ( type === 'new-file' ) {
+  updateCodeOnNewFile(type, text){
+    if (type === 'new-file') { 
+      // incase of new-file, other file or folder is selected
+      // so, directly add that file name in cloudCodeChanges
       this.props.setCodeUpdated(true);
+      this.cloudCodeChanges.addFile(text);
+    } else {
+      // set updated files.
+      let selectedFiles = $('#tree').jstree('get_selected', true)
+      if (selectedFiles.length) {
+        this.cloudCodeChanges.addFile(selectedFiles.pop().text);
+      }
     }
-
-    // set updated files.
-    this.cloudCodeChanges.addFile($('#tree').jstree('get_selected', true).pop().text);
     this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
   }
 
@@ -200,7 +206,7 @@ export default class B4ACodeTree extends React.Component {
       B4ATreeActions.refreshEmptyFolderIcons();
     });
 
-    $('#tree').on('create_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type));
+    $('#tree').on('create_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type, parent?.node?.text));
     $('#tree').on('rename_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type));
     $('#tree').on('delete_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type));
 
