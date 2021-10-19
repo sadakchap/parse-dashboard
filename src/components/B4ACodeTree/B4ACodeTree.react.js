@@ -195,6 +195,7 @@ export default class B4ACodeTree extends React.Component {
         this.cloudCodeChanges.addFile(selectedFiles.pop().text);
       }
     }
+
     this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
   }
 
