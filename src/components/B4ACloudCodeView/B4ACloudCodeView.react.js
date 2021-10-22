@@ -21,7 +21,7 @@ export default class B4ACloudCodeView extends React.Component {
           break;
       }
     } else {
-      codePenConfig['js'] = this.props.source;
+      codePenConfig['text'] = this.props.source;
     }
 
     this.state = {
@@ -38,6 +38,9 @@ export default class B4ACloudCodeView extends React.Component {
         break;
       case 'ejs':
         key = 'html';
+        break;
+      case '':
+        key = 'text'; // for file without extension
         break;
     }
 
