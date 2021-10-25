@@ -125,7 +125,7 @@ const verifyFileNames = async (data, newNode) => {
 
 const getExtension = (fileName) => {
   let re = /(?:\.([^.]+))?$/
-  return re.exec(fileName)[1]
+  return re.exec(fileName)[1] || '';
 }
 
 // Function used to add files on tree.
