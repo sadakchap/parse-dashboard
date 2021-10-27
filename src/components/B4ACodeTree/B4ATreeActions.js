@@ -151,7 +151,7 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
     let selectedParent = getSelectedParent();
     overwrite = await verifyFileNames(folder, newTreeNodes[j]);
     if ( overwrite === false ) continue;
-    addFileOnSelectedNode(newTreeNodes[j].text.name, newTreeNodes[j].data, selectedParent);
+    addFileOnSelectedNode(newTreeNodes[j].text.name, selectedParent, newTreeNodes[j].data);
   }
   return overwrite;
 }
@@ -164,7 +164,7 @@ const getSelectedParent = () => {
   return parent;
 }
 
-const addFileOnSelectedNode = (name, data = {code: 'data:plain/text;base64,IA=='}, parent) => {
+const addFileOnSelectedNode = (name, parent, data = {code: 'data:plain/text;base64,IA=='}) => {
   $('#tree').jstree("create_node", parent, { data, type: 'new-file', text: name }, 'inside', false, false);
 }
 
@@ -269,5 +269,6 @@ export default {
   updateTreeContent,
   getExtension,
   refreshEmptyFolderIcons,
-  addFileOnSelectedNode
+  addFileOnSelectedNode,
+  getSelectedParent
 }
