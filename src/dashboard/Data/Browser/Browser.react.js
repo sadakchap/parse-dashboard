@@ -111,6 +111,7 @@ class Browser extends DashboardView {
 
       lastError: null,
       lastNote: null,
+      fetchedErr: null,
 
       relationCount: 0,
 
@@ -1151,9 +1152,9 @@ class Browser extends DashboardView {
       } else {
         delete filteredCounts[source];
       }
-      this.setState({ data: data, filters, lastMax: MAX_ROWS_FETCHED , filteredCounts: filteredCounts});
+      this.setState({ data: data, filters, lastMax: MAX_ROWS_FETCHED , filteredCounts: filteredCounts, fetchedErr: null });
     } catch(err) {
-      this.setState({ data: [], filters, err });
+      this.setState({ data: [], filters, fetchedErr: err.message });
       this.showNote(err.message, true);
     }
   }
@@ -2076,7 +2077,7 @@ class Browser extends DashboardView {
             onAddRowWithModal={this.addRowWithModal}
             onAddClass={this.showCreateClass}
             onAbortEditCloneRows={this.abortEditCloneRows}
-            err={this.state.err}
+            err={this.state.fetchedErr}
             showNote={this.showNote}
             onClickIndexManager={this.onClickIndexManager}
             onClickSecurity={this.onClickSecurity}

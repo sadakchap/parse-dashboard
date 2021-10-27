@@ -418,7 +418,7 @@ export default class BrowserTable extends React.Component {
               <div className={styles.empty}>
                 <EmptyState
                   title="No data to display"
-                  description={this.props.err.message || 'Something went wrong!'}
+                  description={this.props.err || 'Something went wrong!'}
                   icon="files-solid"
                 />
               </div>
