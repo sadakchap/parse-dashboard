@@ -44,7 +44,7 @@ export default class ProtectedFieldsDialog extends React.Component {
       // hide suggestions to avoid ugly  footer overlap
       this.refEntry.current.setHidden(hidden);
       // also show indicator when input is not visible
-      this.refScrollHint.current.toggleActive(hidden);
+      this.refScrollHint.current.toggle(hidden);
     };
 
     this.observer = new IntersectionObserver(callback, {
@@ -501,7 +501,7 @@ export default class ProtectedFieldsDialog extends React.Component {
             </div>
           </div>
           <div className={styles.footer}>
-            <ScrollHint ref={this.refScrollIndicator}/>
+            <ScrollHint ref={this.refScrollHint}/>
             <div className={styles.actions}>
               <Button value="Cancel" onClick={this.props.onCancel} />
               <Button
