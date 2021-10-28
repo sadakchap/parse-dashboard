@@ -113,7 +113,7 @@ const verifyFileNames = async (data, newNode) => {
         // Show alert and wait for the user response
         let alertResponse = await MySwal.fire(overwriteFileModal)
         if (alertResponse.value) {
-          await remove(`#${currentId}`)
+          remove(`#${currentId}`)
         } else {
           overwrite = false;
         }
@@ -148,18 +148,23 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
       } else
         folder = obj.children?.find(f => f === selectedFolder);
     }
+    let selectedParent = getSelectedParent();
     overwrite = await verifyFileNames(folder, newTreeNodes[j]);
     if ( overwrite === false ) continue;
-    addFileOnSelectedNode(newTreeNodes[j].text.name, newTreeNodes[j].data );
+    addFileOnSelectedNode(newTreeNodes[j].text.name, selectedParent, newTreeNodes[j].data);
   }
   return overwrite;
 }
 
-const addFileOnSelectedNode = ( name, data = {code: 'data:plain/text;base64,IA=='} ) => {
+const getSelectedParent = () => {
   let parent = $('#tree').jstree('get_selected');
   if ( ['default', 'file', 'new-file'].includes($('#tree').jstree().get_node(parent).type) ) {
     parent = $('#tree').jstree().get_node(parent).parent;
   }
+  return parent;
+}
+
+const addFileOnSelectedNode = (name, parent, data = {code: 'data:plain/text;base64,IA=='}) => {
   $('#tree').jstree("create_node", parent, { data, type: 'new-file', text: name }, 'inside', false, false);
 }
 
@@ -264,5 +269,6 @@ export default {
   updateTreeContent,
   getExtension,
   refreshEmptyFolderIcons,
-  addFileOnSelectedNode
+  addFileOnSelectedNode,
+  getSelectedParent
 }

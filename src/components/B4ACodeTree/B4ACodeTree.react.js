@@ -308,9 +308,8 @@ export default class B4ACodeTree extends React.Component {
                       allowOutsideClick: () => !Swal.isLoading()
                     }).then(({value}) => {
                       if (value) {
-                        B4ATreeActions.addFileOnSelectedNode(value);
-                        const parent = $('#tree').jstree('get_selected');
-                        $('#tree').jstree("create_node", parent, { data: {code: 'data:plain/text;base64,IA=='}, type: 'new-file', text: value }, 'inside', false, false);
+                        const parent = B4ATreeActions.getSelectedParent();
+                        B4ATreeActions.addFileOnSelectedNode(value, parent);
                         this.setState({ files: $('#tree').jstree(true).get_json() });
                       }
                     })
