@@ -160,22 +160,24 @@ let B4ABrowserToolbar = ({
           <MenuItem text="Class Level Permission" onClick={onClickSecurity} disabled={isPendingEditCloneRows} />
           <MenuItem text="Protected Fields" onClick={showProtected} disabled={isPendingEditCloneRows} />
         </SubMenuItem>
-        {onAddRow && (
+        {onAddRow && (currentUser ? (
           <SubMenuItem
-            title={currentUser ? 'Browsing' : 'Browse'}
+            title="Browsing"
             setCurrent={setCurrent}
             active={!!currentUser}
             disabled={isPendingEditCloneRows}
           >
-            <MenuItem text={currentUser ? 'Switch User' : 'As User'} onClick={showLogin} disabled={isPendingEditCloneRows} />
+            <MenuItem text="Switch User" onClick={showLogin} disabled={isPendingEditCloneRows} />
             {currentUser ? <MenuItem text={<span>Use Master Key <Toggle type={Toggle.Types.HIDE_LABELS} value={useMasterKey} onChange={toggleMasterKeyUsage} switchNoMargin={true} additionalStyles={{ display: 'inline', lineHeight: 0, margin: 0, paddingLeft: 5 }} /></span>} onClick={toggleMasterKeyUsage} disabled={isPendingEditCloneRows} /> : <noscript />}
             {currentUser ? <MenuItem text={<span>Stop browsing (<b>{currentUser.get('username')}</b>)</span>} onClick={logout} disabled={isPendingEditCloneRows} /> : <noscript />}
           </SubMenuItem>
-        )}
-        {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
-        {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
+        ) : (
+            <MenuItem text="Browser As User" onClick={showLogin} disabled={isPendingEditCloneRows} />
+        ))}
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
+        {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
+        {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
         <MenuItem disabled={isPendingEditCloneRows} text='Change pointer key' onClick={onShowPointerKey} />
         <MenuItem
           disabled={!selectionLength || isPendingEditCloneRows}
