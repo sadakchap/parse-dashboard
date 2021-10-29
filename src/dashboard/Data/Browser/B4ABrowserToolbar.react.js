@@ -156,7 +156,6 @@ let B4ABrowserToolbar = ({
             <MenuItem text="Cancel all pending rows" onClick={onCancelPendingEditRows} />
             <Separator />
           </>  : <noscript /> }
-        <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
         <SubMenuItem title="Security" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
           <MenuItem text="Class Level Permission" onClick={onClickSecurity} disabled={isPendingEditCloneRows} />
           <MenuItem text="Protected Fields" onClick={showProtected} disabled={isPendingEditCloneRows} />
@@ -176,6 +175,7 @@ let B4ABrowserToolbar = ({
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
         <Separator />
+        <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
         <MenuItem disabled={isPendingEditCloneRows} text='Change pointer key' onClick={onShowPointerKey} />
         <MenuItem
           disabled={!selectionLength || isPendingEditCloneRows}
