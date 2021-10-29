@@ -123,7 +123,7 @@ class Jobs extends TableView {
       if (err) {
         this.setState({
           loading: false,
-          errorMessage: err.message,
+          errorMessage: 'Something went wrong! Could not fetch jobs, please open a ticket.',
         });
       }
       // If is a unexpected error just finish loading state
