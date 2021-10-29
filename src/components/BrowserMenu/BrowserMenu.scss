@@ -140,16 +140,7 @@
   & .item {
     padding-left: 20px;
   }
-  & .item::before {
-    content: '';
-    position: absolute;
-    top: 12px;
-    left: 8px;
-    width: 5px;
-    height: 5px;
-    background: white;
-    border-radius: 50%;
-  }
+
   & .item.disabled::before {
     background: rgba(0,0,0,0.2);
   }
