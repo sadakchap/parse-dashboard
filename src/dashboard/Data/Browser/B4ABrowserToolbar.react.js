@@ -178,13 +178,13 @@ let B4ABrowserToolbar = ({
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
+        <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Change pointer key' onClick={onShowPointerKey} />
         <MenuItem
           disabled={!selectionLength || isPendingEditCloneRows}
           text={`Attach ${selectionLength <= 1 ? 'this row' : 'these rows'} to relation`}
           onClick={onAttachSelectedRows}
         />
-        <Separator />
         <MenuItem
           disabled={!selectionLength || classNameForEditors.startsWith('_') || isPendingEditCloneRows}
           text={`Clone ${selectionLength <= 1 ? 'this row' : 'these rows'}`}
