@@ -807,7 +807,7 @@ class Browser extends DashboardView {
             return;
           }
           // if field is requried & deafultValue is not given to the field
-          if (!!required && !defaultValue) {
+          if (!!required && defaultValue === undefined) {
             requiredCols.push(name);
           }
           if (className === '_User' && (name === 'username' || name === 'password')) {
@@ -912,7 +912,7 @@ class Browser extends DashboardView {
             return;
           }
           // if field is requried & deafultValue is not given to the field
-          if (!!required && !defaultValue) {
+          if (!!required && defaultValue === undefined) {
             requiredCols.push(name);
           }
           if (className === '_User' && (name === 'username' || name === 'password')) {

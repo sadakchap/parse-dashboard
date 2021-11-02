@@ -23,7 +23,7 @@ export default class BrowserRow extends Component {
     let attributes = obj.attributes;
     let requiredCols = [];
     Object.entries(columns).reduce((acc, cur) => {
-      if (cur[1].required && !cur[1].defaultValue) {
+      if (cur[1].required && cur[1].defaultValue === undefined) {
         acc.push(cur[0]);
       }
       return acc;
