@@ -802,11 +802,12 @@ class Browser extends DashboardView {
     let requiredCols = [];
     if (className) {
       let classColumns = this.props.schema.data.get('classes').get(className);
-      classColumns.forEach(({ required }, name) => {
+      classColumns.forEach(({ required, defaultValue }, name) => {
           if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
             return;
           }
-          if (!!required) {
+          // if field is requried & deafultValue is not given to the field
+          if (!!required && !defaultValue) {
             requiredCols.push(name);
           }
           if (className === '_User' && (name === 'username' || name === 'password')) {
@@ -906,11 +907,12 @@ class Browser extends DashboardView {
     let requiredCols = [];
     if (className) {
       let classColumns = this.props.schema.data.get('classes').get(className);
-      classColumns.forEach(({ required }, name) => {
+      classColumns.forEach(({ required, defaultValue }, name) => {
           if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
             return;
           }
-          if (!!required) {
+          // if field is requried & deafultValue is not given to the field
+          if (!!required && !defaultValue) {
             requiredCols.push(name);
           }
           if (className === '_User' && (name === 'username' || name === 'password')) {
@@ -1986,11 +1988,11 @@ class Browser extends DashboardView {
         if (this.state.isUnique) {
           columns = {};
         }
-        classes.get(className).forEach(({ type, targetClass, required }, name) => {
+        classes.get(className).forEach(({ type, targetClass, required, defaultValue }, name) => {
           if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
             return;
           }
-          const info = { type, required: !!required };
+          const info = { type, required: !!required, defaultValue };
           if (className === '_User' && (name === 'username' || name === 'password' || name === 'authData')) {
             info.required = true;
           }
