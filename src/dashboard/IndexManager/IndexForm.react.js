@@ -28,6 +28,7 @@ class IndexForm extends Component {
     this.createIndex = this.createIndex.bind(this)
     // this.onChangeTTL = this.onChangeTTL.bind(this)
     this.onBlurIndexWeight = this.onBlurIndexWeight.bind(this)
+    this.getDefaultIndexName = this.getDefaultIndexName.bind(this)
   }
 
   componentDidMount() {
@@ -43,20 +44,20 @@ class IndexForm extends Component {
         ...this.state.indexFields,
         [field]: '1'
       }
-    })
+    },this.getDefaultIndexName)
   }
 
   removeIndex(field) {
     const newState = { ...this.state.indexFields }
     delete newState[field]
-    this.setState({ indexFields: newState })
+    this.setState({ indexFields: newState },this.getDefaultIndexName)
   }
 
   updateIndexField(field, newField) {
     const newState = { ...this.state.indexFields }
     delete newState[field]
     newState[newField] = '1'
-    this.setState({ indexFields: newState })
+    this.setState({ indexFields: newState }, this.getDefaultIndexName)
   }
 
   updateIndexType(field, type) {
@@ -75,7 +76,7 @@ class IndexForm extends Component {
     this.setState({
       indexFields: newState,
       weights: newWeights
-    })
+    }, this.getDefaultIndexName)
   }
 
   updateIndexWeight(field, weight) {
@@ -138,6 +139,30 @@ class IndexForm extends Component {
     this.setState({
       indexName: value.length > 128 ? value.substr(0, 128) : value
     })
+  }
+
+  getDefaultIndexName() {
+    let idxName = '';
+    const { indexFields } = this.state;
+    const { dataTypes } = this.props;
+    for (let [key, value] of Object.entries(indexFields)) {
+      if (key === 'objectId') {
+        key = '_id'
+      } else if (key === 'updatedAt') {
+        key = '_updated_at'
+      } else if (key === 'createdAt') {
+        key = '_created_at'
+      } else if (key === 'email_verify_token' && selectedClass === "_User") {
+        key = '_email_verify_token'
+      } else if (key === 'session_token' && selectedClass === "_Session") {
+        key = '_session_token'
+      } else {
+        // Check if column is a pointer
+        if (dataTypes[key].type === 'Pointer') key = `_p_${key}`
+      }
+      idxName += `${key}_${value}`;
+    }
+    this.setState({ indexName: idxName })
   }
 
   createIndex() {
