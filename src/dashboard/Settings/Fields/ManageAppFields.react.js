@@ -152,7 +152,7 @@ export const ManageAppFields = ({
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy
-        label={<Label text='Databse' description={'Database configurations'} />}
+        label={<Label text='Database' description={'Database configurations'} />}
         input={
           <div style={{ flex: 1 }}>
             <FieldSettings
