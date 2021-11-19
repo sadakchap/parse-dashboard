@@ -497,8 +497,8 @@ let generalFieldsOptions = {
   },
   parseOptions: {
     friendlyName: 'Parse Options',
-    showTo: true,
-
+    showTo: false,
+    type: 'parseOptions'
   },
   //TODO: This will display 'enabled production' or 'disabled production' which is sub-optimal. Try to make it better.
   inProduction: {
