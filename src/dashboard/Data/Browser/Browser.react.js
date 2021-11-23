@@ -643,7 +643,7 @@ class Browser extends DashboardView {
     this.setState({ useMasterKey: !useMasterKey }, () => this.refresh());
   }
 
-  createClass(className, isProtected) {
+  createClass(className, isProtected, shouldContinue = false) {
     let clp = isProtected ? protectedCLPs : defaultCLPS;
     if (semver.lte(this.context.currentApp.serverInfo.parseServerVersion, '3.1.1')) {
       clp = {};
@@ -651,6 +651,7 @@ class Browser extends DashboardView {
     this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
       this.state.counts[className] = 0;
       history.push(this.context.generatePath('browser/' + className));
+      shouldContinue && this.showAddColumn();
     }).then(() => {
       // Send track event
       back4AppNavigation && back4AppNavigation.createClassClickEvent()
@@ -1088,7 +1089,8 @@ class Browser extends DashboardView {
 
     const classes = await Parse.Schema.all();
     const schema = classes.find( c => c.className === this.props.params.className);
-
+    console.log(`classes ${classes}`);
+    console.log(`currentClassName`, this.props.params.className)
     const fieldKeys = Object.keys(schema.fields)
     for ( let i = 0; i < fieldKeys.length; i++ ) {
       const schemaKey = fieldKeys[i];
@@ -1156,6 +1158,7 @@ class Browser extends DashboardView {
       }
       this.setState({ data: data, filters, lastMax: MAX_ROWS_FETCHED , filteredCounts: filteredCounts, fetchedErr: null });
     } catch(err) {
+      console.log(err);
       this.setState({ data: [], filters, fetchedErr: err.message });
       this.showNote(err.message, true);
     }
