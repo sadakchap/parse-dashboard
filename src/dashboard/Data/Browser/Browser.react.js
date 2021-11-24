@@ -643,7 +643,7 @@ class Browser extends DashboardView {
     this.setState({ useMasterKey: !useMasterKey }, () => this.refresh());
   }
 
-  createClass(className, isProtected) {
+  createClass(className, isProtected, shouldContinue = false) {
     let clp = isProtected ? protectedCLPs : defaultCLPS;
     if (semver.lte(this.context.currentApp.serverInfo.parseServerVersion, '3.1.1')) {
       clp = {};
@@ -651,6 +651,7 @@ class Browser extends DashboardView {
     this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
       this.state.counts[className] = 0;
       history.push(this.context.generatePath('browser/' + className));
+      shouldContinue && this.showAddColumn();
     }).then(() => {
       // Send track event
       back4AppNavigation && back4AppNavigation.createClassClickEvent()
