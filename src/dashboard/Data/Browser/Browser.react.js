@@ -1089,8 +1089,7 @@ class Browser extends DashboardView {
 
     const classes = await Parse.Schema.all();
     const schema = classes.find( c => c.className === this.props.params.className);
-    console.log(`classes ${classes}`);
-    console.log(`currentClassName`, this.props.params.className)
+
     const fieldKeys = Object.keys(schema.fields)
     for ( let i = 0; i < fieldKeys.length; i++ ) {
       const schemaKey = fieldKeys[i];
@@ -1158,7 +1157,6 @@ class Browser extends DashboardView {
       }
       this.setState({ data: data, filters, lastMax: MAX_ROWS_FETCHED , filteredCounts: filteredCounts, fetchedErr: null });
     } catch(err) {
-      console.log(err);
       this.setState({ data: [], filters, fetchedErr: err.message });
       this.showNote(err.message, true);
     }
