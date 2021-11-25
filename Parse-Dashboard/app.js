@@ -209,7 +209,7 @@ module.exports = function(config, options) {
       `);
     });
 
-    // Server worker-javascript for React-Ace
+    // Serve worker-javascript for React-Ace
     app.get('/worker-javascript.js', function(req, res) {
       res.sendFile(path.join(__dirname, 'worker-javascript.js'), err => console.log(err));
     });
