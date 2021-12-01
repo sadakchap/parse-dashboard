@@ -209,11 +209,6 @@ module.exports = function(config, options) {
       `);
     });
 
-    // Serve worker-javascript for React-Ace
-    app.get('/worker-javascript.js', function(req, res) {
-      res.sendFile(path.join(__dirname, 'worker-javascript.js'), err => console.log(err));
-    });
-
     // For every other request, go to index.html. Let client-side handle the rest.
     app.get('/*', function(req, res) {
       if (users && (!req.user || !req.user.isAuthenticated)) {
