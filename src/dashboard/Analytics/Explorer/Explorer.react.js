@@ -245,7 +245,9 @@ class Explorer extends DashboardView {
             }
             return {
               ...query,
-              result: serverResult.result
+              result: serverResult.result.map((point) => (
+                [Parse._decode('date', point[0]).getTime(), point[1]]
+              ))
             };
           });
 
