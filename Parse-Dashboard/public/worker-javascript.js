@@ -14913,7 +14913,8 @@ oop.inherits(JavaScriptWorker, Mirror);
 (function() {
     this.setOptions = function(options) {
         this.options = options || {
-            esnext: true,
+            // esnext: true,
+            esversion: 11,
             moz: true,
             devel: true,
             browser: true,
