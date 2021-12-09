@@ -75,10 +75,13 @@ export default class B4ACodeTree extends React.Component {
     let file = this.state.newFile;
     if (file) {
       let currentTree = '#';
-      const overwrite = await B4ATreeActions.addFilesOnTree(file, currentTree, this.state.selectedFolder);
+      const { overwrite, newNodeId } = await B4ATreeActions.addFilesOnTree(file, currentTree, this.state.selectedFolder);
       if ( overwrite === true ) {
         this.setState({ newFile: '', filesOnTree: file });
         this.handleTreeChanges()
+      }
+      if (newNodeId && file.fileList.length === 1) { // select only single new file upload
+        B4ATreeActions.selectFileOnTree(newNodeId);
       }
     }
   }
