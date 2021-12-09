@@ -23,6 +23,7 @@ export const DangerzoneFields = ({
   transferApp,
   cloneApp,
   deleteApp,
+  isCollaborator
 }) => <Fieldset
   legend='Dangerzone'
   description='These options will effect your app'>
@@ -74,6 +75,7 @@ export const DangerzoneFields = ({
         input={<FormButton
           onClick={restartApp}
           value='Restart App'/>} />
+    { isCollaborator == false &&
     <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
@@ -82,16 +84,17 @@ export const DangerzoneFields = ({
         input={<FormButton
         // additionalStyles={{ backgroundColor: 'transparent', borderColor: '#f90015', color: '#f90015' }}
         onClick={transferApp}
-        value='Transfer App'/>} />
+        value='Transfer App'/>} />}
+    { isCollaborator == false &&
     <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
           text='Clone App'
           description={<span>Make a new clone app from this app.</span>} />}
         input={<FormButton
-        // additionalStyles={{ backgroundColor: 'transparent', borderColor: '#f90015', color: '#f90015' }}
         onClick={cloneApp}
-        value='Clone App'/>} />
+        value='Clone App'/>} />}
+    { isCollaborator == false &&
      <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
@@ -100,7 +103,7 @@ export const DangerzoneFields = ({
         input={<FormButton
         additionalStyles={{ backgroundColor: '#f90015', borderColor: '#f90015', color: 'white' }}
         onClick={deleteApp}
-        value='Delete App'/>} />
+        value='Delete App'/>} /> }
     {cleanUpFilesMessage ? <FormNote
       show={true}
       color={cleanUpMessageColor}>
