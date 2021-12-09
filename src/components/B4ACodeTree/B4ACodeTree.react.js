@@ -318,7 +318,8 @@ export default class B4ACodeTree extends React.Component {
                     }).then(({value}) => {
                       if (value) {
                         const parent = B4ATreeActions.getSelectedParent();
-                        B4ATreeActions.addFileOnSelectedNode(value, parent);
+                        let newNodeId = B4ATreeActions.addFileOnSelectedNode(value, parent);
+                        B4ATreeActions.selectFileOnTree(newNodeId); // select new file
                         this.setState({ files: $('#tree').jstree(true).get_json() });
                       }
                     })
