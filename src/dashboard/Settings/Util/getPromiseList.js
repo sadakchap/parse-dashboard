@@ -5,14 +5,14 @@ import pluck                             from 'lib/pluck';
 import {
   defaultParseOptions
 }                                        from 'dashboard/Settings/Fields/Constants';
+import deepmerge                         from 'deepmerge';
 
 export const getPromiseList = ({ changes, setDifference, initialFields, app, promiseCallback }) => {
   let promiseList = [];
   if (changes.requestLimit !== undefined) {
     promiseList.push(app.setRequestLimit(changes.requestLimit));
   }
-  if (changes.appName !== undefined || changes.parseOptions !== undefined || changes.clientPush !== undefined || changes.clientClassCreation ) {
-    const parseOptions = {...typeof changes.parseOptions == 'string' ? JSON.parse(changes.parseOptions) : {} };
+  if (changes.appName !== undefined || changes.parseOptions !== undefined || changes.clientPush !== undefined || changes.clientClassCreation !== undefined ) {
     let settings = {};
     if ( changes.clientPush !== undefined ) {
       settings.clientPush = changes.clientPush
@@ -20,8 +20,9 @@ export const getPromiseList = ({ changes, setDifference, initialFields, app, pro
     if ( changes.clientClassCreation !== null ) {
       settings.clientClassCreation = changes.clientClassCreation
     }
-    promiseList.push(app.setAppConfig(changes.appName,
-      { accountLockout: {...defaultParseOptions.accountLockout, ...parseOptions.accountLockout}, passwordPolicy: { ...defaultParseOptions.passwordPolicy, ...parseOptions.passwordPolicy }},
+    promiseList.push(app.setAppConfig(
+      changes.appName,
+      deepmerge(defaultParseOptions, changes.parseOptions || {}),
       settings
     ));
   }
@@ -59,7 +60,6 @@ export const getPromiseList = ({ changes, setDifference, initialFields, app, pro
       promiseList.push(app.setAppStoreURL(urlKeys[key], changes[key]));
     }
   });
-
   return Promise.all(promiseList).then(() => promiseCallback({ removedCollaborators })).catch(errors => {
     return Promise.reject({ error: unique(pluck(errors, 'error')).join(' ')});
   });
