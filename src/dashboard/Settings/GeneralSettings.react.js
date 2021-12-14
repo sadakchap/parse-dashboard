@@ -32,6 +32,8 @@ import {
   renderModal
 }                                        from './Util';
 
+import GeneralSettingsValidataions       from 'dashboard/Settings/GeneralSettingsValidataions';
+
 export default class GeneralSettings extends DashboardView {
   constructor() {
     super();
@@ -94,7 +96,7 @@ export default class GeneralSettings extends DashboardView {
       collaborators: this.props.initialFields.collaborators,
       waiting_collaborators: this.props.initialFields.waiting_collaborators,
       mongoURL: this.context.currentApp.settings.fields.fields.opendb_connection_string,
-      parseOptions: this.context.currentApp.parseOptions,
+      parseOptions: this.context.currentApp.settings.fields.fields.parseOptions,
       dashboardAPI: this.context.currentApp.settings.fields.fields.dashboardAPI,
       databaseURL: this.context.currentApp.settings.fields.fields.databaseURL,
       parseVersion: this.context.currentApp.settings.fields.fields.parseVersion,
@@ -133,10 +135,11 @@ export default class GeneralSettings extends DashboardView {
     return <div>
       <FlowView
         initialFields={initialFields}
-        footerContents={({changes}) => renderFlowFooterChanges(changes, initialFields, generalFieldsOptions )}
-        onSubmit={({ changes }) => {
+        validate={(changes) => GeneralSettingsValidataions.validate(changes)}
+        onSubmit={async ({ changes }) => {
           return getPromiseList({ changes, setDifference, initialFields, app: this.context.currentApp, promiseCallback: this.promiseCallback.bind(this) })
         }}
+        footerContents={({changes}) => renderFlowFooterChanges(changes, initialFields, generalFieldsOptions )}
         renderModals={[
           renderModal(this.state.showRestartAppModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, RestartAppModal),
           renderModal(this.state.showPurgeFilesModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, PurgeFilesModal),
@@ -145,9 +148,10 @@ export default class GeneralSettings extends DashboardView {
           renderModal(this.state.showCloneAppModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, CloneAppModal),
           renderModal(this.state.showDeleteAppModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, DeleteAppModal)
         ]}
-        renderForm={({ fields, setField, setFieldJson }) => {
+        renderForm={({ fields, setField, setFieldJson, errors }) => {
           return <div className={styles.settings_page}>
             <AppInformationFields
+              errors={errors}
               appName={fields.appName}
               setAppName={setField.bind(this, 'appName')}
               inProduction={fields.inProduction}
@@ -163,6 +167,7 @@ export default class GeneralSettings extends DashboardView {
               otherURL={fields.otherURL}
               setOtherURL={setField.bind(this, 'otherURL')} />
             <CollaboratorsFields
+              errors={errors}
               collaborators={fields.collaborators}
               waiting_collaborators={fields.waiting_collaborators}
               ownerEmail={this.props.initialFields.owner_email}
@@ -171,6 +176,7 @@ export default class GeneralSettings extends DashboardView {
               removeCollaborator={this.setCollaborators.bind(undefined, initialFields, setField)}
               editCollaborator={this.setCollaborators.bind(undefined, initialFields, setField)}/>
             <ManageAppFields
+              errors={errors}
               mongoURL={fields.mongoURL}
               isCollaborator={AccountManager.currentUser().email !== this.props.initialFields.owner_email}
               hasCollaborators={fields.collaborators.length > 0}
@@ -187,6 +193,7 @@ export default class GeneralSettings extends DashboardView {
               cleanUpSystemLog={() => this.setState({showPurgeSystemLogModal: true})}
               cleanUpSystemLogMessage={this.state.cleanupSystemLogMessage} />
             <DangerzoneFields
+              errors={errors}
               mongoURL={fields.mongoURL}
               isCollaborator={AccountManager.currentUser().email !== this.props.initialFields.owner_email}
               hasCollaborators={fields.collaborators.length > 0}
