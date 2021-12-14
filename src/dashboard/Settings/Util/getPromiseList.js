@@ -9,6 +9,7 @@ import deepmerge                         from 'deepmerge';
 
 export const getPromiseList = ({ changes, setDifference, initialFields, app, promiseCallback }) => {
   let promiseList = [];
+  console.log('parseOptions updated');
   if (changes.requestLimit !== undefined) {
     promiseList.push(app.setRequestLimit(changes.requestLimit));
   }
