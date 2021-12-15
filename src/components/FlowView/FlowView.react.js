@@ -20,10 +20,12 @@ export default class FlowView extends React.Component {
       changes: props.initialChanges || {},
       saveState: SaveButton.States.WAITING,
       saveError: '',
+      errors: []
     };
     this.handleClickSaveButton = this.handleClickSaveButton.bind(this);
   }
 
+  // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(props) {
     let newChanges = {...this.state.changes};
     for (let k in props.initialFields) {
@@ -40,7 +42,11 @@ export default class FlowView extends React.Component {
       fields[k] = this.props.initialFields[k];
     }
     for (let k in this.state.changes) {
-      fields[k] = this.state.changes[k];
+      if ( typeof this.state.changes[k] === 'object' ) {
+        fields[k] = deepmerge(fields[k], this.state.changes[k])
+      } else {
+        fields[k] = this.state.changes[k];
+      }
     }
     return fields;
   }
@@ -49,20 +55,33 @@ export default class FlowView extends React.Component {
     if (this.state.saveState !== SaveButton.States.SAVING) {
       let newChanges = {...this.state.changes};
       newChanges[key] = value;
-      if (newChanges[key] === this.props.initialFields[key]) {
+      if ( ((typeof newChanges[key] === 'object' && typeof this.props.initialFields[key] === 'object') &&
+        JSON.stringify(newChanges[key]) === JSON.stringify(this.props.initialFields[key]))
+        || newChanges[key] === this.props.initialFields[key]
+      ) {
         delete newChanges[key];
       }
-      //Modify stored state in case component recieves new props,
-      //as componentWillReceiveProps would otherwise clobber this change.
-      this.state.changes[key] = value;
-      this.setState({
-        saveState: preserveSavingState ? this.state.saveState : SaveButton.States.WAITING,
-        saveError: '',
-        changes: newChanges,
-      });
-      if(key === 'collaborators'){
-        this.handleClickSaveButton();
-      }
+      this.props.validate(newChanges)
+        .then(() => {
+          //Modify stored state in case component recieves new props,
+          //as componentWillReceiveProps would otherwise clobber this change.
+          this.state.changes[key] = value;
+          this.setState({
+            saveState: preserveSavingState ? this.state.saveState : SaveButton.States.WAITING,
+            saveError: '',
+            changes: newChanges,
+            errors: []
+          });
+          if(key === 'collaborators'){
+            this.handleClickSaveButton();
+          }
+        })
+        .catch(({ errors }) => {
+          this.setState({
+            saveError: 'Validation failed',
+            errors
+          });
+        })
     }
   }
 
@@ -73,21 +92,33 @@ export default class FlowView extends React.Component {
         newChanges[key] = {};
       }
       newChanges[key] = deepmerge(newChanges[key], value);
-      //Modify stored state in case component recieves new props,
-      //as componentWillReceiveProps would otherwise clobber this change.
-      this.setState({
-        saveState: preserveSavingState ? this.state.saveState : SaveButton.States.WAITING,
-        saveError: '',
-        changes: newChanges,
-      });
-      if(key === 'collaborators'){
-        this.handleClickSaveButton();
-      }
+
+      this.props.validate(newChanges)
+        .then(() => {
+          //Modify stored state in case component recieves new props,
+          //as componentWillReceiveProps would otherwise clobber this change.
+          this.setState({
+            saveState: preserveSavingState ? this.state.saveState : SaveButton.States.WAITING,
+            saveError: '',
+            changes: newChanges,
+            errors: []
+          });
+          if(key === 'collaborators'){
+            this.handleClickSaveButton();
+          }
+        })
+        .catch(({ errors }) => {
+          this.setState({
+            saveError: 'Validation failed',
+            errors
+          });
+        })
+      
     }
   }
 
   resetFields() {
-    if (this.state.saveState !== SaveButton.States.SAVING) {
+    if ( this.state.saveState !== SaveButton.States.SAVING ) {
       this.setState({
         saveState: SaveButton.States.WAITING,
         saveError: '',
@@ -119,8 +150,6 @@ export default class FlowView extends React.Component {
       defaultFooterMessage,
       renderForm,
       validate = () => '',
-      onSubmit,
-      afterSave = () => {},
       renderModals = [],
       secondaryButton = () => <Button
         disabled={this.state.saveState === SaveButton.States.SAVING}
@@ -137,7 +166,7 @@ export default class FlowView extends React.Component {
     let resetFields = this.resetFields.bind(this);
     let setFieldJson = this.setFieldJson.bind(this);
     let fields = this.currentFields();
-    let form = renderForm({ fields, changes, setField, resetFields, setFieldJson });
+    let form = renderForm({ fields, changes, setField, resetFields, setFieldJson, errors: this.state.errors });
     let flowModals = <div>{renderModals.map( (modal, key) => <div key={key}>{modal}</div> )}</div>
 
     let invalidFormMessage = validate({ changes, fields });
@@ -194,6 +223,7 @@ FlowView.propTypes = {
   showFooter: PropTypes.func.describe('Recieves the changes, and returns false if the footer should be hidden. By default the footer shows if there are any changes.'),
   secondaryButton: PropTypes.func.describe('Overrride the cancel button by passing a function that returns your custom node. By default, the cancel button says "Cancel" and calls resetFields().'),
   defaultFooterMessage: PropTypes.node.describe('A message for the footer when the validate message is "use default"'),
+  renderModals: PropTypes.object.describe('An array of modals to render in the document')
 };
 
 FlowView.defaultProps = {
