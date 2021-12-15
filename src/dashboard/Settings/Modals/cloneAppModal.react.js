@@ -23,8 +23,8 @@ export const CloneAppModal = ({ context, setParentState }) => {
     setProcessing(true);
     context.currentApp.supportedParseServerVersions()
       .then((data) => {
-        setParseVersions(data);
-        setCloneParseVersion(data[0]);
+        setParseVersions(data.results);
+        setCloneParseVersion(data.results[0]);
       })
       .catch((e) => {
         setNote(e.error)
@@ -37,11 +37,11 @@ export const CloneAppModal = ({ context, setParentState }) => {
   useEffect(() => {cloneAppName.length <= 0 ? setCanSubmit(false) : setCanSubmit(true)},[cloneAppName]);
   
   const cloneApp = async () => {
-
+    let newApp;
     try {
       // check storage for the current app.
       setProcessing(true)
-      setNote('Validationg app strage...');
+      setNote('Validationg app storage...');
       setNoteColor('blue');
 
       await context.currentApp.checkStorage();
@@ -49,17 +49,17 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNote('Creating a new parse app...');
       setNoteColor('blue');
 
-      const newApp = await context.currentApp.createApp(cloneAppName);
+      newApp = await context.currentApp.createApp(cloneAppName);
 
       setNote('Creating database for the new parse app...');
       setNoteColor('blue');
 
-      await context.currentApp.initializeDb(newApp.appId, { parseVersion: cloneParseVersion });
+      await context.currentApp.initializeDb(newApp.id, cloneParseVersion?.version);
 
       setNote('Cloning app...');
       setNoteColor('blue');
 
-      await context.currentApp.cloneApp( newApp.appId, cloneParseVersion );
+      await context.currentApp.cloneApp( newApp.appId, cloneParseVersion?.version );
 
       setNote('App cloned successfully!');
       setNoteColor('green');
@@ -68,6 +68,10 @@ export const CloneAppModal = ({ context, setParentState }) => {
       console.log(e);
       setNote('An error occurred');
       setNoteColor('red');  
+      if ( newApp ) {
+        await context.currentApp.deleteApp( newApp.id );
+      }
+
     } finally {
       setProcessing(false);
     }

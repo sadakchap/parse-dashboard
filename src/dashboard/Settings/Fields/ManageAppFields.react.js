@@ -10,12 +10,9 @@ import NumericInputSettings              from 'components/NumericInputSettings/N
 import Toggle                            from 'components/Toggle/Toggle.react';
 import TextInputSettings                 from 'components/TextInputSettings/TextInputSettings.react';
 import {
-  getSettingsFromKey
-}                                        from 'lib/ParseOptionUtils';
-
-import {
   DEFAULT_SETTINGS_LABEL_WIDTH
 }                                        from 'dashboard/Settings/Fields/Constants';
+import PropTypes                         from 'lib/PropTypes';
 import getError                          from 'dashboard/Settings/Util/getError';
 
 export const ManageAppFields = ({
@@ -112,8 +109,8 @@ export const ManageAppFields = ({
             input={
               <NumericInputSettings
                 min={0}
+                value={parseOptions?.passwordPolicy?.resetTokenValidityDuration}
                 error={getError(errors, 'parseOptions.passwordPolicy.resetTokenValidityDuration')}
-                defaultValue={getSettingsFromKey(parseOptions.passwordPolicy, 'resetTokenValidityDuration') || 24 * 60 * 60}
                 onChange={(resetTokenValidityDuration) => {
                   setParseOptions( { passwordPolicy: { resetTokenValidityDuration } } );
                 }} />
@@ -129,7 +126,7 @@ export const ManageAppFields = ({
             input={
               <Toggle
                 additionalStyles={{ display: 'block', textAlign: 'center', margin: '6px 0px 0 0' }}
-                defaultValue={ getSettingsFromKey(parseOptions.passwordPolicy, 'resetTokenReuseIfValid') || false }
+                value={ parseOptions?.passwordPolicy?.resetTokenReuseIfValid }
                 onChange={resetTokenReuseIfValid => {
                   setParseOptions({ passwordPolicy: { resetTokenReuseIfValid: resetTokenReuseIfValid } });
                 }} />
@@ -146,7 +143,7 @@ export const ManageAppFields = ({
             input={
               <TextInputSettings
                 error={getError(errors,'parseOptions.passwordPolicy.validatorPattern')}
-                defaultValue={getSettingsFromKey(parseOptions.passwordPolicy, 'validatorPattern') || '/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/'}
+                value={parseOptions?.passwordPolicy?.validatorPattern}
                 onChange={({ target: {value} }) => {
                   setParseOptions( { passwordPolicy: { validatorPattern: value } } );
                 }} />
@@ -162,8 +159,8 @@ export const ManageAppFields = ({
             />}
             input={
               <TextInputSettings
+                value={parseOptions?.passwordPolicy?.validationError}
                 error={getError(errors, 'parseOptions.passwordPolicy.validationError')}
-                defaultValue={getSettingsFromKey(parseOptions.passwordPolicy, 'validationError') || 'Password must contain at least 1 digit.'}
                 onChange={({ target: {value} }) => {
                   setParseOptions({ passwordPolicy: { validationError: value } });
                 }} />
@@ -179,7 +176,7 @@ export const ManageAppFields = ({
             input={
               <Toggle
                 additionalStyles={{ display: 'block', textAlign: 'center', margin: '6px 0px 0 0' }}
-                defaultValue={getSettingsFromKey(parseOptions.passwordPolicy, 'doNotAllowUsername') !== undefined ? getSettingsFromKey(parseOptions.passwordPolicy, 'doNotAllowUsername') : true }
+                value={parseOptions?.passwordPolicy?.doNotAllowUsername}
                 onChange={doNotAllowUsername => {
                   setParseOptions({ passwordPolicy: { doNotAllowUsername } });
                 }} />
@@ -197,7 +194,7 @@ export const ManageAppFields = ({
               <NumericInputSettings
                 error={getError(errors, 'parseOptions.passwordPolicy.maxPasswordAge')}
                 min={0}
-                defaultValue={getSettingsFromKey(parseOptions.passwordPolicy, 'maxPasswordAge') || 90 }
+                value={parseOptions?.passwordPolicy?.maxPasswordAge}
                 onChange={(maxPasswordAge) => {
                   setParseOptions({ passwordPolicy: { maxPasswordAge } });
                 }} />
@@ -216,7 +213,7 @@ export const ManageAppFields = ({
               <NumericInputSettings
                 error={getError(errors, 'parseOptions.passwordPolicy.maxPasswordHistory')}
                 min={0}
-                defaultValue={ getSettingsFromKey(parseOptions.passwordPolicy, 'maxPasswordHistory') || 5 }
+                value={ parseOptions?.passwordPolicy?.maxPasswordHistory }
                 onChange={(maxPasswordHistory) => {
                   setParseOptions({ passwordPolicy: { maxPasswordHistory } });
                 }} />
@@ -243,7 +240,7 @@ export const ManageAppFields = ({
               <NumericInputSettings
                 error={getError(errors, 'parseOptions.accountLockout.duration')}
                 min={0}
-                defaultValue={getSettingsFromKey(parseOptions.accountLockout, 'duration') || 5}
+                value={parseOptions?.accountLockout?.duration}
                 onChange={(duration) => {
                   setParseOptions({ accountLockout: { duration } });
                 }} />
@@ -262,7 +259,7 @@ export const ManageAppFields = ({
               <NumericInputSettings
                 error={getError(errors, 'parseOptions.accountLockout.threshold')}
                 min={0}
-                defaultValue={ getSettingsFromKey(parseOptions.accountLockout, 'threshold') || 3}
+                value={ parseOptions?.accountLockout?.threshold }
                 onChange={(threshold) => {
                   setParseOptions({ accountLockout: { threshold } });
                 }} />
@@ -273,4 +270,14 @@ export const ManageAppFields = ({
       />
   </Fieldset>
   );
+}
+
+ManageAppFields.propTypes = {
+  parseOptions: PropTypes.object.isRequired.describe('Parse options for the fields'),
+  setParseOptions: PropTypes.func.isRequired.describe('Set parse options'),
+  toggleVisibility: PropTypes.bool.describe('Toggle visibility'),
+  dashboardAPI: PropTypes.string.describe('Parse Server API URL'),
+  databaseURL: PropTypes.string.describe('Dashboard API URL'),
+  parseVersion: PropTypes.string.describe('Parse server version'),
+  mongoVersion: PropTypes.string.describe('Database version')
 }

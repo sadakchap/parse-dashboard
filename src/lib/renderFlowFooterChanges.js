@@ -67,7 +67,7 @@ export default (changes, initial, fieldOptions) => {
 
       } 
       else if (fieldOptions[key].type === 'json') {
-        stringChanges.push(<strong key={key}>{jsonChangesToString(changes[key])}</strong>)
+        stringChanges.push(<strong key={key}>{jsonChangesToString(changes[key], initial[key])}</strong>)
       }
     }
   }
