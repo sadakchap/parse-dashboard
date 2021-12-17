@@ -35,6 +35,7 @@
   },
   "globals": {
     "b4aSettings": true,
-    "createSoluCXWidget": true
+    "createSoluCXWidget": true,
+    "back4AppNavigation": true
   }
 }
