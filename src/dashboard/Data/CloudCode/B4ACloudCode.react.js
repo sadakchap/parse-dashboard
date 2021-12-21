@@ -72,7 +72,7 @@ class B4ACloudCode extends CloudCode {
     await this.fetchSource()
     // define the parameters to show unsaved changes warning modal
     const unbindHook = this.props.history.block(nextLocation => {
-      if (this.state.unsavedChanges) {
+      if (this.state.unsavedChanges || this.state.codeUpdated) {
         const warningModal = <Modal
           type={Modal.Types.WARNING}
           icon='warn-triangle-solid'
@@ -317,10 +317,10 @@ class B4ACloudCode extends CloudCode {
 
     return (
       <div className={`${styles.source} ${styles['b4a-source']}`} >
-        <Prompt
+        {/* <Prompt
           when={this.state.codeUpdated === true}
           message='Your cloud code changes may be lost. Please DEPLOY your changes before closing cloud code.'
-        />
+        /> */}
         {title}
         {content}
         {footer}
