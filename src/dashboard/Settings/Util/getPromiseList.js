@@ -22,7 +22,7 @@ export const getPromiseList = ({ changes, setDifference, initialFields, app, pro
     }
     promiseList.push(app.setAppConfig(
       changes.appName,
-      deepmerge(defaultParseOptions, changes.parseOptions || {}),
+      changes.parseOptions || {},
       settings
     ));
   }
