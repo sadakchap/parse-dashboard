@@ -11,6 +11,7 @@ import Parse          from 'parse';
 import axios          from 'lib/axios';
 import csv            from 'csvtojson';
 import * as CSRFManager from 'lib/CSRFManager';
+import deepmerge from 'deepmerge';
 
 function setEnablePushSource(setting, enable) {
   let path = `/apps/${this.slug}/update_push_notifications`;
@@ -745,8 +746,9 @@ export default class ParseApp {
       if ( appSettings ) {
         this.settings.fields.fields = { ...this.settings.fields.fields, ...appSettings }
       }
-      if(parseOptions)
-        this.settings.fields.fields.parseOptions = parseOptions;
+      if(parseOptions) {
+        this.settings.fields.fields.parseOptions = deepmerge(this.settings.fields.fields.parseOptions, parseOptions);
+      }
     });
     return promise;
   }

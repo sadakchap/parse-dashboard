@@ -39,8 +39,6 @@ import stringCompare                      from 'lib/stringCompare';
 import styles                             from 'dashboard/Data/Browser/Browser.scss';
 import subscribeTo                        from 'lib/subscribeTo';
 import * as ColumnPreferences             from 'lib/ColumnPreferences';
-import introJs                            from 'intro.js'
-import introStyle                         from 'stylesheets/introjs.css';
 import Tour                               from 'components/Tour/Tour.react';
 import { isMobile }                       from 'lib/browserUtils';
 import * as queryString                   from 'query-string';
@@ -399,52 +397,58 @@ class Browser extends DashboardView {
         switch(this._currentStep) {
           case 0:
           case 1:
-            let nextButton = getNextButton();
-            if (nextButton) {
-              nextButton.innerHTML = "Next";
+            {
+              const nextButton = getNextButton();
+              if (nextButton) {
+                nextButton.innerHTML = "Next";
+              }
             }
             break;
           case 2:
-            const stepElement = document.querySelector('.introjs-helperNumberLayer');
-            stepElement.style.marginLeft = '20px';
-            nextButton = getNextButton();
-            nextButton.innerHTML = "Run";
+            {
+              const stepElement = document.querySelector('.introjs-helperNumberLayer');
+              stepElement.style.marginLeft = '20px';
+              const nextButton = getNextButton();
+              nextButton.innerHTML = "Run";
+            }
             break;
           case 3:
-            if (!getCustomVehicleClassLink() && !unexpectedErrorThrown) {
-              schema.dispatch(ActionTypes.CREATE_CLASS, {
-                className: 'B4aVehicle',
-                fields: {
-                  name: { type: 'String' },
-                  price: { type: 'Number' },
-                  color: { type: 'String' },
-                }
-              }).then(() => {
-                return context.currentApp.apiRequest('POST', '/classes/B4aVehicle', { name: 'Corolla', price: 19499, color: 'black' }, { useMasterKey: true });
-              }).then(() => {
-                introItems[3].element = getCustomVehicleClassLink();
-                this.nextStep();
-              }).catch(e => {
-                if (!unexpectedErrorThrown) {
-                  console.log(introItems);
-                  introItems.splice(3, 2);
-                  for (let i=3; i<introItems.length; i++) {
-                    introItems[i].step -= 2;
+            {
+              if (!getCustomVehicleClassLink() && !unexpectedErrorThrown) {
+                schema.dispatch(ActionTypes.CREATE_CLASS, {
+                  className: 'B4aVehicle',
+                  fields: {
+                    name: { type: 'String' },
+                    price: { type: 'Number' },
+                    color: { type: 'String' },
                   }
-                  unexpectedErrorThrown = true;
-                }
-                console.error(e);
-                this.nextStep();
-              });
-              return false;
-            }
-            nextButton = getNextButton();
-            nextButton.innerHTML = 'Next';
+                }).then(() => {
+                  return context.currentApp.apiRequest('POST', '/classes/B4aVehicle', { name: 'Corolla', price: 19499, color: 'black' }, { useMasterKey: true });
+                }).then(() => {
+                  introItems[3].element = getCustomVehicleClassLink();
+                  this.nextStep();
+                }).catch(e => {
+                  if (!unexpectedErrorThrown) {
+                    console.log(introItems);
+                    introItems.splice(3, 2);
+                    for (let i=3; i<introItems.length; i++) {
+                      introItems[i].step -= 2;
+                    }
+                    unexpectedErrorThrown = true;
+                  }
+                  console.error(e);
+                  this.nextStep();
+                });
+                return false;
+              }
+              const nextButton = getNextButton();
+              nextButton.innerHTML = 'Next';
 
-            const numberLayer = document.querySelector('.introjs-helperNumberLayer');
-            numberLayer.style.marginLeft = 0;
-            if (!unexpectedErrorThrown) {
-              history.push(context.generatePath('browser/B4aVehicle'));
+              const numberLayer = document.querySelector('.introjs-helperNumberLayer');
+              numberLayer.style.marginLeft = 0;
+              if (!unexpectedErrorThrown) {
+                history.push(context.generatePath('browser/B4aVehicle'));
+              }
             }
             break;
           case 4:
@@ -457,15 +461,16 @@ class Browser extends DashboardView {
               targetElement.style.backgroundColor = 'inherit';
             }
             break;
-          case 6:
-            let nextBtn = getNextButton();
-            let prevBtn = getPrevButton();
-            // hide prev & next buttons
-            nextBtn.style.display = 'none';
-            prevBtn.style.display = 'none';
-            // move Done button to right
-            prevBtn.parentElement.style.justifyContent = 'end';
-            targetElement.style.backgroundColor = 'inherit';
+          case 6: {
+              const nextBtn = getNextButton();
+              const prevBtn = getPrevButton();
+              // hide prev & next buttons
+              nextBtn.style.display = 'none';
+              prevBtn.style.display = 'none';
+              // move Done button to right
+              prevBtn.parentElement.style.justifyContent = 'end';
+              targetElement.style.backgroundColor = 'inherit';
+            }
             break;
         }
       },
@@ -762,12 +767,6 @@ class Browser extends DashboardView {
         : new Parse.Object(this.props.params.className) ),
       });
     }
-  }
-
-  addEditCloneRows(cloneRows) {
-    this.setState({
-      editCloneRows: cloneRows
-    });
   }
 
   abortEditCloneRows(){
@@ -1315,15 +1314,6 @@ class Browser extends DashboardView {
         compareTo: id
     }]);
     history.push(this.context.generatePath(`browser/${className}?filters=${encodeURIComponent(filters)}`));
-  }
-
-  handlePointerCmdClick({ className, id, field = 'objectId' }) {
-    let filters = JSON.stringify([{
-      field,
-      constraint: 'eq',
-      compareTo: id
-    }]);
-    window.open(this.context.generatePath(`browser/${className}?filters=${encodeURIComponent(filters)}`),'_blank');
   }
 
   handleCLPChange(clp) {
@@ -2017,7 +2007,6 @@ class Browser extends DashboardView {
         }
         browser = (
           <DataBrowser
-            ref="dataBrowser"
             isUnique={this.state.isUnique}
             uniqueField={this.state.uniqueField}
             count={count}
@@ -2038,7 +2027,6 @@ class Browser extends DashboardView {
             onAttachRows={this.showAttachRowsDialog}
             onAttachSelectedRows={this.showAttachSelectedRowsDialog}
             onCloneSelectedRows={this.showCloneSelectedRowsDialog}
-            onImport={this.showImport}
             onEditSelectedRow={this.showEditRowDialog}
             onEditPermissions={this.onDialogToggle}
             onShowPointerKey={this.showPointerKeyDialog}
@@ -2066,7 +2054,6 @@ class Browser extends DashboardView {
             data={this.state.data}
             ordering={this.state.ordering}
             newObject={this.state.newObject}
-            editCloneRows={this.state.editCloneRows}
             relation={this.state.relation}
             disableKeyControls={this.hasExtras()}
             updateRow={this.updateRow}
@@ -2076,7 +2063,6 @@ class Browser extends DashboardView {
             setRelation={this.setRelation}
             onAddColumn={this.showAddColumn}
             onAddRow={this.addRow}
-            onAbortAddRow={this.abortAddRow}
             onAddRowWithModal={this.addRowWithModal}
             onAddClass={this.showCreateClass}
             onAbortEditCloneRows={this.abortEditCloneRows}
@@ -2305,6 +2291,7 @@ class Browser extends DashboardView {
           details={
             <a
               target="_blank"
+              rel="noopener noreferrer"
               href="http://docs.parseplatform.org/ios/guide/#security"
             >
               Learn more about CLPs and app security
