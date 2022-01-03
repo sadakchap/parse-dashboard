@@ -747,7 +747,6 @@ export default class ParseApp {
         this.settings.fields.fields = { ...this.settings.fields.fields, ...appSettings }
       }
       if(parseOptions) {
-        // console.log(deepmerge(this.settings.fields.fields.parseOptions, parseOptions));
         this.settings.fields.fields.parseOptions = deepmerge(this.settings.fields.fields.parseOptions, parseOptions);
       }
     });
