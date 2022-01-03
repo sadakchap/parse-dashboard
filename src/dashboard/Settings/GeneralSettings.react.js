@@ -48,30 +48,9 @@ export default class GeneralSettings extends DashboardView {
       cleanupFilesMessage: '',
       cleanupNoteColor: '',
 
-      exportDataMessage: '',
-      exportDataColor: '',
-
-      password: '',
-
-      transferNewOwner: '',
-      transferAppSuccessMessage: '',
-
+      // show modals.
       showDeleteAppModal: false,
-
       showCloneAppModal: false,
-      cloneAppMessage: '',
-      cloneAppName:'',
-
-      showMigrateAppModal: false,
-      migrationMongoURL: '',
-      migrationWarnings: [],
-      //TODO: modify FormModal to clear errors when it's content changes, then this hack will be unnecessary.
-      showMongoConnectionValidationErrors: true,
-
-      showChangeConnectionStringModal: false,
-      newConnectionString: '',
-
-      removedCollaborators: [],
       showPurgeFilesModal: false,
       showRestartAppModal: false,
       showPurgeSystemLogModal: false,
