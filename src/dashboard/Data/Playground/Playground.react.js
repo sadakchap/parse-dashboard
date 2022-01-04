@@ -77,7 +77,7 @@ export default class Playground extends Component {
       const {
         currentApp: { applicationId, masterKey, serverURL, javascriptKey }
       } = this.context;
-      const originalCode = this.editor.value;
+      const originalCode = this.state.code;
 
       const finalCode = `return (async function(){
         try{
@@ -152,7 +152,6 @@ export default class Playground extends Component {
       } else {
         code = placeholderCode;
       }
-      this.editor.value = code;
       this.setState({ code });
     }
   }
@@ -167,7 +166,7 @@ export default class Playground extends Component {
           <CodeEditor
             code={this.state.code}
             height={'calc(100% - 60px)'}
-            ref={editor => (this.editor = editor)}
+            onCodeChange={(code) => this.setState({ code })}
           />
           <div className={styles['console-ctn']}>
             <header>
