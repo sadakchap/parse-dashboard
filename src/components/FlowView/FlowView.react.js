@@ -44,7 +44,7 @@ export default class FlowView extends React.Component {
       fields[k] = this.props.initialFields[k];
     }
     for (let k in this.state.changes) {
-      if ( typeof this.state.changes[k] === 'object' ) {
+      if (typeof this.state.changes[k] === 'object' && this.state.changes[k] !== null) {
         fields[k] = deepmerge(fields[k], this.state.changes[k])
       } else {
         fields[k] = this.state.changes[k];
