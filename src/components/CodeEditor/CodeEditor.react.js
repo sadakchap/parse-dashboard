@@ -15,7 +15,6 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 export default class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
-    ace.config.set('workerPath', `${window.PARSE_DASHBOARD_PATH}workers`)
 
     this.state = { code: '', reset: false, fileName: '' };
   }
