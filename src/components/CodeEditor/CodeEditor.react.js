@@ -9,6 +9,7 @@ import React from 'react';
 import Editor from 'react-ace';
 import PropTypes from '../../lib/PropTypes';
 
+import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/theme-solarized_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
