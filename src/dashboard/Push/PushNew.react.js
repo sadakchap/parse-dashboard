@@ -876,7 +876,7 @@ class PushNew extends DashboardView {
       onSubmit={({ changes }) => this.handlePushSubmit(changes)}
       inProgressText={'Sending\u2026'}
       renderForm={this.renderForm.bind(this)}
-      validate={({ changes }) => this.valid(changes)}
+      validate={(changes) => this.valid(changes)}
       footerContents={({changes}) => {
         let deviceNote = null;
         if(this.state.deviceCount){
