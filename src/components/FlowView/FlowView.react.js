@@ -62,6 +62,7 @@ export default class FlowView extends React.Component {
       }
       //Modify stored state in case component recieves new props,
       //as componentWillReceiveProps would otherwise clobber this change.
+      this.state.changes[key] = value;
       this.setState({
         saveState: preserveSavingState ? this.state.saveState : SaveButton.States.WAITING,
         saveError: '',
@@ -77,9 +78,10 @@ export default class FlowView extends React.Component {
       }
       Promise.resolve(this.props.validate(newChanges))
         .then((errors) => {
+          if ( errors )
           this.setState({
             saveError: 'Validation failed',
-            errors: 'errors' in errors ? errors.errors : []
+            errors: 'errors' in errors ? errors.errors : errors
           });
         })
         .catch(({ errors }) => {
@@ -98,21 +100,18 @@ export default class FlowView extends React.Component {
         newChanges[key] = {};
       }
       newChanges[key] = deepmerge(newChanges[key], value);
-
+      //Modify stored state in case component recieves new props,
+      //as componentWillReceiveProps would otherwise clobber this change.
+      this.setState({
+        saveState: preserveSavingState ? this.state.saveState : SaveButton.States.WAITING,
+        saveError: '',
+        changes: newChanges,
+        errors: []
+      });
+      if(key === 'collaborators'){
+        this.handleClickSaveButton();
+      }
       this.props.validate(newChanges)
-        .then(() => {
-          //Modify stored state in case component recieves new props,
-          //as componentWillReceiveProps would otherwise clobber this change.
-          this.setState({
-            saveState: preserveSavingState ? this.state.saveState : SaveButton.States.WAITING,
-            saveError: '',
-            changes: newChanges,
-            errors: []
-          });
-          if(key === 'collaborators'){
-            this.handleClickSaveButton();
-          }
-        })
         .catch(({ errors }) => {
           this.setState({
             saveError: 'Validation failed',
@@ -129,6 +128,7 @@ export default class FlowView extends React.Component {
         saveState: SaveButton.States.WAITING,
         saveError: '',
         changes: this.props.initialChanges || {},
+        errors: []
       });
     }
   }
