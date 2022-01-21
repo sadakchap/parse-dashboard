@@ -11,6 +11,7 @@ import PropTypes  from 'lib/PropTypes';
 import React      from 'react';
 import SaveButton from 'components/SaveButton/SaveButton.react';
 import deepmerge  from 'deepmerge';
+import styles     from 'components/FlowView/FlowView.scss';
 
 export default class FlowView extends React.Component {
   constructor(props) {
@@ -212,7 +213,7 @@ export default class FlowView extends React.Component {
       {footerMessage}
     </FlowFooter> : null;
 
-    return <div>{form}{flowModals}{footer}</div>;
+    return <div className={styles.flowViewWrapper}>{form}{flowModals}{footer}</div>;
   }
 }
 
