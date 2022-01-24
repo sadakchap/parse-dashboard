@@ -5,13 +5,8 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-.jobsFlow {
-  padding: 120px 0 100px 0;
-  overflow: auto;
-}
-
-.buttonCell {
-  > a:not(:last-child) {
-    margin-right: 10px;
-  }
+.flowViewWrapper {
+  height: calc(100vh - 51px);
+  display: flex;
+  flex-direction: column;
 }
