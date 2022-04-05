@@ -279,6 +279,12 @@ const selectFileOnTree = (nodeId) => {
   $('#tree').jstree().select_node(nodeId); // select specified node
 }
 
+const sanitizeHTML = (str) => {
+  return str.replace(/[^\w. ]/gi, function (c) {
+    return "&#" + c.charCodeAt(0) + ";";
+  });
+};
+
 export default {
   getConfig,
   remove,
@@ -293,4 +299,5 @@ export default {
   addFileOnSelectedNode,
   getSelectedParent,
   selectFileOnTree,
+  sanitizeHTML
 };
