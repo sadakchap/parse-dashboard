@@ -6,6 +6,8 @@ import Label                             from 'components/Label/Label.react';
 import FormButton                        from 'components/FormButton/FormButton.react';
 import FormNote                          from 'components/FormNote/FormNote.react';
 import Toggle                            from 'components/Toggle/Toggle.react';
+import { ManageAppFields }                from './ManageAppFields.react';
+import VisibilityField                   from 'components/VisibilityField/VisibilityField.react';
 import {
   DEFAULT_SETTINGS_LABEL_WIDTH
 }                                        from 'dashboard/Settings/Fields/Constants';
@@ -56,14 +58,46 @@ export const DangerzoneFields = ({
         </span>
       }
     />
-    <Field
-        labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-        label={<Label
-          text='Clean up app'
-          description={<span>This will delete any files that are not referenced by any objects. Don&apos;t use the feature if you have Arrays of Files, or Files inside Object columns.</span>} />}
-      input={<FormButton
-      onClick={cleanUpFiles}
-      value='Clean Up Files'/>} />
+
+
+
+
+
+    {
+      (ManageAppFields.databaseURL?.split('://')[0] !== "postgres") && 
+      <VisibilityField
+        onVisibleComponent={
+          () =>
+            <FieldSettings
+              containerStyles={{ borderTop: 'none' }}
+              padding={'7px 0px'}
+              labelWidth={'50%'}
+              label={<Label
+                text='Clean up app'
+                description={<span>This will delete any files that are not referenced by any objects. Don&apos;t use the feature if you have Arrays of Files, or Files inside Object columns.</span>} />}
+            input={<FormButton
+            onClick={cleanUpFiles}
+            value='Clean Up Files'/>} 
+            />}
+        onHiddenComponent={
+          (props) => <FormButton
+            onClick={() => props.toggleVisibility(true)}
+            value='Show Database URI'/>
+        }
+      />}
+
+
+
+
+    // <Field
+    //     labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
+    //     label={<Label
+    //       text='Clean up app'
+    //       description={<span>This will delete any files that are not referenced by any objects. Don&apos;t use the feature if you have Arrays of Files, or Files inside Object columns.</span>} />}
+    //   input={<FormButton
+    //   onClick={cleanUpFiles}
+    //   value='Clean Up Files'/>} 
+      />
     <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
