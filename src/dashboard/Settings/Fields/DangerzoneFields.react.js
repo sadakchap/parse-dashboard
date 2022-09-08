@@ -64,7 +64,7 @@ export const DangerzoneFields = ({
 
 
     {
-      (ManageAppFields.databaseURL?.split('://')[0] !== "postgres") && 
+      (ManageAppFields.databaseURL?.split(':')[0] !== "postgres") && 
       <VisibilityField
         onVisibleComponent={
           () =>
@@ -75,14 +75,14 @@ export const DangerzoneFields = ({
               label={<Label
                 text='Clean up app'
                 description={<span>This will delete any files that are not referenced by any objects. Don&apos;t use the feature if you have Arrays of Files, or Files inside Object columns.</span>} />}
-            input={<FormButton
-            onClick={cleanUpFiles}
-            value='Clean Up Files'/>} 
+              input={<FormButton
+              onClick={cleanUpFiles}
+              value='Clean Up Files'/>} 
             />}
         onHiddenComponent={
           (props) => <FormButton
-            onClick={() => props.toggleVisibility(true)}
-            value='Show Database URI'/>
+          onClick={cleanUpFiles}
+            value='Clean Up Files'/>
         }
       />}
 
