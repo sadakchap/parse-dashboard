@@ -97,7 +97,7 @@ export const DangerzoneFields = ({
     //   input={<FormButton
     //   onClick={cleanUpFiles}
     //   value='Clean Up Files'/>} 
-      />
+    //  />
     <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
