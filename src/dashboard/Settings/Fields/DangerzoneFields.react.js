@@ -64,7 +64,7 @@ export const DangerzoneFields = ({
 
 
     {
-      (ManageAppFields.databaseURL?.split(':')[0] !== "postgres") && 
+      (ManageAppFields.databaseURL?.split('://')[0] !== "postgres") && 
       <VisibilityField
         onVisibleComponent={
           () =>
