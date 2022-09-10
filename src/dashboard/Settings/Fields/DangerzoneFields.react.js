@@ -7,7 +7,6 @@ import FormButton                        from 'components/FormButton/FormButton.
 import FormNote                          from 'components/FormNote/FormNote.react';
 import Toggle                            from 'components/Toggle/Toggle.react';
 import { ManageAppFields }                from './ManageAppFields.react';
-import VisibilityField                   from 'components/VisibilityField/VisibilityField.react';
 import {
   DEFAULT_SETTINGS_LABEL_WIDTH
 }                                        from 'dashboard/Settings/Fields/Constants';
