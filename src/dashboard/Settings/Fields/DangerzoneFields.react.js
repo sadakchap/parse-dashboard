@@ -59,7 +59,7 @@ export const DangerzoneFields = ({
     />
 
 
-{ ManageAppFields.databaseURL?.split('://')[0] == /mongo/ &&
+{(ManageAppFields.databaseURL?.split('://')[0] == /mongo/) &&
   <Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
