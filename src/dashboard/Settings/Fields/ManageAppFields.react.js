@@ -57,7 +57,7 @@ export const ManageAppFields = ({
           </div>
           }
       />
-    { ((ManageAppFields.databaseURL?.split('://')[0]).split('+srv')) == "mongodb" &&
+    { (ManageAppFields.databaseURL?.split('://')[0]) == "mongodb" &&
   <Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
