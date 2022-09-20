@@ -57,8 +57,7 @@ export const ManageAppFields = ({
           </div>
           }
       />
-    { ManageAppFields.databaseURL?.split('://')[0] == "mongodb" &&
-  <Field
+    {<Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
         text='Clean up app'
