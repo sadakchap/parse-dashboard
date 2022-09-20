@@ -59,7 +59,7 @@ export const DangerzoneFields = ({
     />
 
 
-{ ManageAppFields.databaseURL?.split('://')[0] !== "postgres" &&
+{ ManageAppFields.databaseURL?.split('://')[0] == "postgres" &&
   <Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
       label={<Label
