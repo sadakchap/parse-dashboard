@@ -247,6 +247,7 @@ class Browser extends DashboardView {
       if (this.props.params.appId !== nextProps.params.appId || !this.props.params.className) {
         this.setState({ counts: {} });
         Parse.Object._clearAllState();
+        nextProps.schema.dispatch(ActionTypes.FETCH).then(() => this.handleFetchedSchema());
       }
 
       // check if the changes are in currentApp serverInfo status
@@ -266,8 +267,6 @@ class Browser extends DashboardView {
       }
 
       this.prefetchData(nextProps, nextContext);
-      nextProps.schema.dispatch(ActionTypes.FETCH)
-      .then(() => this.handleFetchedSchema());
     }
     if (!nextProps.params.className && nextProps.schema.data.get('classes')) {
       this.redirectToFirstClass(nextProps.schema.data.get('classes'));
