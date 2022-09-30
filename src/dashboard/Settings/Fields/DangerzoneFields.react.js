@@ -6,7 +6,6 @@ import Label                             from 'components/Label/Label.react';
 import FormButton                        from 'components/FormButton/FormButton.react';
 import FormNote                          from 'components/FormNote/FormNote.react';
 import Toggle                            from 'components/Toggle/Toggle.react';
-import { ManageAppFields }                from './ManageAppFields.react';
 import {
   DEFAULT_SETTINGS_LABEL_WIDTH
 }                                        from 'dashboard/Settings/Fields/Constants';
@@ -24,7 +23,8 @@ export const DangerzoneFields = ({
   transferApp,
   cloneApp,
   deleteApp,
-  isCollaborator
+  isCollaborator,
+  databaseURL
 }) => 
 <Fieldset
   legend='Danger Zone'
@@ -60,7 +60,7 @@ export const DangerzoneFields = ({
  
   <Field
       labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-      label={ManageAppFields.databaseURL?.split('://')[0] !== "postgres" && <Label
+      label={databaseURL?.split('://')[0] !== "postgres" && <Label
         text='Clean up app'
         description={<span>This will delete any files that are not referenced by any objects. Don&apos;t use the feature if you have Arrays of Files, or Files inside Object columns.</span>} />}
       input={<FormButton

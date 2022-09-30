@@ -186,6 +186,7 @@ export default class GeneralSettings extends DashboardView {
               clientPush={fields.clientPush}
               setClientPush={setField.bind(this, 'clientPush')}
               clientClassCreation={fields.clientClassCreation}
+              databaseURL={fields.databaseURL}
               setClientClassCreation={setField.bind(this, 'clientClassCreation')}
               cleanUpFiles={() => this.setState({showPurgeFilesModal: true})}
               restartApp={() => this.setState({ showRestartAppModal: true })}
