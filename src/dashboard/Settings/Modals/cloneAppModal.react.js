@@ -184,5 +184,4 @@ export const CloneAppModal = ({ context, setParentState, databaseURL }) => {
 CloneAppModal.propTypes = {
   context: PropTypes.any.isRequired.describe( 'The application context.' ),
   setParentState: PropTypes.func.isRequired.describe( 'Update parent state'),
-  databaseURL: PropTypes.any.databaseURL.describe('Dashboard API URL')
 }
