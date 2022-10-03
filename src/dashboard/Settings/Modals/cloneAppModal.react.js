@@ -8,7 +8,7 @@ import Dropdown                           from 'components/Dropdown/Dropdown.rea
 import Option                             from 'components/Dropdown/Option.react';
 import PropTypes                          from 'prop-types';
 
-export const CloneAppModal = ({ context, setParentState }) => {
+export const CloneAppModal = ({ context, setParentState, databaseURL }) => {
 
   const [ cloneAppName, setCloneAppName ] = useState('');
   const [ note, setNote ] = useState('');
@@ -139,7 +139,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
           </Dropdown>
         }
       />
-      <Field
+      { databaseURL?.split('://')[0] !== "postgres" &&  <Field
           labelWidth={100}
           label={
             <Label
@@ -147,6 +147,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
             />
           }
         />
+      } 
       <Field
           labelWidth={100}
           label={
@@ -183,4 +184,5 @@ export const CloneAppModal = ({ context, setParentState }) => {
 CloneAppModal.propTypes = {
   context: PropTypes.any.isRequired.describe( 'The application context.' ),
   setParentState: PropTypes.func.isRequired.describe( 'Update parent state'),
+  databaseURL: PropTypes.any.databaseURL.describe('Dashboard API URL')
 }

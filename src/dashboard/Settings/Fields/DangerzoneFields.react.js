@@ -86,7 +86,7 @@ export const DangerzoneFields = ({
         // additionalStyles={{ backgroundColor: 'transparent', borderColor: '#f90015', color: '#f90015' }}
         onClick={transferApp}
         value='Transfer App'/>} />}
-    { isCollaborator == false && databaseURL?.split('://')[0] !== "postgres" && 
+    { isCollaborator == false && 
     <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
