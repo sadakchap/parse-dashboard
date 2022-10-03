@@ -86,7 +86,7 @@ export const DangerzoneFields = ({
         // additionalStyles={{ backgroundColor: 'transparent', borderColor: '#f90015', color: '#f90015' }}
         onClick={transferApp}
         value='Transfer App'/>} />}
-    { isCollaborator == false &&
+    { isCollaborator == false && databaseURL?.split('://')[0] !== "postgres" && 
     <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
@@ -124,5 +124,6 @@ DangerzoneFields.propTypes = {
   transferApp: PropTypes.func.isRequired.describe('Transfer app function'),
   cloneApp: PropTypes.func.isRequired.describe('Clone app function'),
   deleteApp: PropTypes.func.isRequired.describe('Delete app function'),
-  isCollaborator: PropTypes.bool.isRequired.describe('The current user is collaborator')
+  isCollaborator: PropTypes.bool.isRequired.describe('The current user is collaborator'),
+  databaseURL: PropTypes.string.describe('Dashboard API URL')
 };
