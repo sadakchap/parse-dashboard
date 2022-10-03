@@ -7,6 +7,7 @@ import FormNote                           from 'components/FormNote/FormNote.rea
 import Dropdown                           from 'components/Dropdown/Dropdown.react';
 import Option                             from 'components/Dropdown/Option.react';
 import PropTypes                          from 'prop-types';
+import DangerzoneFields                   from '../Fields/DangerzoneFields.react';
 
 export const CloneAppModal = ({ context, setParentState, databaseURL }) => {
 
@@ -139,7 +140,7 @@ export const CloneAppModal = ({ context, setParentState, databaseURL }) => {
           </Dropdown>
         }
       />
-      { databaseURL?.split('://')[0] !== "postgres" &&  <Field
+      { DangerzoneFields.databaseURL?.split('://')[0] !== "postgres" &&  <Field
           labelWidth={100}
           label={
             <Label
