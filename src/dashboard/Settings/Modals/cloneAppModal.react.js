@@ -9,7 +9,7 @@ import Option                             from 'components/Dropdown/Option.react
 import PropTypes                          from 'prop-types';
 import DangerzoneFields                   from '../Fields/DangerzoneFields.react';
 
-export const CloneAppModal = ({ context, setParentState, databaseURL }) => {
+export const CloneAppModal = ({ context, setParentState }) => {
 
   const [ cloneAppName, setCloneAppName ] = useState('');
   const [ note, setNote ] = useState('');
