@@ -65,8 +65,8 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNoteColor('blue');
 
       await context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version, data);
-      console.log(JSON.stringify(context.currentApp));
-      await context.currentApp.settings.fields.fields.databaseURL;
+      console.log(JSON.stringify(context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version, data);));
+      // await context.currentApp.settings.fields.fields.databaseURL;
       // await context.currentApp.databaseURL;
 
       setNote('Cloning app...');
@@ -142,15 +142,17 @@ export const CloneAppModal = ({ context, setParentState }) => {
           </Dropdown>
         }
       />
-      { databaseURL?.split('://')[0] !== "postgres" &&  <Field
+      {/* { databaseURL */}
+      <Field
           labelWidth={100}
           label={
               text={<span><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="database" type={'radio'} checked={cloneType === 'database'}/> &nbsp; {'Clone Database'} </span>}
             />
           }
         />
-      } 
-       { databaseURL?.split('://')[0] !== "postgres" && <Field
+      {/* }  */}
+       {/* { databaseURL?.split('://')[0] !== "postgres" &&  */}
+       <Field
           labelWidth={100}
           label={
             <Label
@@ -158,7 +160,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
             />
           }
         />
-      }
+      {/* } */}
       <Field
           labelWidth={100}
           label={
