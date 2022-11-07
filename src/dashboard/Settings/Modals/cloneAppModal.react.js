@@ -7,7 +7,6 @@ import FormNote                           from 'components/FormNote/FormNote.rea
 import Dropdown                           from 'components/Dropdown/Dropdown.react';
 import Option                             from 'components/Dropdown/Option.react';
 import PropTypes                          from 'prop-types';
-import DangerzoneFields                   from '../Fields/DangerzoneFields.react';
 
 export const CloneAppModal = ({ context, setParentState }) => {
 
@@ -65,7 +64,9 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNote('Creating database for the new parse app...');
       setNoteColor('blue');
 
-      await context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version);
+      await context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version, data);
+
+      await context.currentApp.databaseURL;
 
       setNote('Cloning app...');
       setNoteColor('blue');
@@ -140,16 +141,15 @@ export const CloneAppModal = ({ context, setParentState }) => {
           </Dropdown>
         }
       />
-      { DangerzoneFields.databaseURL?.split('://')[0] !== "postgres" &&  <Field
+      { databaseURL?.split('://')[0] !== "postgres" &&  <Field
           labelWidth={100}
           label={
-            <Label
               text={<span><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="database" type={'radio'} checked={cloneType === 'database'}/> &nbsp; {'Clone Database'} </span>}
             />
           }
         />
       } 
-      <Field
+       { databaseURL?.split('://')[0] !== "postgres" && <Field
           labelWidth={100}
           label={
             <Label
@@ -157,6 +157,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
             />
           }
         />
+      }
       <Field
           labelWidth={100}
           label={
