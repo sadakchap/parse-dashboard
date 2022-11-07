@@ -65,8 +65,8 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNoteColor('blue');
 
       await context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version, data);
-
-      await context.currentApp.databaseURL;
+      await context.currentApp.settings.fields.fields.databaseURL;
+      // await context.currentApp.databaseURL;
 
       setNote('Cloning app...');
       setNoteColor('blue');
