@@ -1,0 +1,48 @@
+/*
+ * Copyright (c) 2016-present, Parse, LLC
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ */
+@import 'stylesheets/globals.scss';
+
+$calloutSize: 10px;
+
+.tooltipWrap {
+  display: inline-block;
+  position: relative;
+
+  .tooltip {
+    display: none;
+    width: auto;
+    background-color: #e7dfe1;
+    border: 0.5px solid rgb(71, 70, 70);
+    color: rgb(71, 70, 70);
+    font-size: 10px;
+    font-weight: 400;
+    border-radius: 0px;
+    height: auto;
+    line-height: 25px;
+    // TODO we don't want to use z-index. But this makes everything easier
+    // since we can do everything in CSS. We need to revisit this in the future
+    z-index: 1000;
+  }
+
+  &:hover {
+    .tooltip {
+      position: fixed;
+      display: inline;
+      left: 10px;
+    }
+  }
+}
+
+.tooltipContent {
+  padding: 0px 10px;
+  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100ch;
+}
