@@ -55,7 +55,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNote('Creating a new parse app...');
       setNoteColor('blue');
 
-      newApp = await context.currentApp.createApp(cloneAppName, cloneParseVersion?.version);
+      newApp = await context.currentApp.createApp(cloneAppName, cloneParseVersion?.version, context.currentApp.applicationId);
 
       if ( !newApp || Object.keys(newApp).length <= 0 ) {
         throw new Error();
