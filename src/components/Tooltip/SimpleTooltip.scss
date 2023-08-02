@@ -7,7 +7,7 @@
  */
 @import 'stylesheets/globals.scss';
 
-$topTooltip: 90px;
+$topTooltip: 95px;
 $calloutSize: 5px;
 $tooltipBG: #e7dfe1;
 $callouColor: #6298ba;
@@ -15,6 +15,7 @@ $callouColor: #6298ba;
 .tooltipWrap {
   display: inline-block;
   position: relative;
+  max-height: 30px;
 
   .tooltip {
     display: none;
@@ -43,19 +44,21 @@ $callouColor: #6298ba;
         @include arrow('up', $calloutSize + 3, $calloutSize + 2, $callouColor);
         position: absolute;
         left: -1px;
+        top: -8px;
       }
 
       .callout2 {
         @include arrow('up', $calloutSize + 1, $calloutSize + 2, $tooltipBG);
         position: absolute;
         left: 0px;
+        top: -8px;
       }
     }
   }
 }
 
 .tooltipContent {
-  padding: 0px 10px;
+  padding: 0px 5px;
   
   overflow: hidden;
   text-overflow: ellipsis;
