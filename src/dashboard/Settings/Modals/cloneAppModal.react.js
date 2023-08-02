@@ -65,9 +65,6 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNoteColor('blue');
 
       await context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version, data);
-      console.log(JSON.stringify(context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version, data);));
-      // await context.currentApp.settings.fields.fields.databaseURL;
-      // await context.currentApp.databaseURL;
 
       setNote('Cloning app...');
       setNoteColor('blue');
@@ -142,7 +139,6 @@ export const CloneAppModal = ({ context, setParentState }) => {
           </Dropdown>
         }
       />
-      {/* { databaseURL */}
       <Field
           labelWidth={100}
           label={
@@ -150,8 +146,6 @@ export const CloneAppModal = ({ context, setParentState }) => {
             />
           }
         />
-      {/* }  */}
-       {/* { databaseURL?.split('://')[0] !== "postgres" &&  */}
        <Field
           labelWidth={100}
           label={
@@ -160,7 +154,6 @@ export const CloneAppModal = ({ context, setParentState }) => {
             />
           }
         />
-      {/* } */}
       <Field
           labelWidth={100}
           label={
