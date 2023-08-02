@@ -7,6 +7,7 @@
  */
 @import 'stylesheets/globals.scss';
 
+$topTooltip: 90px;
 $calloutSize: 5px;
 $tooltipBG: #e7dfe1;
 $callouColor: #6298ba;
@@ -36,16 +37,16 @@ $callouColor: #6298ba;
       position: fixed;
       display: inline;
       left: 10px;
-      top: $calloutSize * 2 + 20px;
+      top: $topTooltip;
       // Faking arrow with border by making 2 arrows.
       .callout1 {
-        @include arrow('down', $calloutSize + 3, $calloutSize + 2, $callouColor);
+        @include arrow('up', $calloutSize + 3, $calloutSize + 2, $callouColor);
         position: absolute;
         left: -1px;
       }
 
       .callout2 {
-        @include arrow('down', $calloutSize + 1, $calloutSize + 2, $tooltipBG);
+        @include arrow('up', $calloutSize + 1, $calloutSize + 2, $tooltipBG);
         position: absolute;
         left: 0px;
       }
