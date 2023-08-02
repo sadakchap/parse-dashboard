@@ -60,7 +60,6 @@ export const ManageAppFields = ({
           </div>
         }
       />
-      
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy
