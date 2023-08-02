@@ -139,10 +139,12 @@ export const CloneAppModal = ({ context, setParentState }) => {
           </Dropdown>
         }
       />
-      <Field
+        <Field
           labelWidth={100}
           label={
-            text={<span><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="database" type={'radio'} checked={cloneType === 'database'}/> &nbsp; {'Clone Database'} </span>}
+            <Label
+              text={<span><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="database" type={'radio'} checked={cloneType === 'database'}/> &nbsp; {'Clone Database'} </span>}
+            />
           }
         />
        <Field
