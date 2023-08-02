@@ -289,6 +289,7 @@ export const ManageAppFields = ({
 
 ManageAppFields.propTypes = {
   parseOptions: PropTypes.object.isRequired.describe('Parse options for the fields'),
+  cleanUpFiles: PropTypes.func.isRequired.describe('Cleanup files function'),
   setParseOptions: PropTypes.func.isRequired.describe('Set parse options'),
   toggleVisibility: PropTypes.bool.describe('Toggle visibility'),
   dashboardAPI: PropTypes.string.describe('Parse Server API URL'),

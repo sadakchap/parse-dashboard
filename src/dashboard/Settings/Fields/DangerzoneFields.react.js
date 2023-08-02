@@ -23,7 +23,8 @@ export const DangerzoneFields = ({
   transferApp,
   cloneApp,
   deleteApp,
-  isCollaborator
+  isCollaborator,
+  databaseURL
 }) => 
 <Fieldset
   legend='Danger Zone'
@@ -56,14 +57,17 @@ export const DangerzoneFields = ({
         </span>
       }
     />
-    <Field
-        labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-        label={<Label
-          text='Clean up app'
-          description={<span>This will delete any files that are not referenced by any objects. Don&apos;t use the feature if you have Arrays of Files, or Files inside Object columns.</span>} />}
+    
+ { databaseURL?.split('://')[0] !== "postgres" && 
+  <Field
+      labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
+      label={<Label
+        text='Clean up app'
+        description={<span>This will delete any files that are not referenced by any objects. Don&apos;t use the feature if you have Arrays of Files, or Files inside Object columns.</span>} />}
       input={<FormButton
       onClick={cleanUpFiles}
-      value='Clean Up Files'/>} />
+      value='Clean Up Files'/>} />}
+
     <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
@@ -120,5 +124,6 @@ DangerzoneFields.propTypes = {
   transferApp: PropTypes.func.isRequired.describe('Transfer app function'),
   cloneApp: PropTypes.func.isRequired.describe('Clone app function'),
   deleteApp: PropTypes.func.isRequired.describe('Delete app function'),
-  isCollaborator: PropTypes.bool.isRequired.describe('The current user is collaborator')
+  isCollaborator: PropTypes.bool.isRequired.describe('The current user is collaborator'),
+  databaseURL: PropTypes.string.describe('Dashboard API URL')
 };
