@@ -392,9 +392,9 @@ export default class ParseApp {
     return AJAX.post(path);
   }
 
-  createApp(appName, parseVersion) {
+  createApp(appName, parseVersion, originalAppId = null) {
     let path = `/parse-app`;
-    return AJAX.post(path, { appDescription: "", parseVersion, appId: null, appName, isPublic: false })
+    return AJAX.post(path, { appDescription: "", parseVersion, originalAppId: originalAppId, appId: null, appName, isPublic: false })
   }
 
   initializeDb(appId, parseVersion) {
