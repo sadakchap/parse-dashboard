@@ -64,7 +64,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNote('Creating database for the new parse app...');
       setNoteColor('blue');
 
-      await context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version, data);
+      await context.currentApp.initializeDb(newApp._id, cloneParseVersion?.version);
 
       setNote('Cloning app...');
       setNoteColor('blue');
@@ -139,7 +139,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
           </Dropdown>
         }
       />
-        <Field
+      <Field
           labelWidth={100}
           label={
             <Label
@@ -147,7 +147,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
             />
           }
         />
-       <Field
+      <Field
           labelWidth={100}
           label={
             <Label
