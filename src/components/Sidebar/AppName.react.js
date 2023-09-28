@@ -1,10 +1,12 @@
-import React from "react";
-import styles from "components/Sidebar/Sidebar.scss";
+import React from 'react';
+import Pin from 'components/Sidebar/Pin.react';
+import styles from 'components/Sidebar/Sidebar.scss';
 import Tooltip from 'components/Tooltip/SimpleTooltip.react';
 
-const AppName = ({ name, pin, onClick }) => (
-  <div className={styles.currentApp}>
-    <div className={styles.currentAppNameGroup} onClick={onClick}>
+const AppName = ({ name, onClick, onPinClick }) => (
+  <div>
+    <div className={styles.currentApp}>
+      <div className={styles.currentAppNameGroup} onClick={onClick}>
       <Tooltip 
         className={styles.Tooltip}
         value={(
@@ -13,9 +15,9 @@ const AppName = ({ name, pin, onClick }) => (
       >
         <div className={styles.currentAppName}>{name}</div>
       </Tooltip>
-      <div className={styles.appsSelectorArrow}></div>
+      </div>
+      <Pin onClick={onPinClick} />
     </div>
-    {pin}
   </div>
 );
 

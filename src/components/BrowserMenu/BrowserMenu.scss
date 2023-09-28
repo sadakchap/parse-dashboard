@@ -23,6 +23,9 @@
 }
 
 .entry {
+  height: 30px;
+  padding: 8px;
+
   svg {
     fill: white;
   }
@@ -66,12 +69,14 @@
 .entry, .title {
   @include NotoSansFont;
   position: relative;
+  bottom: -4px;
   font-size: 14px;
   color: #ffffff;
   cursor: pointer;
 
   svg {
     vertical-align: top;
+    margin-right: 4px;
   }
 
   span {
@@ -97,7 +102,6 @@
   white-space: nowrap;
   cursor: pointer;
   color: white;
-  height: 26px;
 
   &:hover {
     background: $blue;

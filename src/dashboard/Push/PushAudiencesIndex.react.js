@@ -5,40 +5,45 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import * as PushAudiencesStore  from 'lib/stores/PushAudiencesStore';
-import * as SchemaStore         from 'lib/stores/SchemaStore';
-import * as PushConstants       from './PushConstants';
-import Button                   from 'components/Button/Button.react';
+import * as PushAudiencesStore from 'lib/stores/PushAudiencesStore';
+import * as SchemaStore from 'lib/stores/SchemaStore';
+import * as PushConstants from './PushConstants';
+import Button from 'components/Button/Button.react';
 import CategoryItemAction       from 'components/CategoryList/CategoryItemAction.js';
 import CategoryList             from 'components/CategoryList/CategoryList.react';
-import DashboardView            from 'dashboard/DashboardView.react';
-import EmptyState               from 'components/EmptyState/EmptyState.react';
-import FormModal                from 'components/FormModal/FormModal.react';
-import history                  from 'dashboard/history';
-import LoaderContainer          from 'components/LoaderContainer/LoaderContainer.react';
-import Modal                    from 'components/Modal/Modal.react';
-import PushAudienceDialog       from 'components/PushAudienceDialog/PushAudienceDialog.react';
-import PushAudiencesIndexRow    from './PushAudiencesIndexRow.react';
-import queryFromFilters         from 'lib/queryFromFilters';
-import React                    from 'react';
-import SidebarAction            from 'components/Sidebar/SidebarAction';
-import stylesTable              from 'dashboard/TableView.scss';
-import subscribeTo              from 'lib/subscribeTo';
-import TableHeader              from 'components/Table/TableHeader.react';
-import Toolbar                  from 'components/Toolbar/Toolbar.react';
+import DashboardView from 'dashboard/DashboardView.react';
+import EmptyState from 'components/EmptyState/EmptyState.react';
+import FormModal from 'components/FormModal/FormModal.react';
+import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
+import Modal from 'components/Modal/Modal.react';
+import PushAudienceDialog from 'components/PushAudienceDialog/PushAudienceDialog.react';
+import PushAudiencesIndexRow from './PushAudiencesIndexRow.react';
+import queryFromFilters from 'lib/queryFromFilters';
+import React from 'react';
+import SidebarAction from 'components/Sidebar/SidebarAction';
+import stylesTable from 'dashboard/TableView.scss';
+import subscribeTo from 'lib/subscribeTo';
+import TableHeader from 'components/Table/TableHeader.react';
+import Toolbar from 'components/Toolbar/Toolbar.react';
 import { formatAudienceSchema } from 'lib/PushUtils';
-import { List }                 from 'immutable';
+import { List } from 'immutable';
+import generatePath from 'lib/generatePath';
+import { withRouter } from 'lib/withRouter';
 
 const XHR_KEY = 'PushAudiencesIndex';
 
-export default
 @subscribeTo('Schema', 'schema')
 @subscribeTo('PushAudiences', 'pushaudiences')
+@withRouter
 class PushAudiencesIndex extends DashboardView {
   constructor() {
     super();
     this.section = 'More';
     this.subsection = 'Push';
+    // this.action = new SidebarAction(
+    //   'Create an audience',
+    //   this.handleCreateAudienceClick.bind(this)
+    // );
     this.state = {
       availableDevices: [],
       loading: true,
@@ -47,7 +52,7 @@ class PushAudiencesIndex extends DashboardView {
       deletionAudienceId: null,
       deleteionAudienceName: null,
       showCreateAudienceModal: false,
-    }
+    };
   }
 
   renderSidebar() {
@@ -87,28 +92,34 @@ class PushAudiencesIndex extends DashboardView {
   componentWillMount() {
     this.getAudienceData().catch((err) => {
       console.error(err)
-    }).finally(() => {
+    })
+    .finally(() => {
       this.setState({ loading: false });
     });
-    this.context.currentApp.fetchAvailableDevices().then(({ available_devices }) => {
-      this.setState({
-        availableDevices: available_devices
-      });
-    }, () => {
-      this.setState({
-        availableDevices: PushConstants.DEFAULT_DEVICES
-      });
-    });
+    this.context.fetchAvailableDevices().then(
+      ({ available_devices }) => {
+        this.setState({
+          availableDevices: available_devices,
+        });
+      },
+      () => {
+        this.setState({
+          availableDevices: PushConstants.DEFAULT_DEVICES,
+        });
+      }
+    );
   }
 
   componentWillReceiveProps(props) {
-    if (props.loaded){
-      this.setState({ loading: false});
+    if (props.loaded) {
+      this.setState({ loading: false });
     }
   }
 
   componentWillUnmount() {
-    this.props.pushaudiences.dispatch(PushAudiencesStore.ActionTypes.ABORT_FETCH, { xhrKey: XHR_KEY});
+    this.props.pushaudiences.dispatch(PushAudiencesStore.ActionTypes.ABORT_FETCH, {
+      xhrKey: XHR_KEY,
+    });
   }
 
   handleCreateAudienceClick() {
@@ -118,8 +129,8 @@ class PushAudiencesIndex extends DashboardView {
   }
 
   tableData() {
-    let schema = formatAudienceSchema(this.props.schema.data.get('classes')) || {};
-    let pushAudienceData = this.props.pushaudiences.data;
+    const schema = formatAudienceSchema(this.props.schema.data.get('classes')) || {};
+    const pushAudienceData = this.props.pushaudiences.data;
     let audiences = undefined;
 
     if (pushAudienceData) {
@@ -139,7 +150,7 @@ class PushAudiencesIndex extends DashboardView {
   }
 
   handleSendPush(objectId) {
-    history.push(this.context.generatePath(`push/new?audienceId=${objectId}`));
+    this.props.navigate(generatePath(this.context, `push/new?audienceId=${objectId}`));
   }
 
   renderRow(audience) {
@@ -153,28 +164,43 @@ class PushAudiencesIndex extends DashboardView {
         schema={this.schema}
         timesUsed={audience.timesUsed}
         onSendPush={this.handleSendPush.bind(this)}
-        onDelete={this.handleDelete.bind(this)}/>
+        onDelete={this.handleDelete.bind(this)}
+      />
     );
   }
 
   renderToolbar() {
     return (
-      <Toolbar
-        section='Push'
-        subsection='Audiences'>
-        <Button color='white' value='Create an audience' onClick={this.handleCreateAudienceClick.bind(this)} />
+      <Toolbar section="Push" subsection="Audiences">
+        <Button
+          color="white"
+          value="Create an audience"
+          onClick={this.handleCreateAudienceClick.bind(this)}
+        />
       </Toolbar>
     );
   }
 
   renderHeaders() {
     return [
-      <TableHeader key='name' width={20}>Name</TableHeader>,
-      <TableHeader key='size' width={10}>Size</TableHeader>,
-      <TableHeader key='details' width={30}>Details</TableHeader>,
-      <TableHeader key='created_on' width={20}>Created On</TableHeader>,
-      <TableHeader key='pushes_sent' width={10}># of sends</TableHeader>,
-      <TableHeader key='action' width={10}>Action</TableHeader>,
+      <TableHeader key="name" width={20}>
+        Name
+      </TableHeader>,
+      <TableHeader key="size" width={10}>
+        Size
+      </TableHeader>,
+      <TableHeader key="details" width={30}>
+        Details
+      </TableHeader>,
+      <TableHeader key="created_on" width={20}>
+        Created On
+      </TableHeader>,
+      <TableHeader key="pushes_sent" width={10}>
+        # of sends
+      </TableHeader>,
+      <TableHeader key="action" width={10}>
+        Action
+      </TableHeader>,
     ];
   }
 
@@ -182,46 +208,50 @@ class PushAudiencesIndex extends DashboardView {
     if (this.state.availableDevices.length === 0) {
       return (
         <EmptyState
-          title='No registered devices'
-          description='You have no registered installations of your app. You can get started with our Quick Start guide.'
-          icon='devices-solid'
-          cta='Push Quick Start'
-          action={'https://www.parse.com/apps/quickstart#parse_push'} />
+          title="No registered devices"
+          description="You have no registered installations of your app. You can get started with our Quick Start guide."
+          icon="devices-solid"
+          cta="Push Quick Start"
+          action={'https://www.parse.com/apps/quickstart#parse_push'}
+        />
       );
     } else {
       return (
         <EmptyState
-          title='No push audiences to display yet.'
-          icon='users-solid'
-          cta='Create your first audience'
+          title="No push audiences to display yet."
+          icon="users-solid"
+          cta="Create your first audience"
           action={() => {
             this.setState({
-              showCreateAudienceModal: true
+              showCreateAudienceModal: true,
             });
-          }} />
+          }}
+        />
       );
     }
   }
 
-  createAudience(modalState, { platforms, name, formattedFilters }){
+  createAudience(modalState, { platforms, name, formattedFilters }) {
     let query = {};
 
-    let parseQuery = queryFromFilters('_Installation', formattedFilters);
+    const parseQuery = queryFromFilters('_Installation', formattedFilters);
 
-    if (parseQuery && parseQuery.toJSON()){
+    if (parseQuery && parseQuery.toJSON()) {
       query = parseQuery.toJSON().where || {};
     }
 
     query.deviceType = { $in: platforms };
     //TODO: handle fail case - need to modify/extend <FormModal> to handle custom footer
-    this.props.pushaudiences.dispatch(PushAudiencesStore.ActionTypes.CREATE,{
-      query: JSON.stringify(query),
-      name,
-    }).then(() => {
-      this.setState({
-        showCreateAudienceModal: false,
-      });
-      // After create the new audience update audience's list to get the
+    this.props.pushaudiences
+      .dispatch(PushAudiencesStore.ActionTypes.CREATE, {
+        query: JSON.stringify(query),
+        name,
+      })
+      .then(() => {
+        this.setState({
+          showCreateAudienceModal: false,
+        });
+        // After create the new audience update audience's list to get the
       // new objectId
       this.setState({ loading: true });
       this.getAudienceData(1).then(() => {
@@ -234,71 +264,72 @@ class PushAudiencesIndex extends DashboardView {
   }
 
   renderContent() {
-    let toolbar = this.renderToolbar();
-    let data = this.tableData();
+    const toolbar = this.renderToolbar();
+    const data = this.tableData();
     let content = null;
     let headers = null;
 
-    let createAudienceModal = this.state.showCreateAudienceModal ? (
+    const createAudienceModal = this.state.showCreateAudienceModal ? (
       <PushAudienceDialog
         availableDevices={this.state.availableDevices}
         schema={this.schema}
         disableNewSegment={true}
         audienceSize={999999}
-        primaryAction={this.createAudience.bind(this,'showCreateModal')}
+        primaryAction={this.createAudience.bind(this, 'showCreateModal')}
         secondaryAction={() => {
           this.setState({
-            showCreateAudienceModal: false
+            showCreateAudienceModal: false,
           });
-        }}/>
-      ) :
-      null;
+        }}
+      />
+    ) : null;
 
-    let deleteSubtitle = (
+    const deleteSubtitle = (
       <div>
         Are you sure you want to delete <strong>{this.state.deleteionAudienceName}</strong>?
       </div>
     );
 
-    let deleteAudienceModal = <FormModal
-      icon='warn-outline'
-      title='Delete Audience'
-      subtitle={deleteSubtitle}
-      type={Modal.Types.DANGER}
-      open={this.state.showDeleteAudienceModal}
-      submitText='Delete'
-      inProgressText={'Deleting\u2026'}
-      onSubmit={() => {
-        return this.props.pushaudiences.dispatch(PushAudiencesStore.ActionTypes.DESTROY,
-          { objectId : this.state.deletionAudienceId });
-      }}
-      onSuccess={() => {
-        this.setState({
-          showDeleteAudienceModal: false,
-        });
-      }}
-      onClose={() => {
-        this.setState({ showDeleteAudienceModal: false, });
-      }}>
-    </FormModal>
+    const deleteAudienceModal = (
+      <FormModal
+        icon="warn-outline"
+        title="Delete Audience"
+        subtitle={deleteSubtitle}
+        type={Modal.Types.DANGER}
+        open={this.state.showDeleteAudienceModal}
+        submitText="Delete"
+        inProgressText={'Deleting\u2026'}
+        onSubmit={() => {
+          return this.props.pushaudiences.dispatch(PushAudiencesStore.ActionTypes.DESTROY, {
+            objectId: this.state.deletionAudienceId,
+          });
+        }}
+        onSuccess={() => {
+          this.setState({
+            showDeleteAudienceModal: false,
+          });
+        }}
+        onClose={() => {
+          this.setState({ showDeleteAudienceModal: false });
+        }}
+      ></FormModal>
+    );
 
-    if (typeof(data) !== undefined) {
+    if (typeof data !== 'undefined') {
       if (data.size === 0) {
         content = <div className={stylesTable.empty}>{this.renderEmpty()}</div>;
       } else {
         content = (
           <div className={stylesTable.rows}>
             <table>
-              <tbody>
-                {data.map((row) => this.renderRow(row))}
-              </tbody>
+              <tbody>{data.map(row => this.renderRow(row))}</tbody>
             </table>
           </div>
         );
         headers = this.renderHeaders();
       }
     }
-    let extras = this.renderExtras ? this.renderExtras() : null;
+    const extras = this.renderExtras ? this.renderExtras() : null;
     return (
       <div>
         <LoaderContainer loading={this.state.loading}>
@@ -313,3 +344,5 @@ class PushAudiencesIndex extends DashboardView {
     );
   }
 }
+
+export default PushAudiencesIndex;

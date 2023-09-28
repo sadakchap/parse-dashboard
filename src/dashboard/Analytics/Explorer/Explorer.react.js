@@ -5,35 +5,35 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import { ActionTypes }           from 'lib/stores/AnalyticsQueryStore';
-import * as AnalyticsConstants   from 'dashboard/Analytics/AnalyticsConstants';
-import Button                    from 'components/Button/Button.react';
-import CategoryList              from 'components/CategoryList/CategoryList.react';
-import Chart                     from 'components/Chart/Chart.react';
-import { ChartColorSchemes }     from 'lib/Constants';
-import DashboardView             from 'dashboard/DashboardView.react';
-import DateRange                 from 'components/DateRange/DateRange.react';
-import { Directions }            from 'lib/Constants';
-import EmptyState                from 'components/EmptyState/EmptyState.react';
+import { ActionTypes } from 'lib/stores/AnalyticsQueryStore';
+import * as AnalyticsConstants from 'dashboard/Analytics/AnalyticsConstants';
+import Button from 'components/Button/Button.react';
+import CategoryList from 'components/CategoryList/CategoryList.react';
+import Chart from 'components/Chart/Chart.react';
+import { ChartColorSchemes } from 'lib/Constants';
+import DashboardView from 'dashboard/DashboardView.react';
+import DateRange from 'components/DateRange/DateRange.react';
+import { Directions } from 'lib/Constants';
+import EmptyState from 'components/EmptyState/EmptyState.react';
 import ExplorerActiveChartButton from 'components/ExplorerActiveChartButton/ExplorerActiveChartButton.react';
-import ExplorerMenuButton        from 'components/ExplorerMenuButton/ExplorerMenuButton.react';
-import Icon                      from 'components/Icon/Icon.react';
-import JsonPrinter               from 'components/JsonPrinter/JsonPrinter.react';
-import LoaderContainer           from 'components/LoaderContainer/LoaderContainer.react';
-import Parse                     from 'parse';
-import prettyNumber              from 'lib/prettyNumber';
-import React                     from 'react';
-import ReactDOM                  from 'react-dom';
-import styles                    from 'dashboard/Analytics/Explorer/Explorer.scss';
-import stylesTable               from 'components/Table/Table.scss';
-import subscribeTo               from 'lib/subscribeTo';
-import Toolbar                   from 'components/Toolbar/Toolbar.react';
-import { verticalCenter }        from 'stylesheets/base.scss';
+import ExplorerMenuButton from 'components/ExplorerMenuButton/ExplorerMenuButton.react';
+import Icon from 'components/Icon/Icon.react';
+import JsonPrinter from 'components/JsonPrinter/JsonPrinter.react';
+import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
+import Parse from 'parse';
+import prettyNumber from 'lib/prettyNumber';
+import React from 'react';
+import styles from 'dashboard/Analytics/Explorer/Explorer.scss';
+import stylesTable from 'components/Table/Table.scss';
+import subscribeTo from 'lib/subscribeTo';
+import Toolbar from 'components/Toolbar/Toolbar.react';
+import baseStyles from 'stylesheets/base.scss';
+import { withRouter } from 'lib/withRouter';
 
-let currentCustomQueryIndex = 1
+const currentCustomQueryIndex = 1
 
-let buildFriendlyName = (query) => {
-  let name = [query.source];
+const buildFriendlyName = query => {
+  const name = [query.source];
   if (query.groups && query.groups.length > 0) {
     name.push('grouped by');
     name.push(...query.groups);
@@ -42,8 +42,8 @@ let buildFriendlyName = (query) => {
   return name.join(' ');
 };
 
-let inverseMatrix = (matrix) => {
-  let matrixInverted = [[]];
+const inverseMatrix = (matrix) => {
+  const matrixInverted = [[]];
   matrix.forEach(
     (innerArray, indexOut) =>
       innerArray.forEach(
@@ -56,8 +56,8 @@ let inverseMatrix = (matrix) => {
   return matrixInverted;
 }
 
-export default
 @subscribeTo('AnalyticsQuery', 'customQueries')
+@withRouter
 class Explorer extends DashboardView {
   constructor() {
     super();
@@ -66,31 +66,28 @@ class Explorer extends DashboardView {
 
     this.displaySize = {
       width: 800,
-      height: 400
+      height: 400,
     };
-    let date = new Date();
+    const date = new Date();
     this.state = {
       activeQueries: [],
       dateRange: {
-        start: new Date(
-          date.getFullYear(),
-          date.getMonth() - 1,
-          date.getDate()
-        ),
-        end: date
+        start: new Date(date.getFullYear(), date.getMonth() - 1, date.getDate()),
+        end: date,
       },
       loading: false,
-      mutated: false
+      mutated: false,
     };
     this.xhrHandles = [];
+    this.displayRef = React.createRef();
   }
 
   componentDidMount() {
     back4AppNavigation && back4AppNavigation.atExplorerReportEvent()
-    let display = ReactDOM.findDOMNode(this.refs.display);
+    const display = this.displayRef.current;
     this.displaySize = {
       width: display.offsetWidth,
-      height: display.offsetHeight
+      height: display.offsetHeight,
     };
   }
 
@@ -103,39 +100,37 @@ class Explorer extends DashboardView {
     this.xhrHandles.forEach(xhr => xhr && xhr.abort());
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (this.context !== nextContext) {
+  componentWillReceiveProps(nextProps) {
       // check if the changes are in currentApp serverInfo status
       // if not return without making any request
       if (this.props.apps !== nextProps.apps) {
-        let updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.params.appId);
-        let prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.params.appId);
+        const updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.params.appId);
+        const prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.params.appId);
         const shouldUpdate = updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
         if (!shouldUpdate) return;
       }
-      if (this.props.params.displayType !== nextProps.params.displayType) {
-        this.setState({ activeQueries: [], mutated: false });
-      }
+    if (this.props.params.displayType !== nextProps.params.displayType) {
+      this.setState({ activeQueries: [], mutated: false });
       nextProps.customQueries.dispatch(ActionTypes.LIST);
       //nextProps.customQueries.dispatch(ActionTypes.LIST_RECENT);
     }
   }
 
   getCustomQueriesFromProps(props) {
-    let customQueries = props.customQueries.data && props.customQueries.data.get('queries');
+    const customQueries = props.customQueries.data.get('queries');
     return (customQueries && customQueries.toArray()) || [];
   }
 
   handleQueryToggle(index, active) {
-    let activeQueries = this.state.activeQueries;
+    const activeQueries = this.state.activeQueries;
     activeQueries[index].enabled = active;
     this.setState({ activeQueries: activeQueries });
   }
 
   handleQuerySave(query, saveOnDatabase) {
     // Push new save result
-    let activeQueries = this.state.activeQueries;
-    let existingQueryIndex = activeQueries.findIndex((activeQuery) => {
+    const activeQueries = this.state.activeQueries;
+    const existingQueryIndex = activeQueries.findIndex(activeQuery => {
       if (query.localId) {
         return query.localId === activeQuery.localId;
       }
@@ -172,30 +167,30 @@ class Explorer extends DashboardView {
     // Update the state to trigger rendering pipeline.
     this.setState({
       activeQueries,
-      mutated: true
+      mutated: true,
     });
   }
 
   handleQuerySelect(query) {
-    let activeQueries = this.state.activeQueries;
+    const activeQueries = this.state.activeQueries;
     query.enabled = true;
     activeQueries.push(query);
     this.setState({
       activeQueries,
-      mutated: true
+      mutated: true,
     });
   }
 
   handleQueryDelete(query) {
     this.props.customQueries.dispatch(ActionTypes.DELETE, {
       query: {
-        objectId: query.objectId
-      }
+        objectId: query.objectId,
+      },
     });
   }
 
   handleRunQuery() {
-    let promises = [];
+    const promises = [];
     this.xhrHandles = [];
     this.setState({ loading: true });
     this.state.activeQueries.forEach((query, i) => {
@@ -204,40 +199,41 @@ class Explorer extends DashboardView {
       let xhr = null;
       if (query.preset && query.nonComposable) {
         // A preset query, DAU, MAU, DAI
-        let payload = {
+        const payload = {
           ...query.query,
           from: this.state.dateRange.start.getTime() / 1000,
-          to: this.state.dateRange.end.getTime() / 1000
+          to: this.state.dateRange.end.getTime() / 1000,
         };
 
-        let abortableRequest = this.context.currentApp.getAnalyticsTimeSeries(payload);
-        promise = abortableRequest.promise.then((result) => {
-          let activeQueries = this.state.activeQueries
-          activeQueries[i].result = result.map((point) => (
-            [Parse._decode('date', point[0]).getTime(), point[1]]
-          ));
+        const abortableRequest = this.context.getAnalyticsTimeSeries(payload);
+        promise = abortableRequest.promise.then(result => {
+          const activeQueries = this.state.activeQueries;
+          activeQueries[i].result = result.map(point => [
+            Parse._decode('date', point[0]).getTime(),
+            point[1],
+          ]);
           this.setState({ activeQueries });
         });
         xhr = abortableRequest.xhr;
       } else {
         // Custom query
-        let payload = this.buildCustomQueryPayload(query);
+        const payload = this.buildCustomQueryPayload(query);
         promise = this.props.customQueries.dispatch(ActionTypes.FETCH, payload).then(() => {
           let activeQueries = this.state.activeQueries;
           // Update the result based on store in background.
-          let customQueries = this.getCustomQueriesFromProps(this.props);
-          activeQueries = activeQueries.map((query) => {
+          const customQueries = this.getCustomQueriesFromProps(this.props);
+          activeQueries = activeQueries.map(query => {
             let serverResult = null;
             if (query.objectId) {
               // We have predefined custom query.
-              serverResult = customQueries.find((customQuery) => {
-                return customQuery[1].objectId === query.objectId;
-              })[1];
+              serverResult = customQueries.find(customQuery => {
+                return customQuery.objectId === query.objectId;
+              });
             } else if (query.localId) {
               // We're in the middle of custom query creation.
-              serverResult = customQueries.find((customQuery) => {
-                return customQuery[1].localId === query.localId;
-              })[1];
+              serverResult = customQueries.find(customQuery => {
+                return customQuery.localId === query.localId;
+              });
             }
             // If we can't find it in the result, let's use the old one.
             if (!serverResult) {
@@ -245,9 +241,7 @@ class Explorer extends DashboardView {
             }
             return {
               ...query,
-              result: serverResult.result.map((point) => (
-                [Parse._decode('date', point[0]).getTime(), point[1]]
-              ))
+              result: serverResult.result,
             };
           });
 
@@ -259,60 +253,44 @@ class Explorer extends DashboardView {
       promises.push(promise);
       this.xhrHandles.push(xhr);
     });
-    Promise.all(promises).then(() => this.setState({
-      loading: false,
-      mutated: false
-    }));
+    Promise.all(promises).then(() =>
+      this.setState({
+        loading: false,
+        mutated: false,
+      })
+    );
   }
 
   handleDownload() {
     const csvDeclaration = 'data:text/csv;charset=utf-8,';
-    switch (this.props.params.displayType) {
-      case 'chart': {
-        // Transform to [[Time, a, b], [name1, c, f], [name2, d, r]]
-        let rows = [];
-        // create time column, since time will be same for all queries
-        // we can take time from first query
-        let timeArr = ['Time'];
-        this.state.activeQueries[0].result.forEach(val => {
-          timeArr.push(new Date(val[0]).toDateString());
-        });
-        rows.push(timeArr);
-
-        // now the request queries 
-        this.state.activeQueries.forEach(q => {
-          let arr = [];
-          arr.push(q.name);
-          for (let val of q.result) {
-            arr.push(val[1]);
+    const csvRows = this.state.activeQueries.map(query => {
+      switch (this.props.params.displayType) {
+        case 'chart':
+          const columns = ['time'];
+          const csvValues = [];
+          // Transform:
+          // {
+          //   foo: [[123, bar], [456, baz]]
+          //   a: [[123, b], [456, c]]
+          // }
+          // into
+          // [[time, foo, a], [123, bar, b], [456, baz, c]]
+          for (const key in query.result) {
+            const result = query.result[key];
+            columns.push(key);
+            result.forEach((value, index) => {
+              if (csvValues[index] === undefined) {
+                // Push the time.
+                csvValues[index] = [value[0]];
+              }
+              csvValues[index].push(value[1]);
+            });
           }
-          rows.push(arr);
-        });
-        
-        // now transform [[Time, a, b], [name1, c, d], [name2, e, f]]
-        // to [[Time, name1, name2], [a, c, e], [b, d, f]]
-        // to get vertical columns in csv file
-        let csvContent = '';
-        inverseMatrix(rows).forEach(function(rowArray) {
-          let row = rowArray.join(',');
-          csvContent += row + '\r\n';
-        });
-
-        // "\uFEFF"(BOM) using BOM(https://en.wikipedia.org/wiki/Byte_order_mark) to force Excel to open in utf-8 
-        // using encodeURIComponent as it encodes '#' as well, since browser usually treats everything after '#' as a fragment 
-        // which was causing to download csv file data till before '#' character
-        window.open(csvDeclaration + encodeURIComponent("\uFEFF" + csvContent)); 
-        return;
-      }
-      case 'table': {
-        let csvRows = this.state.activeQueries.map((query) => {
+          csvValues.unshift(columns);
+          return csvValues.join('\n');
+        case 'table':
           return query.result.join('\n');
-        });
-        window.open(encodeURI(csvDeclaration + csvRows.join('\n\n')));
-        return;
-      }
-      case 'json': {
-        let csvRows = this.state.activeQueries.map((query) => {
+        case 'json':
           let keys = [];
           if (query.result.length > 0) {
             keys = Object.keys(query.result[0]);
@@ -325,38 +303,34 @@ class Explorer extends DashboardView {
           // ]
           // into
           // [[foo, a], [bar, b], [baz, c]]
-          csvArray = csvArray.concat(
-            query.result.map(result => keys.map(key => result[key]))
-          );
+          csvArray = csvArray.concat(query.result.map(result => keys.map(key => result[key])));
 
           return csvArray.join("\n");
-        });
-        window.open(encodeURI(csvDeclaration + csvRows.join('\n\n')));
-        return;
       }
-    }    
+    });
+    window.open(encodeURI(csvDeclaration + csvRows.join('\n\n'))); 
   }
 
   buildCustomQueryPayload(query) {
-    let queryWithoutResult = { ...query };
+    const queryWithoutResult = { ...query };
     queryWithoutResult.result = undefined;
 
-    let payload = {
+    const payload = {
       ...queryWithoutResult,
       type: this.props.params.displayType,
       from: this.state.dateRange.start.getTime(),
-      to: this.state.dateRange.end.getTime()
-    }
+      to: this.state.dateRange.end.getTime(),
+    };
 
     return {
       query: {
-        ...payload
-      }
+        ...payload,
+      },
     };
   }
 
   renderSidebar() {
-    let currentDisplay = this.props.params.displayType || '';
+    const currentDisplay = this.props.params.displayType || '';
     const { path } = this.props.match;
     const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
     let subCategory = (
@@ -373,30 +347,36 @@ class Explorer extends DashboardView {
     );
     return (
       <CategoryList
+       
         current={current}
+       
         linkPrefix={"analytics/"}
+       
         categories={[
-          {
+            {
             name: "Explorer",
             id: "explorer",
             currentActive: current === ":displayType",
             subCategories: subCategory
           },
-          { name: "Performance", id: "performance" },
-          { name: "Slow Requests", id: "slow_requests" }
-        ]}
+            { name: "Performance", id: "performance" },
+            { name: "Slow Requests", id: "slow_requests" },
+          ]}
+     
       />
     );
   }
 
   renderContent() {
-    let { displayType } = this.props.params;
-    let isTimeSeries = displayType === 'chart';
-    let explorerQueries = this.getCustomQueriesFromProps(this.props);
-    let savedQueries = explorerQueries.filter((query) => {
-      return (query.type === displayType || true) && query.isSaved
-    });
-    //let recentQueries = explorerQueries.filter((query) => query.type === displayType && !query.isSaved);
+    const { displayType } = this.props.params;
+    const isTimeSeries = displayType === 'chart';
+    const explorerQueries = this.getCustomQueriesFromProps(this.props);
+    const savedQueries = explorerQueries.filter(
+      query => query.type === displayType && query.isSaved
+    );
+    // const recentQueries = explorerQueries.filter(
+    //   query => query.type === displayType && !query.isSaved
+    // );
 
     let queries = [];
     if (isTimeSeries) {
@@ -415,37 +395,35 @@ class Explorer extends DashboardView {
     // }
     );
 
-    let toolbar = (
-      <Toolbar
-        section='Analytics'
-        subsection='Explorer'>
-        <a
-          href='javascript:;'
-          role='button'
+    const toolbar = (
+      <Toolbar section="Analytics" subsection="Explorer">
+        <button
+          type="button"
           onClick={() => window.open('https://www.back4app.com/docs/parse-dashboard/analytics/mobile-app-analytics', '_blank') }
           className={styles.toolbarAction}
-          style={{ borderRight: '1px solid #66637a' }}>
-          <Icon name='question-solid' width={14} height={14} fill='#66637a' />
+          style={{ borderRight: '1px solid #66637a' }}
+        >
+          <Icon name="question-solid" width={14} height={14} fill="#66637a" />
           FAQ
-        </a>
-        <a
-          href='javascript:;'
-          role='button'
+        </button>
+        <button
+          type="button"
           onClick={this.handleDownload.bind(this)}
-          className={styles.toolbarAction}>
-          <Icon name='download' width={14} height={14} fill='#66637a' />
+          className={styles.toolbarAction}
+        >
+          <Icon name="download" width={14} height={14} fill="#66637a" />
           Download
-        </a>
+        </button>
       </Toolbar>
     );
 
-    let activeQueryViews = this.state.activeQueries.map((query, i) => (
+    const activeQueryViews = this.state.activeQueries.map((query, i) => (
       <div className={styles.activeQueryWrap} key={`query${i}`}>
         <ExplorerActiveChartButton
           onSave={this.handleQuerySave.bind(this)}
           onToggle={this.handleQueryToggle.bind(this, i)}
           onDismiss={() => {
-            let activeQueries = this.state.activeQueries;
+            const activeQueries = this.state.activeQueries;
             activeQueries.splice(i, 1);
             this.setState({ activeQueries, mutated: true });
           }}
@@ -453,43 +431,43 @@ class Explorer extends DashboardView {
           query={query}
           color={ChartColorSchemes[i]}
           queries={queries}
-          index={i}/>
+          index={i}
+        />
       </div>
     ));
 
     activeQueryViews.push(
-      <div className={styles.menuButtonWrap} key='addbutton'>
+      <div className={styles.menuButtonWrap} key="addbutton">
         <ExplorerMenuButton
           onSave={this.handleQuerySave.bind(this)}
           onSelect={this.handleQuerySelect.bind(this)}
           onDelete={this.handleQueryDelete.bind(this)}
           isTimeSeries={isTimeSeries}
-          value='Add query'
+          value="Add query"
           queries={queries}
-          index={this.state.activeQueries.length}/>
+          index={this.state.activeQueries.length}
+        />
       </div>
     );
 
-    let header = (
-      <div className={styles.header}>
-        {activeQueryViews}
-      </div>
-    );
+    const header = <div className={styles.header}>{activeQueryViews}</div>;
 
-    let footer = (
+    const footer = (
       <div className={styles.footer}>
-        <div className={[styles.right, verticalCenter].join(' ')}>
+        <div className={[styles.right, baseStyles.verticalCenter].join(' ')}>
           <span style={{ marginRight: '10px' }}>
             <DateRange
               value={this.state.dateRange}
-              onChange={(newValue) => (this.setState({ dateRange: newValue, mutated: true }))}
-              align={Directions.RIGHT} />
+              onChange={newValue => this.setState({ dateRange: newValue, mutated: true })}
+              align={Directions.RIGHT}
+            />
           </span>
           <Button
             primary={true}
             disabled={this.state.activeQueries.length === 0 || !this.state.mutated}
             onClick={this.handleRunQuery.bind(this)}
-            value='Run query' />
+            value="Run query"
+          />
         </div>
       </div>
     );
@@ -499,13 +477,14 @@ class Explorer extends DashboardView {
       currentDisplay = (
         <EmptyState
           title={'No queries to display.'}
-          icon='analytics-outline'
-          description={'Use the "Add query" button above to visualize your data.'} />
+          icon="analytics-outline"
+          description={'Use the "Add query" button above to visualize your data.'}
+        />
       );
     } else {
       switch (displayType) {
         case 'chart':
-          let chartData = {};
+          const chartData = {};
           this.state.activeQueries.forEach((query, i) => {
             if (!query.result || Object.keys(query.result).length === 0) {
               return;
@@ -517,16 +496,16 @@ class Explorer extends DashboardView {
             if (Array.isArray(query.result)) {
               chartData[query.name] = {
                 color: ChartColorSchemes[i],
-                points: query.result
-              }
+                points: query.result,
+              };
             } else {
               let index = 0;
-              for (let key in query.result) {
+              for (const key in query.result) {
                 chartData[query.name + ' ' + key] = {
                   color: ChartColorSchemes[i],
                   points: query.result[key],
-                  index: index++
-                }
+                  index: index++,
+                };
               }
             }
           });
@@ -538,7 +517,8 @@ class Explorer extends DashboardView {
                 width={this.displaySize.width}
                 height={this.displaySize.height}
                 data={chartData}
-                formatter={(value, label) => (`${label} ${prettyNumber(value, 3)}`)} />
+                formatter={(value, label) => `${label} ${prettyNumber(value, 3)}`}
+              />
             );
           }
           else if (!this.state.mutated)
@@ -564,16 +544,17 @@ class Explorer extends DashboardView {
               return null;
             }
 
-            let width = Math.floor(100 / query.result[0].length);
-            let headers = query.result[0].map((header) => (
+            const width = Math.floor(100 / query.result[0].length);
+            const headers = query.result[0].map(header => (
               <th
                 key={header}
                 className={[stylesTable.header, styles.td].join(' ')}
-                style={{ display: 'table-cell' }}>
+                style={{ display: 'table-cell' }}
+              >
                 {header}
               </th>
             ));
-            let rows = [];
+            const rows = [];
             for (let i = 1; i < query.result.length; ++i) {
               rows.push(
                 <tr className={stylesTable.tr} key={`row${i - 1}`}>
@@ -581,7 +562,8 @@ class Explorer extends DashboardView {
                     <td
                       key={`row${i - 1}col${j}`}
                       className={[stylesTable.td, styles.td].join(' ')}
-                      width={`${width}%`}>
+                      width={`${width}%`}
+                    >
                       {value}
                     </td>
                   ))}
@@ -594,13 +576,9 @@ class Explorer extends DashboardView {
                 <div className={stylesTable.rows}>
                   <table className={styles.table}>
                     <thead className={stylesTable.headers} style={{ position: 'initial' }}>
-                      <tr>
-                        {headers}
-                      </tr>
+                      <tr>{headers}</tr>
                     </thead>
-                    <tbody>
-                      {rows}
-                    </tbody>
+                    <tbody>{rows}</tbody>
                   </table>
                 </div>
               </div>
@@ -617,19 +595,15 @@ class Explorer extends DashboardView {
               return null;
             }
 
-            return (
-              <JsonPrinter
-                key={`chart${i}`}
-                object={query.result} />
-            );
+            return <JsonPrinter key={`chart${i}`} object={query.result} />;
           });
           break;
       }
     }
 
-    let content = (
+    const content = (
       <div className={styles.content}>
-        <div ref='display' className={styles.display}>
+        <div ref={this.displayRef} className={styles.display}>
           {currentDisplay}
         </div>
         {header}
@@ -647,3 +621,5 @@ class Explorer extends DashboardView {
     );
   }
 }
+
+export default Explorer;

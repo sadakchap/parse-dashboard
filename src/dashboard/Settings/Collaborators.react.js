@@ -5,18 +5,18 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import AccountManager      from 'lib/AccountManager';
-import Field               from 'components/Field/Field.react';
-import Fieldset            from 'components/Fieldset/Fieldset.react';
-import FormTableCollab           from 'components/FormTableCollab/FormTableCollab.react';
-import FormNote            from 'components/FormNote/FormNote.react';
-import InlineSubmitInput   from 'components/InlineSubmitInput/InlineSubmitInput.react';
-import Label               from 'components/Label/Label.react';
-import ParseApp            from 'lib/ParseApp';
-import PropTypes           from 'lib/PropTypes';
-import React               from 'react';
-import TextInput           from 'components/TextInput/TextInput.react';
+import AccountManager from 'lib/AccountManager';
+import Field from 'components/Field/Field.react';
+import Fieldset from 'components/Fieldset/Fieldset.react';
+import FormTableCollab from 'components/FormTableCollab/FormTableCollab.react';
+import FormNote from 'components/FormNote/FormNote.react';
+import InlineSubmitInput from 'components/InlineSubmitInput/InlineSubmitInput.react';
+import Label from 'components/Label/Label.react';
+import PropTypes from 'lib/PropTypes';
+import React from 'react';
+import TextInput from 'components/TextInput/TextInput.react';
 import validateEmailFormat from 'lib/validateEmailFormat';
+import { CurrentApp } from 'context/currentApp';
 import PermissionsCollaboratorDialog from 'components/PermissionsCollaboratorDialog/PermissionsCollaboratorDialog.react';
 import Swal                from 'sweetalert2'
 
@@ -33,6 +33,7 @@ import lodash from 'lodash'
 // The parent also is responsible for passing onRemove, which is called when the
 // users removes a collaborator.
 export default class Collaborators extends React.Component {
+  static contextType = CurrentApp;
   constructor() {
     super();
 
@@ -79,109 +80,31 @@ export default class Collaborators extends React.Component {
   handleAdd() {
     //TODO: Show some in-progress thing while the collaborator is being validated, or maybe have some sort of
     //async validator in the parent form. Currently if you mash the add button, they same collaborator gets added many times.
-    this.setState({lastError: '', lastSuccess: '', showBtnCollaborator: false });
-    return this.context.currentApp.validateCollaborator(this.state.currentEmail).then((response) => {
-      // lastError logic assumes we only have 1 input field
-      if (response.success) {
-        this.setState({
-          showDialog: true,
-          toAdd: true,
-          lastError: '',
-          inviteCollab: false
-        });
-        return true;
-      } else if (response.error) {
-        this.setState({ lastError: response.error });
-        return false;
-      }
-    }).catch(error => {
-      this.setState({ lastError: error.message, inviteCollab: error.status === 404 && true })
-    });
-  }
-
-  componentDidMount() {
-    this.setState({ waiting_collaborators: this.props.waiting_collaborators })
-  }
-
-  displayMessage(colorNotification, message) {
-    return (
-      <FormNote
-        show={true}
-        color={colorNotification}>
-        <div>
-          {message}
-          {this.state.inviteCollab ?
-            <span> -&nbsp;
-            <a onClick={() => {this.setState({showDialog: true})}} style={{ fontWeight: "bold" }}>Send Invite</a>
-            </span>
-            : null}
-        </div>
-      </FormNote>
-    );
-  }
-
-  sendInvite(featuresPermission, classesPermission, owner) {
-    return this.context.currentApp.sendEmailToInviteCollaborator(this.state.currentEmail, featuresPermission, classesPermission, owner).then((response) => {
-      if (response.status === 200) {
-        this.setState({ lastError: '', inviteCollab: false, showDialog: false, lastSuccess: 'The invite has been sent!', currentEmail: '', showBtnCollaborator: false, waiting_collaborators: response.data.response });
-        setTimeout(() => {
-          this.setState({ lastSuccess: '' })
-        }, 5000);
-      } else {
-        this.setState({
-          lastError: response.error,
-          inviteCollab: false
-        });
-      }
-    }).catch(error => {
-      this.setState({showDialog: false, lastError: error.response.data.error || error.message || error.error, inviteCollab: false });
-    });
-  }
-
-  editInvite(featuresPermission, classesPermission) {
-    return this.context.currentApp.editInvitePermissionCollaborator(this.state.currentEmailInput, featuresPermission, classesPermission).then((response) => {
-      if (response.status === 200) {
-        this.setState({
-          lastError: '',
-          inviteCollab: false,
-          showDialog: false,
-          lastSuccess: `The permission to ${this.state.currentEmailInput} has been updated!`,
-          currentEmailInput: '',
-          waiting_collaborators: response.data.response });
-        setTimeout(() => {
-          this.setState({ lastSuccess: '' })
-        }, 5000);
-      } else {
-        this.setState({
-          lastError: response.error,
-          inviteCollab: false
-        });
-      }
-    }).catch(error => {
-      this.setState({showDialog: false, lastError: error.response.data.error || error.message || error.error, inviteCollab: false });
-    });
-  }
-
-  handleRemoveInvite(collaborator) {
-    return this.context.currentApp.removeInviteCollaborator(collaborator.userEmail).then((response) => {
-      this.setState({
-        waiting_collaborators: response.response
+    return this.context
+      .validateCollaborator(newEmail)
+      .then(response => {
+        // lastError logic assumes we only have 1 input field
+        if (response.success) {
+          const newCollaborators = this.props.collaborators.concat({
+            userEmail: newEmail,
+          });
+          this.setState({ lastError: '' });
+          this.props.onAdd(newEmail, newCollaborators);
+          return true;
+        } else if (response.error) {
+          this.setState({ lastError: response.error });
+          return false;
+        }
       })
-    });
-  }
-  handleEditInvitePermission(collaborator){
-    this.setState({
-      showDialog: true,
-      editInvitePermission: true,
-      currentFeaturesPermissions: collaborator.featuresPermission,
-      currentClassesPermissions: collaborator.classesPermission || this.getDefaultClasses(),
-      currentEmailInput: collaborator.userEmail,
-      currentCollab: collaborator
-    })
+      .catch(({ error }) => {
+        this.setState({ lastError: error });
+      });
   }
 
   handleDelete(collaborator) {
-    let newCollaborators = this.props.collaborators.filter(oldCollaborator => oldCollaborator.userEmail !== collaborator.userEmail);
+    const newCollaborators = this.props.collaborators.filter(
+      oldCollaborator => oldCollaborator.userEmail !== collaborator.userEmail
+    );
     Swal.mixin().queue([
       {
         html: `<p style="text-align: center; margin-bottom: 16px;">Are you sure you want to remove <span style="font-weight: bold; color: #169cee">${collaborator.userEmail}</span> as a collaborator.</p>`,
@@ -217,10 +140,14 @@ export default class Collaborators extends React.Component {
     let waitCollabs = this.state.waiting_collaborators;
     let allEmails = collabs.concat(waitCollabs);
     // We allow mixed-case emails for Parse accounts
-    let isExistingCollaborator = !!allEmails.find(collab => email.toLowerCase() === collab.userEmail.toLowerCase());
-    return validateEmailFormat(email) &&
+    const isExistingCollaborator = !!allEmails.find(
+      collab => email.toLowerCase() === collab.userEmail.toLowerCase()
+    );
+    return (
+      validateEmailFormat(email) &&
       !isExistingCollaborator &&
-      AccountManager.currentUser().email.toLowerCase() !== email.toLowerCase();
+      AccountManager.currentUser().email.toLowerCase() !== email.toLowerCase()
+    );
   }
 
   setCollabPermissions() {
@@ -333,122 +260,88 @@ export default class Collaborators extends React.Component {
 
   addCollaboratorField() {
     return (
-      <Field
-        labelWidth={55}
-        label={<Label
-          text='Add new collaborator'
-          description={<span>Collaborators will have read/write access but cannot <br /> delete the app or add more collaborators.</span>} />}
-        input={<InlineSubmitInput
-          render={() => {
-            return <TextInput
-              placeholder="What&#39;s their email?"
-              value={this.state.currentEmail}
-              onChange={(value)=> {
-                this.setState({currentEmail: value, showBtnCollaborator: this.validateEmail(value)});
-              }}
-            />
-          }}
-          showButton={this.state.showBtnCollaborator}
-          validate={(email) => {
-            if ( this.state.showBtnCollaborator === true ) {
-              return true;
-            }
-            return this.validateEmail(email);
-          }}
-          onSubmit={this.handleAdd.bind(this)}
-          submitButtonText='ADD' />} />
-    )
-  }
-
-  listAppOwnerEmail() {
-    return(
-      <Field
-        labelWidth={55}
-        label={<Label text='App Owner' />}
-        input={<TextInput
-          value={this.props.owner_email}
-          onChange={() => {}}
-          disabled={true}
-        />}
-      />
-    )
-  }
-
-  renderCollaborators() {
-    return (
-      <Field
-        label={<Label text='Existing collaborators' />}
-        minHeight={40}
-        labelWidth={55}
-        input={<FormTableCollab
-          items={
-            this.props.collaborators.map(collaborator => {
-              let canDelete = this.props.viewer_email === this.props.owner_email || collaborator.userEmail === this.props.viewer_email;
-              let canEdit = this.props.viewer_email === this.props.owner_email;
-              //TODO(drewgross): add a warning modal for when you are removing yourself as a collaborator, as that is irreversable
-              return ({
-                title: collaborator.userName || collaborator.userEmail,
-                color: 'green',
-                onDelete: canDelete ? this.handleDelete.bind(this, collaborator) : undefined,
-                onEdit: canEdit ? this.handleEdit.bind(this, collaborator) : undefined,
-              });
-            })
-          } />} />
-    )
-  }
-
-  renderStandByCollaborators() {
-    return (
-      <Field
-        minHeight={40}
-        labelWidth={55}
-        label={<Label text='Waiting for account registration' />}
-        input={<FormTableCollab
-          items={
-            this.state.waiting_collaborators.map(collaborator => {
-              let canEdit = this.props.viewer_email === this.props.owner_email;
-              let canDelete = this.props.viewer_email === this.props.owner_email || collaborator.userEmail === this.props.viewer_email;
-              return ({
-                title: collaborator.userEmail,
-                color: 'orange',
-                onDelete: canDelete ? this.handleRemoveInvite.bind(this, collaborator) : undefined,
-                onEdit: canEdit ? this.handleEditInvitePermission.bind(this, collaborator) : undefined
-              });
-            })
-          } />
-        } />
-    )
-  }
-
-  render() {
-    return (
       <Fieldset legend={this.props.legend} description={this.props.description}>
-        {this.props.viewer_email === this.props.owner_email ? this.addCollaboratorField() : this.listAppOwnerEmail()}
-        {this.state.lastSuccess !== '' ? this.displayMessage('green', this.state.lastSuccess) : null}
-        {this.state.lastError !== '' ? this.displayMessage('red', this.state.lastError) : null}
-        {this.state.showDialog ? this.setCollabPermissions() : null}
-        {this.props.collaborators.length > 0 ? this.renderCollaborators() : null}
-        {this.state.waiting_collaborators.length > 0 ? this.renderStandByCollaborators() : null}
+        {this.props.viewer_email === this.props.owner_email ? (
+          <Field
+            labelWidth={62}
+            label={
+              <Label
+                text="Add new collaborator"
+                description={
+                  <span>
+                    Collaborators will have read/write access but cannot <br /> delete the app or
+                    add more collaborators.
+                  </span>
+                }
+              />
+            }
+            input={
+              <InlineSubmitInput
+                validate={email => this.validateEmail(email)}
+                placeholder="What&#39;s their email?"
+                onSubmit={this.handleAdd.bind(this)}
+                submitButtonText="ADD"
+              />
+            }
+          />
+        ) : (
+          <Field
+            labelWidth={62}
+            label={<Label text="App Owner" />}
+            input={<TextInput value={this.props.owner_email} onChange={() => {}} disabled={true} />}
+          />
+        )}
+        {this.state.lastError !== '' ? (
+          <FormNote show={true} color={'red'}>
+            <div>{this.state.lastError}</div>
+          </FormNote>
+        ) : null}
+        {this.props.collaborators.length > 0 ? (
+          <Field
+            label={<Label text="Existing collaborators" />}
+            labelWidth={62}
+            input={
+              <FormTable
+                items={this.props.collaborators.map(collaborator => {
+                  const canDelete =
+                    this.props.viewer_email === this.props.owner_email ||
+                    collaborator.userEmail === this.props.viewer_email;
+                  //TODO(drewgross): add a warning modal for when you are removing yourself as a collaborator, as that is irreversable
+                  return {
+                    title: collaborator.userName || collaborator.userEmail,
+                    color: 'green',
+                    onDelete: canDelete ? this.handleDelete.bind(this, collaborator) : undefined,
+                    notes: [
+                      {
+                        key: 'Email',
+                        value: collaborator.userEmail,
+                      },
+                    ],
+                  };
+                })}
+              />
+            }
+          />
+        ) : null}
       </Fieldset>
-
-    )
+    );
   }
 }
 
-Collaborators.contextTypes = {
-  currentApp: PropTypes.instanceOf(ParseApp)
-};
-
 Collaborators.propTypes = {
-  legend: PropTypes.string.isRequired.describe(
-    'Title of this section'
-  ),
+  legend: PropTypes.string.isRequired.describe('Title of this section'),
   description: PropTypes.string.isRequired.describe(
     'Description fo this section (shows below title)'
   ),
-  collaborators: PropTypes.arrayOf(PropTypes.any).isRequired.describe('An array of current collaborators of this app'),
-  owner_email: PropTypes.string.describe('The email of the owner, to be displayed if the viewer is a collaborator.'),
-  viewer_email: PropTypes.string.describe('The email of the viewer, if the viewer is a collaborator, they will not be able to remove collaborators except themselves.'),
+  collaborators: PropTypes.arrayOf(PropTypes.any).isRequired.describe(
+    'An array of current collaborators of this app'
+  ),
+  owner_email: PropTypes.string.describe(
+    'The email of the owner, to be displayed if the viewer is a collaborator.'
+  ),
+  viewer_email: PropTypes.string.describe(
+    'The email of the viewer, if the viewer is a collaborator, they will not be able to remove collaborators except themselves.'
+  ),
   onAdd: PropTypes.func.isRequired.describe(
     'A function that will be called whenever a user adds a valid collaborator email. It receives the new email and an updated array of all collaborators for this app.'
   ),

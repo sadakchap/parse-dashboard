@@ -5,12 +5,12 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-var configuration = require('./base.config.js');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var path = require('path');
+const configuration = require('./base.config.js');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 configuration.mode = 'development';
-configuration.entry = {PIG: './parse-interface-guide/index.js'};
+configuration.entry = { PIG: './parse-interface-guide/index.js' };
 configuration.output.path = require('path').resolve('./PIG/bundles');
 configuration.output.filename = "[name].[chunkhash].js";
 

@@ -17,8 +17,7 @@
   background: #0c5582;
   color: #fff;
   transition: left 0.5s ease-in;
-  z-index: 0;
-
+  z-index: 100;
   &.collapsed {
     left: 0;
     width: 54px;
@@ -95,6 +94,7 @@
     border-radius: 5px;
     padding: 0;
 
+
     &:first-child {
       padding-left: 0;
     }
@@ -107,11 +107,6 @@
   svg {
     margin-top: -2px;
   }
-}
-
-.help {
-  @extend .footer;
-  height: 61px;
 }
 
 .header {
@@ -181,7 +176,24 @@
   justify-content: space-between;
   align-items: center;
 
-  &:hover{
+  .appNameContainer {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .currentAppName {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 215px;
+    }
+
+    &:after {
+      @include arrow('down', 10px, 7px, #132B39);
+      content: '';
+      margin-left: 10px;
+    }
+
+    &:hover {
       &:after {
         border-top-color: white;
       }
@@ -220,6 +232,13 @@
   }
 }
 
+.sidebarPin {
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  padding: 6px;
+}
+
 .appsMenu {
   overflow: auto;
   background: #094162;
@@ -227,6 +246,11 @@
 
   .menuRow:hover {
     background: #0c5582;
+  }
+
+  .appListContainer {
+    overflow-y: auto;
+    height: calc(100vh - #{$headerHeight} - #{$menuSectionHeight} - #{$sidebarMenuItemHeight} - #{$footerHeight});
   }
 
   .appsList {
@@ -373,6 +397,8 @@ a.subitem {
   width: 75px;
   height: 100%;
   font-size: 10px;
+  display: flex;
+  align-items: center;
   float: left;
   margin-left: 6px;
   white-space: nowrap;
@@ -381,21 +407,24 @@ a.subitem {
   > *:first-child {
     position: absolute;
     letter-spacing: 2px;
-    line-height: 10px;
+    line-height: 12px;
     text-transform: uppercase;
   }
 
   > *:first-child {
-    top: 10px;
     transition: all 0.4s 0.16s cubic-bezier(0.77, 0, 0.175, 1);
   }
 }
 
 .more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   svg {
     fill: $white;
     transform: rotate(90deg);
     transition: fill 0.2s ease-in;
+    margin-right: 4px;
   }
 
   &:hover {
@@ -418,16 +447,16 @@ a.subitem {
     content: '';
     position: absolute;
     bottom: -6px;
-    right: 11px;
+    right: 94px;
   }
 
   a {
     @include NotoSansFont;
     display: block;
-    height: 30px;
-    line-height: 31px;
+    height: 40px;
+    line-height: 41px;
     font-size: 13px;
-    text-align: right;
+    text-align: center;
     border-bottom: 1px solid #e0e0ea;
     border-radius: 5px;
     color: $mainTextColor;
@@ -437,17 +466,37 @@ a.subitem {
     }
 
     // &:first-child {
-    //   border-radius: 5px 5px 0 0;
+    //   border-radius: 5px 5px 5px 5px;
     // }
 
     // &:last-child {
     //   border-bottom: 0;
-    //   border-radius: 0 0 5px 5px;
+    //   border-radius: 5px 5px 5px 5px;
     // }
 
     .emoji{
       padding-left: 4px;
       padding-right: 2px;
+    }
+  }
+}
+
+.pinContainer {
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #094162;
+
+  svg {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    padding: 10px 10px 10px 10px;
+    fill: #132B39;
+
+    &:hover {
+      fill: white;
     }
   }
 }

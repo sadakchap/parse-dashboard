@@ -5,7 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-export default function(array, key) {
+export default function (array, key) {
   // handle axios responses
   if (array && array.response && array.response.data)
     return [array.response.data[key]];

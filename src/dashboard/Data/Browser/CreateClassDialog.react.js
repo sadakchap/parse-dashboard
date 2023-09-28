@@ -5,23 +5,24 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import Dropdown           from 'components/Dropdown/Dropdown.react';
-import Field              from 'components/Field/Field.react';
-import Label              from 'components/Label/Label.react';
-import Modal              from 'components/Modal/Modal.react';
-import Option             from 'components/Dropdown/Option.react';
-import React              from 'react';
-import semver             from 'semver/preload.js';
+import Dropdown from 'components/Dropdown/Dropdown.react';
+import Field from 'components/Field/Field.react';
+import Label from 'components/Label/Label.react';
+import Modal from 'components/Modal/Modal.react';
+import Option from 'components/Dropdown/Option.react';
+import React from 'react';
+import semver from 'semver/preload.js';
 import { SpecialClasses } from 'lib/Constants';
-import styles             from './Browser.scss';
-import TextInput          from 'components/TextInput/TextInput.react';
-import history            from 'dashboard/history';
+import styles from './Browser.scss';
+import TextInput from 'components/TextInput/TextInput.react';
+import { withRouter } from 'lib/withRouter';
 
 function validClassName(name) {
   return !!name.match(/^[a-zA-Z][_a-zA-Z0-9]*$/);
 }
 
-export default class CreateClassDialog extends React.Component {
+@withRouter
+class CreateClassDialog extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -48,38 +49,41 @@ export default class CreateClassDialog extends React.Component {
   }
 
   render() {
-    let availableClasses = ['Custom'];
-    for (let raw in SpecialClasses) {
-      if (raw !== '_Session' && raw !== '_PushStatus' && this.props.currentClasses.indexOf(raw) < 0) {
-        availableClasses.push(SpecialClasses[raw]);
+    const availableClasses = ['Custom'];
+    for (const raw of SpecialClasses) {
+      if (raw !== '_Session' && raw !== '_PushStatus' && !this.props.currentClasses.includes(raw)) {
+        availableClasses.push(raw);
       }
     }
 
-    let typeDropdown = (
-      <Dropdown
-        currentStyleClassName={styles.dropDown}
-        value={this.state.type}
-        onChange={(type) => this.setState({ type: type, name: '' })}>
-        {availableClasses.map((t) => <Option key={t} value={t}>{t}</Option>)}
+    const typeDropdown = (
+      <Dropdown currentStyleClassName={styles.dropDown} value={this.state.type} onChange={type => this.setState({ type: type, name: '' })}>
+        {availableClasses.map(t => (
+          <Option key={t} value={t}>
+            {t}
+          </Option>
+        ))}
       </Dropdown>
     );
     return (
       <Modal
         type={Modal.Types.INFO}
-        icon='plus'
+        icon="plus"
         iconSize={40}
-        title='Add a new class'
-        subtitle='Create a new collection of objects.'
+        title="Create a new class?"
+        subtitle="This creates a new class to hold objects."
         disabled={!this.valid()}
-        confirmText='Create class'
-        cancelText={'Cancel'}
-        continueText={'Create class & add columns'}
+        confirmText="Create"
+        cancelText="Cancel"
+        continueText={'Create & add columns'}
         onCancel={this.props.onCancel}
         showContinue={true}
-        onContinue={() => {
-          let type = this.state.type;
-          let className = type === 'Custom' ? this.state.name : '_' + type;
-          this.props.onConfirm(className, this.state.isProtected, true);
+        onContinue={async () => {
+          const type = this.state.type;
+          const className = type === 'Custom' ? this.state.name : '_' + type;
+          await this.props.onConfirm(className);
+          this.props.navigate(`/apps/${this.props.currentAppSlug}/browser/${className}`);
+          this.props.onAddColumn();
         }}
         onConfirm={() => {
           let type = this.state.type;
@@ -150,3 +154,5 @@ export default class CreateClassDialog extends React.Component {
     );
   }
 }
+
+export default CreateClassDialog;
