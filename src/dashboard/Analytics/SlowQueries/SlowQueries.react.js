@@ -9,7 +9,7 @@ import * as AnalyticsQueryStore from 'lib/stores/AnalyticsQueryStore';
 import * as SchemaStore from 'lib/stores/SchemaStore';
 import Button from 'components/Button/Button.react';
 import CategoryList             from 'components/CategoryList/CategoryList.react';
-import DateRange from 'components/DateRange/DateRange.react';
+// import DateRange from 'components/DateRange/DateRange.react';
 import EmptyState from 'components/EmptyState/EmptyState.react';
 import FlowFooter from 'components/FlowFooter/FlowFooter.react';
 import Icon from 'components/Icon/Icon.react';
@@ -20,7 +20,7 @@ import subscribeTo from 'lib/subscribeTo';
 import TableHeader from 'components/Table/TableHeader.react';
 import TableView from 'dashboard/TableView.react';
 import Toolbar from 'components/Toolbar/Toolbar.react';
-import { Directions } from 'lib/Constants';
+// import { Directions } from 'lib/Constants';
 
 const SLOW_QUERIES_HEADERS = ['#', 'Date Time', 'Method', 'Path', 'Parameters', 'Resp. Status', 'Resp. Time (ms)'];
 const TABLE_WIDTH = [5, 17, 8, 25, 25, 10, 10];
@@ -73,9 +73,9 @@ class SlowQueries extends TableView {
     this.xhrHandles = [];
   }
 
-    renderSidebar() {
+  renderSidebar() {
     const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    const current = path.substr(path.lastIndexOf('/') + 1, path.length - 1);
     return (
       <CategoryList current={current} linkPrefix={'analytics/'} categories={[
         { name: 'Explorer', id: 'explorer' },
@@ -99,10 +99,10 @@ class SlowQueries extends TableView {
       // check if the changes are in currentApp serverInfo status
       // if not return without making any request
       if (this.props.apps !== nextProps.apps) {
-        let updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.match.params.appId);
-        let prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.match.params.appId);
+        const updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.match.params.appId);
+        const prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.match.params.appId);
         const shouldUpdate = updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
-        if (!shouldUpdate) return;
+        if (!shouldUpdate) {return;}
       }
       this.fetchDropdownData(nextProps);
       this.fetchSlowQueries(nextContext);
@@ -127,13 +127,13 @@ class SlowQueries extends TableView {
   }
 
   fetchSlowQueries(app) {
-    let { path, method, respStatus, respTime, dateRange } = this.state;
+    const { path, method, respStatus, respTime, dateRange } = this.state;
 
     this.setState({ loading: true }, () => {
-      let { promise, xhr } = app.getAnalyticsSlowQueries({path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
-      let pathsResult = app.getAnalyticsSlowQueries({distinct: 'href', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
-      let statusResult = app.getAnalyticsSlowQueries({distinct: 'statusCode', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
-      let methodsResult = app.getAnalyticsSlowQueries({distinct: 'method', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
+      const { promise, xhr } = app.getAnalyticsSlowQueries({path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
+      const pathsResult = app.getAnalyticsSlowQueries({distinct: 'href', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
+      const statusResult = app.getAnalyticsSlowQueries({distinct: 'statusCode', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
+      const methodsResult = app.getAnalyticsSlowQueries({distinct: 'method', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
       promise.then(
         (result) => this.setState({ slowQueries: result && result.concat([[],[]]) || [] }),
         () => this.setState({ slowQueries: [] })
@@ -159,9 +159,9 @@ class SlowQueries extends TableView {
   handleDownload() {
     const csvDeclaration = 'data:text/csv;charset=utf-8,';
     let csvRows = [SLOW_QUERIES_HEADERS];
-    csvRows[0][0] = 'Sno.'; // replace # 
+    csvRows[0][0] = 'Sno.'; // replace #
     csvRows = csvRows.concat(this.state.slowQueries);
-    let csvContent = csvRows.map(row => row.join(',')).join('\n');
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
 
     window.open(encodeURI(csvDeclaration + csvContent));
   }
@@ -170,7 +170,7 @@ class SlowQueries extends TableView {
     // Get app versions using Explorer endpoint
     // const queries = this.props.customQueries.data.get('queries') || [];
     // const appVersionExplorerQuery = queries.find(
-      // query => query.localId === APP_VERSIONS_EXPLORER_QUERY.localId
+    // query => query.localId === APP_VERSIONS_EXPLORER_QUERY.localId
     // );
     // const appVersions = {};
     // if (appVersionExplorerQuery && appVersionExplorerQuery.result) {
@@ -178,8 +178,8 @@ class SlowQueries extends TableView {
     //     const os = value['OS'];
     //     const version = value['App Display Version'];
     //     if (os === null || version === null) {
-          return;
-        }
+    //   return;
+    // }
     //     if (appVersions.hasOwnProperty(os)) {
     //       appVersions[os].push(version);
     //     } else {
@@ -269,7 +269,7 @@ class SlowQueries extends TableView {
         description={'You haven\'t executed any queries.'}
         icon="gears"
         cta="Get started with Query"
-        action={() => (window.open('https://www.back4app.com/docs/parse-dashboard/analytics/slow-query-tool', '_blank') )}
+        action={() => (window.open('https://www.back4app.com/docs/parse-dashboard/analytics/slow-query-tool', '_blank'))}
       />
     );
   }
@@ -284,7 +284,7 @@ class SlowQueries extends TableView {
         //       value={this.state.dateRange}
         //       onChange={newValue => this.setState({ dateRange: newValue, mutated: true })}
         //       align={Directions.RIGHT}
-            />
+        // />
         //   </span>
         // }
         primary={

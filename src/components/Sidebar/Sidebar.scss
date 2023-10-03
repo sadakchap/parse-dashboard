@@ -8,6 +8,11 @@
 @import 'stylesheets/globals.scss';
 @import 'stylesheets/back4app.scss';
 
+$headerHeight: 51px;
+$menuSectionHeight: 24px;
+$sidebarMenuItemHeight: 48px;
+$footerHeight: 36px;
+
 .sidebar {
   position: fixed;
   width: 300px;
@@ -230,6 +235,7 @@
       transform: rotate(180deg);
     }
   }
+}
 }
 
 .sidebarPin {

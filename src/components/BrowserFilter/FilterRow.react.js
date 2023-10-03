@@ -29,7 +29,7 @@ function compareValue(
   active,
   parentContentId,
   setFocus
-, parentContentId) {
+) {
   switch (info.type) {
     case null:
       return null;

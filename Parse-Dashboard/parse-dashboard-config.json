@@ -1,17 +1,63 @@
 {
   "apps": [
-    {
-      "serverURL": "http://localhost:1338/parse",
-      "appId": "APPLICATION_ID",
-      "masterKey": "MASTER_KEY",
-      "appName": "Countries States and Cities",
-      "iconName": "",
-      "primaryBackgroundColor": "",
-      "secondaryBackgroundColor": "",
-      "custom": {
-        "isOwner": true
+      {
+          "serverURL": "https://parseapi.back4app.com",
+          "appId": "kXbRmd6KEQXtZOFafPDv9YfbgTuXKCAIBLWXyUN3",
+          "javascriptKey": "9729BicK3h7w4zRU61SyNNNGs7FlBc6KRA0eNMJ3",
+          "restKey": "cgdWBIizu0wTmlLKDVRFQMoPd0cwbfg9qaerHWOx",
+          "clientKey": "aI90GI5HowLdGiAnXQn6FGNgZrf0W9sIbgQHCGNQ",
+          "windowsKey": "YywEccArFgSq3BBnd6GqDIMp8VnXpmgthzaXx0pk",
+          "webhookKey": "tTHZYiqLK1J4uI6tKybB6LT8ob6mKUw0tSNBw1ER",
+          "apiKey": "f299333d-8060-405b-8174-925ccca26789",
+          "appName": "Sample Blog App",
+          "production": true,
+          "appNameForURL": "69a8d925-096b-4e45-887e-4ce81c5a2884",
+          "feedbackEmail": "helloworld@b4a.com",
+          "custom": {
+              "isGDPR": false,
+              "forceShowGDPRFields": false,
+              "showAdminPage": false,
+              "isOwner": true,
+              "isDatabasePublic": false
+          },
+          "supportedPushLocales": [],
+          "graphQLServerURL": "https://parseapi.back4app.com/graphql",
+          "parseOptions": {},
+          "masterKey": "jJhHAlmnZ6OavidMlL8Zs3coFTf2vzKfcbuED48T"
+      },
+      {
+          "serverURL": "https://parseapi.back4app.com",
+          "appId": "mS0TCEn1oKRu4MJ7xAwNUzW0t6RdVuPgL7yUpDp8",
+          "javascriptKey": "elvMxk3PDQUZ1MWMwrRbFBheIwR1U2TPmiJ0sK3W",
+          "restKey": "Q6Xm6ai9sL5SseRW5uqokuS4ENjUsru3hhAoTJX0",
+          "clientKey": "9mZZ3uetuQeCIFxtb6AphNOvzcwnul1czhYM0jM9",
+          "windowsKey": "ZizMQWP1nyL3Dx0L9d5Qvmn3hmlKKNcBGOnhTyLh",
+          "webhookKey": "fuitGDChftsGPut7UXsHYMZ19tUnV96g2hgBezGl",
+          "apiKey": "15698d3b-c87d-4081-8ec6-47b6d800b130",
+          "appName": "new-app",
+          "production": true,
+          "appNameForURL": "24030df7-1af3-4030-abd0-7fbfbc3d4929",
+          "feedbackEmail": "helloworld@b4a.com",
+          "custom": {
+              "isGDPR": false,
+              "forceShowGDPRFields": false,
+              "showAdminPage": false,
+              "isOwner": true,
+              "isDatabasePublic": false
+          },
+          "supportedPushLocales": [],
+          "graphQLServerURL": "https://parseapi.back4app.com/graphql",
+          "parseOptions": {},
+          "masterKey": "D1FrdPTLwYBvjkrGMgCpGTMmy9xEDX4lIfB2ERfl"
       }
-    }
   ],
-  "iconsFolder": "icons"
+  "newFeaturesInLatestVersion": [],
+  "user": {
+      "email": "helloworld@b4a.com",
+      "has_password": false,
+      "account_keys": [],
+      "name": "helloworld@b4a.com",
+      "playDatabaseBrowserTutorial": false,
+      "allowHubPublish": false
+  }
 }

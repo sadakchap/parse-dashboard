@@ -67,7 +67,6 @@ const BrowserToolbar = ({
   enableSecurityDialog,
   enableColumnManipulation,
   enableClassManipulation,
-  onShowPointerKey,
 
   currentUser,
   useMasterKey,

@@ -6,68 +6,18 @@
  * the root directory of this source tree.
  */
 import AccountManager     from 'lib/AccountManager'; // user workaround
-import AccountOverview    from './Account/AccountOverview.react';
-import AccountView        from './AccountView.react';
-import AnalyticsOverview  from './Analytics/Overview/Overview.react';
-import ApiConsole         from './Data/ApiConsole/ApiConsole.react';
-import AppData            from './AppData.react';
-import AppsIndex          from './Apps/AppsIndex.react';
-import AppsManager        from 'lib/AppsManager';
-import Browser            from './Data/Browser/Browser.react';
-import CloudCode          from './Data/CloudCode/B4ACloudCode.react';
-import Config             from './Data/Config/Config.react';
-import Explorer           from './Analytics/Explorer/Explorer.react';
-import FourOhFour         from 'components/FourOhFour/FourOhFour.react';
-import GeneralSettings    from './Settings/GeneralSettings.react';
-import GraphQLConsole     from './Data/ApiConsole/GraphQLConsole.react';
-import history            from 'dashboard/history';
-import HostingSettings    from './Settings/HostingSettings.react';
 import HubConnections     from './Hub/HubConnections.react';
-import Icon               from 'components/Icon/Icon.react';
 import IndexManager       from './IndexManager/IndexManager.react'
-import JobEdit            from 'dashboard/Data/Jobs/JobEdit.react';
-import Jobs               from './Data/Jobs/Jobs.react';
-import JobsData           from 'dashboard/Data/Jobs/JobsData.react';
-import Loader             from 'components/Loader/Loader.react';
-import InfoLogs           from './Data/Logs/InfoLogs.react';
 import ErrorLogs          from './Data/Logs/ErrorLogs.react';
 import AccessLogs         from './Data/Logs/AccessLogs.react';
 import SystemLogs         from './Data/Logs/SystemLogs.react';
-import Migration          from './Data/Migration/Migration.react';
-import ParseApp           from 'lib/ParseApp';
-import Performance        from './Analytics/Performance/Performance.react';
-import PushAudiencesIndex from './Push/PushAudiencesIndex.react';
-import PushDetails        from './Push/PushDetails.react';
-import PushIndex          from './Push/PushIndex.react';
-import PushNew            from './Push/PushNew.react';
-import PushSettings       from './Settings/PushSettings.react';
-import React              from 'react';
-import RestConsole        from './Data/ApiConsole/RestConsole.react';
-import Retention          from './Analytics/Retention/Retention.react';
-import SchemaOverview     from './Data/Browser/SchemaOverview.react';
-import SecuritySettings   from './Settings/SecuritySettings.react';
-import SettingsData       from './Settings/SettingsData.react';
-import SlowQueries        from './Analytics/SlowQueries/SlowQueries.react';
-import styles             from 'dashboard/Apps/AppsIndex.scss';
-import UsersSettings      from './Settings/UsersSettings.react';
-import Webhooks           from './Data/Webhooks/Webhooks.react';
 import B4aHubPublishPage       from './B4aHubPublishPage/B4aHubPublishPage.react';
 import B4aAdminPage       from './B4aAdminPage/B4aAdminPage.react';
 import B4aAppTemplates    from './B4aAppTemplates/B4aAppTemplates.react';
-import { AsyncStatus }    from 'lib/Constants';
 import { center }         from 'stylesheets/base.scss';
-import { get }            from 'lib/AJAX';
-import { setBasePath }    from 'lib/AJAX';
 import ServerSettings     from 'dashboard/ServerSettings/ServerSettings.react';
-import {
-  Router,
-  Switch,
-} from 'react-router';
-import { Route, Redirect } from 'react-router-dom';
 import createClass from 'create-react-class';
-import { Helmet } from 'react-helmet';
-import Playground from './Data/Playground/Playground.react';
-import axios from "lib/axios";
+import axios from 'lib/axios';
 import moment from 'moment';
 import B4aConnectPage from './B4aConnectPage/B4aConnectPage.react';
 import EmptyState from 'components/EmptyState/EmptyState.react';
@@ -117,9 +67,10 @@ import { get } from 'lib/AJAX';
 import { setBasePath } from 'lib/AJAX';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import Playground from './Data/Playground/Playground.react';
 import DashboardSettings from './Settings/DashboardSettings/DashboardSettings.react';
-import Security           from './Settings/Security/Security.react';
+import Playground from './Data/Playground/Playground.react';
+import Security from './Settings/Security/Security.react';
+import InfoLogs from './Data/Logs/ErrorLogs.react';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -228,7 +179,7 @@ export default class Dashboard extends React.Component {
         const isFlow1 = hourDiff <= 720 ? true : false;
         let transactionId = userDetail.id;
         if(!isFlow1){
-          const quarter = monthQuarter[parseInt(now.month()/3)];
+          const quarter = monthQuarter[parseInt(now.month() / 3)];
           transactionId += `${now.year()}${quarter}`;
         }
         const options = {
@@ -238,8 +189,8 @@ export default class Dashboard extends React.Component {
           email: userDetail.username,
           journey: isFlow1 ? 'csat-back4app' : 'nps-back4app',
         };
-        let retryInterval = isFlow1 ? 5 : 45;
-        let collectInterval = isFlow1 ? 30 : 90;
+        const retryInterval = isFlow1 ? 5 : 45;
+        const collectInterval = isFlow1 ? 30 : 90;
         options.param_requestdata = encodeURIComponent(JSON.stringify({
           userDetail,
           options,
@@ -269,7 +220,7 @@ export default class Dashboard extends React.Component {
       // fetch serverInfo request for each app
       apps.forEach(async (app) => {
         // Set master key as a default string to avoid undefined value access issues
-        if (!app.masterKey) app.masterKey = "******"
+        if (!app.masterKey) {app.masterKey = '******'}
         if (app.serverURL.startsWith('https://api.parse.com/1')) {
           //api.parse.com doesn't have feature availability endpoint, fortunately we know which features
           //it supports and can hard code them
@@ -318,10 +269,10 @@ export default class Dashboard extends React.Component {
     });
   }
 
-   updateApp(app) {
+  updateApp(app) {
     const updatedApps = [...this.state.apps];
     const appIdx = updatedApps.findIndex(ap => ap.applicationId === app.applicationId);
-    if (appIdx === -1) return;
+    if (appIdx === -1) {return;}
     updatedApps[appIdx] = app;
     this.setState({
       apps: updatedApps
@@ -410,14 +361,14 @@ export default class Dashboard extends React.Component {
     //   </Switch>
     // );
 
-    const logsRoute = (props) => (
-      <Switch>
+    const LogsRoute = (
+      <Route element={<InfoLogs />}>
         <Route path="info" element={<InfoLogs />} />
-        <Route path="error" element={<ErrorLogsInfoLogs />} />
-        <Route path="system" element={<SystemLogsInfoLogs />} />
+        <Route path="error" element={<ErrorLogs />} />
+        <Route path="system" element={<SystemLogs />} />
         <Route index element={<Navigate replace to="/apps/:appId/logs/system" />} />
-        <Route path="access" element={<AccessLogsInfoLogs /> } />
-      </Switch>
+        <Route path="access" element={<AccessLogs /> } />
+      </Route>
     );
 
     // const BrowserRoute = (props) => {
@@ -487,9 +438,10 @@ export default class Dashboard extends React.Component {
         <Route path="webhooks" element={<Webhooks />} />
 
         <Route path="jobs">{JobsRoute}</Route>
+        <Route path="logs">{LogsRoute}</Route>
 
         <Route path="logs/:type" element={<Logs />} />
-        <Route path="logs" element={<Navigate replace to="info" />} />
+        {/* <Route path="logs" element={<Navigate replace to="info" />} /> */}
 
         <Route path="config" element={<Config />} />
 

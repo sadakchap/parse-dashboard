@@ -25,7 +25,6 @@ import AttachSelectedRowsDialog from 'dashboard/Data/Browser/AttachSelectedRowsD
 import CloneSelectedRowsDialog from 'dashboard/Data/Browser/CloneSelectedRowsDialog.react';
 import EditRowDialog from 'dashboard/Data/Browser/EditRowDialog.react';
 import ExportSelectedRowsDialog from 'dashboard/Data/Browser/ExportSelectedRowsDialog.react';
-import ExportSelectedRowsDialog from 'dashboard/Data/Browser/ExportSelectedRowsDialog.react';
 import ExportSchemaDialog from 'dashboard/Data/Browser/ExportSchemaDialog.react';
 import { List, Map } from 'immutable';
 import Notification from 'dashboard/Data/Browser/Notification.react';
@@ -53,7 +52,6 @@ import withReactContent from 'sweetalert2-react-content';
 import postgresqlImg from './postgresql.png';
 import PermissionsDialog from 'components/PermissionsDialog/PermissionsDialog.react';
 import validateEntry from 'lib/validateCLPEntry.js';
-import PointerKeyDialog from 'dashboard/Data/Browser/PointerKeyDialog.react';
 import ConfirmDeleteColumnDialog from './ConfirmDeleteColumnDialog.react';
 import { defaultCLPS, protectedCLPs } from '../../../lib/Constants';
 

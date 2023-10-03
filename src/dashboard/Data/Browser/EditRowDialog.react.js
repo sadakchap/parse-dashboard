@@ -12,11 +12,9 @@ import GeoPointEditor from 'components/GeoPointEditor/GeoPointEditor.react';
 import FileEditor from 'components/FileEditor/FileEditor.react';
 import ObjectPickerDialog from 'dashboard/Data/Browser/ObjectPickerDialog.react';
 import styles from 'dashboard/Data/Browser/Browser.scss';
-import getFileName from 'lib/getFileName';
 import encode from 'parse/lib/browser/encode';
 import validateNumeric from 'lib/validateNumeric';
 import getFileName from 'lib/getFileName';
-import encode from 'parse/lib/browser/encode';
 
 export default class EditRowDialog extends React.Component {
   constructor(props) {

@@ -23,7 +23,7 @@ export default class DateTimePicker extends React.Component {
       hours: String(timeRef[getDateMethod(props.local, 'getHours')]()),
       minutes:
         (timeRef[getDateMethod(props.local, 'getMinutes')]() < 10 ? '0' : '') +
-        String(timeRef[getDateMethod(props.local, 'getMinutes')]()),,
+        String(timeRef[getDateMethod(props.local, 'getMinutes')]()),
     }
   }
 

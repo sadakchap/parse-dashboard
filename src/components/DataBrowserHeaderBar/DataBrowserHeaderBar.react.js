@@ -33,7 +33,7 @@ export default class DataBrowserHeaderBar extends React.Component {
       </div>,
     ];
 
-    headers.forEach(({ width, name, type, targetClass, order, visible, preventSort, required, preventSort }, i) => {
+    headers.forEach(({ width, name, type, targetClass, order, visible, preventSort, required }, i) => {
       if (!visible) {
         return;
       }

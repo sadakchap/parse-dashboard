@@ -18,7 +18,6 @@ import * as ColumnPreferences from 'lib/ColumnPreferences';
 import labelStyles from 'components/Label/Label.scss';
 import Modal from 'components/Modal/Modal.react';
 import Tooltip from '../Tooltip/PopperTooltip.react';
-import * as ColumnPreferences from 'lib/ColumnPreferences';
 import PropTypes from 'prop-types';
 
 class BrowserCell extends Component {

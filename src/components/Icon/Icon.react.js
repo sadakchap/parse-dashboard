@@ -11,7 +11,7 @@ import React from 'react';
 const Icon = ({ name, fill, width, height, className, onClick }) => {
   const props = {
     width: width,
-    height: height,,
+    height: height,
     className,
     onClick
   };

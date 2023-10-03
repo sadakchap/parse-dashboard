@@ -7,7 +7,7 @@
  */
 const configuration = require('./base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const settings = require('@back4app/back4app-settings');
@@ -21,8 +21,10 @@ configuration.output.path = path.resolve('./Parse-Dashboard/public/bundles');
 configuration.output.filename = "[name].[chunkhash].js";
 
 configuration.plugins.push(
-  new CleanWebpackPlugin(['bundles/dashboard*.js'], {
-    root: path.resolve('./Parse-Dashboard/public'),
+  new CleanWebpackPlugin({
+    cleanOnceBeforeBuildPatterns: [
+      path.join(path.resolve('./Parse-Dashboard/public'), 'bundles/dashboard*.js')
+    ],
     watch: true
   }),
   new HtmlWebpackPlugin({

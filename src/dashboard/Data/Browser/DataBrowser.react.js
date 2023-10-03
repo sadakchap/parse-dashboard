@@ -13,7 +13,6 @@ import BrowserTable from 'dashboard/Data/Browser/BrowserTable.react';
 import BrowserToolbar from 'dashboard/Data/Browser/BrowserToolbar.react';
 import ContextMenu from 'components/ContextMenu/ContextMenu.react';
 import * as ColumnPreferences from 'lib/ColumnPreferences';
-import React from 'react';
 
 /**
  * DataBrowser renders the browser toolbar and data table
