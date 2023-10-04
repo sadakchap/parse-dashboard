@@ -30,6 +30,7 @@ const Sidebar = ({
   appSelector,
   primaryBackgroundColor,
   secondaryBackgroundColor,
+  footerMenuButtons,
 }) => {
   const currentApp = useContext(CurrentApp);
   const collapseWidth = 980;
@@ -169,6 +170,25 @@ const Sidebar = ({
     );
   }
 
+  const footerButtons = [
+    <Button value='Support'
+      primary={true}
+      width='75px'
+      // eslint-disable-next-line no-undef
+      onClick={() => zE && zE.activate()}
+      key={0}
+    />
+  ];
+  if (footerMenuButtons) {
+    footerButtons.push(<FooterMenu key={1}>{footerMenuButtons}</FooterMenu>);
+  }
+
+  if (dashboardUser) {
+    footerButtons.push(<a href={`${mountPath}logout`} className={styles.more}>
+      <Icon height={24} width={24} name="logout" />Logout</a>
+    )
+  }
+
   return (
     <div
       className={sidebarClasses.join(' ')}
@@ -184,16 +204,14 @@ const Sidebar = ({
           : undefined
       }
     >
-      <SidebarHeader isCollapsed={!appsMenuOpen && collapsed} dashboardUser={dashboardUser} />
+      {/* <SidebarHeader isCollapsed={!appsMenuOpen && collapsed} dashboardUser={dashboardUser} /> */}
       {sidebarContent}
-      {dashboardUser && (
-        <div className={styles.footer}>
-          <a href={`${mountPath}logout`} className={styles.more}>
-            <Icon height={24} width={24} name="logout" />
-            Logout
-          </a>
-        </div>
-      )}
+      <div className={styles.help}>
+        {/* div to add the zendesk help widget*/}
+      </div>
+      <div className={styles.footer}>
+        {footerButtons}
+      </div>
     </div>
   );
 };
