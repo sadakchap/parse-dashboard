@@ -95,7 +95,7 @@ module.exports = function(config, options) {
 
     // Serve the configuration.
     app.get('/parse-dashboard-config.json', function(req, res) {
-      const apps = config.apps.map((app) => Object.assign({ masterKey: "******" }, app)); // make a copy
+      const apps = config.apps.map((app) => Object.assign({ masterKey: '******' }, app)); // make a copy
       const response = {
         apps: apps,
         newFeaturesInLatestVersion: newFeaturesInLatestVersion,
@@ -220,11 +220,11 @@ module.exports = function(config, options) {
       `);
     });
 
-    redirectURLsToAPI.map( uri => {
+    redirectURLsToAPI.map(uri => {
       app.get(uri, (req, res) => {
         return res.redirect(settings.BACK4APP_API_PATH + req.path);
       });
-    } );
+    });
 
     // For every other request, go to index.html. Let client-side handle the rest.
     app.get('/*', function(req, res) {
