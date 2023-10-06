@@ -131,6 +131,7 @@
   &.disabled {
     cursor: not-allowed;
   }
+  flex-shrink: 0;
 }
 
 .appname {

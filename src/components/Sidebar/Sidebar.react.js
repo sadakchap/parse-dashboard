@@ -13,7 +13,6 @@ import React          from 'react';
 import SidebarSection from 'components/Sidebar/SidebarSection.react';
 import SidebarSubItem from 'components/Sidebar/SidebarSubItem.react';
 import styles         from 'components/Sidebar/Sidebar.scss';
-import zendeskSettings from 'components/Sidebar/zendeskSettings'
 import Button         from 'components/Button/Button.react'
 import Icon           from 'components/Icon/Icon.react';
 import { isMobile }   from 'lib/browserUtils';

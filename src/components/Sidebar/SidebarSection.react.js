@@ -5,10 +5,10 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import Icon     from 'components/Icon/Icon.react';
+import Icon from 'components/Icon/Icon.react';
 import { Link } from 'react-router-dom';
-import React    from 'react';
-import styles   from 'components/Sidebar/Sidebar.scss';
+import React from 'react';
+import styles from 'components/Sidebar/Sidebar.scss';
 
 const sendEvent = () => {
   back4AppNavigation && back4AppNavigation.atApiReferenceIntroEvent && back4AppNavigation.atApiReferenceIntroEvent()

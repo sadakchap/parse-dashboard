@@ -67,8 +67,8 @@ export default class GeneralSettings extends DashboardView {
 
     return {
       requestLimit: this.props.initialFields.pricing_plan.request_limit,
-      appName: this.context.currentApp.name,
-      inProduction: this.context.currentApp.production,
+      appName: this.context.name,
+      inProduction: this.context.production,
       iTunesURL: iosUrl ? iosUrl.url : '',
       googlePlayURL: anrdoidUrl ? anrdoidUrl.url : '',
       windowsAppStoreURL: windowsUrl ? windowsUrl.url : '',

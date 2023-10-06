@@ -30,10 +30,10 @@ const APP_VERSIONS_EXPLORER_QUERY = {
   limit: 1000,
   source: 'API Event',
   groups: ['OS', 'App Display Version'],
-  localId: 'slow_query_app_version_query'
+  localId: 'slow_query_app_version_query',
 };
 
-let formatQuery = (query) => {
+const formatQuery = query => {
   return query;
 };
 
@@ -46,7 +46,7 @@ class SlowQueries extends TableView {
     this.section = 'More';
     this.subsection = 'Analytics';
 
-    let date = new Date();
+    const date = new Date();
     this.state = {
       slowQueries: [],
       pathOptions: [],
@@ -91,7 +91,7 @@ class SlowQueries extends TableView {
 
   componentWillMount() {
     this.fetchDropdownData(this.props);
-    this.fetchSlowQueries(this.context.currentApp);
+    this.fetchSlowQueries(this.context);
   }
 
   componentWillUnmount() {
@@ -109,24 +109,24 @@ class SlowQueries extends TableView {
         if (!shouldUpdate) return;
       }
       this.fetchDropdownData(nextProps);
-      this.fetchSlowQueries(nextContext.currentApp);
+      this.fetchSlowQueries(nextContext);
     }
   }
 
   fetchDropdownData(props) {
     props.schema.dispatch(SchemaStore.ActionTypes.FETCH);
-    let payload = {
+    const payload = {
       ...APP_VERSIONS_EXPLORER_QUERY,
       from: this.state.dateRange.start.getTime(),
-      to: this.state.dateRange.end.getTime()
+      to: this.state.dateRange.end.getTime(),
     };
     if (window.DEVELOPMENT) {
       payload.appID = 16155;
     }
     props.customQueries.dispatch(AnalyticsQueryStore.ActionTypes.FETCH, {
       query: {
-        ...payload
-      }
+        ...payload,
+      },
     });
   }
 
@@ -172,30 +172,34 @@ class SlowQueries extends TableView {
 
   renderToolbar() {
     // Get app versions using Explorer endpoint
-    // let queries = this.props.customQueries.data.get('queries') || [];
-    // let appVersionExplorerQuery = queries.find((query) => query.localId === APP_VERSIONS_EXPLORER_QUERY.localId);
-    // let appVersions = {};
+    // const queries = this.props.customQueries.data.get('queries') || [];
+    // const appVersionExplorerQuery = queries.find(
+    //   query => query.localId === APP_VERSIONS_EXPLORER_QUERY.localId
+    // );
+    // const appVersions = {};
     // if (appVersionExplorerQuery && appVersionExplorerQuery.result) {
-    //   appVersionExplorerQuery.result.forEach((value) => {
-    //     let os = value['OS'];
-    //     let version = value['App Display Version'];
-    //     if (os === null || version === null) return;
-    //     if (appVersions.hasOwnProperty(os)) {
+    //   appVersionExplorerQuery.result.forEach(value => {
+    //     const os = value['OS'];
+    //     const version = value['App Display Version'];
+    //     if (os === null || version === null) {
+    //       return;
+    //     }
+    //     if (Object.prototype.hasOwnProperty.call(appVersions, os)) {
     //       appVersions[os].push(version);
     //     } else {
     //       appVersions[os] = [version];
     //     }
     //   });
     // }
-    //
+
     // let osOptions = ['OS'];
     // if (Object.keys(appVersions) && Object.keys(appVersions).length > 0) {
     //   osOptions = Object.keys(appVersions);
     // }
-    //
+
     // // Get class names using Schema endpoint
     // let classOptions = ['Class'];
-    // let classList = this.props.schema.data.get('classes');
+    // const classList = this.props.schema.data.get('classes');
     // if (classList && !classList.isEmpty()) {
     //   classOptions = Object.keys(classList.toObject());
     // }
@@ -216,22 +220,20 @@ class SlowQueries extends TableView {
               ...newValue,
               mutated: true
             })} />
-          <a
-            href='javascript:;'
-            role='button'
+          <button
+            type='button'
             onClick={this.handleDownload.bind(this)}
-            className={styles.toolbarAction}>
-            <Icon name='download' width={14} height={14} fill='#66637a' />
+            className={styles.toolbarAction}
+          >
+            <Icon name="download" width={14} height={14} fill="#66637a" />
             Download
-          </a>
+          </button>
         </div>
       );
     }
 
     return (
-       <Toolbar
-        section='Analytics'
-        subsection='Slow Requests'>
+      <Toolbar section="Analytics" subsection="Slow Queries">
         {actions}
       </Toolbar>
     );
@@ -239,7 +241,9 @@ class SlowQueries extends TableView {
 
   renderHeaders() {
     return SLOW_QUERIES_HEADERS.map((header, index) => (
-      <TableHeader key={header} width={TABLE_WIDTH[index]}>{header}</TableHeader>
+      <TableHeader key={header} width={TABLE_WIDTH[index]}>
+        {header}
+      </TableHeader>
     ));
   }
 
@@ -251,7 +255,9 @@ class SlowQueries extends TableView {
     return (
       <tr key={query[0]}>
         {TABLE_WIDTH.map((width, index) => (
-          <td key={'column_' + index} width={width + '%'}>{index === 1 ? formatQuery(query[index]) : query[index]}</td>
+          <td key={'column_' + index} width={width + '%'}>
+            {index === 1 ? formatQuery(query[index]) : query[index]}
+          </td>
         ))}
       </tr>
     );
@@ -260,11 +266,12 @@ class SlowQueries extends TableView {
   renderEmpty() {
     return (
       <EmptyState
-        title='Slow Requests'
+        title="Slow Queries"
         description={'You haven\'t executed any queries.'}
-        icon='gears'
-        cta='Get started with Query'
-        action={() => window.open('https://www.back4app.com/docs/parse-dashboard/analytics/slow-query-tool', '_blank') } />
+        icon="gears"
+        cta="Get started with Query"
+        action={() => window.open('https://www.back4app.com/docs/parse-dashboard/analytics/slow-query-tool', '_blank')}
+      />
     );
   }
 
@@ -280,14 +287,15 @@ class SlowQueries extends TableView {
         //       align={Directions.RIGHT} />
         //   </span>
         // )}
-        primary={(
+        primary={
           <Button
             primary={true}
             disabled={!this.state.mutated}
-            onClick={this.fetchSlowQueries.bind(this, this.context.currentApp)}
-            value='Run query' />
-        )}
-        />
+            onClick={this.fetchSlowQueries.bind(this, this.context)}
+            value="Run query"
+          />
+        }
+      />
     );
   }
 }

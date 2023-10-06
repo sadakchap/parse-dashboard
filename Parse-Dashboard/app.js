@@ -8,20 +8,23 @@ const fs = require('fs');
 const settings = require('@back4app/back4app-settings');
 
 const currentVersionFeatures = require('../package.json').parseDashboardFeatures;
-
 const redirectURLsToAPI = [
   '/apps/:id/collaborations/validate'
 ];
 
-
-var newFeaturesInLatestVersion = [];
-packageJson('parse-dashboard', 'latest').then(latestPackage => {
-  if (latestPackage.parseDashboardFeatures instanceof Array) {
-    newFeaturesInLatestVersion = latestPackage.parseDashboardFeatures.filter(feature => {
-      return currentVersionFeatures.indexOf(feature) === -1;
-    });
-  }
-});
+let newFeaturesInLatestVersion = [];
+packageJson('parse-dashboard', { version: 'latest', fullMetadata: true })
+  .then(latestPackage => {
+    if (latestPackage.parseDashboardFeatures instanceof Array) {
+      newFeaturesInLatestVersion = latestPackage.parseDashboardFeatures.filter(feature => {
+        return currentVersionFeatures.indexOf(feature) === -1;
+      });
+    }
+  })
+  .catch(() => {
+    // In case of a failure make sure the final value is an empty array
+    newFeaturesInLatestVersion = [];
+  });
 
 function getMount(mountPath) {
   mountPath = mountPath || '';
@@ -32,29 +35,29 @@ function getMount(mountPath) {
 }
 
 function checkIfIconsExistForApps(apps, iconsFolder) {
-  for (var i in apps) {
-    var currentApp = apps[i];
-    var iconName = currentApp.iconName;
-    var path = iconsFolder + '/' + iconName;
+  for (const i in apps) {
+    const currentApp = apps[i];
+    const iconName = currentApp.iconName;
+    const path = iconsFolder + '/' + iconName;
 
     fs.stat(path, function(err) {
       if (err) {
-          if ('ENOENT' == err.code) {// file does not exist
-              console.warn('Icon with file name: ' + iconName +' couldn\'t be found in icons folder!');
-          } else {
-            console.log(
-              'An error occurd while checking for icons, please check permission!');
-          }
+        if ('ENOENT' == err.code) {// file does not exist
+          console.warn('Icon with file name: ' + iconName + ' couldn\'t be found in icons folder!');
+        } else {
+          console.log(
+            'An error occurd while checking for icons, please check permission!');
+        }
       } else {
-          //every thing was ok so for example you can read it and send it to client
+        //every thing was ok so for example you can read it and send it to client
       }
-  } );
+    });
   }
 }
 
 module.exports = function(config, options) {
   options = options || {};
-  var app = express();
+  const app = express();
   // Serve public files.
   app.use(express.static(path.join(__dirname,'public')));
 
@@ -78,11 +81,11 @@ module.exports = function(config, options) {
     const users = config.users;
     const useEncryptedPasswords = !!config.useEncryptedPasswords;
     const authInstance = new Authentication(users, useEncryptedPasswords, mountPath);
-    authInstance.initialize(app, { cookieSessionSecret: options.cookieSessionSecret });
+    authInstance.initialize(app, { cookieSessionSecret: options.cookieSessionSecret, cookieSessionMaxAge: options.cookieSessionMaxAge });
 
     // CSRF error handler
     app.use(function (err, req, res, next) {
-      if (err.code !== 'EBADCSRFTOKEN') return next(err)
+      if (err.code !== 'EBADCSRFTOKEN') {return next(err)}
 
       // handle CSRF token errors here
       res.status(403)
@@ -91,8 +94,8 @@ module.exports = function(config, options) {
 
     // Serve the configuration.
     app.get('/parse-dashboard-config.json', function(req, res) {
-      let apps = config.apps.map((app) => Object.assign({ masterKey: "******" }, app)); // make a copy
-      let response = {
+      const apps = config.apps.map((app) => Object.assign({ masterKey: '******' }, app)); // make a copy
+      const response = {
         apps: apps,
         newFeaturesInLatestVersion: newFeaturesInLatestVersion,
         user: config.user
@@ -170,7 +173,7 @@ module.exports = function(config, options) {
     // running parse-dashboard from globally installed npm.
     if (config.iconsFolder) {
       try {
-        var stat = fs.statSync(config.iconsFolder);
+        const stat = fs.statSync(config.iconsFolder);
         if (stat.isDirectory()) {
           app.use('/appicons', express.static(config.iconsFolder));
           //Check also if the icons really exist
@@ -184,8 +187,9 @@ module.exports = function(config, options) {
     }
 
     app.get('/login', csrf(), function(req, res) {
+      const redirectURL = req.url.includes('?redirect=') && req.url.split('?redirect=')[1].length > 1 && req.url.split('?redirect=')[1];
       if (!users || (req.user && req.user.isAuthenticated)) {
-        return res.redirect(`${mountPath}apps`);
+        return res.redirect(`${mountPath}${redirectURL || 'apps'}`);
       }
 
       let errors = req.flash('error');
@@ -195,23 +199,23 @@ module.exports = function(config, options) {
         </div>`
       }
       res.send(`<!DOCTYPE html>
+      <html>
         <head>
           <link rel="shortcut icon" type="image/x-icon" href="${mountPath}favicon.ico" />
           <base href="${mountPath}"/>
           <script>
             PARSE_DASHBOARD_PATH = "${mountPath}";
           </script>
-        </head>
-        <html>
           <title>Parse Dashboard</title>
-          <body>
-            <div id="login_mount"></div>
-            ${errors}
-            <script id="csrf" type="application/json">"${req.csrfToken()}"</script>
-            <script src="${mountPath}bundles/${loginUrl}"></script>
-            <script src="${settings.BACK4APP_NAVIGATION_PATH}/back4app-navigation.bundle.js"></script>
-          </body>
-        </html>
+        </head>
+        <body>
+          <div id="login_mount"></div>
+          ${errors}
+          <script id="csrf" type="application/json">"${req.csrfToken()}"</script>
+          <script src="${mountPath}bundles/login.bundle.js"></script>
+          <script src="${settings.BACK4APP_NAVIGATION_PATH}/back4app-navigation.bundle.js"></script>
+        </body>
+      </html>
       `);
     });
 
@@ -224,21 +228,25 @@ module.exports = function(config, options) {
     // For every other request, go to index.html. Let client-side handle the rest.
     app.get('/*', function(req, res) {
       if (users && (!req.user || !req.user.isAuthenticated)) {
+        const redirect = req.url.replace('/login', '');
+        if (redirect.length > 1) {
+          return res.redirect(`${mountPath}login?redirect=${redirect}`);
+        }
         return res.redirect(`${mountPath}login`);
       }
-      if (users && req.user && req.user.matchingUsername ) {
+      if (users && req.user && req.user.matchingUsername) {
         res.append('username', req.user.matchingUsername);
       }
       res.send(`<!DOCTYPE html>
+      <html>
         <head>
           <link rel="shortcut icon" type="image/x-icon" href="${mountPath}favicon.ico" />
           <base href="${mountPath}"/>
           <script>
             PARSE_DASHBOARD_PATH = "${mountPath}";
           </script>
-        </head>
-        <html>
           <title>Parse Dashboard</title>
+        </head>
           <body>
             <div id="browser_mount"></div>
             <script src="${mountPath}bundles/${dashboardUrl}"></script>

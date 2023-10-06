@@ -5,19 +5,21 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import PropTypes     from 'lib/PropTypes';
-import ParseApp      from 'lib/ParseApp';
-import React         from 'react';
-import Sidebar       from 'components/Sidebar/Sidebar.react';
-import styles        from 'dashboard/Dashboard.scss';
+import React from 'react';
+import Sidebar from 'components/Sidebar/Sidebar.react';
+import styles from 'dashboard/Dashboard.scss';
+import Icon from 'components/Icon/Icon.react';
+import baseStyles from 'stylesheets/base.scss';
+import Button from 'components/Button/Button.react';
+import { CurrentApp } from 'context/currentApp';
+
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import AccountManager from 'lib/AccountManager';
 import { post } from 'lib/AJAX';
-import B4aBadge from '../components/B4aBadge/B4aBadge.react';
 
 // Alert parameters
-const MySwal = withReactContent(Swal)
+const MySwal = withReactContent(Swal);
 const mobileCompatibilityAlert = {
   title: '<span style="font-size: 2.25rem">Mobile Advice</span>',
   html: '<span style="font-size: 2.25rem">For a better experience, we recommend using Parse Dashboard on large screen devices, such as desktops or tablets</span>',
@@ -45,8 +47,21 @@ const isMobile = function() {
 };
 
 export default class DashboardView extends React.Component {
+  static contextType = CurrentApp;
+  /* A DashboardView renders two pieces: the sidebar, and the app itself */
 
+  constructor() {
+    super();
+    this.state = {
+      route: '',
+    };
+  }
+
+  componentDidUpdate() {
+    this.onRouteChanged();
+  }
   componentDidMount() {
+    this.onRouteChanged();
     const user = AccountManager.currentUser();
     // Current window size is lesser than Bootstrap's medium size
     if (user && !user.mobileAlertShown && isMobile()) {
@@ -57,20 +72,29 @@ export default class DashboardView extends React.Component {
     }
   }
 
-  /* A DashboardView renders two pieces: the sidebar, and the app itself */
+  onRouteChanged() {
+    const path = this.props.location?.pathname ?? window.location.pathname;
+    const route = path.split('apps')[1].split('/')[2];
+    if (route !== this.state.route) {
+      this.setState({ route });
+    }
+  }
+
   render() {
     let sidebarChildren = null;
     if (typeof this.renderSidebar === 'function') {
       sidebarChildren = this.renderSidebar();
     }
-    let appSlug = (this.context.currentApp ? this.context.currentApp.slug : '');
+    const appSlug = this.context ? this.context.slug : '';
 
-    if (!this.context.currentApp.hasCheckedForMigraton) {
-      this.context.currentApp.getMigrations().promise
-        .then(() => this.forceUpdate(), () => {});
+    if (!this.context.hasCheckedForMigraton) {
+      this.context.getMigrations().promise.then(
+        () => this.forceUpdate(),
+        () => {}
+      );
     }
 
-    let features = this.context.currentApp.serverInfo.features;
+    const features = this.context.serverInfo.features;
 
     const { showAdminPage } = this.context.currentApp.custom;
     const user = AccountManager.currentUser();
@@ -83,7 +107,7 @@ export default class DashboardView extends React.Component {
       features.schemas.removeClass) {
       databaseSubsections.push({
         name: 'Browser',
-        link: '/browser'
+        link: '/browser',
       });
     }
 
@@ -122,14 +146,14 @@ export default class DashboardView extends React.Component {
     if (features.cloudCode && features.cloudCode.jobs) {
       cloudCodeSubSections.push({
         name: 'Jobs',
-        link: '/jobs'
+        link: '/jobs',
       });
     }
 
     if (features.logs && Object.keys(features.logs).some(key => features.logs[key])) {
       cloudCodeSubSections.push({
         name: 'Logs',
-        link: '/logs'
+        link: '/logs',
       });
     }
 
@@ -158,7 +182,7 @@ export default class DashboardView extends React.Component {
       features.globalConfig.delete) {
       moreSubSection.push({
         name: 'Config',
-        link: '/config'
+        link: '/config',
       });
     }
 
@@ -244,7 +268,7 @@ export default class DashboardView extends React.Component {
     //   });
     // }
 
-    let analyticsSidebarSections = [];
+    const analyticsSidebarSections = [];
 
     //These analytics pages may never make it into parse server
 
@@ -284,7 +308,17 @@ export default class DashboardView extends React.Component {
     //   });
     // }
 
-    let settingsSections = [];
+    const settingsSections = [{
+      name: 'Dashboard',
+      link: '/settings/dashboard'
+    }];
+
+    if (this.context.enableSecurityChecks) {
+      settingsSections.push({
+        name: 'Security',
+        link: '/settings/security',
+      })
+    }
 
     // Settings - nothing remotely like this in parse-server yet. Maybe it will arrive soon.
 
@@ -326,7 +360,7 @@ export default class DashboardView extends React.Component {
       });
     }*/
 
-    let appSidebarSections = []
+    const appSidebarSections = [];
 
     if (databaseSubsections.length > 0) {
       appSidebarSections.push({
@@ -356,7 +390,7 @@ export default class DashboardView extends React.Component {
         name: 'App Settings',
         icon: 'gear-solid',
         link: '/settings',
-        subsections: settingsSections
+        subsections: settingsSections,
       });
     }
 
@@ -409,21 +443,49 @@ export default class DashboardView extends React.Component {
       secondaryBackgroundColor={this.context.currentApp.secondaryBackgroundColor}
       footerMenuButtons={this.getFooterMenuButtons && this.getFooterMenuButtons()}
       >
-      {sidebarChildren}
-    </Sidebar>);
+        {sidebarChildren}
+      </Sidebar>
+    );
+
+    let content = <div className={styles.content}>{this.renderContent()}</div>;
+    const canRoute = [...coreSubsections, ...pushSubsections, ...settingsSections]
+      .map(({ link }) => link.split('/')[1])
+      .includes(this.state.route);
+
+    if (!canRoute) {
+      content = (
+        <div className={styles.empty}>
+          <div className={baseStyles.center}>
+            <div className={styles.cloud}>
+              <Icon width={110} height={110} name="cloud-surprise" fill="#1e3b4d" />
+            </div>
+            <div className={styles.loadingError}>Feature unavailable</div>
+          </div>
+        </div>
+      );
+    }
+
+    if (this.context.serverInfo.error) {
+      content = (
+        <div className={styles.empty}>
+          <div className={baseStyles.center}>
+            <div className={styles.cloud}>
+              <Icon width={110} height={110} name="cloud-surprise" fill="#1e3b4d" />
+            </div>
+            <div className={styles.loadingError}>
+              {this.context.serverInfo.error.replace(/-/g, '\u2011')}
+            </div>
+            <Button color="white" value="Reload" width="120px" onClick={() => location.reload()} />
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className={styles.dashboard}>
-        <div className={styles.content}>
-          {this.renderContent()}
-        </div>
+        {content}
         {sidebar}
       </div>
     );
   }
 }
-
-DashboardView.contextTypes = {
-  generatePath: PropTypes.func,
-  currentApp: PropTypes.instanceOf(ParseApp)
-};
