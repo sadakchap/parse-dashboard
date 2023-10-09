@@ -7,7 +7,6 @@
  */
 const configuration = require('./base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const path = require('path');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const settings = require('@back4app/back4app-settings');
@@ -18,22 +17,20 @@ configuration.entry = {
   login: './login/index.js',
 };
 configuration.output.path = path.resolve('./Parse-Dashboard/public/bundles');
-configuration.output.filename = "[name].[chunkhash].js";
+configuration.output.filename = '[name].[chunkhash].js';
 
 configuration.plugins.push(
-  new CleanWebpackPlugin(['bundles/dashboard*.js'], {
-    root: path.resolve('./Parse-Dashboard/public'),
-    watch: true
-  }),
   new HtmlWebpackPlugin({
     template: '../Parse-Dashboard/index.ejs',
-    filename: path.resolve('./Parse-Dashboard/public/index.html')
+    filename: path.resolve('./Parse-Dashboard/public/index.html'),
   }),
   new HtmlWebpackExternalsPlugin({
-    externals: [{
-      module: '@back4app/back4app-navigation',
-      entry: settings.BACK4APP_NAVIGATION_PATH + '/back4app-navigation.bundle.js'
-    }]
+    externals: [
+      {
+        module: '@back4app/back4app-navigation',
+        entry: settings.BACK4APP_NAVIGATION_PATH + '/back4app-navigation.bundle.js',
+      },
+    ],
   })
 );
 

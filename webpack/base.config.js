@@ -16,7 +16,7 @@ const fs = require('fs');
 const json = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const version = json.version;
 const settings = require('@back4app/back4app-settings');
-const BACK4APP_API_PATH = process.env.ENVIRONMENT == "local" ? settings.BACK4APP_API_PATH : undefined
+const BACK4APP_API_PATH = process.env.ENVIRONMENT == 'local' ? settings.BACK4APP_API_PATH : undefined
 
 module.exports = {
   context: path.join(__dirname, '../src'),
@@ -24,6 +24,12 @@ module.exports = {
     filename: '[name].bundle.js',
     publicPath: 'bundles/',
     assetModuleFilename: 'img/[hash][ext]',
+    clean: {
+      keep(asset) {
+        console.log(asset);
+        return !asset.includes('.js');
+      },
+    }
   },
   resolve: {
     modules: [__dirname, path.join(__dirname, '../src'), path.join(__dirname, '../node_modules')],
