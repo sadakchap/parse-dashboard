@@ -212,18 +212,22 @@ module.exports = function(config, options) {
           <div id="login_mount"></div>
           ${errors}
           <script id="csrf" type="application/json">"${req.csrfToken()}"</script>
-          <script src="${mountPath}bundles/login.bundle.js"></script>
+          <script src="${mountPath}bundles/${loginUrl}"></script>
           <script src="${settings.BACK4APP_NAVIGATION_PATH}/back4app-navigation.bundle.js"></script>
+          <!--Start of Zopim Live Chat Script-->
+          <script async>/*<![CDATA[*/top.location.href && (window.zEmbed || function (e, t) { var n, o, d, i, s, a = [], r = document.createElement("iframe"); window.zEmbed = function () { a.push(arguments) }, window.zE = window.zE || window.zEmbed, r.src = "javascript:false", r.title = "", r.role = "presentation", (r.frameElement || r).style.cssText = "display: none", d = document.getElementsByTagName("script"), d = d[d.length - 1], d.parentNode.insertBefore(r, d), i = r.contentWindow, s = i.document; try { o = s } catch (e) { n = document.domain, r.src = 'javascript:var d=document.open();d.domain="' + n + '";void(0);', o = s } o.open()._l = function () { var e = this.createElement("script"); n && (this.domain = n), e.id = "js-iframe-async", e.src = "https://assets.zendesk.com/embeddable_framework/main.js", this.t = +new Date, this.zendeskHost = "back4app.zendesk.com", this.zEQueue = a, this.body.appendChild(e) }, o.write('<body onload="document._l();">'), o.close() }());/*]]>*/</script>
+          <!--End of Zopim Live Chat Script-->
+          <script src="https://survey.solucx.com.br/widget.js"></script>
         </body>
       </html>
       `);
     });
 
-    redirectURLsToAPI.map( uri => {
+    redirectURLsToAPI.map(uri => {
       app.get(uri, (req, res) => {
         return res.redirect(settings.BACK4APP_API_PATH + req.path);
       });
-    } );
+    });
 
     // For every other request, go to index.html. Let client-side handle the rest.
     app.get('/*', function(req, res) {

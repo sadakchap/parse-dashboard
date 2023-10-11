@@ -2,7 +2,7 @@ import { ActionTypes }  from 'lib/stores/SchemaStore'
 import CategoryList from 'components/CategoryList/CategoryList.react'
 import DashboardView from 'dashboard/DashboardView.react'
 import EmptyState from 'components/EmptyState/EmptyState.react'
-import history from 'dashboard/history'
+// import history from 'dashboard/history'
 import Icon from 'components/Icon/Icon.react'
 import IndexForm from './IndexForm.react'
 import ParseApp from 'lib/ParseApp'
@@ -14,6 +14,7 @@ import styles from './IndexManager.scss'
 import subscribeTo from 'lib/subscribeTo'
 import Swal from 'sweetalert2'
 import AccountManager from 'lib/AccountManager';
+import { generatePath } from 'react-router'
 
 @subscribeTo('Schema', 'schema')
 class IndexManager extends DashboardView {
@@ -58,7 +59,7 @@ class IndexManager extends DashboardView {
     }
     // if not owner then check for collaborator
     if (!this.context.currentApp.custom.isOwner) {
-      let currentEmail = AccountManager.currentUser().email;
+      const currentEmail = AccountManager.currentUser().email;
 
       if (Object.keys(this.context.currentApp.settings.fields).length !== 0) { // if collaborators field is already loaded
         this.allowCollaboratorToCreate(this.context.currentApp.settings.fields.fields.collaborators, currentEmail);
@@ -71,7 +72,7 @@ class IndexManager extends DashboardView {
   }
 
   allowCollaboratorToCreate (collaborators, currentEmail) {
-    let isCollab = collaborators.findIndex(collab => collab.userEmail === currentEmail);
+    const isCollab = collaborators.findIndex(collab => collab.userEmail === currentEmail);
     if (isCollab !== -1) {
       this.setState({
         canCreate: true
@@ -79,10 +80,10 @@ class IndexManager extends DashboardView {
     }
   }
 
-  redirectToFirstClass(classList) {
+  redirectToFirstClass(classList, context) {
     if (!classList.isEmpty()) {
       classList = Object.keys(classList.toObject())
-      let classes = classList.filter(className => className !== '_Role' && className !== '_Session' && className !== '_Installation')
+      const classes = classList.filter(className => className !== '_Role' && className !== '_Session' && className !== '_Installation')
       classes.sort((a, b) => {
         if (a[0] === '_' && b[0] !== '_') {
           return -1
@@ -93,12 +94,18 @@ class IndexManager extends DashboardView {
         return a.toUpperCase() < b.toUpperCase() ? -1 : 1
       })
       if (classes[0]) {
-        history.replace(this.context.generatePath(`index/${classes[0]}`))
+        this.props.navigate(generatePath(context || this.context, 'index/' + classes[0]), {
+          replace: true,
+        });
       } else {
         if (classList.indexOf('_User') !== -1) {
-          history.replace(this.context.generatePath('index/_User'))
+          this.props.navigate(generatePath(context || this.context, 'index/_User'), {
+            replace: true,
+          });
         } else {
-          history.replace(this.context.generatePath(`index/${classList[0]}`))
+          this.props.navigate(generatePath(context || this.context, 'index/' + classList[0]), {
+            replace: true,
+          });
         }
       }
     }
@@ -224,7 +231,7 @@ class IndexManager extends DashboardView {
         .then(() => {
           // add new index row with status PENDING
           // TODO: & start listening to its status
-          let data = this.state.data;
+          const data = this.state.data;
           data.push({
             creationType: 'Manual',
             index: JSON.stringify(indexConfiguration.index),
@@ -357,7 +364,7 @@ class IndexManager extends DashboardView {
       className = className.substr(1, className.length - 1)
     }
     const { showBackButton } = this.props.location.state || {};
-    let selectionLength = Object.entries(this.state.selected).filter(([, isSelected]) => isSelected).length;
+    const selectionLength = Object.entries(this.state.selected).filter(([, isSelected]) => isSelected).length;
 
     return (
       <div className={styles.indexManager}>
@@ -387,8 +394,8 @@ class IndexManager extends DashboardView {
               <Icon name='refresh-icon' width={30} height={26} />
             </a>
             {this.state.canDelete && (
-              <a 
-                className={styles.deleteBtn + ` ${(selectionLength > 0) && styles.active}`} 
+              <a
+                className={styles.deleteBtn + ` ${(selectionLength > 0) && styles.active}`}
                 onClick={selectionLength === 0 ? null : this.dropIndexes}
               >
                 <Icon name='delete-icon' width={24} height={20} />

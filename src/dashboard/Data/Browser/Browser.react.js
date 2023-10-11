@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
  * Copyright (c) 2016-present, Parse, LLC
  * All rights reserved.
@@ -13,9 +14,9 @@ import ExportSelectedRowsDialog from 'dashboard/Data/Browser/ExportSelectedRowsD
 import semver from 'semver/preload.js';
 import Tour from 'components/Tour/Tour.react';
 import { isMobile } from 'lib/browserUtils';
-import * as queryString from 'query-string';
-import PropTypes from 'lib/PropTypes';
-import ParseApp from 'lib/ParseApp';
+// import * as queryString from 'query-string';
+// import PropTypes from 'lib/PropTypes';
+// import ParseApp from 'lib/ParseApp';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -40,7 +41,6 @@ import AttachRowsDialog from 'dashboard/Data/Browser/AttachRowsDialog.react';
 import AttachSelectedRowsDialog from 'dashboard/Data/Browser/AttachSelectedRowsDialog.react';
 import CloneSelectedRowsDialog from 'dashboard/Data/Browser/CloneSelectedRowsDialog.react';
 import EditRowDialog from 'dashboard/Data/Browser/EditRowDialog.react';
-import ExportSelectedRowsDialog from 'dashboard/Data/Browser/ExportSelectedRowsDialog.react';
 import ExportSchemaDialog from 'dashboard/Data/Browser/ExportSchemaDialog.react';
 import { List, Map } from 'immutable';
 import Notification from 'dashboard/Data/Browser/Notification.react';
@@ -49,7 +49,6 @@ import prettyNumber from 'lib/prettyNumber';
 import queryFromFilters from 'lib/queryFromFilters';
 import React from 'react';
 import RemoveColumnDialog from 'dashboard/Data/Browser/RemoveColumnDialog.react';
-import PointerKeyDialog from 'dashboard/Data/Browser/PointerKeyDialog.react';
 import SidebarAction from 'components/Sidebar/SidebarAction';
 import stringCompare from 'lib/stringCompare';
 import styles from 'dashboard/Data/Browser/Browser.scss';
@@ -68,10 +67,10 @@ const MAX_ROWS_FETCHED = 200;
 const MySwal = withReactContent(Swal);
 const postgresqlAlert = {
   text:
-    "Thank you for your interest in using Back4App with PostgreSQL. We are working hard to make this database available and will notify you once we release it. In the meantime, we’ve just created your App using MongoDB 3.6, so you can use Back4App.",
+    'Thank you for your interest in using Back4App with PostgreSQL. We are working hard to make this database available and will notify you once we release it. In the meantime, we’ve just created your App using MongoDB 3.6, so you can use Back4App.',
   imageUrl: postgresqlImg,
   imageWidth: 200,
-  imageAlt: "Postgresql Image"
+  imageAlt: 'Postgresql Image'
 };
 
 @subscribeTo('Schema', 'schema')
@@ -132,7 +131,6 @@ class Browser extends DashboardView {
       showPostgresqlModal: !!Cookies.get('isPostgresql'),
       openSecurityDialog: false,
 
-      showPointerKeyDialog: false,
       markRequiredFieldRow: 0,
       requiredColumnFields: [],
 
@@ -206,7 +204,7 @@ class Browser extends DashboardView {
     this.abortEditCloneRow = this.abortEditCloneRow.bind(this);
     this.saveEditCloneRow = this.saveEditCloneRow.bind(this);
     this.cancelPendingEditRows = this.cancelPendingEditRows.bind(this);
-    this.abortAddRow = this.abortAddRow.bind(this);    
+    this.abortAddRow = this.abortAddRow.bind(this);
     this.redirectToFirstClass = this.redirectToFirstClass.bind(this);
 
     this.dataBrowserRef = React.createRef();
@@ -259,10 +257,6 @@ class Browser extends DashboardView {
     window.addEventListener('resize', this.windowResizeHandler);
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.windowResizeHandler);
-  }
-
   componentDidMount() {
     if (window.localStorage) {
       const pathname = window.localStorage.getItem(BROWSER_LAST_LOCATION);
@@ -303,17 +297,17 @@ class Browser extends DashboardView {
       // check if the changes are in currentApp serverInfo status
       // if not return without making any request
       if (this.props.apps !== nextProps.apps) {
-        let updatedCurrentApp = nextProps.apps.find(
+        const updatedCurrentApp = nextProps.apps.find(
           (ap) => ap.slug === this.props.params.appId
         );
-        let prevCurrentApp = this.props.apps.find(
+        const prevCurrentApp = this.props.apps.find(
           (ap) => ap.slug === this.props.params.appId
         );
         const shouldUpdate =
           updatedCurrentApp.serverInfo.status !==
           prevCurrentApp.serverInfo.status;
 
-        if (!shouldUpdate) return;
+        if (!shouldUpdate) {return;}
       }
 
       this.prefetchData(nextProps, nextContext);
@@ -346,13 +340,13 @@ class Browser extends DashboardView {
     const steps = [
       {
         eventId: 'Connect to Back4App',
-        intro: `Congratulations, you’ve created your App Backend on Back4App. As a next step, we recommend <a href="https://www.back4app.com/docs/get-started/parse-sdk" style="color: #169CEE">adding Back4App to your App Project.</a>`,
+        intro: 'Congratulations, you’ve created your App Backend on Back4App. As a next step, we recommend <a href="https://www.back4app.com/docs/get-started/parse-sdk" style="color: #169CEE">adding Back4App to your App Project.</a>',
         position: 'center'
       },
       {
         eventId: 'Database Browser Section',
         element: () => document.querySelector('[class^="section_contents"] > div > div'),
-        intro: `This is the <b>Database Browser</b> section where you can create classes and manage your data using this Dashboard.`,
+        intro: 'This is the <b>Database Browser</b> section where you can create classes and manage your data using this Dashboard.',
         position: 'right'
       },
       {
@@ -368,25 +362,25 @@ class Browser extends DashboardView {
       {
         eventId: 'Custom Class Link',
         element: () => document.querySelector('[class^=class_list] [title="B4aVehicle"]') || document.querySelector('[class^=class_list]'),
-        intro: `This is the new <b>B4aVehicle</b> class just created!`,
+        intro: 'This is the new <b>B4aVehicle</b> class just created!',
         position: 'right'
       },
       {
         eventId: 'Custom Class Data Table',
         element: () => document.querySelector('[class^=browser]'),
-        intro: `As you can see the <b>B4aVehicle</b> class already has its first data.`,
+        intro: 'As you can see the <b>B4aVehicle</b> class already has its first data.',
         position: 'right'
       },
       {
         eventId: 'Create a Class Button',
         element: () => document.querySelector('[class^="section_contents"] [class^=subitem] a[class^=action]'),
-        intro: `You can also create classes and manage your data directly through the Dashboard.`,
+        intro: 'You can also create classes and manage your data directly through the Dashboard.',
         position: 'bottom'
       },
       {
         eventId: 'Play Intro Button',
         element: () => document.querySelector('[class^="footer"] [class^="more"]'),
-        intro: `You can find this tour and play it again by pressing this button and selecting <b>"Play intro"</b>.`,
+        intro: 'You can find this tour and play it again by pressing this button and selecting <b>"Play intro"</b>.',
         position: 'right'
       }
     ];
@@ -416,18 +410,18 @@ class Browser extends DashboardView {
         }
         await new Promise(resolve => setTimeout(resolve, i * 50));
       }
-      throw new Error("Component not ready");
+      throw new Error('Component not ready');
     };
 
     return {
       steps,
       onBeforeStart: () => {
-        document.querySelector('[class^="section_contents"] > div > div').style.backgroundColor = "#0e69a0";
+        document.querySelector('[class^="section_contents"] > div > div').style.backgroundColor = '#0e69a0';
         // document.querySelector('[class^="section_header"][href*="/apidocs"]').style.backgroundColor = "#0c5582";
         if (className !== '_User' && className.indexOf('_') !== -1) {
-          history.push(context.generatePath("browser/_User"));
+          history.push(context.generatePath('browser/_User'));
         }
-        post(`/tutorial`, { databaseBrowser: true });
+        post('/tutorial', { databaseBrowser: true });
 
         // Updates the current logged user so that the tutorial won't be played
         // again when the user switches to another page
@@ -449,7 +443,7 @@ class Browser extends DashboardView {
             {
               const nextButton = getNextButton();
               if (nextButton) {
-                nextButton.innerHTML = "Next";
+                nextButton.innerHTML = 'Next';
               }
             }
             break;
@@ -458,7 +452,7 @@ class Browser extends DashboardView {
               const stepElement = document.querySelector('.introjs-helperNumberLayer');
               stepElement.style.marginLeft = '20px';
               const nextButton = getNextButton();
-              nextButton.innerHTML = "Run";
+              nextButton.innerHTML = 'Run';
             }
             break;
           case 3:
@@ -480,7 +474,7 @@ class Browser extends DashboardView {
                   if (!unexpectedErrorThrown) {
                     console.log(introItems);
                     introItems.splice(3, 2);
-                    for (let i=3; i<introItems.length; i++) {
+                    for (let i = 3; i < introItems.length; i++) {
                       introItems[i].step -= 2;
                     }
                     unexpectedErrorThrown = true;
@@ -511,15 +505,15 @@ class Browser extends DashboardView {
             }
             break;
           case 6: {
-              const nextBtn = getNextButton();
-              const prevBtn = getPrevButton();
-              // hide prev & next buttons
-              nextBtn.style.display = 'none';
-              prevBtn.style.display = 'none';
-              // move Done button to right
-              prevBtn.parentElement.style.justifyContent = 'end';
-              targetElement.style.backgroundColor = 'inherit';
-            }
+            const nextBtn = getNextButton();
+            const prevBtn = getPrevButton();
+            // hide prev & next buttons
+            nextBtn.style.display = 'none';
+            prevBtn.style.display = 'none';
+            // move Done button to right
+            prevBtn.parentElement.style.justifyContent = 'end';
+            targetElement.style.backgroundColor = 'inherit';
+          }
             break;
         }
       },
@@ -536,7 +530,7 @@ class Browser extends DashboardView {
             if (!unexpectedErrorThrown) {
               if (!document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2) span')){
                 // next row has not rendered yet
-                let nextButton = getNextButton();
+                const nextButton = getNextButton();
                 nextButton.innerHTML = `<div class="${styles.spinnerBorder}" role="status"></div>`;
                 nextButton.classList.add('introjs-disabled', styles.tourLoadingBtn);
                 getNextComponentReadyPromise(() => document.querySelector('[class^=browser] [class^=tableRow] > :nth-child(2) span'))
@@ -545,7 +539,7 @@ class Browser extends DashboardView {
                     nextButton.classList.remove('introjs-disabled', styles.tourLoadingBtn);
                   })
               }
-              targetElement.style.backgroundColor = "#0e69a0";
+              targetElement.style.backgroundColor = '#0e69a0';
             }
             break;
         }
@@ -556,7 +550,7 @@ class Browser extends DashboardView {
           this._forcedStep = true;
           const elementsRemoved = this._introItems.length - 1;
           this._introItems.splice(0, elementsRemoved);
-          for (let i=0; i<this._introItems.length; i++) {
+          for (let i = 0; i < this._introItems.length; i++) {
             this._introItems[i].step -= elementsRemoved;
           }
           this.goToStep(this._introItems.length);
@@ -642,7 +636,7 @@ class Browser extends DashboardView {
           });
         }
       }
-      
+
     }
   }
 
@@ -718,7 +712,7 @@ class Browser extends DashboardView {
       back4AppNavigation && back4AppNavigation.createClassClickEvent()
     }).catch(error => {
       let errorDeletingNote = 'Internal server error'
-      if (error.code === 403) errorDeletingNote = error.message;
+      if (error.code === 403) {errorDeletingNote = error.message;}
 
       this.showNote(errorDeletingNote, true);
     }).finally(() => {
@@ -739,11 +733,11 @@ class Browser extends DashboardView {
           msg = msg[0].toUpperCase() + msg.substr(1);
         }
 
-      if (error.code === 403) msg = error.message;
-      this.setState({showDropClassDialog: false });
+        if (error.code === 403) {msg = error.message;}
+        this.setState({showDropClassDialog: false });
 
-      this.showNote(msg, true);
-    });
+        this.showNote(msg, true);
+      });
   }
 
   importClass(className, file) {
@@ -815,8 +809,8 @@ class Browser extends DashboardView {
       })
       .catch(err => {
         let errorDeletingNote = 'Internal server error';
-        if (err.code === 403) errorDeletingNote = err.message;
-        this.showNote(err.message, true);
+        if (err.code === 403) {errorDeletingNote = err.message;}
+        this.showNote(errorDeletingNote, true);
       });
   }
 
@@ -1080,213 +1074,6 @@ class Browser extends DashboardView {
     }
   }
 
-  abortAddRow(){
-    if(this.state.newObject){
-      this.setState({
-        newObject: null
-      });
-    }
-    if (this.state.markRequiredFieldRow !== 0) {
-      this.setState({
-        markRequiredFieldRow: 0
-      });
-    }
-  }
-
-  saveNewRow(){
-    const { useMasterKey } = this.state;
-    const obj = this.state.newObject;
-    if (!obj) {
-      return;
-    }
-    // check if required fields are missing
-    const className = this.state.newObject.className;
-    let requiredCols = [];
-    if (className) {
-      let classColumns = this.props.schema.data.get('classes').get(className);
-      classColumns.forEach(({ required, defaultValue }, name) => {
-          if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
-            return;
-          }
-          // if field is requried & deafultValue is not given to the field
-          if (!!required && defaultValue === undefined) {
-            requiredCols.push(name);
-          }
-          if (className === '_User' && (name === 'username' || name === 'password')) {
-            if (!obj.get('authData')) {
-              requiredCols.push(name);
-            }
-          }
-          if (className === '_Role' && (name === 'name' || name === 'ACL')) {
-            requiredCols.push(name);
-          }
-        });
-    }
-    if (requiredCols.length) {
-      for (let idx = 0; idx < requiredCols.length; idx++) {
-        const name = requiredCols[idx];
-        if (!obj.get(name)) {
-          this.showNote("Please enter all required fields", true);
-          this.setState({
-            markRequiredFieldRow: -1
-          });
-          return;
-        }
-      }
-    }
-    if (this.state.markRequiredFieldRow) {
-      this.setState({
-        markRequiredFieldRow: 0
-      });
-    }
-    obj.save(null, { useMasterKey }).then(
-      objectSaved => {
-        let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' created';
-        this.showNote(msg, false);
-
-        const state = { data: this.state.data };
-        const relation = this.state.relation;
-        if (relation) {
-          const parent = relation.parent;
-          const parentRelation = parent.relation(relation.key);
-          parentRelation.add(obj);
-          const targetClassName = relation.targetClassName;
-          parent.save(null, { useMasterKey }).then(
-            () => {
-              this.setState({
-                newObject: null,
-                data: [obj, ...this.state.data],
-                relationCount: this.state.relationCount + 1,
-                counts: {
-                  ...this.state.counts,
-                  [targetClassName]: this.state.counts[targetClassName] + 1
-                }
-              });
-            },
-            error => {
-              let msg = typeof error === "string" ? error : error.message;
-              if (msg) {
-                msg = msg[0].toUpperCase() + msg.substr(1);
-              }
-              obj.set(attr, prev);
-              this.setState({ data: this.state.data });
-              this.showNote(msg, true);
-            }
-          );
-        } else {
-          state.newObject = null;
-          if (this.props.params.className === obj.className) {
-            this.state.data.unshift(obj);
-          }
-          this.state.counts[obj.className] += 1;
-        }
-
-        this.setState(state);
-      },
-      error => {
-        let msg = typeof error === "string" ? error : error.message;
-        if (msg) {
-          msg = msg[0].toUpperCase() + msg.substr(1);
-        }
-        this.showNote(msg, true);
-      }
-    );
-  }
-
-  saveEditCloneRow(rowIndex) {
-    let obj;
-    if (rowIndex < -1) {
-      obj = this.state.editCloneRows[
-        rowIndex + (this.state.editCloneRows.length + 1)
-      ];
-    }
-    if (!obj) {
-      return;
-    }
-
-    // check if required fields are missing
-    const className = this.props.params.className;
-    let requiredCols = [];
-    if (className) {
-      let classColumns = this.props.schema.data.get('classes').get(className);
-      classColumns.forEach(({ required, defaultValue }, name) => {
-          if (name === 'objectId' || this.state.isUnique && name !== this.state.uniqueField) {
-            return;
-          }
-          // if field is requried & deafultValue is not given to the field
-          if (!!required && defaultValue === undefined) {
-            requiredCols.push(name);
-          }
-          if (className === '_User' && (name === 'username' || name === 'password')) {
-            if (!obj.get('authData')) {
-              requiredCols.push(name);
-            }
-          }
-          if (className === '_Role' && (name === 'name' || name === 'ACL')) {
-            requiredCols.push(name);
-          }
-        });
-    }
-    if (requiredCols.length) {
-      for (let idx = 0; idx < requiredCols.length; idx++) {
-        const name = requiredCols[idx];
-        if (!obj.get(name)) {
-          this.showNote("Please enter all required fields", true);
-          this.setState({
-            markRequiredFieldRow: rowIndex
-          });
-          return;
-        }
-      }
-    }
-    if (this.state.markRequiredFieldRow) {
-      this.setState({
-        markRequiredFieldRow: 0
-      });
-    }
-
-    obj.save(null, { useMasterKey: true }).then((objectSaved) => {
-      let msg = objectSaved.className + ' with id \'' + objectSaved.id + '\' ' + 'created';
-      this.showNote(msg, false);
-
-      const state = { data: this.state.data, editCloneRows: this.state.editCloneRows };
-      state.editCloneRows = state.editCloneRows.filter(
-        cloneObj => cloneObj._localId !== obj._localId
-      );
-      if (state.editCloneRows.length === 0) state.editCloneRows = null;
-      if (this.props.params.className === obj.className) {
-        this.state.data.unshift(obj);
-      }
-      this.state.counts[obj.className] += 1;
-      this.setState(state);
-    }, (error) => {
-      let msg = typeof error === 'string' ? error : error.message;
-      if (msg) {
-        msg = msg[0].toUpperCase() + msg.substr(1);
-      }
-
-      this.showNote(msg, true);
-    });
-  }
-
-  abortEditCloneRow(rowIndex) {
-    let obj;
-    if (rowIndex < -1) {
-      obj = this.state.editCloneRows[
-        rowIndex + (this.state.editCloneRows.length + 1)
-      ];
-    }
-    if (!obj) {
-      return;
-    }
-    const state = { editCloneRows: this.state.editCloneRows };
-    state.editCloneRows = state.editCloneRows.filter(
-      cloneObj => cloneObj._localId !== obj._localId
-    );
-    if (state.editCloneRows.length === 0) state.editCloneRows = null;
-    this.setState(state);
-  }
-
   addRowWithModal() {
     this.addRow();
     this.selectRow(undefined, true);
@@ -1312,16 +1099,16 @@ class Browser extends DashboardView {
     };
     this.props.schema.dispatch(ActionTypes.DROP_COLUMN, payload).catch(error => {
       let errorDeletingNote = 'Internal server error'
-      if (error.code === 403) errorDeletingNote = error.message;
+      if (error.code === 403) {errorDeletingNote = error.message;}
 
       this.showNote(errorDeletingNote, true);
       if (selectedColumn)
-        this.setState({ columnToDelete: null });
+      {this.setState({ columnToDelete: null });}
       else
-        this.setState({ showRemoveColumnDialog: false });
+      {this.setState({ showRemoveColumnDialog: false });}
 
     }).finally(() => {
-      let state = selectedColumn ? { columnToDelete : null } : {showRemoveColumnDialog: false };
+      const state = selectedColumn ? { columnToDelete : null } : {showRemoveColumnDialog: false };
       if (this.state.ordering === name || this.state.ordering === '-' + name) {
         state.ordering = '-createdAt';
       }
@@ -1389,15 +1176,15 @@ class Browser extends DashboardView {
     }
 
     const classes = await Parse.Schema.all();
-    const schema = classes.find( c => c.className === this.props.params.className);
+    const schema = classes.find(c => c.className === this.props.params.className);
 
     const fieldKeys = Object.keys(schema.fields)
-    for ( let i = 0; i < fieldKeys.length; i++ ) {
+    for (let i = 0; i < fieldKeys.length; i++) {
       const schemaKey = fieldKeys[i];
       const schVal = schema.fields[schemaKey];
-      if ( schVal.type === 'Pointer' ) {
+      if (schVal.type === 'Pointer') {
         const defaultPointerKey = await localStorage.getItem(schVal.targetClass) || 'objectId';
-        if ( defaultPointerKey !== 'objectId' ) {
+        if (defaultPointerKey !== 'objectId') {
           query.include(schemaKey);
           query.select(schemaKey + '.' + defaultPointerKey);
         }
@@ -1659,7 +1446,7 @@ class Browser extends DashboardView {
   }
 
   handlePointerCmdClick({ className, id, field = 'objectId' }) {
-    let filters = JSON.stringify([{
+    const filters = JSON.stringify([{
       field,
       constraint: 'eq',
       compareTo: id
@@ -1680,25 +1467,11 @@ class Browser extends DashboardView {
     );
   }
 
-  handlePointerCmdClick({ className, id, field = 'objectId' }) {
-    const filters = JSON.stringify([
-      {
-        field,
-        constraint: 'eq',
-        compareTo: id,
-      },
-    ]);
-    window.open(
-      generatePath(this.context, `browser/${className}?filters=${encodeURIComponent(filters)}`),
-      '_blank'
-    );
-  }
-
   handleCLPChange(clp) {
     const { serverInfo } = this.context.currentApp;
     if (typeof serverInfo.parseServerVersion !== 'undefined') {
-      if (serverInfo.parseServerVersion < '2.6') delete clp.count;
-      if (serverInfo.parseServerVersion < '3.7') delete clp.protectedFields;
+      if (serverInfo.parseServerVersion < '2.6') {delete clp.count;}
+      if (serverInfo.parseServerVersion < '3.7') {delete clp.protectedFields;}
     }
     const p = this.props.schema.dispatch(ActionTypes.SET_CLP, {
       className: this.props.params.className,
@@ -1713,7 +1486,7 @@ class Browser extends DashboardView {
   }
 
   updateRow(row, attr, value) {
-    const isNewObject = row === -1;
+    let isNewObject = row === -1;
     const isEditCloneObj = row < -1;
     let obj = isNewObject ? this.state.newObject : this.state.data[row];
     if (!obj && isNewObject) {
@@ -1935,7 +1708,7 @@ class Browser extends DashboardView {
               }
             }
 
-            if (error.code === 403) errorDeletingNote = error.message;
+            if (error.code === 403) {errorDeletingNote = error.message;}
             this.showNote(errorDeletingNote, true);
           }
         );
@@ -2422,31 +2195,18 @@ class Browser extends DashboardView {
     this.dataBrowserRef.current.setCurrent({ row, col });
   }
 
-  showPointerKeyDialog() {
-    this.setState({ showPointerKeyDialog: true });
-  }
-
   async onChangeDefaultKey (name) {
     ColumnPreferences.setPointerDefaultKey(
       this.context.currentApp.applicationId,
       this.props.params.className,
       name
-      );
+    );
     this.setState({ showPointerKeyDialog: false });
   }
 
   // skips key controls handling when dialog is opened
   onDialogToggle(opened) {
     this.setState({ showPermissionsDialog: opened });
-  }
-
-  async onChangeDefaultKey(name) {
-    ColumnPreferences.setPointerDefaultKey(
-      this.context.applicationId,
-      this.props.params.className,
-      name
-    );
-    this.setState({ showPointerKeyDialog: false });
   }
 
   renderContent() {
@@ -2654,17 +2414,17 @@ class Browser extends DashboardView {
       );
     } else if (this.state.showImportDialog) {
       extras = (
-          <ImportDialog
-              className={className}
-              onCancel={() => this.setState({ showImportDialog: false })}
-              onConfirm={(file) => this.importClass(className, file)} />
+        <ImportDialog
+          className={className}
+          onCancel={() => this.setState({ showImportDialog: false })}
+          onConfirm={(file) => this.importClass(className, file)} />
       );
     } else if (this.state.showImportRelationDialog) {
       extras = (
-          <ImportRelationDialog
-              className={className}
-              onCancel={() => this.setState({ showImportRelationDialog: false })}
-              onConfirm={(relationName, file) => this.importRelation(className, relationName, file)} />
+        <ImportRelationDialog
+          className={className}
+          onCancel={() => this.setState({ showImportRelationDialog: false })}
+          onConfirm={(relationName, file) => this.importRelation(className, relationName, file)} />
       );
     } else if (this.state.showExportDialog) {
       extras = (
@@ -2772,13 +2532,13 @@ class Browser extends DashboardView {
         />
       )
     } else if (this.state.openSecurityDialog) {
-      let parseServerSupportsPointerPermissions = this.context.currentApp
+      const parseServerSupportsPointerPermissions = this.context.currentApp
         .serverInfo.features.schemas.editClassLevelPermissions;
-      let currentColumns = this.getClassColumns(className);
+      const currentColumns = this.getClassColumns(className);
       const userPointers = [];
       const schemaSimplifiedData = {};
       const classSchema = this.props.schema.data
-        .get("classes")
+        .get('classes')
         .get(this.props.params.className);
       if (classSchema) {
         classSchema.forEach(({ type, targetClass }, col) => {
@@ -2786,18 +2546,18 @@ class Browser extends DashboardView {
             type,
             targetClass
           };
-          if (col === "objectId" || (this.state.isUnique && col !== this.state.uniqueField)) {
+          if (col === 'objectId' || (this.state.isUnique && col !== this.state.uniqueField)) {
             return;
           }
           if (
-            (type === "Pointer" && targetClass === "_User") ||
-            type === "Array"
+            (type === 'Pointer' && targetClass === '_User') ||
+            type === 'Array'
           ) {
             userPointers.push(col);
           }
         });
       }
-      let perms = this.state.clp[className];
+      const perms = this.state.clp[className];
       extras = (
         <PermissionsDialog
           title="Edit Class Level Permissions"
@@ -2839,15 +2599,6 @@ class Browser extends DashboardView {
           onConfirm={() => this.removeColumn(this.state.columnToDelete, true)}
         />
       )
-    } else if (this.state.rowsToExport) {
-      extras = (
-        <ExportSelectedRowsDialog
-          className={SpecialClasses[className] || className}
-          selection={this.state.rowsToExport}
-          onCancel={this.cancelExportSelectedRows}
-          onConfirm={() => this.confirmExportSelectedRows(this.state.rowsToExport)}
-        />
-      );
     } else if (this.state.rowsToExport) {
       extras = (
         <ExportSelectedRowsDialog

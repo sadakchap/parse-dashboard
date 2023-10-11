@@ -26,13 +26,15 @@ module.exports = {
     assetModuleFilename: 'img/[hash][ext]',
     clean: {
       keep(asset) {
-        console.log(asset);
         return !asset.includes('.js');
       },
     }
   },
   resolve: {
     modules: [__dirname, path.join(__dirname, '../src'), path.join(__dirname, '../node_modules')],
+    fallback: {
+      util: require.resolve('util/')
+    }
   },
   resolveLoader: {
     modules: [path.join(__dirname, '../node_modules')],

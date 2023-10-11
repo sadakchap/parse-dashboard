@@ -47,10 +47,10 @@ class Config extends TableView {
       // check if the changes are in currentApp serverInfo status
       // if not return without making any request
       if (this.props.apps !== nextProps.apps) {
-        let updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.match.params.appId);
-        let prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.match.params.appId);
+        const updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.match.params.appId);
+        const prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.match.params.appId);
         const shouldUpdate = updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
-        if (!shouldUpdate) return;
+        if (!shouldUpdate) {return;}
       }
       nextProps.config.dispatch(ActionTypes.FETCH);
     }
@@ -256,6 +256,7 @@ class Config extends TableView {
       .then(
         () => {
           // Send track event
+          // eslint-disable-next-line no-undef
           back4AppNavigation && back4AppNavigation.createConfigParameterEvent()
           this.setState({ modalOpen: false });
         },

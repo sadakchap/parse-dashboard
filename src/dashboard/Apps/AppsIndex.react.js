@@ -80,8 +80,8 @@ const AppCard = ({ app, icon }) => {
     </div>;
 
   let appStatusIcon;
-  let appNameStyles = [styles.appname];
-  let appIconStyle = [styles.icon];
+  const appNameStyles = [styles.appname];
+  const appIconStyle = [styles.icon];
 
   if (app.serverInfo.status === 'LOADING') {
     appStatusIcon = <img src={loadingImg} alt="loading..." className={styles.loadingIcon} />
@@ -126,6 +126,7 @@ class AppsIndex extends React.Component {
     this.state = { search: '' };
     this.focusField = this.focusField.bind(this);
     this.getAppsIndexStats = this.getAppsIndexStats.bind(this);
+    this.searchRef = React.createRef();
   }
 
   componentWillMount() {
@@ -152,9 +153,9 @@ class AppsIndex extends React.Component {
       if (nextApp.serverInfo.status !== prevApp.serverInfo.status && nextApp.serverInfo.status === 'SUCCESS') {
         // app's status changed
         this.getAppsIndexStats(nextApp);
-      }      
+      }
     }
-    
+
   }
 
   componentWillUnmount() {
@@ -163,8 +164,8 @@ class AppsIndex extends React.Component {
 
   // Fetch the latest usage and request info for the apps index
   async getAppsIndexStats(app) {
-    let installationCount = await app.getClassCount('_Installation');
-    let userCount = await app.getClassCount('_User');
+    const installationCount = await app.getClassCount('_Installation');
+    const userCount = await app.getClassCount('_User');
     app.installations = installationCount;
     app.users = userCount;
     this.props.updateApp(app);
@@ -183,7 +184,7 @@ class AppsIndex extends React.Component {
   render() {
     const search = this.state.search.toLowerCase();
     const apps = AppsManager.apps();
-    let sortedApps = apps.sort(function (app1, app2) {
+    const sortedApps = apps.sort(function (app1, app2) {
       return app1.name.localeCompare(app2.name);
     });
 
@@ -197,8 +198,10 @@ class AppsIndex extends React.Component {
             title="You don't have any apps"
             description='Create a new app or clone a database from database hub'
             cta="Create a new app"
+            // eslint-disable-next-line no-undef
             action={() => window.location = `${b4aSettings.DASHBOARD_PATH}/apps/new`}
             secondaryCta="Go to database hub"
+            // eslint-disable-next-line no-undef
             secondaryAction={() => window.location = b4aSettings.HUB_URL} />
         </div>
       );
@@ -231,7 +234,7 @@ class AppsIndex extends React.Component {
           />
         </div>
         <ul className={styles.apps}>
-          {apps.map(app =>
+          {sortedApps.map(app =>
             app.name.toLowerCase().indexOf(search) > -1 ? (
               <AppCard key={app.slug} app={app} icon={app.icon ? app.icon : null} />
             ) : null

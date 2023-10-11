@@ -6,14 +6,13 @@
  * the root directory of this source tree.
  */
 import AccountManager from 'lib/AccountManager'; // user workaround
-import AccountOverview from './Account/AccountOverview.react';
-import AnalyticsOverview from './Analytics/Overview/Overview.react';
+// import AccountOverview from './Account/AccountOverview.react';
 import ApiConsole from './Data/ApiConsole/ApiConsole.react';
 import AppData from './AppData.react';
 import AppsIndex from './Apps/AppsIndex.react';
 import AppsManager from 'lib/AppsManager';
-import Browser from './Data/Browser/Browser.react';
-import CloudCode from './Data/CloudCode/B4ACloudCode.react';
+// import Browser from './Data/Browser/Browser.react';
+// import CloudCode from './Data/CloudCode/B4ACloudCode.react';
 import Config from './Data/Config/Config.react';
 import Explorer from './Analytics/Explorer/Explorer.react';
 import FourOhFour from 'components/FourOhFour/FourOhFour.react';
@@ -21,7 +20,7 @@ import GeneralSettings from './Settings/GeneralSettings.react';
 import GraphQLConsole from './Data/ApiConsole/GraphQLConsole.react';
 import HostingSettings from './Settings/HostingSettings.react';
 import HubConnections from './Hub/HubConnections.react';
-import Icon from 'components/Icon/Icon.react';
+// import Icon from 'components/Icon/Icon.react';
 import IndexManager from './IndexManager/IndexManager.react'
 import JobEdit from 'dashboard/Data/Jobs/JobEdit.react';
 import Jobs from './Data/Jobs/Jobs.react';
@@ -30,37 +29,25 @@ import Loader from 'components/Loader/Loader.react';
 import InfoLogs from './Data/Logs/InfoLogs.react';
 import ErrorLogs from './Data/Logs/ErrorLogs.react';
 import AccessLogs from './Data/Logs/AccessLogs.react';
-import B4aHubPublishPage from './B4aHubPublishPage/B4aHubPublishPage.react';
+import SystemLogs from './Data/Logs/SystemLogs.react';
+// import B4aHubPublishPage from './B4aHubPublishPage/B4aHubPublishPage.react';
 import B4aAdminPage from './B4aAdminPage/B4aAdminPage.react';
 import B4aAppTemplates from './B4aAppTemplates/B4aAppTemplates.react';
 import { AsyncStatus } from 'lib/Constants';
 import { get } from 'lib/AJAX';
 import { setBasePath } from 'lib/AJAX';
 import ServerSettings from 'dashboard/ServerSettings/ServerSettings.react';
-import createClass from 'create-react-class';
+// // import createClass from 'create-react-class';
 import { Helmet } from 'react-helmet';
 import Playground from './Data/Playground/Playground.react';
-import axios from "lib/axios";
+import axios from 'lib/axios';
 import moment from 'moment';
 import B4aConnectPage from './B4aConnectPage/B4aConnectPage.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+// // import EmptyState from 'components/EmptyState/EmptyState.react';
 import BlockchainPage from './BlockchainPage/BlockChainPage.react';
 import AccountView from './AccountView.react';
 import AnalyticsOverview from './Analytics/Overview/Overview.react';
-import ApiConsole from './Data/ApiConsole/ApiConsole.react';
-import AppData from './AppData.react';
-import AppsIndex from './Apps/AppsIndex.react';
-import AppsManager from 'lib/AppsManager';
-import Browser from './Data/Browser/Browser.react';
-import CloudCode from './Data/CloudCode/CloudCode.react';
-import Config from './Data/Config/Config.react';
-import Explorer from './Analytics/Explorer/Explorer.react';
-import FourOhFour from 'components/FourOhFour/FourOhFour.react';
-import GeneralSettings from './Settings/GeneralSettings.react';
-import GraphQLConsole from './Data/ApiConsole/GraphQLConsole.react';
-import HostingSettings from './Settings/HostingSettings.react';
-import Loader from 'components/Loader/Loader.react';
-import Logs from './Data/Logs/Logs.react';
+
 import Migration from './Data/Migration/Migration.react';
 import ParseApp from 'lib/ParseApp';
 import Performance from './Analytics/Performance/Performance.react';
@@ -72,24 +59,19 @@ import PushSettings from './Settings/PushSettings.react';
 import React from 'react';
 import RestConsole from './Data/ApiConsole/RestConsole.react';
 import Retention from './Analytics/Retention/Retention.react';
-import SchemaOverview from './Data/Browser/SchemaOverview.react';
+// import SchemaOverview from './Data/Browser/SchemaOverview.react';
 import SecuritySettings from './Settings/SecuritySettings.react';
 import SettingsData from './Settings/SettingsData.react';
 import SlowQueries from './Analytics/SlowQueries/SlowQueries.react';
 import styles from 'dashboard/Apps/AppsIndex.scss';
 import UsersSettings from './Settings/UsersSettings.react';
 import Webhooks from './Data/Webhooks/Webhooks.react';
-import { AsyncStatus } from 'lib/Constants';
 import baseStyles from 'stylesheets/base.scss';
-import { get } from 'lib/AJAX';
-import { setBasePath } from 'lib/AJAX';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import Playground from './Data/Playground/Playground.react';
 import DashboardSettings from './Settings/DashboardSettings/DashboardSettings.react';
 import Security from './Settings/Security/Security.react';
 
-const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
+// const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
 class Empty extends React.Component {
   render() {
@@ -105,6 +87,7 @@ const AccountSettingsPage = () => (
 
 async function fetchHubUser() {
   try {
+    // eslint-disable-next-line no-undef
     return (await axios.get(`${b4aSettings.BACK4APP_API_PATH}/me/hub`, { withCredentials: true })).data;
   } catch (err) {
     throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
@@ -196,7 +179,7 @@ export default class Dashboard extends React.Component {
         const isFlow1 = hourDiff <= 720 ? true : false;
         let transactionId = userDetail.id;
         if(!isFlow1){
-          const quarter = monthQuarter[parseInt(now.month()/3)];
+          const quarter = monthQuarter[parseInt(now.month() / 3)];
           transactionId += `${now.year()}${quarter}`;
         }
         const options = {
@@ -206,8 +189,8 @@ export default class Dashboard extends React.Component {
           email: userDetail.username,
           journey: isFlow1 ? 'csat-back4app' : 'nps-back4app',
         };
-        let retryInterval = isFlow1 ? 5 : 45;
-        let collectInterval = isFlow1 ? 30 : 90;
+        const retryInterval = isFlow1 ? 5 : 45;
+        const collectInterval = isFlow1 ? 30 : 90;
         options.param_requestdata = encodeURIComponent(JSON.stringify({
           userDetail,
           options,
@@ -215,6 +198,7 @@ export default class Dashboard extends React.Component {
         }));
         // eslint-disable-next-line no-undef
         waitForScriptToLoad(() => typeof createSoluCXWidget === 'function').then(() => {
+          // eslint-disable-next-line no-undef
           createSoluCXWidget(
             process.env.SOLUCX_API_KEY,
             'bottomBoxLeft',
@@ -237,7 +221,7 @@ export default class Dashboard extends React.Component {
       // fetch serverInfo request for each app
       apps.forEach(async (app) => {
         // Set master key as a default string to avoid undefined value access issues
-        if (!app.masterKey) app.masterKey = "******"
+        if (!app.masterKey) {app.masterKey = '******'}
         if (app.serverURL.startsWith('https://api.parse.com/1')) {
           //api.parse.com doesn't have feature availability endpoint, fortunately we know which features
           //it supports and can hard code them
@@ -289,7 +273,7 @@ export default class Dashboard extends React.Component {
   updateApp(app) {
     const updatedApps = [...this.state.apps];
     const appIdx = updatedApps.findIndex(ap => ap.applicationId === app.applicationId);
-    if (appIdx === -1) return;
+    if (appIdx === -1) {return;}
     updatedApps[appIdx] = app;
     this.setState({
       apps: updatedApps
@@ -371,7 +355,7 @@ export default class Dashboard extends React.Component {
       </Route>
     );
 
-    const BrowserRoute = ShowSchemaOverview ? SchemaOverview : Browser;
+    // const BrowserRoute = ShowSchemaOverview ? SchemaOverview : Browser;
 
     const ApiConsoleRoute = (
       <Route element={<ApiConsole />}>
@@ -388,12 +372,12 @@ export default class Dashboard extends React.Component {
 
         <Route path="getting_started" element={<Empty />} />
 
-        <Route path="browser/:className/:entityId/:relationName" element={<BrowserRoute />} />
+        {/* <Route path="browser/:className/:entityId/:relationName" element={<BrowserRoute />} />
         <Route path="browser/:className" element={<BrowserRoute />} />
-        <Route path="browser" element={<BrowserRoute />} />
+        <Route path="browser" element={<BrowserRoute />} /> */}
 
-        <Route path="cloud_code" element={<CloudCode />} />
-        <Route path="cloud_code/*" element={<CloudCode />} />
+        {/* <Route path="cloud_code" element={<CloudCode />} />
+        <Route path="cloud_code/*" element={<CloudCode />} /> */}
         <Route path="webhooks" element={<Webhooks />} />
 
         <Route path="jobs">{JobsRoute}</Route>
@@ -412,7 +396,7 @@ export default class Dashboard extends React.Component {
         <Route path="push/audiences" element={<PushAudiencesIndex />} />
         <Route path="push/new" element={<PushNew />} />
         <Route path="push/:pushId" element={<PushDetails />} />
-        
+
         <Route path="connect" element={<B4aConnectPage />} />
         <Route path="admin" element={<B4aAdminPage />} />
         <Route path="app-templates" element={<B4aAppTemplates />} />
@@ -422,8 +406,8 @@ export default class Dashboard extends React.Component {
         <Route path="index" element={<IndexManager />} />
         <Route path="index/:className" element={<IndexManager />} />
 
-        <Route path="/blockchain" element={<BlockchainPage /> } />
-  
+        <Route path="blockchain" element={<BlockchainPage /> } />
+
         <Route path="connections" element={<HubConnections />} />
         <Route path="analytics">{AnalyticsRoute}</Route>
         <Route path="settings">{SettingsRoute}</Route>
@@ -439,6 +423,7 @@ export default class Dashboard extends React.Component {
     );
 
     return (
+      // <div>WorldWar3</div>
       <BrowserRouter basename={window.PARSE_DASHBOARD_PATH || '/'}>
         <Helmet>
           <title>Parse Dashboard</title>

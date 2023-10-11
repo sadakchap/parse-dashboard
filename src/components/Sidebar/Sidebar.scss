@@ -283,7 +283,7 @@
 
   .appListContainer {
     overflow-y: auto;
-    height: calc(100vh - #{$headerHeight} - #{$menuSectionHeight} - #{$sidebarMenuItemHeight} - #{$footerHeight});
+    // height: calc(100vh - #{$headerHeight} - #{$menuSectionHeight} - #{$sidebarMenuItemHeight} - #{$footerHeight});
   }
 }
 

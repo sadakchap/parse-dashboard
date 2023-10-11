@@ -14,7 +14,7 @@ const settings = require('@back4app/back4app-settings');
 configuration.mode = 'development';
 configuration.entry = {
   dashboard: './dashboard/index.js',
-  login: './login/index.js',
+  // login: './login/index.js',
 };
 configuration.output.path = path.resolve('./Parse-Dashboard/public/bundles');
 configuration.output.filename = '[name].[chunkhash].js';
@@ -24,6 +24,10 @@ configuration.plugins.push(
     template: '../Parse-Dashboard/index.ejs',
     filename: path.resolve('./Parse-Dashboard/public/index.html'),
   }),
+  // new HtmlWebpackPlugin({
+  //   template: '../Parse-Dashboard/login.ejs',
+  //   filename: path.resolve('./Parse-Dashboard/public/login.html'),
+  // }),
   new HtmlWebpackExternalsPlugin({
     externals: [
       {
