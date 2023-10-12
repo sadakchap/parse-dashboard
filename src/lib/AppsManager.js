@@ -22,10 +22,10 @@ const AppsManager = {
     return appsStore;
   },
 
-   updateApp(app) {
+  updateApp(app) {
     const appIdx = appsStore.findIndex(ap => ap.applicationId === app.appId);
-    if (appIdx === -1) return;
-    let parseApp = new ParseApp(app);
+    if (appIdx === -1) {return;}
+    const parseApp = new ParseApp(app);
     appsStore[appIdx] = parseApp;
     return parseApp;
   },

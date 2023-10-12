@@ -11,7 +11,7 @@ import ApiConsole from './Data/ApiConsole/ApiConsole.react';
 import AppData from './AppData.react';
 import AppsIndex from './Apps/AppsIndex.react';
 import AppsManager from 'lib/AppsManager';
-// import Browser from './Data/Browser/Browser.react';
+import Browser from './Data/Browser/Browser.react';
 // import CloudCode from './Data/CloudCode/B4ACloudCode.react';
 import Config from './Data/Config/Config.react';
 import Explorer from './Analytics/Explorer/Explorer.react';
@@ -59,7 +59,7 @@ import PushSettings from './Settings/PushSettings.react';
 import React from 'react';
 import RestConsole from './Data/ApiConsole/RestConsole.react';
 import Retention from './Analytics/Retention/Retention.react';
-// import SchemaOverview from './Data/Browser/SchemaOverview.react';
+import SchemaOverview from './Data/Browser/SchemaOverview.react';
 import SecuritySettings from './Settings/SecuritySettings.react';
 import SettingsData from './Settings/SettingsData.react';
 import SlowQueries from './Analytics/SlowQueries/SlowQueries.react';
@@ -71,7 +71,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardSettings from './Settings/DashboardSettings/DashboardSettings.react';
 import Security from './Settings/Security/Security.react';
 
-// const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
+const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
 class Empty extends React.Component {
   render() {
@@ -305,7 +305,7 @@ export default class Dashboard extends React.Component {
       );
     }
 
-    const AppsIndexPage = () => (
+    const AppsIndexPage = (
       <AccountView section="Your Apps" style={{top: '0px'}}>
         <AppsIndex apps={this.state.apps} updateApp={this.updateApp} newFeaturesInLatestVersion={this.state.newFeaturesInLatestVersion} />
       </AccountView>
@@ -355,7 +355,7 @@ export default class Dashboard extends React.Component {
       </Route>
     );
 
-    // const BrowserRoute = ShowSchemaOverview ? SchemaOverview : Browser;
+    const BrowserRoute = ShowSchemaOverview ? SchemaOverview : Browser;
 
     const ApiConsoleRoute = (
       <Route element={<ApiConsole />}>
@@ -372,9 +372,9 @@ export default class Dashboard extends React.Component {
 
         <Route path="getting_started" element={<Empty />} />
 
-        {/* <Route path="browser/:className/:entityId/:relationName" element={<BrowserRoute />} />
+        <Route path="browser/:className/:entityId/:relationName" element={<BrowserRoute />} />
         <Route path="browser/:className" element={<BrowserRoute />} />
-        <Route path="browser" element={<BrowserRoute />} /> */}
+        <Route path="browser" element={<BrowserRoute />} />
 
         {/* <Route path="cloud_code" element={<CloudCode />} />
         <Route path="cloud_code/*" element={<CloudCode />} /> */}
@@ -417,13 +417,12 @@ export default class Dashboard extends React.Component {
 
     const Index = (
       <Route>
-        <Route index element={<AppsIndexPage />} />
+        <Route index element={AppsIndexPage} />
         <Route path=":appId">{AppRoute}</Route>
       </Route>
     );
 
     return (
-      // <div>WorldWar3</div>
       <BrowserRouter basename={window.PARSE_DASHBOARD_PATH || '/'}>
         <Helmet>
           <title>Parse Dashboard</title>

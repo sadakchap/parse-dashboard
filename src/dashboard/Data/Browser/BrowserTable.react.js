@@ -55,6 +55,8 @@ export default class BrowserTable extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.tableRef);
+    console.log(this.tableRef.current);
     this.tableRef.current.addEventListener('scroll', this.handleScroll);
   }
 
@@ -169,7 +171,7 @@ export default class BrowserTable extends React.Component {
                     onRefresh={this.props.onRefresh}
                     scripts={this.context.scripts}
                   />
-                  <div style={{ position: "fixed", height: `${ROW_HEIGHT}px`}}>
+                  <div style={{ position: 'fixed', height: `${ROW_HEIGHT}px`}}>
                     <Button
                       value="Clone"
                       width="55px"
@@ -239,7 +241,7 @@ export default class BrowserTable extends React.Component {
               onRefresh={this.props.onRefresh}
               scripts={this.context.scripts}
             />
-            <div style={{ position: "fixed", height: `${ROW_HEIGHT}px`}}>
+            <div style={{ position: 'fixed', height: `${ROW_HEIGHT}px`}}>
               <Button
                 value="Add"
                 width="55px"

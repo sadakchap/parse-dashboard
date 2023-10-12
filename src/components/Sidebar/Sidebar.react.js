@@ -254,7 +254,7 @@ class Sidebar extends React.Component {
       sidebarContent = (
         <AppsMenu
           apps={apps}
-          current={this.context.currentApp}
+          current={this.context}
           onSelect={this.toggleAppsMenu}
           pin={pin} />
       );
@@ -263,7 +263,7 @@ class Sidebar extends React.Component {
         <>
           {appSelector && (
             <div className={styles.apps}>
-              <AppName name={this.context.currentApp.name} pin={pin} onClick={this.toggleAppsMenu} />
+              <AppName name={this.context.name} pin={pin} onClick={this.toggleAppsMenu} />
             </div>
           )}
           <div className={styles.content} style={contentStyle}>

@@ -10,14 +10,12 @@ import FlowFooter from 'components/FlowFooter/FlowFooter.react';
 import html from 'lib/htmlString';
 import Icon from 'components/Icon/Icon.react';
 import joinWithFinal from 'lib/joinWithFinal';
-import { center } from 'stylesheets/base.scss';
 import EmptyState from '../../components/EmptyState/EmptyState.react';
 import loadingImg from './loadingIcon.png';
 import LiveReload from 'components/LiveReload/LiveReload.react';
 import prettyNumber from 'lib/prettyNumber';
 import React from 'react';
 import styles from 'dashboard/Apps/AppsIndex.scss';
-import baseStyles from 'stylesheets/base.scss';
 import AppBadge from 'components/AppBadge/AppBadge.react';
 import { withRouter } from 'lib/withRouter';
 import { useNavigate } from 'react-router-dom';
@@ -104,7 +102,7 @@ const AppCard = ({ app, icon }) => {
         )}
       </a>
       <div className={styles.details}>
-        <a className={styles.appname}>{app.name}</a>
+        <a className={styles.appname}>{app.name} {appStatusIcon}</a>
         {versionMessage}
       </div>
       <CountsSection className={styles.glance} title="At a glance">

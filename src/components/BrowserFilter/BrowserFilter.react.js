@@ -116,6 +116,7 @@ export default class BrowserFilter extends React.Component {
     let popover = null;
     const buttonStyle = [styles.entry];
     const node = this.wrapRef.current;
+    const wrapperStyle = [styles.wrap];
 
     if (this.state.open) {
       const position = Position.inDocument(node);

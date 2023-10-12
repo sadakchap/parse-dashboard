@@ -34,17 +34,17 @@ const ctaButton = (cta, action) => {
 };
 
 const EmptyState = ({
-  icon='',
-  title='',
-  description='',
-  cta='',
-  action=() => {},
-  secondaryCta='',
-  secondaryAction=() => {},
+  icon = '',
+  title = '',
+  description = '',
+  cta = '',
+  action = () => {},
+  secondaryCta = '',
+  secondaryAction = () => {},
   background,
   fill = '#343445'
 }) => (
-  <div className={center}>
+  <div className={baseStyles.center}>
     <div className={styles.icon} style={background ? { background } : undefined}>
       <Icon
         width={80}

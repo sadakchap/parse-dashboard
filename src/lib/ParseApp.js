@@ -324,13 +324,15 @@ export default class ParseApp {
 
   getAnalyticsTimeSeries(query) {
     const path = '/apps/' + this.slug + '/analytics?' + encodeFormData(null, query);
-    const { promise, xhr } = AJAX.abortableGet(path);
-    promise = promise.then(( requested_data ) => requested_data);
+    let { promise } = AJAX.abortableGet(path);
+    const { xhr } = AJAX.abortableGet(path);
+    promise = promise.then((requested_data) => requested_data);
     return { promise, xhr };
   }
 
   getAnalyticsSlowQueries({path, method, respStatus, respTime, from, to, distinct}) {
     const appsPath = 'parse-app';
+    // eslint-disable-next-line no-undef
     const urlPrefix = `${b4aSettings.BACK4APP_API_PATH}/${appsPath}/${this.slug}/slow_requests?`;
 
     const url = urlPrefix + encodeFormData(null, {
@@ -342,7 +344,8 @@ export default class ParseApp {
       from: from.getTime() / 1000,
       to: to.getTime() / 1000
     });
-    const { promise, xhr } = AJAX.abortableGet(url);
+    let { promise } = AJAX.abortableGet(url);
+    const { xhr } = AJAX.abortableGet(url);
     promise = promise.then(({ result }) => result);
 
     return { promise, xhr };
@@ -400,7 +403,7 @@ export default class ParseApp {
     //   return Promise.resolve(this.settings.fields);
     // }
     const path = '/apps/' + this.slug + '/dashboard_ajax/settings';
-    const fields = await axios.get(path);
+    let fields = await axios.get(path);
 
     fields = fields.data;
     for (const f in fields) {
@@ -426,7 +429,7 @@ export default class ParseApp {
   }
 
   supportedParseServerVersions() {
-    const path = `/parse-version`;
+    const path = '/parse-version';
     return AJAX.get(path);
   }
 
@@ -436,8 +439,8 @@ export default class ParseApp {
   }
 
   createApp(appName, parseVersion, originalAppId = null) {
-    const path = `/parse-app`;
-    return AJAX.post(path, { appDescription: "", parseVersion, originalAppId: originalAppId, appId: null, appName, isPublic: false })
+    const path = '/parse-app';
+    return AJAX.post(path, { appDescription: '', parseVersion, originalAppId: originalAppId, appId: null, appName, isPublic: false })
   }
 
   initializeDb(appId, parseVersion) {
@@ -485,8 +488,8 @@ export default class ParseApp {
       const customParser = {};
       Object.keys(schema.fields).forEach(fieldName => {
         customParser[fieldName] = function (item) {
-          if (schema.fields[fieldName].type === 'Number') return Number(item);
-          if (schema.fields[fieldName].type === 'Boolean') return item.toLowerCase() === 'false' ? false :  true;
+          if (schema.fields[fieldName].type === 'Number') {return Number(item);}
+          if (schema.fields[fieldName].type === 'Boolean') {return item.toLowerCase() === 'false' ? false :  true;}
           if (schema.fields[fieldName].type === 'Array'){
             item = item.replaceAll('“', '"');
             item = item.replaceAll('”', '"');
@@ -502,13 +505,13 @@ export default class ParseApp {
       });
 
       jsonArray = await csv({
-        delimiter: "auto",
+        delimiter: 'auto',
         ignoreEmpty: true,
         nullObject: true,
         checkType: true,
         colParser: customParser
       })
-        .on("header", header => (fieldNames = header))
+        .on('header', header => (fieldNames = header))
         .fromString(text);
 
       const fields = fieldNames.filter(fieldName => fieldName.indexOf('.') < 0).reduce((fields, fieldName) => ({
@@ -546,12 +549,12 @@ export default class ParseApp {
       });
     } else{
       jsonArray = await csv({
-        delimiter: "auto",
+        delimiter: 'auto',
         ignoreEmpty: true,
         nullObject: true,
         checkType: true
       })
-        .on("header", header => (fieldNames = header))
+        .on('header', header => (fieldNames = header))
         .fromString(text);
     }
 
@@ -563,13 +566,13 @@ export default class ParseApp {
       file = await this.transformCSVtoJSON(file, className);
     }
 
-    let path = this.normalizePath(this.serverURL + '/import_data/' + className);
-    var formData = new FormData();
+    const path = this.normalizePath(this.serverURL + '/import_data/' + className);
+    const formData = new FormData();
     formData.append('importFile', file);
     if (this.feedbackEmail) {
       formData.append('feedbackEmail', this.feedbackEmail);
     }
-    let options = {
+    const options = {
       method: 'POST',
       headers: {
         'X-Parse-Application-Id': this.applicationId,
@@ -578,7 +581,7 @@ export default class ParseApp {
       body: formData
     }
     // if is GDPR
-    if (this.custom && this.custom.isGDPR) options.credentials = 'include'
+    if (this.custom && this.custom.isGDPR) {options.credentials = 'include'}
     return fetch(path, options);
   }
 
@@ -587,13 +590,13 @@ export default class ParseApp {
       file = await this.transformCSVtoJSON(file);
     }
 
-    let path = this.normalizePath(this.serverURL + '/import_relation_data/' + className + '/' + relationName);
-    var formData = new FormData();
+    const path = this.normalizePath(this.serverURL + '/import_relation_data/' + className + '/' + relationName);
+    const formData = new FormData();
     formData.append('importFile', file);
     if (this.feedbackEmail) {
       formData.append('feedbackEmail', this.feedbackEmail);
     }
-    let options = {
+    const options = {
       method: 'POST',
       headers: {
         'X-Parse-Application-Id': this.applicationId,
@@ -602,7 +605,7 @@ export default class ParseApp {
       body: formData
     }
     // if is GDPR
-    if (this.custom && this.custom.isGDPR) options.credentials = 'include'
+    if (this.custom && this.custom.isGDPR) {options.credentials = 'include'}
     return fetch(path, options);
   }
 
@@ -638,20 +641,20 @@ export default class ParseApp {
   }
 
   sendEmailToInviteCollaborator(email, featuresPermission, classesPermission, owner) {
-    let path = '/apps/' + this.slug + '/collaborations/saveInvite';
-    let promise = axios.post(path, {email: email, featuresPermission: featuresPermission, classesPermission: classesPermission, owner: owner});
+    const path = '/apps/' + this.slug + '/collaborations/saveInvite';
+    const promise = axios.post(path, {email: email, featuresPermission: featuresPermission, classesPermission: classesPermission, owner: owner});
     return promise;
   }
 
   editInvitePermissionCollaborator(email, featuresPermission, classesPermission, owner) {
-    let path = '/apps/' + this.slug + '/collaborations/editInvite';
-    let promise = axios.post(path, {email: email, featuresPermission: featuresPermission, classesPermission: classesPermission, owner: owner});
+    const path = '/apps/' + this.slug + '/collaborations/editInvite';
+    const promise = axios.post(path, {email: email, featuresPermission: featuresPermission, classesPermission: classesPermission, owner: owner});
     return promise;
   }
 
   removeInviteCollaborator(email) {
-    let path = '/apps/' + this.slug + '/collaborations/removeInvite/'+ encodeURIComponent(email);
-    let promise = AJAX.del(path)
+    const path = '/apps/' + this.slug + '/collaborations/removeInvite/' + encodeURIComponent(email);
+    const promise = AJAX.del(path)
     return promise;
   }
 
@@ -782,16 +785,17 @@ export default class ParseApp {
   }
 
   setAppConfig(name, parseOptions, appSettings) {
-    const config = {};
-    if (name) config['appName'] = name;
-    if (parseOptions) config['parseOptions'] = parseOptions;
-    if (appSettings) config = { ...config, ...appSettings }
+    let config = {};
+    if (name) {config['appName'] = name;}
+    if (parseOptions) {config['parseOptions'] = parseOptions;}
+    if (appSettings) {config = { ...config, ...appSettings }}
+    // eslint-disable-next-line no-undef
     const path = `${b4aSettings.BACK4APP_API_PATH}/parse-app/${this.slug}`;
     const promise = axios.patch(path, config, { withCredentials: true });
     promise.then(() => {
       if (name)
-        this.name = name;
-      if ( appSettings ) {
+      {this.name = name;}
+      if (appSettings) {
         this.settings.fields.fields = { ...this.settings.fields.fields, ...appSettings }
       }
       if(parseOptions) {
@@ -1119,42 +1123,42 @@ export default class ParseApp {
   }
 
   addAdminHost(adminHost) {
-    let path = '/parse-app/' + this.slug + '/adminhost';
+    const path = '/parse-app/' + this.slug + '/adminhost';
     return axios.post(path, { adminHost }).catch(err => {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     })
   }
 
   addAdminUser(userCredentials) {
-    let path = '/parse-app/' + this.slug + '/adminuser';
+    const path = '/parse-app/' + this.slug + '/adminuser';
     return axios.post(path, userCredentials).catch(err => {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     })
   }
 
   getAdminHost() {
-    let path = '/parse-app/' + this.slug + '/adminhost';
+    const path = '/parse-app/' + this.slug + '/adminhost';
     return axios.get(path).then(({ data }) => data.adminHost).catch(err => {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     })
   }
 
   getWebHost() {
-    let path = '/parse-app/' + this.slug + '/webhost';
+    const path = '/parse-app/' + this.slug + '/webhost';
     return axios.get(path).then(({ data }) => data.hostSettings).catch(err => {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     })
   }
 
   setWebHost(hostSettings) {
-    let path = '/parse-app/' + this.slug + '/webhost';
+    const path = '/parse-app/' + this.slug + '/webhost';
     return axios.post(path, { hostSettings }).catch(err => {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     })
   }
 
   setLiveQuery(params) {
-    let path = '/parse-app/' + this.slug + '/live-query';
+    const path = '/parse-app/' + this.slug + '/live-query';
     return axios.post(path, params).then(({ data }) => data.webhost).catch(err => {
       throw err.response && err.response.data && err.response.data.error ? err.response.data.error : err
     })
@@ -1355,6 +1359,7 @@ export default class ParseApp {
     try {
       return (
         await axios.get(
+          // eslint-disable-next-line no-undef
           `${b4aSettings.BACK4APP_API_PATH}/parse-app/${this.slug}/logs`,
           { withCredentials: true }
         )
@@ -1368,6 +1373,7 @@ export default class ParseApp {
     try {
       return (
         await axios.get(
+          // eslint-disable-next-line no-undef
           `${b4aSettings.BACK4APP_API_PATH}/blockchain/balance/${this.applicationId}`,
           { withCredentials: true }
         )
@@ -1381,6 +1387,7 @@ export default class ParseApp {
     try {
       return (
         await axios.get(
+          // eslint-disable-next-line no-undef
           `${b4aSettings.BACK4APP_API_PATH}/blockchain/class-names/${this.applicationId}`,
           { withCredentials: true }
         )
@@ -1394,6 +1401,7 @@ export default class ParseApp {
     try {
       return (
         await axios.post(
+          // eslint-disable-next-line no-undef
           `${b4aSettings.BACK4APP_API_PATH}/blockchain/class-names/${this.applicationId}/${className}`,
           {},
           { withCredentials: true }
@@ -1408,6 +1416,7 @@ export default class ParseApp {
     try {
       return (
         await axios.delete(
+          // eslint-disable-next-line no-undef
           `${b4aSettings.BACK4APP_API_PATH}/blockchain/class-names/${this.applicationId}/${className}`,
           { withCredentials: true }
         )
