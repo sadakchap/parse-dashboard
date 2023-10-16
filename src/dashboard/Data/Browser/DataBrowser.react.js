@@ -82,8 +82,9 @@ export default class DataBrowser extends React.Component {
       );
       this.setState({ order });
     }
-    if (this.props.columns)
+    if (this.props.columns) {
       this.setState({ numberOfColumns: Object.keys(this.props.columns).length })
+    }
   }
 
   async componentDidMount() {
@@ -143,7 +144,6 @@ export default class DataBrowser extends React.Component {
   }
 
   handleKey(e) {
-    let row, col, colName
     if (this.props.disableKeyControls) {
       return;
     }
@@ -191,13 +191,13 @@ export default class DataBrowser extends React.Component {
     });
     const firstVisibleColumnIndex = Math.min(...visibleColumnIndexes);
     const lastVisibleColumnIndex = Math.max(...visibleColumnIndexes);
+    const colName = this.state.order[this.state.current.col].name;
+    const col = this.props.columns[colName];
 
     switch (e.keyCode) {
       case 8:
       case 46:
         // Backspace or Delete
-        const colName = this.state.order[this.state.current.col].name;
-        const col = this.props.columns[colName];
         if (col.type !== 'Relation') {
           this.props.updateRow(this.state.current.row, colName, undefined);
         }
@@ -274,13 +274,11 @@ export default class DataBrowser extends React.Component {
         }
         break;
       case 86:
-        if ( e.ctrlKey || e.metaKey ) {
-          colName = this.state.order[this.state.current.col].name;
-          col = this.props.columns[colName];
+        if (e.ctrlKey || e.metaKey) {
           if (col.type === 'Date') {
             navigator.clipboard.readText()
-              .then( text => {
-                if ( text ) {
+              .then(text => {
+                if (text) {
                   this.props.updateRow(
                     this.state.current.row,
                     colName,

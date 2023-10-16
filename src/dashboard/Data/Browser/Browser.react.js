@@ -700,7 +700,7 @@ class Browser extends DashboardView {
 
   createClass(className, isProtected, shouldContinue = false) {
     let clp = isProtected ? protectedCLPs : defaultCLPS;
-    if (semver.lte(this.context.currentApp.serverInfo.parseServerVersion, '3.1.1')) {
+    if (semver.lte(this.context.serverInfo.parseServerVersion, '3.1.1')) {
       clp = {};
     }
     this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
@@ -741,7 +741,7 @@ class Browser extends DashboardView {
   }
 
   importClass(className, file) {
-    return this.context.currentApp.importData(className, file)
+    return this.context.importData(className, file)
       .then((res) => {
         return res;
       }, (error) => {
@@ -754,7 +754,7 @@ class Browser extends DashboardView {
   }
 
   importRelation(className, relationName, file) {
-    return this.context.currentApp.importRelationData(className, relationName, file)
+    return this.context.importRelationData(className, relationName, file)
       .then((res) => {
         return res;
       }, (error) => {
@@ -1192,7 +1192,7 @@ class Browser extends DashboardView {
     }
 
     query.limit(MAX_ROWS_FETCHED);
-    semver.gt(this.context.currentApp.serverInfo.parseServerVersion, '3.6.0') &&
+    semver.gt(this.context.serverInfo.parseServerVersion, '3.6.0') &&
       this.excludeFields(query, source);
 
     let promise = query.find({ useMasterKey });
@@ -1269,7 +1269,7 @@ class Browser extends DashboardView {
 
   async fetchClassIndexes(className){
     try {
-      const data = await this.context.currentApp.getIndexes(className);
+      const data = await this.context.getIndexes(className);
       if(data){
         this.setState({
           uniqueClassFields: data
@@ -1331,7 +1331,7 @@ class Browser extends DashboardView {
       query.addDescending('createdAt');
     }
     query.limit(MAX_ROWS_FETCHED);
-    semver.gt(this.context.currentApp.serverInfo.parseServerVersion, '3.6.0') &&
+    semver.gt(this.context.serverInfo.parseServerVersion, '3.6.0') &&
       this.excludeFields(query, source);
 
     const { useMasterKey } = this.state;
@@ -1468,7 +1468,7 @@ class Browser extends DashboardView {
   }
 
   handleCLPChange(clp) {
-    const { serverInfo } = this.context.currentApp;
+    const { serverInfo } = this.context;
     if (typeof serverInfo.parseServerVersion !== 'undefined') {
       if (serverInfo.parseServerVersion < '2.6') {delete clp.count;}
       if (serverInfo.parseServerVersion < '3.7') {delete clp.protectedFields;}
@@ -2197,7 +2197,7 @@ class Browser extends DashboardView {
 
   async onChangeDefaultKey (name) {
     ColumnPreferences.setPointerDefaultKey(
-      this.context.currentApp.applicationId,
+      this.context.applicationId,
       this.props.params.className,
       name
     );
@@ -2532,8 +2532,7 @@ class Browser extends DashboardView {
         />
       )
     } else if (this.state.openSecurityDialog) {
-      const parseServerSupportsPointerPermissions = this.context.currentApp
-        .serverInfo.features.schemas.editClassLevelPermissions;
+      const parseServerSupportsPointerPermissions = this.context.serverInfo.features.schemas.editClassLevelPermissions;
       const currentColumns = this.getClassColumns(className);
       const userPointers = [];
       const schemaSimplifiedData = {};
@@ -2584,7 +2583,7 @@ class Browser extends DashboardView {
             )
           }
           onCancel={() => this.setState({ openSecurityDialog: false })}
-          parseVersion={this.context.currentApp.serverInfo}
+          parseVersion={this.context.serverInfo}
           onConfirm={perms =>
             this.handleCLPChange(perms)
               .then(() => this.setState({ openSecurityDialog: false }))

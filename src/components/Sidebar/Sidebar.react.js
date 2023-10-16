@@ -5,21 +5,21 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import PropTypes   from 'lib/PropTypes';
-import AppsManager    from 'lib/AppsManager';
+import PropTypes from 'lib/PropTypes';
+import AppsManager from 'lib/AppsManager';
 import FooterMenu from 'components/Sidebar/FooterMenu.react';
-import React          from 'react';
+import React from 'react';
 // import SidebarHeader  from 'components/Sidebar/SidebarHeader.react';
 import SidebarSection from 'components/Sidebar/SidebarSection.react';
 import SidebarSubItem from 'components/Sidebar/SidebarSubItem.react';
-import styles         from 'components/Sidebar/Sidebar.scss';
-import Button         from 'components/Button/Button.react'
-import Icon           from 'components/Icon/Icon.react';
-import { isMobile }   from 'lib/browserUtils';
-import B4aBadge       from 'components/B4aBadge/B4aBadge.react';
-import ParseApp       from 'lib/ParseApp';
-import AppsMenu       from 'components/Sidebar/AppsMenu.react';
-import AppName        from 'components/Sidebar/AppName.react';
+import styles from 'components/Sidebar/Sidebar.scss';
+import Button from 'components/Button/Button.react'
+import Icon from 'components/Icon/Icon.react';
+import { isMobile } from 'lib/browserUtils';
+import B4aBadge from 'components/B4aBadge/B4aBadge.react';
+import ParseApp from 'lib/ParseApp';
+import AppsMenu from 'components/Sidebar/AppsMenu.react';
+import AppName from 'components/Sidebar/AppName.react';
 
 const isInsidePopover = node => {
   let cur = node.parentNode;
@@ -206,7 +206,7 @@ class Sidebar extends React.Component {
                 actionHandler={active ? actionHandler : null}
                 active={active}
                 badge={badge}
-                >
+              >
                 {active ? children : null}
               </SidebarSubItem>
             );
@@ -216,10 +216,11 @@ class Sidebar extends React.Component {
     }
 
     const apps = [].concat(AppsManager.apps()).sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0)));
-    let footerButtons = [
+    const footerButtons = [
       <Button value='Support'
         primary={true}
         width='75px'
+        // eslint-disable-next-line no-undef
         onClick={() => zE && zE.activate()}
         key={0}
       />
@@ -290,7 +291,7 @@ class Sidebar extends React.Component {
                   primaryBackgroundColor={primaryBackgroundColor}
                   secondaryBackgroundColor={secondaryBackgroundColor}
                   badge={badge}
-                  >
+                >
                   {active ? _subMenu(subsections) : null}
                 </SidebarSection>
               );
