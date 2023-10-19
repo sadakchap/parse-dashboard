@@ -11,11 +11,12 @@ import React from 'react';
 import styles from 'components/Sidebar/Sidebar.scss';
 
 const sendEvent = () => {
+  // eslint-disable-next-line no-undef
   back4AppNavigation && back4AppNavigation.atApiReferenceIntroEvent && back4AppNavigation.atApiReferenceIntroEvent()
 }
 
-let SidebarSection = ({ active, children, name, link, icon, style, primaryBackgroundColor, secondaryBackgroundColor, isCollapsed, onClick, badge }) => {
-  let classes = [styles.section];
+const SidebarSection = ({ active, children, name, link, icon, style, primaryBackgroundColor, secondaryBackgroundColor, isCollapsed, onClick, badge }) => {
+  const classes = [styles.section];
   if (active) {
     classes.push(styles.active);
   }

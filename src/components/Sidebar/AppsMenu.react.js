@@ -28,7 +28,7 @@ const AppsMenu = ({ apps, current, height, onSelect, onPinClick }) => (
           return null;
         }
         const isDisabled = app.serverInfo.error || app.serverInfo.status === 'LOADING';
-        let classes = [styles.menuRow];
+        const classes = [styles.menuRow];
         if (isDisabled) {
           classes.push(styles.disabledLink);
         }
