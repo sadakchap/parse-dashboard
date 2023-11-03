@@ -119,8 +119,8 @@ class CreateClassDialog extends React.Component {
               label={<Label text='Add in Protected mode' description={'Your class\'s objects are protected by default. Client read/write access will only be granted when specified by your CLPs/ACLs security rules.'} />}
               input={
                 <div className={styles.radiobuttonWrapper} >
-                  <input 
-                    id="CLP_Protected" 
+                  <input
+                    id="CLP_Protected"
                     name="CLP"
                     type="radio"
                     onChange={() => this.setState({ isProtected: !this.state.isProtected })}
@@ -133,24 +133,24 @@ class CreateClassDialog extends React.Component {
               label={<Label text='Add in Public mode' description={'Your class’s objects are public by default. Any client has read/write access granted, which is convenient for development. We strongly recommend strengthening the security with CLPs/ACLs rules before moving to production.'} />}
               input={
                 <div className={styles.radiobuttonWrapper} style={{ height: '120px' }} >
-                  <input 
-                    id="CLP_Public" 
-                    name="CLP" 
+                  <input
+                    id="CLP_Public"
+                    name="CLP"
                     type="radio"
                     onChange={() => this.setState({ isProtected: !this.state.isProtected })}
                     defaultChecked={!this.state.isProtected}
                   /> Public Read and Write enabled
                 </div>
               }
-            /> 
-            </>
+            />
+          </>
           )
-            : null
+          : null
         }
-        <div style={{ display: "flex", flexDirection: "column", padding: '1em', gap: '10px', borderBottom: "1px solid #e3e3e3" }}>
+        <div style={{ display: 'flex', flexDirection: 'column', padding: '1em', gap: '10px', borderBottom: '1px solid #e3e3e3' }}>
           <div style={{ fontWeight: '600', color: '000000de' }} >Or find a public dataset to connect</div >
           <span style={{ fontSize: '14px' }} >e.g. jobs, countries, industries, colors, zip codes and more...</span>
-          <a style={{ color: "#169cee", fontSize: '14px', textDecoration: 'underline' }} href={b4aSettings.HUB_URL} target="_blank">back4app.com/database</a>
+          <a style={{ color: '#169cee', fontSize: '14px', textDecoration: 'underline' }} href={b4aSettings.HUB_URL} target="_blank">back4app.com/database</a>
         </div>
       </Modal>
     );
