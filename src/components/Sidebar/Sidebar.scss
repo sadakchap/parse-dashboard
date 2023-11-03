@@ -197,17 +197,17 @@
       max-width: 215px;
     }
 
-    &:after {
-      @include arrow('down', 10px, 7px, #132B39);
-      content: '';
-      margin-left: 10px;
-    }
+    // &:after {
+    //   @include arrow('down', 10px, 7px, #132B39);
+    //   content: '';
+    //   margin-left: 10px;
+    // }
 
-    &:hover {
-      &:after {
-        border-top-color: white;
-      }
-  }
+    // &:hover {
+    //   &:after {
+    //     border-top-color: white;
+    //   }
+    // }
 
   .currentAppName {
     overflow: hidden;
