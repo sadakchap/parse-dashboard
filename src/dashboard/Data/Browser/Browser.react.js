@@ -1092,7 +1092,7 @@ class Browser extends DashboardView {
     });
   }
 
-  removeColumn(name) {
+  removeColumn(name, selectedColumn = false) {
     const payload = {
       className: this.props.params.className,
       name: name,
