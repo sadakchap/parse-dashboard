@@ -2350,6 +2350,7 @@ class Browser extends DashboardView {
         />
       );
     } else if (this.state.showCreateClassDialog) {
+      const currentApp = this.context || {};
       extras = (
         <CreateClassDialog
           currentAppSlug={this.context.slug}

@@ -27,7 +27,7 @@ const Field = ({ label, input, labelWidth = 50, labelPadding, height, className,
       <div className={styles.left} style={{ width: labelWidth + '% ', height: height, minHeight }}>
         {label}
       </div>
-      <div className={styles.right} style={{ marginLeft: labelWidth + '%', height: height, minHeight, textAlign }}>
+      <div className={styles.right} style={{ height: height, minHeight, textAlign }}>
         {input}
       </div>
     </div>
