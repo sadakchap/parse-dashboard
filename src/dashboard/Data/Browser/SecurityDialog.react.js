@@ -5,7 +5,6 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import Icon from 'components/Icon/Icon.react';
 import Parse from 'parse';
 import PermissionsDialog from 'components/PermissionsDialog/PermissionsDialog.react';
 import React from 'react';
@@ -129,9 +128,7 @@ export default class SecurityDialog extends React.Component {
             validateEntry(this.props.userPointers, entry, parseServerSupportsPointerPermissions)
           }
           onCancel={this.handleClose}
-          parseVersion={this.context.currentApp.serverInfo}
-          onConfirm={perms => 
-            this.props.onChangeCLP(perms).then(this.handleClose)}
+          onConfirm={perms => this.props.onChangeCLP(perms).then(this.handleClose)}
         />
       );
     }
@@ -139,18 +136,7 @@ export default class SecurityDialog extends React.Component {
     if (this.props.disabled) {
       classes.push(styles.toolbarButtonDisabled);
     }
-    let onClick = null;
-    if (!this.props.disabled) {
-      onClick = () => {
-        this.setState({ open: true });
-        this.props.setCurrent(null);
-      };
-    }
-    return (
-      <div className={classes.join(' ')} title='Security'>
-        <Icon width={32} height={26} name='security' onClick={onClick} />
-        {dialog}
-      </div>
-    );
+
+    return dialog;
   }
 }
