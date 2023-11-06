@@ -71,11 +71,11 @@ class BlockChainPage extends DashboardView {
       }
     });
 
-    this.context.currentApp.getAppBalance().then(({ balance }) => {
+    this.context.getAppBalance().then(({ balance }) => {
       this.setState({ appBalanceLoading: false, appBalance: balance });
     });
 
-    this.context.currentApp.getBlockchainClassNames().then(({ classNames }) => {
+    this.context.getBlockchainClassNames().then(({ classNames }) => {
       this.setState({
         blockChainClassesLoading: false,
         blockChainClasses: sortClasses(classNames),
@@ -106,7 +106,7 @@ class BlockChainPage extends DashboardView {
     this.setState({
       inProgress: true,
     });
-    this.context.currentApp
+    this.context
       .moveClassToBlockchain(selectedClassName)
       .then(() => {
         const newClassArray = [ ...this.state.blockChainClasses, selectedClassName ];
@@ -133,7 +133,7 @@ class BlockChainPage extends DashboardView {
     this.setState({
       inProgress: true,
     });
-    this.context.currentApp
+    this.context
       .removeFromBlockchain(selectedClassName)
       .then(() => {
         this.setState({
