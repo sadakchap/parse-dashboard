@@ -2,11 +2,8 @@ import { ActionTypes }  from 'lib/stores/SchemaStore'
 import CategoryList from 'components/CategoryList/CategoryList.react'
 import DashboardView from 'dashboard/DashboardView.react'
 import EmptyState from 'components/EmptyState/EmptyState.react'
-// import history from 'dashboard/history'
 import Icon from 'components/Icon/Icon.react'
 import IndexForm from './IndexForm.react'
-import ParseApp from 'lib/ParseApp'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { SpecialClasses } from 'lib/Constants'
 import stringCompare from 'lib/stringCompare'
@@ -14,9 +11,11 @@ import styles from './IndexManager.scss'
 import subscribeTo from 'lib/subscribeTo'
 import Swal from 'sweetalert2'
 import AccountManager from 'lib/AccountManager';
-import { generatePath } from 'react-router'
+import { generatePath } from 'react-router';
+import { withRouter } from 'lib/withRouter';
 
 @subscribeTo('Schema', 'schema')
+@withRouter
 class IndexManager extends DashboardView {
   constructor(props, context) {
     super(props, context);
@@ -29,8 +28,8 @@ class IndexManager extends DashboardView {
       selected: {},
       data: null,
       showIndexManager: false,
-      canCreate: this.context.currentApp.custom.isOwner,
-      canDelete: this.context.currentApp.custom.isOwner
+      canCreate: undefined,
+      canDelete: undefined
     }
 
     this.refresh = this.refresh.bind(this)
@@ -46,11 +45,15 @@ class IndexManager extends DashboardView {
     const { className } = this.props.params
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
       if (!className && this.props.schema.data.get('classes')) {
-        this.redirectToFirstClass(this.props.schema.data.get('classes'));
+        this.redirectToFirstClass(this.props.schema.data.get('classes'), this.context);
       }
+    });
+    this.setState({
+      canCreate: this.context.custom.isOwner,
+      canDelete: this.context.custom.isOwner
     })
     if (className) {
-      this.context.currentApp.getIndexes(className).then(data => {
+      this.context.getIndexes(className).then(data => {
         this.setState({
           data,
           loading: false
@@ -58,13 +61,13 @@ class IndexManager extends DashboardView {
       })
     }
     // if not owner then check for collaborator
-    if (!this.context.currentApp.custom.isOwner) {
+    if (!this.context.custom.isOwner) {
       const currentEmail = AccountManager.currentUser().email;
 
-      if (Object.keys(this.context.currentApp.settings.fields).length !== 0) { // if collaborators field is already loaded
-        this.allowCollaboratorToCreate(this.context.currentApp.settings.fields.fields.collaborators, currentEmail);
+      if (Object.keys(this.context.settings.fields).length !== 0) { // if collaborators field is already loaded
+        this.allowCollaboratorToCreate(this.context.settings.fields.fields.collaborators, currentEmail);
       } else {
-        this.context.currentApp.fetchSettingsFields().then(({ fields }) => {
+        this.context.fetchSettingsFields().then(({ fields }) => {
           this.allowCollaboratorToCreate(fields.collaborators, currentEmail)
         });
       }
@@ -94,16 +97,16 @@ class IndexManager extends DashboardView {
         return a.toUpperCase() < b.toUpperCase() ? -1 : 1
       })
       if (classes[0]) {
-        this.props.navigate(generatePath(context || this.context, 'index/' + classes[0]), {
-          replace: true,
+        this.props.navigate(context || this.context, 'index/' + classes[0], {
+          replace: true
         });
       } else {
         if (classList.indexOf('_User') !== -1) {
-          this.props.navigate(generatePath(context || this.context, 'index/_User'), {
+          this.props.navigate(context || this.context, 'index/_User', {
             replace: true,
           });
         } else {
-          this.props.navigate(generatePath(context || this.context, 'index/' + classList[0]), {
+          this.props.navigate(context || this.context, 'index/' + classList[0], {
             replace: true,
           });
         }
@@ -112,13 +115,13 @@ class IndexManager extends DashboardView {
   }
 
   componentWillReceiveProps(props, context) {
-    const { className } = this.props.params
-    const { className: newClassName } = props.params
+    const { className } = this.props.params;
+    const { className: newClassName } = props.params;
     if (newClassName !== className) {
       this.setState({
         loading: true
       });
-      context.currentApp.getIndexes(newClassName).then(data => {
+      context.getIndexes(newClassName).then(data => {
         this.setState({
           data,
           loading: false
@@ -433,10 +436,6 @@ class IndexManager extends DashboardView {
       </div>
     )
   }
-}
-
-IndexManager.contextTypes = {
-  currentApp: PropTypes.instanceOf(ParseApp)
 }
 
 export default IndexManager
