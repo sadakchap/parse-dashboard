@@ -11,14 +11,14 @@ import styles from './IndexManager.scss'
 import subscribeTo from 'lib/subscribeTo'
 import Swal from 'sweetalert2'
 import AccountManager from 'lib/AccountManager';
-import { generatePath } from 'react-router';
+import generatePath from 'lib/generatePath';
 import { withRouter } from 'lib/withRouter';
 
 @subscribeTo('Schema', 'schema')
 @withRouter
 class IndexManager extends DashboardView {
-  constructor(props, context) {
-    super(props, context);
+  constructor() {
+    super();
 
     this.section = 'Database';
     this.subsection = 'Index Manager'
@@ -97,16 +97,16 @@ class IndexManager extends DashboardView {
         return a.toUpperCase() < b.toUpperCase() ? -1 : 1
       })
       if (classes[0]) {
-        this.props.navigate(context || this.context, 'index/' + classes[0], {
+        this.props.navigate(generatePath(context || this.context, 'index/' + classes[0]), {
           replace: true
         });
       } else {
         if (classList.indexOf('_User') !== -1) {
-          this.props.navigate(context || this.context, 'index/_User', {
+          this.props.navigate(generatePath(context || this.context, 'index/_User'), {
             replace: true,
           });
         } else {
-          this.props.navigate(context || this.context, 'index/' + classList[0], {
+          this.props.navigate(generatePath(context || this.context, 'index/' + classList[0]), {
             replace: true,
           });
         }
@@ -114,14 +114,14 @@ class IndexManager extends DashboardView {
     }
   }
 
-  componentWillReceiveProps(props, context) {
+  componentWillReceiveProps(nextProps, nextContext) {
     const { className } = this.props.params;
-    const { className: newClassName } = props.params;
+    const { className: newClassName } = nextProps.params;
     if (newClassName !== className) {
       this.setState({
         loading: true
       });
-      context.getIndexes(newClassName).then(data => {
+      nextContext.getIndexes(newClassName).then(data => {
         this.setState({
           data,
           loading: false

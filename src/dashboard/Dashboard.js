@@ -402,9 +402,8 @@ export default class Dashboard extends React.Component {
         <Route path="app-templates" element={<B4aAppTemplates />} />
 
         <Route path="server-settings/:targetPage" element={<ServerSettings />} />
-
-        <Route path="index" element={<IndexManager />} />
         <Route path="index/:className" element={<IndexManager />} />
+        <Route path="index" element={<IndexManager />} />
 
         <Route path="blockchain" element={<BlockchainPage /> } />
 
