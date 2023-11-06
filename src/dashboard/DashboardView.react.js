@@ -450,7 +450,7 @@ export default class DashboardView extends React.Component {
     );
 
     let content = <div className={styles.content}>{this.renderContent()}</div>;
-    const canRoute = [...databaseSubsections, ...pushSubsections, ...settingsSections]
+    const canRoute = [...databaseSubsections, ...pushSubsections, ...settingsSections, ...appSidebarSections]
       .map(({ link }) => link.split('/')[1])
       .includes(this.state.route);
 

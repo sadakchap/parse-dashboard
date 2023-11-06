@@ -12,7 +12,8 @@ import AppData from './AppData.react';
 import AppsIndex from './Apps/AppsIndex.react';
 import AppsManager from 'lib/AppsManager';
 import Browser from './Data/Browser/Browser.react';
-// import CloudCode from './Data/CloudCode/B4ACloudCode.react';
+import CloudCode from './Data/CloudCode/B4ACloudCode.react';
+// import CloudCode from './Data/CloudCode/CloudCode.react';
 import Config from './Data/Config/Config.react';
 import Explorer from './Analytics/Explorer/Explorer.react';
 import FourOhFour from 'components/FourOhFour/FourOhFour.react';
@@ -376,8 +377,7 @@ export default class Dashboard extends React.Component {
         <Route path="browser/:className" element={<BrowserRoute />} />
         <Route path="browser" element={<BrowserRoute />} />
 
-        {/* <Route path="cloud_code" element={<CloudCode />} />
-        <Route path="cloud_code/*" element={<CloudCode />} /> */}
+        <Route path="cloud_code" element={<CloudCode />} />
         <Route path="webhooks" element={<Webhooks />} />
 
         <Route path="jobs">{JobsRoute}</Route>

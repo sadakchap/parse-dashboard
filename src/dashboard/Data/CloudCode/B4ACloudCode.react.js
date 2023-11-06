@@ -5,24 +5,22 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import React                  from 'react';
-import { withRouter } from 'react-router';
-// import history                from 'dashboard/history';
-import $                      from 'jquery';
-import axios                  from 'axios';
-import Button                 from 'components/Button/Button.react';
-import B4ACodeTree            from 'components/B4ACodeTree/B4ACodeTree.react';
-import {
-  updateTreeContent
-}                             from 'components/B4ACodeTree/B4ATreeActions';
-import B4ACloudCodeToolbar    from 'dashboard/Data/CloudCode/B4ACloudCodeToolbar.react';
-import CloudCode              from 'dashboard/Data/CloudCode/CloudCode.react';
-import LoaderContainer        from 'components/LoaderContainer/LoaderContainer.react';
-import LoaderDots             from 'components/LoaderDots/LoaderDots.react';
-import styles                 from 'dashboard/Data/CloudCode/CloudCode.scss';
-import Icon                   from 'components/Icon/Icon.react';
-import Modal                  from 'components/Modal/Modal.react';
+import React from 'react';
+import $ from 'jquery';
+import axios from 'axios';
+import Button from 'components/Button/Button.react';
+import B4ACodeTree from 'components/B4ACodeTree/B4ACodeTree.react';
+import { updateTreeContent } from 'components/B4ACodeTree/B4ATreeActions';
+import B4ACloudCodeToolbar from 'dashboard/Data/CloudCode/B4ACloudCodeToolbar.react';
+import CloudCode from 'dashboard/Data/CloudCode/CloudCode.react';
+import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
+import LoaderDots from 'components/LoaderDots/LoaderDots.react';
+import styles from 'dashboard/Data/CloudCode/CloudCode.scss';
+import Icon from 'components/Icon/Icon.react';
+import Modal from 'components/Modal/Modal.react';
+import { withRouter } from 'lib/withRouter';
 
+@withRouter
 class B4ACloudCode extends CloudCode {
   constructor() {
     super();
@@ -239,7 +237,7 @@ class B4ACloudCode extends CloudCode {
   }
 
   onLogClick() {
-    window.open(`/apps/${this.context.currentApp.slug}/logs/system`, '_blank');
+    window.open(`/apps/${this.context.slug}/logs/system`, '_blank');
   }
 
   // override renderSidebar from cloud code to don't show the files name on sidebar
@@ -265,7 +263,7 @@ class B4ACloudCode extends CloudCode {
         setUpdatedFile={(updatedFiles) => this.setState({ updatedFiles })}
         files={this.state.files}
         parentState={this.setState.bind(this)}
-        currentApp={this.context.currentApp}
+        currentApp={this.context}
       />
 
       footer = <div className={styles.footer}>
@@ -308,4 +306,4 @@ class B4ACloudCode extends CloudCode {
   }
 }
 
-export default withRouter(B4ACloudCode);
+export default B4ACloudCode;

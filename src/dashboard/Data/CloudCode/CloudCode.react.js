@@ -13,13 +13,11 @@ import React from 'react';
 import styles from 'dashboard/Data/CloudCode/CloudCode.scss';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import generatePath from 'lib/generatePath';
-import { withRouter } from 'lib/withRouter';
 
 function getPath(params) {
   return params.splat;
 }
 
-@withRouter
 class CloudCode extends DashboardView {
   constructor() {
     super();
@@ -51,7 +49,9 @@ class CloudCode extends DashboardView {
           updatedCurrentApp.serverInfo.status !==
           prevCurrentApp.serverInfo.status;
 
-        if (!shouldUpdate) return;
+        if (!shouldUpdate) {
+          return;
+        }
       }
       this.fetchSource(nextContext, getPath(nextProps.params));
     }
