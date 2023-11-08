@@ -10,8 +10,10 @@ import DashboardView from 'dashboard/DashboardView.react'
 import HubDisconnectionDialog from 'dashboard/Hub/HubDisconnectionDialog.react'
 import ParseApp from 'lib/ParseApp'
 import styles from './HubConnections.scss'
+import { CurrentApp } from 'context/currentApp';
 
 class HubConnections extends DashboardView {
+  static contextType = CurrentApp;
   constructor(props, context) {
     super(props, context);
 
@@ -29,7 +31,7 @@ class HubConnections extends DashboardView {
   }
 
   async componentDidMount() {
-    const data = await this.context.currentApp.fetchHubConnections();
+    const data = await this.context.fetchHubConnections();
     this.setState({ data });
   }
 
@@ -123,7 +125,7 @@ class HubConnections extends DashboardView {
                   onConfirm={async () => {
                     await this.setState({ isDisconnecting: true });
                     try {
-                      await this.context.currentApp.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
+                      await this.context.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
                       window.location.reload(false);
                     } catch (err) {
                       this.setState({ isDisconnecting: false });
