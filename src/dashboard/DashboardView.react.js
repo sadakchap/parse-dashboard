@@ -223,92 +223,7 @@ export default class DashboardView extends React.Component {
       link: '/app-templates'
     })
 
-
-    // if (features.globalConfig &&
-    //   features.globalConfig.create &&
-    //   features.globalConfig.read &&
-    //   features.globalConfig.update &&
-    //   features.globalConfig.delete) {
-    //   coreSubsections.push({
-    //     name: 'Config',
-    //     link: '/config'
-    //   });
-    // }
-
-    // coreSubsections.push({
-    //   name: 'API Console',
-    //   link: '/api_console',
-    // });
-
-    // if (this.context.currentApp.migration) {
-    //   coreSubsections.push({
-    //     name: 'Migration',
-    //     link: '/migration',
-    //   });
-    // }
-
     const pushSubsections = [];
-
-    // if (features.push && features.push.immediatePush) {
-    //   pushSubsections.push({
-    //     name: 'Send New Push',
-    //     link: '/push/new'
-    //   });
-    // }
-
-    // if (features.push && features.push.storedPushData) {
-    //   pushSubsections.push({
-    //     name: 'Past Pushes',
-    //     link: '/push/activity'
-    //   });
-    // }
-
-    // if (features.push && features.push.pushAudiences) {
-    //   pushSubsections.push({
-    //     name: 'Audiences',
-    //     link: '/push/audiences'
-    //   });
-    // }
-
-    // const analyticsSidebarSections = [];
-
-    //These analytics pages may never make it into parse server
-
-    // if (features.analytics && features.analytics.overviewAnalysis) {
-    //   analyticsSidebarSections.push({
-    //     name: 'Overview',
-    //     link: '/analytics/overview'
-    //   });
-    // }
-
-    // if (features.analytics && features.analytics.explorerAnalysis) {
-    //   analyticsSidebarSections.push({
-    //     name: 'Explorer',
-    //     link: '/analytics/explorer'
-    //   });
-    // }
-
-    // //These ones might, but require some endpoints to added to Parse Server
-    // if (features.analytics && features.analytics.retentionAnalysis) {
-    //   analyticsSidebarSections.push({
-    //     name: 'Retention',
-    //     link: '/analytics/retention'
-    //   });
-    // }
-
-    // if (features.analytics && features.analytics.performanceAnalysis) {
-    //   analyticsSidebarSections.push({
-    //     name: 'Performance',
-    //     link: '/analytics/performance'
-    //   });
-    // }
-
-    // if (features.analytics && features.analytics.slowQueries) {
-    //   analyticsSidebarSections.push({
-    //     name: 'Slow Requests',
-    //     link: '/analytics/slow_requests'
-    //   });
-    // }
 
     const settingsSections = [{
       name: 'Dashboard',
@@ -340,27 +255,7 @@ export default class DashboardView extends React.Component {
       name: 'Server Settings',
       link: '/server-settings',
     });
-    /*
-    if (features.usersSettings) {
-      settingsSections.push({
-        name: 'Users',
-        link: '/settings/users'
-      })
-    }
 
-    if (features.pushSettings) {
-      settingsSections.push({
-        name: 'Push',
-        link: '/settings/push'
-      });
-    }
-
-    if (features.hostingEmailsSettings) {
-      settingsSections.push({
-        name: 'Hosting and Emails',
-        link: '/settings/hosting'
-      });
-    }*/
 
     const appSidebarSections = [];
 
@@ -403,35 +298,6 @@ export default class DashboardView extends React.Component {
       subsections: moreSubSection
     })
 
-    // appSidebarSections.push({
-    //   name: 'Publish on Hub',
-    //   icon: 'database-hub',
-    //   link: '/hub-publish',
-    //   badgeParams: {
-    //     label: 'NEW',
-    //     color: 'green'
-    //   }
-    // })
-
-    // if (pushSubsections.length > 0) {
-    //   appSidebarSections.push({
-    //     name: 'Push',
-    //     icon: 'push-outline',
-    //     link: '/push',
-    //     style: {paddingLeft: '16px'},
-    //     subsections: pushSubsections,
-    //   });
-    // }
-
-    // if (analyticsSidebarSections.length > 0) {
-    //   appSidebarSections.push({
-    //     name: 'Analytics',
-    //     icon: 'analytics-outline',
-    //     link: '/analytics',
-    //     subsections: analyticsSidebarSections
-    //   });
-    // }
-
     const sidebar = (
       <Sidebar
         showTour={this.state && this.state.showTour}
@@ -450,7 +316,7 @@ export default class DashboardView extends React.Component {
     );
 
     let content = <div className={styles.content}>{this.renderContent()}</div>;
-    const canRoute = [...databaseSubsections, ...pushSubsections, ...settingsSections, ...appSidebarSections]
+    const canRoute = [...databaseSubsections, ...pushSubsections, ...settingsSections, ...appSidebarSections, ...moreSubSection]
       .map(({ link }) => link.split('/')[1])
       .includes(this.state.route);
 
