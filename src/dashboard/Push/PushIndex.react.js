@@ -9,6 +9,7 @@ import * as PushConstants from './PushConstants';
 import * as DateUtils from 'lib/DateUtils';
 import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
+import CategoryItemAction from 'components/CategoryList/CategoryItemAction.js';
 import DashboardView from 'dashboard/DashboardView.react';
 import EmptyState from 'components/EmptyState/EmptyState.react';
 import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
@@ -319,10 +320,10 @@ class PushIndex extends DashboardView {
   }
 
   renderSidebar() {
-    const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
-    let categoryCurrent = this.props.params.category || '';
-    let subCategory = (
+    const { pathname } = this.props.location;
+    const current = pathname.substr(pathname.lastIndexOf('/') + 1, pathname.length - 1);
+    const categoryCurrent = this.props.params.category || '';
+    const subCategory = (
       <CategoryList current={categoryCurrent} linkPrefix={'push/activity/'} categories={[
         { name: PUSH_CATEGORIES[PUSH_TYPE_ALL],
           id: PUSH_TYPE_ALL},
@@ -332,22 +333,22 @@ class PushIndex extends DashboardView {
         //   id: PUSH_TYPE_EXPERIMENT},
         // { name: PUSH_CATEGORIES[PUSH_TYPE_API],
         //   id: PUSH_TYPE_API},
-        ]} />
+      ]} />
     );
     return (
       <CategoryList
         current={current}
-        linkPrefix={"push/"}
+        linkPrefix={'push/'}
         categories={[
-          { name: "Send New Push", id: "new" },
+          { name: 'Send New Push', id: 'new' },
           {
-            name: "Past Pushes",
-            id: "activity",
+            name: 'Past Pushes',
+            id: 'activity',
             subCategories: subCategory,
             currentActive: current === ':category',
             action: new CategoryItemAction('Send a push', this.navigateToNew.bind(this))
           },
-          { name: "Audiences", id: "audiences" }
+          { name: 'Audiences', id: 'audiences' }
         ]}
       />
     );

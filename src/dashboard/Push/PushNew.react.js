@@ -10,6 +10,7 @@ import * as PushConstants from './PushConstants';
 import * as PushHelper from './PushComposerHelper.react';
 import * as SchemaStore from 'lib/stores/SchemaStore';
 import Button from 'components/Button/Button.react';
+import CategoryList from 'components/CategoryList/CategoryList.react';
 import DashboardView from 'dashboard/DashboardView.react';
 import DateTimeInput from 'components/DateTimeInput/DateTimeInput.react';
 import Dropdown from 'components/Dropdown/Dropdown.react';
@@ -195,8 +196,8 @@ class PushNew extends DashboardView {
   }
 
   renderSidebar() {
-    const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    const { pathname } = this.props.location;
+    const current = pathname.substr(pathname.lastIndexOf('/') + 1, pathname.length - 1);
     return (
       <CategoryList current={current} linkPrefix={'push/'} categories={[
         { name: 'Send New Push', id: 'new', currentActive: current === 'new' },
