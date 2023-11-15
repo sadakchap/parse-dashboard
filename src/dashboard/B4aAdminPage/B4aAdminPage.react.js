@@ -52,7 +52,7 @@ class B4aAdminPage extends DashboardView {
     this.setState({ isRoleCreated, adminHost, adminURL, loading: false })
 
     if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAdminPageEvent === 'function')
-      back4AppNavigation.atAdminPageEvent()
+    {back4AppNavigation.atAdminPageEvent()}
   }
 
   displayMessage(colorNotification, message) {
@@ -64,7 +64,7 @@ class B4aAdminPage extends DashboardView {
           {message}
           {this.state.inviteCollab ?
             <span> -&nbsp;
-            <a onClick={() => {this.setState({showDialog: true})}} style={{ fontWeight: "bold" }}>Send Invite</a>
+              <a onClick={() => {this.setState({showDialog: true})}} style={{ fontWeight: 'bold' }}>Send Invite</a>
             </span>
             : null}
         </div>
@@ -111,18 +111,18 @@ class B4aAdminPage extends DashboardView {
     })
 
     if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onShowAdminModalEvent === 'function')
-      back4AppNavigation.onShowAdminModalEvent()
+    {back4AppNavigation.onShowAdminModalEvent()}
   }
 
   renderButtonToEnable(){
     return (
       <div>
-        <div className={styles["enable-feature-block"]}>
+        <div className={styles['enable-feature-block']}>
           <Button value='Enable Admin App'
             onClick={this.renderModal.bind(this)}
             primary={true}
             className={styles['input-child']}/>
-          </div>
+        </div>
       </div>
     )
   }
@@ -143,21 +143,21 @@ class B4aAdminPage extends DashboardView {
         controls
         width="650px"
         style={{
-          border: "1px solid #000",
-          borderRadius: "4px",
-          marginBottom: "20"
+          border: '1px solid #000',
+          borderRadius: '4px',
+          marginBottom: '20'
         }} />
       <Field
         height='120px'
         textAlign='center'
         label={<Label text='Is Enabled?' description="Enabling will automatically add three new classes, new indexes and a new role to your application’s schema." />}
-        input={<div 
-          style={{display: "flex", alignItems: "center", justifyContent: "center"}}
+        input={<div
+          style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
           className={styles['input']}>
           {
             isAdminHostEnabled
               ? <Icon name='admin-app-check' width={50} height={50}
-                      fill='#4CAF50' className={styles['input-child']}></Icon>
+                fill='#4CAF50' className={styles['input-child']}></Icon>
               : this.renderButtonToEnable()
           }
         </div>
@@ -165,13 +165,13 @@ class B4aAdminPage extends DashboardView {
       </Field>
       {
         isAdminHostEnabled
-        ? <Field
+          ? <Field
             height='120px'
             textAlign='center'
             label={<Label text='Admin App URL' description='Use this address to share your Admin App with trusted users. Only users with the B4aAdminUser role will be allowed to log in.' />}
             input={<div className={styles['input']}><a target='_blank' href={adminURL} className={styles['input-child']}>{adminURL}</a></div>}>
           </Field>
-        : ''
+          : ''
       }
     </Fieldset>
 
