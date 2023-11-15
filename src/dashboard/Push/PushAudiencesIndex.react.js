@@ -20,7 +20,6 @@ import PushAudienceDialog from 'components/PushAudienceDialog/PushAudienceDialog
 import PushAudiencesIndexRow from './PushAudiencesIndexRow.react';
 import queryFromFilters from 'lib/queryFromFilters';
 import React from 'react';
-import SidebarAction from 'components/Sidebar/SidebarAction';
 import stylesTable from 'dashboard/TableView.scss';
 import subscribeTo from 'lib/subscribeTo';
 import TableHeader from 'components/Table/TableHeader.react';
@@ -40,10 +39,6 @@ class PushAudiencesIndex extends DashboardView {
     super();
     this.section = 'More';
     this.subsection = 'Push';
-    this.action = new SidebarAction(
-      'Create an audience',
-      this.handleCreateAudienceClick.bind(this)
-    );
     this.state = {
       availableDevices: [],
       loading: true,
@@ -81,7 +76,7 @@ class PushAudiencesIndex extends DashboardView {
 
   getAudienceData(createdAudiences = 0) {
     this.props.schema.dispatch(SchemaStore.ActionTypes.FETCH);
-    this.props.pushaudiences
+    return this.props.pushaudiences
       .dispatch(PushAudiencesStore.ActionTypes.FETCH, {
         limit: PushConstants.SHOW_MORE_LIMIT,
         min: PushConstants.INITIAL_PAGE_SIZE + createdAudiences,
