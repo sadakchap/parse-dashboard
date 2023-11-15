@@ -327,14 +327,9 @@ class PushIndex extends DashboardView {
       <CategoryList current={categoryCurrent} linkPrefix={'push/activity/'} categories={[
         { name: PUSH_CATEGORIES[PUSH_TYPE_ALL],
           id: PUSH_TYPE_ALL},
-        // { name: PUSH_CATEGORIES[PUSH_TYPE_CAMPAIGN],
-        //   id: PUSH_TYPE_CAMPAIGN},
-        // { name: PUSH_CATEGORIES[PUSH_TYPE_EXPERIMENT],
-        //   id: PUSH_TYPE_EXPERIMENT},
-        // { name: PUSH_CATEGORIES[PUSH_TYPE_API],
-        //   id: PUSH_TYPE_API},
       ]} />
     );
+
     return (
       <CategoryList
         current={current}
@@ -345,7 +340,7 @@ class PushIndex extends DashboardView {
             name: 'Past Pushes',
             id: 'activity',
             subCategories: subCategory,
-            currentActive: current === ':category',
+            currentActive: current === 'all',
             action: new CategoryItemAction('Send a push', this.navigateToNew.bind(this))
           },
           { name: 'Audiences', id: 'audiences' }
