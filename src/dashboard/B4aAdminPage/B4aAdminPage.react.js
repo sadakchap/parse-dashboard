@@ -17,7 +17,7 @@ import Toolbar          from 'components/Toolbar/Toolbar.react';
 import Icon             from 'components/Icon/Icon.react';
 import ReactPlayer      from 'react-player';
 
-const EMAIL_VERIFICATION_URL = `${b4aSettings.BACK4APP_API_PATH}/email-verification`;
+// const EMAIL_VERIFICATION_URL = `${b4aSettings.BACK4APP_API_PATH}/email-verification`;
 
 @subscribeTo('Schema', 'schema')
 class B4aAdminPage extends DashboardView {
@@ -43,16 +43,17 @@ class B4aAdminPage extends DashboardView {
   }
 
   async componentDidMount() {
-    const adminParams = B4aAdminParams({ appName: this.context.currentApp.name })
+    const adminParams = B4aAdminParams({ appName: this.context.name })
     await this.setState({ adminParams })
 
-    const adminHost = await this.context.currentApp.getAdminHost()
+    const adminHost = await this.context.getAdminHost()
     const adminURL = adminHost ? this.protocol + adminHost : ''
     const isRoleCreated = await this.checkRole()
     this.setState({ isRoleCreated, adminHost, adminURL, loading: false })
 
-    if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAdminPageEvent === 'function')
-    {back4AppNavigation.atAdminPageEvent()}
+    if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAdminPageEvent === 'function') {
+      back4AppNavigation.atAdminPageEvent()
+    }
   }
 
   displayMessage(colorNotification, message) {
@@ -85,19 +86,19 @@ class B4aAdminPage extends DashboardView {
     const { host } = this.state
 
     // Create admin host
-    await this.context.currentApp.addAdminHost(host + this.adminDomain)
+    await this.context.addAdminHost(host + this.adminDomain)
     return this.protocol + host + this.adminDomain
   }
 
   async createAdmin() {
     const { username, password } = this.state
-    await this.context.currentApp.addAdminUser({ username, password })
+    await this.context.addAdminUser({ username, password })
 
     await this.setState({ isRoleCreated: true })
   }
 
   async createTextIndexes() {
-    await this.context.currentApp.createTextIndexes()
+    await this.context.createTextIndexes()
   }
 
   async renderModal() {
