@@ -5,39 +5,30 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import AccountManager                    from 'lib/AccountManager';
-import DashboardView                     from 'dashboard/DashboardView.react';
-import FlowView                          from 'components/FlowView/FlowView.react';
-import React                             from 'react';
-import renderFlowFooterChanges           from 'lib/renderFlowFooterChanges';
-import setDifference                     from 'lib/setDifference';
-import styles                            from 'dashboard/Settings/Settings.scss';
-import Toolbar                           from 'components/Toolbar/Toolbar.react';
-import { ManageAppFields }               from 'dashboard/Settings/Fields/ManageAppFields.react';
-import { CollaboratorsFields }           from 'dashboard/Settings/Fields/CollaboratorsFields.react';
-import { AppInformationFields }          from 'dashboard/Settings/Fields/AppInformationFields.react';
-import { DangerzoneFields }              from 'dashboard/Settings/Fields/DangerzoneFields.react';
-import { RestartAppModal }               from 'dashboard/Settings/Modals/restartAppModal.react';
-import { PurgeFilesModal }               from 'dashboard/Settings/Modals/purgeFilesModal.react';
-import { PurgeSystemLogModal }           from 'dashboard/Settings/Modals/purgeSystemLogModal.react';
-import { TransferAppModal }              from 'dashboard/Settings/Modals/transferAppModal.react';
-import { CloneAppModal }                 from 'dashboard/Settings/Modals/cloneAppModal.react';
-import { DeleteAppModal }                from 'dashboard/Settings/Modals/deleteAppModal.react';
+import AccountManager from 'lib/AccountManager';
+import DashboardView from 'dashboard/DashboardView.react';
+import FlowView from 'components/FlowView/FlowView.react';
+import React from 'react';
+import renderFlowFooterChanges from 'lib/renderFlowFooterChanges';
+import setDifference from 'lib/setDifference';
+import styles from 'dashboard/Settings/Settings.scss';
+import Toolbar from 'components/Toolbar/Toolbar.react';
+import { ManageAppFields } from 'dashboard/Settings/Fields/ManageAppFields.react';
+import { CollaboratorsFields } from 'dashboard/Settings/Fields/CollaboratorsFields.react';
+import { AppInformationFields } from 'dashboard/Settings/Fields/AppInformationFields.react';
+import { DangerzoneFields } from 'dashboard/Settings/Fields/DangerzoneFields.react';
+import { RestartAppModal } from 'dashboard/Settings/Modals/restartAppModal.react';
+import { PurgeFilesModal } from 'dashboard/Settings/Modals/purgeFilesModal.react';
+import { PurgeSystemLogModal } from 'dashboard/Settings/Modals/purgeSystemLogModal.react';
+import { TransferAppModal } from 'dashboard/Settings/Modals/transferAppModal.react';
+import { CloneAppModal } from 'dashboard/Settings/Modals/cloneAppModal.react';
+import { DeleteAppModal } from 'dashboard/Settings/Modals/deleteAppModal.react';
+import { generalFieldsOptions, compareCollaborators, verifyEditedCollaborators, getPromiseList, renderModal } from './Util';
+import GeneralSettingsValidataions from 'dashboard/Settings/GeneralSettingsValidataions';
+import { CurrentApp } from 'context/currentApp';
 
-import {
-  generalFieldsOptions,
-  compareCollaborators,
-  verifyEditedCollaborators,
-  getPromiseList,
-  renderModal
-}                                        from './Util';
-
-import GeneralSettingsValidataions       from 'dashboard/Settings/GeneralSettingsValidataions';
-import deepmerge                         from 'deepmerge';
-import {
-  defaultParseOptions
-}                                        from 'dashboard/Settings/Fields/Constants';
 export default class GeneralSettings extends DashboardView {
+  static contextType = CurrentApp;
   constructor() {
     super();
     this.section = 'App Settings';
@@ -59,11 +50,11 @@ export default class GeneralSettings extends DashboardView {
   }
 
   getInitialFields() {
-    let iosUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'ios');
-    let anrdoidUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'android');
-    let windowsUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'win');
-    let webUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'web');
-    let otherURL = this.props.initialFields.urls.find(({ platform }) => platform === 'other');
+    const iosUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'ios');
+    const anrdoidUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'android');
+    const windowsUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'win');
+    const webUrl = this.props.initialFields.urls.find(({ platform }) => platform === 'web');
+    const otherURL = this.props.initialFields.urls.find(({ platform }) => platform === 'other');
 
     return {
       requestLimit: this.props.initialFields.pricing_plan.request_limit,
@@ -89,11 +80,11 @@ export default class GeneralSettings extends DashboardView {
   }
 
   setCollaborators (initialFields, setField, _, allCollabs) {
-    let addedCollaborators = setDifference(allCollabs, initialFields.collaborators, compareCollaborators);
-    let removedCollaborators = setDifference(initialFields.collaborators, allCollabs, compareCollaborators);
+    const addedCollaborators = setDifference(allCollabs, initialFields.collaborators, compareCollaborators);
+    const removedCollaborators = setDifference(initialFields.collaborators, allCollabs, compareCollaborators);
     if (addedCollaborators.length === 0 && removedCollaborators.length === 0) {
       //If there isn't a added or removed collaborator verify if there is a edited one.
-      let editedCollaborators = verifyEditedCollaborators(allCollabs);
+      const editedCollaborators = verifyEditedCollaborators(allCollabs);
       if (editedCollaborators.length === 0) {
         //This is neccessary because the footer computes whether or not show a change by reference equality.
         allCollabs = initialFields.collaborators;
@@ -112,7 +103,7 @@ export default class GeneralSettings extends DashboardView {
       return <Toolbar section='Settings' subsection='General' />
     }
 
-    let initialFields = this.getInitialFields();
+    const initialFields = this.getInitialFields();
 
     return <div>
       <FlowView
@@ -121,7 +112,7 @@ export default class GeneralSettings extends DashboardView {
         onSubmit={async ({ changes }) => {
           return getPromiseList({ changes, setDifference, initialFields, app: this.context.currentApp, promiseCallback: this.promiseCallback.bind(this) })
         }}
-        footerContents={({changes}) => renderFlowFooterChanges(changes, initialFields, generalFieldsOptions )}
+        footerContents={({changes}) => renderFlowFooterChanges(changes, initialFields, generalFieldsOptions)}
         renderModals={[
           renderModal(this.state.showRestartAppModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, RestartAppModal),
           renderModal(this.state.showPurgeFilesModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, PurgeFilesModal),
@@ -174,7 +165,7 @@ export default class GeneralSettings extends DashboardView {
               cleanUpFilesMessage={this.state.cleanupFilesMessage}
               cleanUpMessageColor={this.state.cleanupNoteColor}
               cleanUpSystemLog={() => this.setState({showPurgeSystemLogModal: true})}
-              cleanUpSystemLogMessage={this.state.cleanupSystemLogMessage} 
+              cleanUpSystemLogMessage={this.state.cleanupSystemLogMessage}
               isGDPR={this.context.currentApp.custom && this.context.currentApp.custom.isGDPR}/>
             <DangerzoneFields
               errors={errors}
