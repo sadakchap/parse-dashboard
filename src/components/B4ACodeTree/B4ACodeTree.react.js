@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import Resizable from 're-resizable';
+import { Resizable } from 're-resizable';
 import ReactFileReader from 'react-file-reader';
 import styles from 'components/B4ACodeTree/B4ACodeTree.scss'
 import Button from 'components/Button/Button.react';
