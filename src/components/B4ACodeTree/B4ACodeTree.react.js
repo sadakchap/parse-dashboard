@@ -1,26 +1,26 @@
-import React                        from 'react';
-import $                            from 'jquery';
-import Resizable                    from 're-resizable';
-import ReactFileReader              from 'react-file-reader';
-import styles                       from 'components/B4ACodeTree/B4ACodeTree.scss'
-import Button                       from 'components/Button/Button.react';
-import B4ACloudCodeView             from 'components/B4ACloudCodeView/B4ACloudCodeView.react';
-import B4ATreeActions               from 'components/B4ACodeTree/B4ATreeActions';
-import Swal                         from 'sweetalert2';
-import B4AAlert                     from 'components/B4AAlert/B4AAlert.react';
-import addFileIcon                  from './icons/add-file.png';
-import uploadFileIcon               from './icons/file-upload-outline.png';
-import removeFileIcon               from './icons/trash-can-outline.png';
-import CloudCodeChanges             from 'lib/CloudCodeChanges';
-import PropTypes                    from 'lib/PropTypes';
+import React from 'react';
+import $ from 'jquery';
+import Resizable from 're-resizable';
+import ReactFileReader from 'react-file-reader';
+import styles from 'components/B4ACodeTree/B4ACodeTree.scss'
+import Button from 'components/Button/Button.react';
+import B4ACloudCodeView from 'components/B4ACloudCodeView/B4ACloudCodeView.react';
+import B4ATreeActions from 'components/B4ACodeTree/B4ATreeActions';
+import Swal from 'sweetalert2';
+import B4AAlert from 'components/B4AAlert/B4AAlert.react';
+import addFileIcon from './icons/add-file.png';
+import uploadFileIcon from './icons/file-upload-outline.png';
+import removeFileIcon from './icons/trash-can-outline.png';
+import CloudCodeChanges from 'lib/CloudCodeChanges';
+import PropTypes from 'lib/PropTypes';
 
 import 'jstree/dist/themes/default/style.css'
 import 'components/B4ACodeTree/B4AJsTree.css'
 
 const getCloudFolderPlaceholder = () =>
-  "The Cloud Folder can be used to deploy cloud functions, triggers, and custom Express.js routes.";
+  'The Cloud Folder can be used to deploy cloud functions, triggers, and custom Express.js routes.';
 
-const publicFolderPlaceholder = "Public folder can be used to deploy public static content as html, images, css, etc.\n"
+const publicFolderPlaceholder = 'Public folder can be used to deploy public static content as html, images, css, etc.\n'
 
 let cloudFolderPlaceholder
 
@@ -57,9 +57,9 @@ export default class B4ACodeTree extends React.Component {
 
   handleFiles(files) {
     // handle empty files
-    let fileObj = files.fileList['0'];
+    const fileObj = files.fileList['0'];
     if (fileObj && fileObj.size === 0) {
-      let fileType = fileObj.type || 'plain/text';
+      const fileType = fileObj.type || 'plain/text';
       files.base64[0] = `data:${fileType};base64,`;
     }
     this.setState({ newFile: files })
@@ -68,11 +68,11 @@ export default class B4ACodeTree extends React.Component {
 
   // load file and add on tree
   async loadFile() {
-    let file = this.state.newFile;
+    const file = this.state.newFile;
     if (file) {
-      let currentTree = '#';
+      const currentTree = '#';
       const { overwrite, newNodeId } = await B4ATreeActions.addFilesOnTree(file, currentTree, this.state.selectedFolder);
-      if ( overwrite === true ) {
+      if (overwrite === true) {
         this.setState({ newFile: '', filesOnTree: file });
         this.handleTreeChanges()
       }
@@ -105,15 +105,15 @@ export default class B4ACodeTree extends React.Component {
       if (selected.data && selected.data.code && selected.type != 'folder') {
         // index of file on tree.
         const fileList = this.state.filesOnTree?.fileList ? Array.from(this.state.filesOnTree?.fileList) : [];
-        fileList?.map( (file ) => {
-          if ( file.name === selected.text ) {
+        fileList?.map((file) => {
+          if (file.name === selected.text) {
             selectedFile = file;
           }
         });
         const fr = new FileReader();
         isImage = this.getFileType(selected.data.code)
-        if ( isImage === false ) {
-          if ( selectedFile instanceof Blob ) {
+        if (isImage === false) {
+          if (selectedFile instanceof Blob) {
             fr.onload = () => {
               source = fr.result;
               selectedFile = selected.text;
@@ -171,14 +171,14 @@ export default class B4ACodeTree extends React.Component {
 
     $('#tree').jstree('get_selected', true).pop().data.code = ecodedValue;
     $('#tree').jstree().redraw(true);
-    
+
     // set updated files.
     this.cloudCodeChanges.addFile($('#tree').jstree('get_selected', true).pop().text);
     this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
   }
 
   selectCloudFolder() {
-    if ( $('#tree').jstree().get_json().length > 0 ) {
+    if ($('#tree').jstree().get_json().length > 0) {
       const cloudFolder = $('#tree').jstree().get_json()[0].id;
       $('#tree').jstree('select_node', cloudFolder);
     }
@@ -187,7 +187,7 @@ export default class B4ACodeTree extends React.Component {
   updateCodeOnNewFile(type, text){
     if (type === 'delete-file') {
       this.cloudCodeChanges.removeFile(text);
-      if ( $('#tree').jstree().get_json().length > 0 ) {
+      if ($('#tree').jstree().get_json().length > 0) {
         const cloudFolder = $('#tree').jstree().get_json()[0].id;
         $('#tree').jstree('select_node', cloudFolder);
       }
@@ -197,7 +197,7 @@ export default class B4ACodeTree extends React.Component {
       text && this.cloudCodeChanges.addFile(text);
     } else {
       // set updated files.
-      let selectedFiles = $('#tree').jstree('get_selected', true)
+      const selectedFiles = $('#tree').jstree('get_selected', true)
       if (selectedFiles.length) {
         this.cloudCodeChanges.addFile(selectedFiles.pop().text);
       }
@@ -211,7 +211,7 @@ export default class B4ACodeTree extends React.Component {
   }
 
   componentDidMount() {
-    let config = B4ATreeActions.getConfig(this.state.files);
+    const config = B4ATreeActions.getConfig(this.state.files);
     $('#tree').jstree(config);
     this.watchSelectedNode();
     $('#tree').on('create_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type, parent?.node?.text));
@@ -219,7 +219,7 @@ export default class B4ACodeTree extends React.Component {
   }
 
   componentDidUpdate() {
-    if ( $('#tree').jstree().get_selected().length <= 0 ) {
+    if ($('#tree').jstree().get_selected().length <= 0) {
       this.selectCloudFolder();
     }
   }
@@ -229,39 +229,39 @@ export default class B4ACodeTree extends React.Component {
     if (this.state.isImage) {
       content = <img style={{ width: '100%', height: '100%', objectFit: 'scale-down' }} src={this.state.source} />;
     }
-    else if ( this.state.isFolderSelected === true ) {
+    else if (this.state.isFolderSelected === true) {
       content = this.state.source && this.state.source !== '' ? <B4AAlert
-                  hideClose
-                  show={true}
-                  title={typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}
-                  description={this.state.source} /> : <div></div>;
+        hideClose
+        show={true}
+        title={typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}
+        description={this.state.source} /> : <div></div>;
     }
     else if (this.state.selectedFile) {
       content = <div className={`${styles['files-box']}`}>
-            <div className={styles['files-header']} >
-              <p>{ typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
-              <Button
-                additionalStyles={{ minWidth: '70px', background: 'transparent', border: 'none' }}
-                value={
-                  <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <img src={removeFileIcon} height='24px' width='24px' />
-                    <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>Remove File</span>
-                  </div>
-                }
-                primary={true}
-                color={'red'}
-                width='93'
-                disabled={!this.state.nodeId}
-                onClick={this.deleteFile.bind(this)}
-              />
-            </div>
-            <B4ACloudCodeView
-                isFolderSelected={this.state.isFolderSelected}
-                onCodeChange={value => this.updateSelectedFileContent(value)}
-                source={this.state.source}
-                extension={this.state.extension}
-                fileName={this.state.selectedFile} />
-          </div>;
+        <div className={styles['files-header']} >
+          <p>{ typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
+          <Button
+            additionalStyles={{ minWidth: '70px', background: 'transparent', border: 'none' }}
+            value={
+              <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <img src={removeFileIcon} height='24px' width='24px' />
+                <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>Remove File</span>
+              </div>
+            }
+            primary={true}
+            color={'red'}
+            width='93'
+            disabled={!this.state.nodeId}
+            onClick={this.deleteFile.bind(this)}
+          />
+        </div>
+        <B4ACloudCodeView
+          isFolderSelected={this.state.isFolderSelected}
+          onCodeChange={value => this.updateSelectedFileContent(value)}
+          source={this.state.source}
+          extension={this.state.extension}
+          fileName={this.state.selectedFile} />
+      </div>;
     } else {
       content = (
         <B4AAlert show={true} hideClose description="Select a file to edit" />
@@ -290,41 +290,41 @@ export default class B4ACodeTree extends React.Component {
                   additionalStyles={{ minWidth: '60px', background: 'transparent', border: 'none' }}
                 />
               </ReactFileReader>
-                <Button
-                  onClick={() => {
-                    if ( this.state.selectedFile === '' ) {
-                      this.selectCloudFolder();
+              <Button
+                onClick={() => {
+                  if (this.state.selectedFile === '') {
+                    this.selectCloudFolder();
+                  }
+                  Swal.fire({
+                    title: 'Create a new empty file',
+                    text: 'Name your file',
+                    input: 'text',
+                    inputAttributes: {
+                      autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Create file',
+                    allowOutsideClick: () => !Swal.isLoading()
+                  }).then(({value}) => {
+                    if (value) {
+                      value = B4ATreeActions.sanitizeHTML(value);
+                      const parent = B4ATreeActions.getSelectedParent();
+                      const newNodeId = B4ATreeActions.addFileOnSelectedNode(value, parent[0]);
+                      B4ATreeActions.selectFileOnTree(newNodeId); // select new file
+                      this.setState({ files: $('#tree').jstree(true).get_json() });
                     }
-                    Swal.fire({
-                      title: 'Create a new empty file',
-                      text: 'Name your file',
-                      input: 'text',
-                      inputAttributes: {
-                        autocapitalize: 'off'
-                      },
-                      showCancelButton: true,
-                      confirmButtonText: 'Create file',
-                      allowOutsideClick: () => !Swal.isLoading()
-                    }).then(({value}) => {
-                      if (value) {
-                        value = B4ATreeActions.sanitizeHTML(value);
-                        const parent = B4ATreeActions.getSelectedParent();
-                        let newNodeId = B4ATreeActions.addFileOnSelectedNode(value, parent[0]);
-                        B4ATreeActions.selectFileOnTree(newNodeId); // select new file
-                        this.setState({ files: $('#tree').jstree(true).get_json() });
-                      }
-                    })
-                  }}
-                  disabled={false}
-                  value={
-                    <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <img src={addFileIcon} height='24px' width='24px' />
-                      <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>New File</span>
-                    </div>}
-                  primary={true}
-                  width='20'
-                  additionalStyles={{ minWidth: '40px', background: 'transparent', border: 'none' }}
-                />
+                  })
+                }}
+                disabled={false}
+                value={
+                  <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <img src={addFileIcon} height='24px' width='24px' />
+                    <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>New File</span>
+                  </div>}
+                primary={true}
+                width='20'
+                additionalStyles={{ minWidth: '40px', background: 'transparent', border: 'none' }}
+              />
             </div>
             <Resizable className={styles['files-tree']}
               defaultSize={{ height: '100%', overflow: 'srcoll', width: '100%' }}
