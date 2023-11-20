@@ -25,12 +25,10 @@ import { CloneAppModal } from 'dashboard/Settings/Modals/cloneAppModal.react';
 import { DeleteAppModal } from 'dashboard/Settings/Modals/deleteAppModal.react';
 import { generalFieldsOptions, compareCollaborators, verifyEditedCollaborators, getPromiseList, renderModal } from './Util';
 import GeneralSettingsValidataions from 'dashboard/Settings/GeneralSettingsValidataions';
-import { CurrentApp } from 'context/currentApp';
 import { withRouter } from 'lib/withRouter';
 
 @withRouter
 export default class GeneralSettings extends DashboardView {
-  static contextType = CurrentApp;
   constructor() {
     super();
     this.section = 'App Settings';
