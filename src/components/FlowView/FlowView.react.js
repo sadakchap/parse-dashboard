@@ -153,7 +153,6 @@ export default class FlowView extends React.Component {
       defaultFooterMessage,
       renderForm,
       validate = () => '',
-      afterSave = () => {},
       secondaryButton = () => (
         <Button
           disabled={this.state.saveState === SaveButton.States.SAVING}
@@ -218,7 +217,7 @@ export default class FlowView extends React.Component {
     ) : null;
 
     return (
-      <div>
+      <div className={styles.flowViewWrapper}>
         {form}
         {footer}
       </div>
