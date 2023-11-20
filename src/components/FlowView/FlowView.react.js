@@ -57,7 +57,7 @@ export default class FlowView extends React.Component {
     if (this.state.saveState !== SaveButton.States.SAVING) {
       const newChanges = { ...this.state.changes };
       newChanges[key] = value;
-      if ( newChanges[key] === this.props.initialFields[key] ) {
+      if (newChanges[key] === this.props.initialFields[key]) {
         delete newChanges[key];
       }
       //Modify stored state in case component recieves new props,
@@ -69,7 +69,7 @@ export default class FlowView extends React.Component {
         changes: newChanges,
         errors: []
       });
-      
+
       if(key === 'collaborators'){
         this.handleClickSaveButton();
         this.setState({
@@ -77,7 +77,7 @@ export default class FlowView extends React.Component {
           errors: [],
           footerMessage: this.props.footerContents({ changes: this.state.changes, fields: this.state.fields })
         });
-      } 
+      }
       Promise.resolve(this.props.validate(newChanges))
         .catch(({ errors }) => {
           this.setState({
@@ -85,14 +85,14 @@ export default class FlowView extends React.Component {
             errors
           });
         });
-      
+
     }
   }
 
   setFieldJson(key, value, preserveSavingState = false) {
     if (this.state.saveState !== SaveButton.States.SAVING) {
       const newChanges = { ...this.state.changes };
-      if ( !newChanges[key] ) {
+      if (!newChanges[key]) {
         newChanges[key] = {};
       }
       newChanges[key] = deepmerge(newChanges[key], value);
@@ -114,12 +114,12 @@ export default class FlowView extends React.Component {
             errors
           });
         })
-      
+
     }
   }
 
   resetFields() {
-    if ( this.state.saveState !== SaveButton.States.SAVING ) {
+    if (this.state.saveState !== SaveButton.States.SAVING) {
       this.setState({
         saveState: SaveButton.States.WAITING,
         saveError: '',
@@ -131,7 +131,7 @@ export default class FlowView extends React.Component {
   }
 
   handleClickSaveButton() {
-    let fields = this.currentFields();
+    const fields = this.currentFields();
     this.setState({ saveState: SaveButton.States.SAVING });
     this.props.onSubmit({ changes: this.state.changes, fields, setField: this.setField, resetFields: this.resetFields }).then(() => {
       this.setState({ saveState: SaveButton.States.SUCCEEDED });
@@ -153,7 +153,6 @@ export default class FlowView extends React.Component {
       defaultFooterMessage,
       renderForm,
       validate = () => '',
-      onSubmit,
       afterSave = () => {},
       secondaryButton = () => (
         <Button
@@ -166,8 +165,9 @@ export default class FlowView extends React.Component {
     const { changes, saveState, saveError } = this.state;
     const setField = this.setField.bind(this);
     const resetFields = this.resetFields.bind(this);
+    const setFieldJson = this.setFieldJson.bind(this);
     const fields = this.currentFields();
-    const form = renderForm({ fields, changes, setField, resetFields });
+    const form = renderForm({ fields, changes, setField, resetFields, setFieldJson, errors: this.state.errors });
 
     const invalidFormMessage = validate({ changes, fields });
     const hasFormValidationError =
@@ -191,9 +191,9 @@ export default class FlowView extends React.Component {
     } else if (shouldShowFooter) {
       shouldShowFooter = Object.keys(changes).length > 0;
       footerMessage = shouldShowFooter ? footerContents({ changes, fields }) : '';
-    } 
+    }
 
-    if ( (!footerMessage || footerMessage == '') && this.state.footerMessage ) {
+    if ((!footerMessage || footerMessage == '') && this.state.footerMessage) {
       footerMessage = this.state.footerMessage
     }
 
