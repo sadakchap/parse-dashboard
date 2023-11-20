@@ -25,7 +25,7 @@ export default class DashboardSettings extends DashboardView {
   constructor() {
     super();
     this.section = 'App Settings';
-    this.subsection = 'Dashboard Configuration';
+    this.subsection = 'Dashboard';
 
     this.state = {
       createUserInput: false,
