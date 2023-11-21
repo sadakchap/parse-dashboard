@@ -497,7 +497,7 @@ export default class BrowserTable extends React.Component {
       }
     }
     return (
-      <div className={styles.browser}>
+      <div className={styles.browser} id="browser">
         {table}
         <DataBrowserHeaderBar
           selected={

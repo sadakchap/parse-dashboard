@@ -416,7 +416,7 @@ class Browser extends DashboardView {
     return {
       steps,
       onBeforeStart: () => {
-        document.querySelector('[class^="section_contents"] > div > div').style.backgroundColor = '#0e69a0';
+        document.querySelector('#section_contents > div > div').style.backgroundColor = '#0e69a0';
         // document.querySelector('[class^="section_header"][href*="/apidocs"]').style.backgroundColor = "#0c5582";
         if (className !== '_User' && className.indexOf('_') !== -1) {
           history.push(context.generatePath('browser/_User'));

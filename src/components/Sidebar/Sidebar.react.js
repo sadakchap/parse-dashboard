@@ -286,7 +286,7 @@ const Sidebar = ({
     )
   }
 
-  return <div className={sidebarClasses.join(' ')} onMouseLeave={onMouseLeave}>
+  return <div className={sidebarClasses.join(' ')} onMouseLeave={onMouseLeave} id="sidebar">
     {sidebarContent}
     <div className={styles.help}></div>
     <div className={styles.footer}>{footerButtons}</div>

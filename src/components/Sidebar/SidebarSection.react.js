@@ -34,7 +34,7 @@ const SidebarSection = ({ active, children, name, link, icon, style, primaryBack
   return (
     <div className={classes.join(' ')} title={isCollapsed && name}>
       {sectionContent}
-      {!isCollapsed && children && <div className={styles.section_contents} style={{ background: secondaryBackgroundColor}}>{children}</div>}
+      {!isCollapsed && children && <div className={styles.section_contents} id="section_contents" style={{ background: secondaryBackgroundColor}}>{children}</div>}
     </div>
   );
 };
