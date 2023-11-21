@@ -455,16 +455,16 @@ a.subitem {
     content: '';
     position: absolute;
     bottom: -6px;
-    right: 94px;
+    right: 10px;
   }
 
   a {
     @include NotoSansFont;
     display: block;
-    height: 40px;
-    line-height: 41px;
+    height: 30px;
+    line-height: 30px;
     font-size: 13px;
-    text-align: center;
+    text-align: right;
     border-bottom: 1px solid #e0e0ea;
     border-radius: 5px;
     color: $mainTextColor;
