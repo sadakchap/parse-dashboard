@@ -24,8 +24,8 @@ import QRCode from 'qrcode';
 export default class DashboardSettings extends DashboardView {
   constructor() {
     super();
-    this.section = 'App Settings';
-    this.subsection = 'Dashboard';
+    this.section = 'More';
+    this.subsection = 'Dashboard Settings';
 
     this.state = {
       createUserInput: false,

@@ -321,7 +321,7 @@ export default class Dashboard extends React.Component {
         <Route path='users' element={<UsersSettings />} />
         <Route path='push' element={<PushSettings />} />
         <Route path='hosting' element={<HostingSettings />} />
-        <Route index element={<Navigate replace to='dashboard' />} />
+        <Route index element={<Navigate replace to='general' />} />
       </Route>
     );
 
