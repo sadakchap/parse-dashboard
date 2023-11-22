@@ -156,6 +156,7 @@ const FilterRow = ({
         }}
         strict={true}
         value={currentField}
+        placeholder={currentField}
         suggestions={fields}
         onChange={onChangeField}
         buildSuggestions={buildSuggestions}

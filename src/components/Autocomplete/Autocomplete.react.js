@@ -54,6 +54,7 @@ export default class Autocomplete extends Component {
       userInput: props.strict ? props.value ?? props.suggestions[0] : '',
       label: props.label,
       position: null,
+      isDirtyInput: false,
     };
   }
 
@@ -118,6 +119,7 @@ export default class Autocomplete extends Component {
       userInput,
       label,
       error: undefined,
+      isDirtyInput: true,
     });
 
     if (!this.props.strict) {
@@ -322,6 +324,7 @@ export default class Autocomplete extends Component {
         hidden,
         active,
         label,
+        isDirtyInput
       },
     } = this;
 
@@ -362,7 +365,7 @@ export default class Autocomplete extends Component {
             placeholder={placeholder}
             ref={this.inputRef}
             style={inputStyle}
-            value={userInput}
+            value={isDirtyInput ? userInput : ''}
             onClick={onInputClick}
             onBlur={onBlur}
             onChange={onChange}
