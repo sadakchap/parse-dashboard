@@ -16,7 +16,7 @@ export default class SidebarAction {
 
   renderButton() {
     return (
-      <a className={styles.action} onClick={this.fn || function () {}}>
+      <a className={styles.action + ' action'} onClick={this.fn || function () {}}>
         {this.text}
       </a>
     );

@@ -345,13 +345,13 @@ class Browser extends DashboardView {
       },
       {
         eventId: 'Database Browser Section',
-        element: () => document.querySelector('[class^="section_contents"] > div > div'),
+        element: () => document.querySelector('#section_contents > div > div'),
         intro: 'This is the <b>Database Browser</b> section where you can create classes and manage your data using this Dashboard.',
         position: 'right'
       },
       {
         eventId: 'Custom Class and Object Creation',
-        element: () => document.querySelectorAll('[class^=section__]')[2],
+        element: () => document.querySelectorAll('.section')[2],
         intro: `It’s very simple to save data on Back4App from your front-end.<br /><br />
         On the <b>API Reference</b> section, you can find the auto-generated code below that creates a class and persist data on it.<br />
         ${createClassCode}
@@ -361,25 +361,25 @@ class Browser extends DashboardView {
       },
       {
         eventId: 'Custom Class Link',
-        element: () => document.querySelector('[class^=class_list] [title="B4aVehicle"]') || document.querySelector('[class^=class_list]'),
+        element: () => document.querySelector('.class_list [title="B4aVehicle"]') || document.querySelector('.class_list'),
         intro: 'This is the new <b>B4aVehicle</b> class just created!',
         position: 'right'
       },
       {
         eventId: 'Custom Class Data Table',
-        element: () => document.querySelector('[class^=browser]'),
+        element: () => document.querySelector('#browser'),
         intro: 'As you can see the <b>B4aVehicle</b> class already has its first data.',
         position: 'right'
       },
       {
         eventId: 'Create a Class Button',
-        element: () => document.querySelector('[class^="section_contents"] [class^=subitem] a[class^=action]'),
+        element: () => document.querySelector('#section_contents .subitem a.action'),
         intro: 'You can also create classes and manage your data directly through the Dashboard.',
         position: 'bottom'
       },
       {
         eventId: 'Play Intro Button',
-        element: () => document.querySelector('[class^="footer"] [class^="more"]'),
+        element: () => document.querySelector('.footer .more'),
         intro: 'You can find this tour and play it again by pressing this button and selecting <b>"Play intro"</b>.',
         position: 'right'
       }

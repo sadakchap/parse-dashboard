@@ -95,7 +95,7 @@ export default class CategoryList extends React.Component {
       return null;
     }
     return (
-      <div ref={this.listWrapperRef} className={styles.class_list}>
+      <div ref={this.listWrapperRef} className={`${styles.class_list} class_list`}>
         {this.props.categories.map(c => {
           const id = c.id || c.name;
           if (c.type === 'separator') {

@@ -16,7 +16,7 @@ const sendEvent = () => {
 }
 
 const SidebarSection = ({ active, children, name, link, icon, style, primaryBackgroundColor, secondaryBackgroundColor, isCollapsed, onClick, badge }) => {
-  const classes = [styles.section];
+  const classes = [styles.section, 'section']; // Adding 'section' for the Tour to be able to select
   if (active) {
     classes.push(styles.active);
   }
