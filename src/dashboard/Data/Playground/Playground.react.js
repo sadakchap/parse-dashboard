@@ -11,7 +11,7 @@ import { CurrentApp } from 'context/currentApp';
 
 import styles from './Playground.scss';
 
-const placeholderCode = "const myObj = new Parse.Object('MyClass');\nmyObj.set('myField', 'Hello World!');\nawait myObj.save();\nconsole.log(myObj);";
+const placeholderCode = 'const myObj = new Parse.Object(\'MyClass\');\nmyObj.set(\'myField\', \'Hello World!\');\nawait myObj.save();\nconsole.log(myObj);';
 export default class Playground extends Component {
   static contextType = CurrentApp;
   constructor() {
@@ -20,7 +20,6 @@ export default class Playground extends Component {
     this.subsection = 'JS Console';
     this.localKey = 'parse-dashboard-playground-code';
     this.state = {
-      code: '',
       results: [],
       running: false,
       saving: false,
@@ -89,7 +88,7 @@ export default class Playground extends Component {
         }
       })()`;
 
-      this.setState({ running: true, results: [], code: originalCode });
+      this.setState({ running: true, results: [] });
 
       await new Function('Parse', finalCode)(Parse);
     } catch (e) {
@@ -103,7 +102,7 @@ export default class Playground extends Component {
 
   saveCode() {
     try {
-      const code = this.state.code;
+      const code = this.editor.value;
       if (!code) {
         Swal.fire({
           title: 'Couldn\'t save latest changes',
@@ -139,13 +138,9 @@ export default class Playground extends Component {
   componentDidMount() {
     if (window.localStorage) {
       const initialCode = window.localStorage.getItem(this.localKey);
-      let code = '';
       if (initialCode) {
-        code = initialCode;
-      } else {
-        code = placeholderCode;
+        this.editor.value = initialCode;
       }
-      this.setState({ code });
     }
   }
 
@@ -155,12 +150,10 @@ export default class Playground extends Component {
     return React.cloneElement(
       <div className={styles['playground-ctn']}>
         <Toolbar section={this.section} subsection={this.subsection} />
-        <div style={{ height: 'calc(100vh - 96px)' }}>
+        <div style={{ height: 'calc(100vh - 156px)' }}>
           <CodeEditor
-            mode='javascript'
-            code={this.state.code}
-            height={'calc(100% - 60px)'}
-            onCodeChange={(code) => this.setState({ code })}
+            placeHolder={placeholderCode}
+            ref={editor => (this.editor = editor)}
           />
           <div className={styles['console-ctn']}>
             <header>
