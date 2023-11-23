@@ -73,10 +73,10 @@ export default class SlowQueriesFilter extends React.Component {
                   options={this.props.respStatusOptions}
                   onChange={respStatus => this.props.onChange({ respStatus })} />
                 {/*<ChromeDropdown*/}
-                  {/*color={active ? 'blue' : 'purple'}*/}
-                  {/*value={respTime || 'Res. Time'}*/}
-                  {/*options={this.props.respTimeOptions}*/}
-                  {/*onChange={respTime => this.props.onChange({ respTime })} />*/}
+                {/*color={active ? 'blue' : 'purple'}*/}
+                {/*value={respTime || 'Res. Time'}*/}
+                {/*options={this.props.respTimeOptions}*/}
+                {/*onChange={respTime => this.props.onChange({ respTime })} />*/}
               </div>
               <div className={styles.footer}>
                 <Button
