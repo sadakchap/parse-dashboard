@@ -19,6 +19,7 @@ import React from 'react';
 import styles from 'dashboard/Analytics/Performance/Performance.scss';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import baseStyles from 'stylesheets/base.scss';
+import { withRouter } from 'lib/withRouter';
 
 const PERFORMANCE_QUERIES = [
   {
@@ -63,6 +64,7 @@ const PERFORMANCE_QUERIES = [
   },
 ];
 
+@withRouter
 export default class Performance extends DashboardView {
   constructor() {
     super();
@@ -164,8 +166,8 @@ export default class Performance extends DashboardView {
   }
 
   renderSidebar() {
-    const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
+    const { pathname } = this.props.location;
+    const current = pathname.substr(pathname.lastIndexOf("/") + 1, pathname.length - 1);
     return (
       <CategoryList current={current} linkPrefix={'analytics/'} categories={[
         { name: 'Explorer', id: 'explorer' },

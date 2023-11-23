@@ -341,7 +341,8 @@ export default class Dashboard extends React.Component {
         <Route path="retention" element={<Retention />} />
         <Route path="performance" element={<Performance />} />
         <Route path="slow_queries" element={<SlowQueries />} />
-        <Route index element={<Navigate replace to="overview" />} />
+        <Route path="slow_requests" element={<SlowQueries />} />
+        <Route index element={<Navigate replace to="performance" />} />
         <Route path="explorer" element={<Navigate replace to="chart" />} />
       </Route>
     );

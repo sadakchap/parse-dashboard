@@ -80,8 +80,8 @@ const BILLING_META = [
 export default class Overview extends DashboardView {
   constructor() {
     super();
-    this.section = 'Analytics';
-    this.subsection = 'Overview';
+    this.section = 'More';
+    this.subsection = 'Analytics';
 
     this.state = {
       error: undefined,

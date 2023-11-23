@@ -37,24 +37,23 @@ const buildFriendlyName = query => {
   if (query.groups && query.groups.length > 0) {
     name.push('grouped by');
     name.push(...query.groups);
-    name.unshift('#' + currentCustomQueryIndex++)
+    name.unshift('#' + currentCustomQueryIndex++);
   }
   return name.join(' ');
 };
 
-let inverseMatrix = (matrix) => {
-  let matrixInverted = [[]];
-  matrix.forEach(
-    (innerArray, indexOut) =>
-      innerArray.forEach(
-        (valueIn, indexIn) => {
-          if(matrixInverted[indexIn] === undefined) matrixInverted[indexIn] = []  
-          matrixInverted[indexIn][indexOut] = valueIn
-        }
-      )
-  )
+const inverseMatrix = matrix => {
+  const matrixInverted = [[]];
+  matrix.forEach((innerArray, indexOut) =>
+    innerArray.forEach((valueIn, indexIn) => {
+      if (matrixInverted[indexIn] === undefined) {
+        matrixInverted[indexIn] = [];
+      }
+      matrixInverted[indexIn][indexOut] = valueIn;
+    })
+  );
   return matrixInverted;
-}
+};
 
 @subscribeTo('AnalyticsQuery', 'customQueries')
 @withRouter
@@ -83,7 +82,10 @@ class Explorer extends DashboardView {
   }
 
   componentDidMount() {
-    back4AppNavigation && back4AppNavigation.atExplorerReportEvent()
+    if (typeof back4AppNavigation !== 'undefined') {
+      // eslint-disable-next-line no-undef
+      back4AppNavigation && back4AppNavigation.atExplorerReportEvent();
+    }
     const display = this.displayRef.current;
     this.displaySize = {
       width: display.offsetWidth,
@@ -107,8 +109,11 @@ class Explorer extends DashboardView {
       if (this.props.apps !== nextProps.apps) {
         const updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.params.appId);
         const prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.params.appId);
-        const shouldUpdate = updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
-        if (!shouldUpdate) return;
+        const shouldUpdate =
+          updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
+        if (!shouldUpdate) {
+          return;
+        }
       }
       if (this.props.params.displayType !== nextProps.params.displayType) {
         this.setState({ activeQueries: [], mutated: false });
@@ -132,7 +137,7 @@ class Explorer extends DashboardView {
   handleQuerySave(query, saveOnDatabase) {
     // Push new save result
     const activeQueries = this.state.activeQueries;
-    const existingQueryIndex = activeQueries.findIndex(activeQuery => {
+    let existingQueryIndex = activeQueries.findIndex(activeQuery => {
       if (query.localId) {
         return query.localId === activeQuery.localId;
       }
@@ -142,7 +147,7 @@ class Explorer extends DashboardView {
       return false;
     });
 
-    query.isSaved = saveOnDatabase
+    query.isSaved = saveOnDatabase;
     query.enabled = true;
     if (existingQueryIndex === -1) {
       // Push new
@@ -159,11 +164,13 @@ class Explorer extends DashboardView {
 
     // save query
     if (saveOnDatabase) {
-      query.isSaved = true
-      this.props.customQueries.dispatch(ActionTypes.CREATE, {query}).then(query => {
-        if (existingQueryIndex === -1) existingQueryIndex = activeQueries.length
-        activeQueries[existingQueryIndex] = query
-      })
+      query.isSaved = true;
+      this.props.customQueries.dispatch(ActionTypes.CREATE, { query }).then(query => {
+        if (existingQueryIndex === -1) {
+          existingQueryIndex = activeQueries.length;
+        }
+        activeQueries[existingQueryIndex] = query;
+      });
     }
 
     // Update the state to trigger rendering pipeline.
@@ -196,7 +203,8 @@ class Explorer extends DashboardView {
     this.xhrHandles = [];
     this.setState({ loading: true });
     this.state.activeQueries.forEach((query, i) => {
-      back4AppNavigation && back4AppNavigation.runExplorerQueryEvent(query)
+      // eslint-disable-next-line no-undef
+      back4AppNavigation && back4AppNavigation.runExplorerQueryEvent(query);
       let promise = null;
       let xhr = null;
       if (query.preset && query.nonComposable) {
@@ -243,9 +251,10 @@ class Explorer extends DashboardView {
             }
             return {
               ...query,
-              result: serverResult.result.map((point) => (
-                [Parse._decode('date', point[0]).getTime(), point[1]]
-              ))
+              result: serverResult.result.map(point => [
+                Parse._decode('date', point[0]).getTime(),
+                point[1],
+              ]),
             };
           });
 
@@ -270,49 +279,49 @@ class Explorer extends DashboardView {
     switch (this.props.params.displayType) {
       case 'chart': {
         // Transform to [[Time, a, b], [name1, c, f], [name2, d, r]]
-        let rows = [];
+        const rows = [];
         // create time column, since time will be same for all queries
         // we can take time from first query
-        let timeArr = ['Time'];
+        const timeArr = ['Time'];
         this.state.activeQueries[0].result.forEach(val => {
           timeArr.push(new Date(val[0]).toDateString());
         });
         rows.push(timeArr);
 
-        // now the request queries 
+        // now the request queries
         this.state.activeQueries.forEach(q => {
-          let arr = [];
+          const arr = [];
           arr.push(q.name);
-          for (let val of q.result) {
+          for (const val of q.result) {
             arr.push(val[1]);
           }
           rows.push(arr);
         });
-        
+
         // now transform [[Time, a, b], [name1, c, d], [name2, e, f]]
         // to [[Time, name1, name2], [a, c, e], [b, d, f]]
         // to get vertical columns in csv file
         let csvContent = '';
-        inverseMatrix(rows).forEach(function(rowArray) {
-          let row = rowArray.join(',');
+        inverseMatrix(rows).forEach(function (rowArray) {
+          const row = rowArray.join(',');
           csvContent += row + '\r\n';
         });
 
-        // "\uFEFF"(BOM) using BOM(https://en.wikipedia.org/wiki/Byte_order_mark) to force Excel to open in utf-8 
-        // using encodeURIComponent as it encodes '#' as well, since browser usually treats everything after '#' as a fragment 
+        // "\uFEFF"(BOM) using BOM(https://en.wikipedia.org/wiki/Byte_order_mark) to force Excel to open in utf-8
+        // using encodeURIComponent as it encodes '#' as well, since browser usually treats everything after '#' as a fragment
         // which was causing to download csv file data till before '#' character
-        window.open(csvDeclaration + encodeURIComponent("\uFEFF" + csvContent)); 
+        window.open(csvDeclaration + encodeURIComponent('\uFEFF' + csvContent));
         return;
       }
       case 'table': {
-        let csvRows = this.state.activeQueries.map((query) => {
+        const csvRows = this.state.activeQueries.map(query => {
           return query.result.join('\n');
         });
         window.open(encodeURI(csvDeclaration + csvRows.join('\n\n')));
         return;
       }
       case 'json': {
-        let csvRows = this.state.activeQueries.map((query) => {
+        const csvRows = this.state.activeQueries.map(query => {
           let keys = [];
           if (query.result.length > 0) {
             keys = Object.keys(query.result[0]);
@@ -327,12 +336,12 @@ class Explorer extends DashboardView {
           // [[foo, a], [bar, b], [baz, c]]
           csvArray = csvArray.concat(query.result.map(result => keys.map(key => result[key])));
 
-          return csvArray.join("\n");
+          return csvArray.join('\n');
         });
         window.open(encodeURI(csvDeclaration + csvRows.join('\n\n')));
         return;
       }
-    }    
+    }
   }
 
   buildCustomQueryPayload(query) {
@@ -354,15 +363,15 @@ class Explorer extends DashboardView {
   }
 
   renderSidebar() {
-    let currentDisplay = this.props.params.displayType || '';
-    const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf("/") + 1, path.length - 1);
-    let subCategory = (
+    const currentDisplay = this.props.params.displayType || '';
+    const { pathname } = this.props.location;
+    const current = pathname.substr(pathname.lastIndexOf('/') + 1, pathname.length - 1);
+    const subCategory = (
       <CategoryList
         current={currentDisplay}
-        linkPrefix={"analytics/explorer/"}
+        linkPrefix={'analytics/explorer/'}
         categories={[
-          { name: "Chart", id: "chart" }
+          { name: 'Chart', id: 'chart' },
           // TODO: Enable table and json as data representation model
           //{ name: 'Table', id: 'table' },
           //{ name: 'JSON', id: 'json' }
@@ -372,16 +381,16 @@ class Explorer extends DashboardView {
     return (
       <CategoryList
         current={current}
-        linkPrefix={"analytics/"}
+        linkPrefix={'analytics/'}
         categories={[
           {
-            name: "Explorer",
-            id: "explorer",
-            currentActive: current === ":displayType",
-            subCategories: subCategory
+            name: 'Explorer',
+            id: 'explorer',
+            currentActive: current === 'chart',
+            subCategories: subCategory,
           },
-          { name: "Performance", id: "performance" },
-          { name: "Slow Requests", id: "slow_requests" }
+          { name: 'Performance', id: 'performance' },
+          { name: 'Slow Requests', id: 'slow_requests' },
         ]}
       />
     );
@@ -391,12 +400,12 @@ class Explorer extends DashboardView {
     const { displayType } = this.props.params;
     const isTimeSeries = displayType === 'chart';
     const explorerQueries = this.getCustomQueriesFromProps(this.props);
-    const savedQueries = explorerQueries.filter(
-      query => query.type === displayType && query.isSaved
-    );
-    const recentQueries = explorerQueries.filter(
-      query => query.type === displayType && !query.isSaved
-    );
+    const savedQueries = explorerQueries.filter(query => {
+      return (query.type === displayType || true) && query.isSaved;
+    });
+    // const recentQueries = explorerQueries.filter(
+    //   query => query.type === displayType && !query.isSaved
+    // );
 
     let queries = [];
     if (isTimeSeries) {
@@ -409,11 +418,11 @@ class Explorer extends DashboardView {
         children: savedQueries,
         emptyMessage: 'You have not saved any queries yet.',
       },
-      {
-        name: 'Recent Queries',
-        children: recentQueries,
-        emptyMessage: 'You have no recent custom queries yet.',
-      }
+      // {
+      //   name: 'Recent Queries',
+      //   children: recentQueries,
+      //   emptyMessage: 'You have no recent custom queries yet.',
+      // }
     );
 
     const toolbar = (
@@ -541,16 +550,22 @@ class Explorer extends DashboardView {
                 formatter={(value, label) => `${label} ${prettyNumber(value, 3)}`}
               />
             );
-          }
-          else if (!this.state.mutated)
+          } else if (!this.state.mutated) {
             currentDisplay = (
               <EmptyState
                 title={'No data to display.'}
-                icon='analytics-outline'
+                icon="analytics-outline"
                 description={'These queries didn\'t retrieve any result.'}
-                cta='Get started with Analytics Explorer'
-                action={() => window.open('https://www.back4app.com/docs/parse-dashboard/analytics/mobile-app-analytics', '_blank') } />
+                cta="Get started with Analytics Explorer"
+                action={() =>
+                  window.open(
+                    'https://www.back4app.com/docs/parse-dashboard/analytics/mobile-app-analytics',
+                    '_blank'
+                  )
+                }
+              />
             );
+          }
           break;
         case 'table':
           // Render table
