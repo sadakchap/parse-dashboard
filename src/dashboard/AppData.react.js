@@ -11,6 +11,10 @@ import AppsManager from 'lib/AppsManager';
 import { CurrentApp } from 'context/currentApp';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
+import baseStyles from 'stylesheets/base.scss';
+import EmptyState from 'components/EmptyState/EmptyState.react';
+import Loader from 'components/Loader/Loader.react';
+
 function AppData() {
   const navigate = useNavigate();
   const params = useParams();
@@ -24,6 +28,29 @@ function AppData() {
 
   if (current) {
     current.setParseKeys();
+    if (current.serverInfo.status === 'LOADING') {
+      return (
+        <div className={baseStyles.pageCenter}>
+          <Loader />
+        </div>
+      );
+    } else if (current.serverInfo.error) {
+      return (
+        <div className={baseStyles.pageCenter}>
+          <div style={{ height: '800px', position: 'relative' }}>
+            <EmptyState
+              icon={'cloud-surprise'}
+              title={'Couldn\'t load this app'}
+              description={
+                'Something went wrong while loading this app, could you please try opening another app.'
+              }
+              cta={'Go to apps'}
+              action={() => (window.location = '/apps')}
+            ></EmptyState>
+          </div>
+        </div>
+      );
+    }
   } else {
     navigate('/apps', { replace: true });
     return <div />;

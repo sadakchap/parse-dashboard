@@ -100,3 +100,11 @@ table {
 .progressText {
   color: $blue;
 }
+
+.pageCenter {
+  width: 100%;
+  height: $content-max-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
