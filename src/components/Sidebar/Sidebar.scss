@@ -30,7 +30,7 @@
       align-items: center;
       background-color: #094162;
       cursor: pointer;
-      padding: 18px;
+      // padding: 18px;
 
       &:hover {
         background-color: #1184ca;
@@ -231,6 +231,19 @@
   height: 30px;
   width: 30px;
   padding: 6px;
+  fill: lightgrey;
+
+  &:hover {
+    fill: white;
+  }
+
+  &.fixed {
+    fill: white;
+  }
+
+  &.inverseIcon {
+    transform: rotate(180deg);
+  }
 }
 
 .appsMenu {
@@ -498,13 +511,8 @@ a.subitem {
 
   svg {
     cursor: pointer;
-    height: 40px;
-    width: 40px;
-    padding: 10px 10px 10px 10px;
-    fill: #132B39;
-
-    &:hover {
-      fill: white;
-    }
+    height: 30px;
+    width: 30px;
+    fill: white;
   }
 }

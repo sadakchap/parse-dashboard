@@ -228,7 +228,7 @@ const Sidebar = ({
       setFixed(prev => !prev);
     };
   }
-  // const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={18} height={18} onClick={onPinClick} />;
+  const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={20} height={20} onClick={onPinClick} />;
 
   let sidebarContent;
   if (appsMenuOpen) {
@@ -248,6 +248,7 @@ const Sidebar = ({
             <AppName
               name={currentApp.name}
               onClick={() => setAppsMenuOpen(true)}
+              pin={pin}
               onPinClick={onPinClick}
             />
           </div>
