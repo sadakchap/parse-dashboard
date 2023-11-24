@@ -5,18 +5,19 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import B4AAlert        from 'components/B4AAlert/B4AAlert.react';
-import CategoryList    from 'components/CategoryList/CategoryList.react';
-import DashboardView   from 'dashboard/DashboardView.react';
-import EmptyState      from 'components/EmptyState/EmptyState.react';
-import React           from 'react';
-import ReleaseInfo     from 'components/ReleaseInfo/ReleaseInfo';
-import Toolbar         from 'components/Toolbar/Toolbar.react';
+import B4AAlert from 'components/B4AAlert/B4AAlert.react';
+import CategoryList from 'components/CategoryList/CategoryList.react';
+import DashboardView from 'dashboard/DashboardView.react';
+import EmptyState from 'components/EmptyState/EmptyState.react';
+import React from 'react';
+import ReleaseInfo from 'components/ReleaseInfo/ReleaseInfo';
+import Toolbar from 'components/Toolbar/Toolbar.react';
 import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
-import Icon            from 'components/Icon/Icon.react';
+import Icon from 'components/Icon/Icon.react';
 import ServerLogsView  from 'components/ServerLogsView/ServerLogsView.react';
+import { withRouter } from 'lib/withRouter';
 
-import styles          from 'dashboard/Data/Logs/Logs.scss';
+import styles from 'dashboard/Data/Logs/Logs.scss';
 
 const alertWhatIsMessage = (
   <div>
@@ -34,6 +35,8 @@ const alertWhatIsMessage = (
     </p>
   </div>
 );
+
+@withRouter
 export default class AccessLogs extends DashboardView {
   constructor() {
     super();
@@ -105,8 +108,8 @@ export default class AccessLogs extends DashboardView {
   */
 
   renderSidebar() {
-    const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf('/') + 1, path.length - 1);
+    const { pathname } = this.props.location;
+    const current = pathname.substr(pathname.lastIndexOf('/') + 1, pathname.length - 1);
     return (
       <CategoryList current={current} linkPrefix={'logs/'} categories={[
         { name: 'System', id: 'system' },
