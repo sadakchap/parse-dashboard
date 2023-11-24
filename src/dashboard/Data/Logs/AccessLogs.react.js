@@ -52,8 +52,8 @@ export default class AccessLogs extends DashboardView {
   }
 
   componentDidMount() {
-    this.fetchLogs(this.context.currentApp);
-    // this.fetchRelease(this.context.currentApp);
+    this.fetchLogs(this.context);
+    // this.fetchRelease(this.context);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -66,7 +66,7 @@ export default class AccessLogs extends DashboardView {
         const shouldUpdate = updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
         if (!shouldUpdate) {return;}
       }
-      this.fetchLogs(nextContext.currentApp);
+      this.fetchLogs(nextContext);
       // this.fetchRelease(nextContext.currentApp);
     }
   }
@@ -89,7 +89,7 @@ export default class AccessLogs extends DashboardView {
 
   refreshLogs(e) {
     e.preventDefault();
-    this.fetchLogs(this.context.currentApp);
+    this.fetchLogs(this.context);
   }
 
   // As parse-server doesn't support (yet?) versioning, we are disabling
