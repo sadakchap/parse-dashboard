@@ -351,7 +351,7 @@ export default class Dashboard extends React.Component {
       <Route>
         <Route path="info" element={<InfoLogs />} />
         <Route path="error" element={<ErrorLogs />} />
-        <Route index element={<Navigate replace to="/apps/:appId/logs/system" />} />
+        <Route index element={<Navigate replace to="system" />} />
         <Route path="system" element={<SystemLogs />} />
         <Route path="access" element={<AccessLogs /> } />
       </Route>
