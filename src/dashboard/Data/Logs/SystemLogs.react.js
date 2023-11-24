@@ -15,6 +15,7 @@ import Toolbar from 'components/Toolbar/Toolbar.react';
 import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
 import Icon from 'components/Icon/Icon.react';
 import ServerLogsView from 'components/ServerLogsView/ServerLogsView.react';
+import { withRouter } from 'lib/withRouter';
 
 import styles from 'dashboard/Data/Logs/Logs.scss';
 
@@ -36,6 +37,8 @@ const alertWhatIsMessage = (
     </p>
   </div>
 );
+
+@withRouter
 export default class SystemLogs extends DashboardView {
   constructor() {
     super();
@@ -54,8 +57,8 @@ export default class SystemLogs extends DashboardView {
   }
 
   componentDidMount() {
-    this.fetchLogs(this.context.currentApp);
-    // this.fetchRelease(this.context.currentApp);
+    this.fetchLogs(this.context);
+    // this.fetchRelease(this.context);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -68,7 +71,7 @@ export default class SystemLogs extends DashboardView {
         const shouldUpdate = updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
         if (!shouldUpdate) {return;}
       }
-      this.fetchLogs(nextContext.currentApp);
+      this.fetchLogs(nextContext);
       // this.fetchRelease(nextContext.currentApp);
     }
   }
@@ -91,7 +94,7 @@ export default class SystemLogs extends DashboardView {
 
   refreshLogs(e) {
     e.preventDefault();
-    this.fetchLogs(this.context.currentApp);
+    this.fetchLogs(this.context);
   }
 
   // As parse-server doesn't support (yet?) versioning, we are disabling
@@ -107,8 +110,8 @@ export default class SystemLogs extends DashboardView {
   */
 
   renderSidebar() {
-    const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf('/') + 1, path.length - 1);
+    const { pathname } = this.props.location;
+    const current = pathname.substr(pathname.lastIndexOf('/') + 1, pathname.length - 1);
     return (
       <CategoryList
         current={current}
