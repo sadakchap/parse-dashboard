@@ -284,12 +284,18 @@ class B4ACloudCode extends CloudCode {
               </div>}
             primary={true}
             width='20'
-            additionalStyles={{ minWidth: '70px', background: 'transparent', color: 'dimgray!important' }}
+            additionalStyles={{ minWidth: '70px', background: 'transparent', color: 'dimgray!important', marginRight: '20px', height: '40px' }}
           />
           <Button
-            value={<div className={styles['b4a-cc-deploy-btn']}><Icon name='icon-deploy' fill='#fff' width={17} height={30} /> Deploy</div>}
-            primary={true}
             onClick={this.uploadCode.bind(this)}
+            value={
+              <div className={styles['b4a-cc-deploy-btn']}>
+                <Icon name='icon-deploy' fill='#fff' width={17} height={30} /> Deploy
+              </div>
+            }
+            primary={true}
+            width='20'
+            additionalStyles={{ height: '40px' }}
           />
         </div>
       </div>

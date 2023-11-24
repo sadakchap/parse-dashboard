@@ -274,57 +274,59 @@ export default class B4ACodeTree extends React.Component {
           <div className={`${styles['files-box']}`}>
             <div className={styles['files-header']} >
               <p>Files</p>
-              <ReactFileReader
-                fileTypes={'*/*'}
-                base64={true}
-                multipleFiles={true}
-                handleFiles={this.handleFiles.bind(this)}>
+              <div>
                 <Button
+                  onClick={() => {
+                    if (this.state.selectedFile === '') {
+                      this.selectCloudFolder();
+                    }
+                    Swal.fire({
+                      title: 'Create a new empty file',
+                      text: 'Name your file',
+                      input: 'text',
+                      inputAttributes: {
+                        autocapitalize: 'off'
+                      },
+                      showCancelButton: true,
+                      confirmButtonText: 'Create file',
+                      allowOutsideClick: () => !Swal.isLoading()
+                    }).then(({value}) => {
+                      if (value) {
+                        value = B4ATreeActions.sanitizeHTML(value);
+                        const parent = B4ATreeActions.getSelectedParent();
+                        const newNodeId = B4ATreeActions.addFileOnSelectedNode(value, parent[0]);
+                        B4ATreeActions.selectFileOnTree(newNodeId); // select new file
+                        this.setState({ files: $('#tree').jstree(true).get_json() });
+                      }
+                    })
+                  }}
+                  disabled={false}
                   value={
                     <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <img src={uploadFileIcon} height='24px' width='24px' />
-                      <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>Upload File</span>
+                      <img src={addFileIcon} height='24px' width='24px' />
+                      <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>New File</span>
                     </div>}
                   primary={true}
                   width='20'
-                  additionalStyles={{ minWidth: '60px', background: 'transparent', border: 'none' }}
+                  additionalStyles={{ minWidth: '40px', background: 'transparent', border: 'none', padding: '0' }}
                 />
-              </ReactFileReader>
-              <Button
-                onClick={() => {
-                  if (this.state.selectedFile === '') {
-                    this.selectCloudFolder();
-                  }
-                  Swal.fire({
-                    title: 'Create a new empty file',
-                    text: 'Name your file',
-                    input: 'text',
-                    inputAttributes: {
-                      autocapitalize: 'off'
-                    },
-                    showCancelButton: true,
-                    confirmButtonText: 'Create file',
-                    allowOutsideClick: () => !Swal.isLoading()
-                  }).then(({value}) => {
-                    if (value) {
-                      value = B4ATreeActions.sanitizeHTML(value);
-                      const parent = B4ATreeActions.getSelectedParent();
-                      const newNodeId = B4ATreeActions.addFileOnSelectedNode(value, parent[0]);
-                      B4ATreeActions.selectFileOnTree(newNodeId); // select new file
-                      this.setState({ files: $('#tree').jstree(true).get_json() });
-                    }
-                  })
-                }}
-                disabled={false}
-                value={
-                  <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <img src={addFileIcon} height='24px' width='24px' />
-                    <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>New File</span>
-                  </div>}
-                primary={true}
-                width='20'
-                additionalStyles={{ minWidth: '40px', background: 'transparent', border: 'none' }}
-              />
+                <ReactFileReader
+                  fileTypes={'*/*'}
+                  base64={true}
+                  multipleFiles={true}
+                  handleFiles={this.handleFiles.bind(this)}>
+                  <Button
+                    value={
+                      <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={uploadFileIcon} height='24px' width='24px' />
+                        <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>Upload File</span>
+                      </div>}
+                    primary={true}
+                    width='20'
+                    additionalStyles={{ minWidth: '60px', background: 'transparent', border: 'none', padding: '0' }}
+                  />
+                </ReactFileReader>
+              </div>
             </div>
             <Resizable className={styles['files-tree']}
               defaultSize={{ height: '100%', overflow: 'srcoll', width: '100%' }}
