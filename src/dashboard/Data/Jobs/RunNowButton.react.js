@@ -34,9 +34,14 @@ export default class RunNowButton extends React.Component {
         this.setState({ progress: false, result: 'success' });
         this.timeout = setTimeout(() => this.setState({ result: null }), 3000);
       },
-      () => {
-        this.setState({ progress: false, result: 'error' });
-        this.timeout = setTimeout(() => this.setState({ result: null }), 3000);
+      err => {
+        // Verify error message, used to control collaborators permissions
+        if (err && err.message) {
+          this.setState({ progress: false, result: 'error', error: err });
+        } else {
+          this.setState({ progress: false, result: 'error', error: null });
+        }
+        this.timeout = setTimeout(() => this.setState({ result: null, error: null }), 3000);
       }
     );
   }

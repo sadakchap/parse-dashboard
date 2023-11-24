@@ -334,23 +334,7 @@ class Jobs extends TableView {
     // Return a empty array if user don't have permission to read scheduled jobs
     if (!this.state.hasPermission) {return []}
     let data = undefined;
-    if (this.props.params.section === 'all') {
-      if (this.props.availableJobs) {
-        data = this.props.availableJobs;
-      }
-      if (this.props.jobsInUse) {
-        if (data) {
-          data = data.concat(this.props.jobsInUse);
-        } else {
-          data = this.props.jobsInUse;
-        }
-      }
-      if (data) {
-        data = data.sort().map(jobName => {
-          return { jobName };
-        });
-      }
-    } else if (this.props.params.section === 'scheduled') {
+    if (this.props.params.section === 'scheduled' || this.props.params.section === 'all') {
       if (this.props.jobs.data) {
         const jobs = this.props.jobs.data.get('jobs');
         if (jobs) {
@@ -386,7 +370,7 @@ class Jobs extends TableView {
           subsection={subsections[this.props.params.section]}
           details={ReleaseInfo({ release: this.props.release })}
         >
-          <a className={browserStyles.toolbarButton} onClick={this.onRefresh.bind(this)}>
+          <a className={browserStyles.toolbarButton} style={{ color: 'white' }} onClick={this.onRefresh.bind(this)}>
             <Icon name="refresh-solid" width={14} height={14} />
             <span>Refresh</span>
           </a>

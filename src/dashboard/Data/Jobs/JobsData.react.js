@@ -55,7 +55,7 @@ export default class JobsData extends React.Component {
 
   componentWillReceiveProps(props, context) {
     if (this.context !== context) {
-      this.setState({ release: undefined, jobs: undefined, inUse: undefined });   
+      this.setState({ release: undefined, jobs: undefined, inUse: undefined });
       // this.fetchJobs(context);
       // this.fetchRelease(context);
     }
