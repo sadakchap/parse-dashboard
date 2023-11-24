@@ -16,6 +16,7 @@ import ReleaseInfo from 'components/ReleaseInfo/ReleaseInfo';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
 import Icon from 'components/Icon/Icon.react';
+import { withRouter } from 'lib/withRouter';
 
 import styles from 'dashboard/Data/Logs/Logs.scss';
 
@@ -43,6 +44,8 @@ const alertWhatIsMessage = (
     </p>
   </div>
 );
+
+@withRouter
 export default class InfoLogs extends DashboardView {
   constructor() {
     super();
@@ -112,8 +115,8 @@ export default class InfoLogs extends DashboardView {
   */
 
   renderSidebar() {
-    const { path } = this.props.match;
-    const current = path.substr(path.lastIndexOf('/') + 1, path.length - 1);
+    const { pathname } = this.props.location;
+    const current = pathname.substr(pathname.lastIndexOf('/') + 1, pathname.length - 1);
     return (
       <CategoryList current={current} linkPrefix={'logs/'} categories={[
         { name: 'System', id: 'system' },
