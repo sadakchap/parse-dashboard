@@ -83,7 +83,7 @@ class Jobs extends TableView {
       loading: true,
       // Properties used to control data access
       hasPermission: true,
-      errorMessage: ""
+      errorMessage: ''
     };
   }
 
@@ -101,10 +101,10 @@ class Jobs extends TableView {
     // check if the changes are in currentApp serverInfo status
     // if not return without making any request
     if (this.props.apps !== nextProps.apps) {
-      let updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.params.appId);
-      let prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.params.appId);
+      const updatedCurrentApp = nextProps.apps.find(ap => ap.slug === this.props.params.appId);
+      const prevCurrentApp = this.props.apps.find(ap => ap.slug === this.props.params.appId);
       const shouldUpdate = updatedCurrentApp.serverInfo.status !== prevCurrentApp.serverInfo.status;
-      if (!shouldUpdate) return;
+      if (!shouldUpdate) {return;}
     }
     this.action = null;
     this.loadData();
@@ -120,15 +120,14 @@ class Jobs extends TableView {
 
   loadData() {
     this.props.jobs.dispatch(ActionTypes.FETCH).finally(() => {
-      let err
-      err = this.props.jobs.data && this.props.jobs.data.get('err')
+      const err = this.props.jobs.data && this.props.jobs.data.get('err')
       // Verify error message, used to control collaborators permissions
       if (err && err.code === 403)
-        this.setState({
-          loading: false,
-          hasPermission: false,
-          errorMessage: err.message
-        });
+      {this.setState({
+        loading: false,
+        hasPermission: false,
+        errorMessage: err.message
+      });}
       // incase of any other error, show error message
       if (err) {
         this.setState({
@@ -137,7 +136,7 @@ class Jobs extends TableView {
         });
       }
       // If is a unexpected error just finish loading state
-      else this.setState({ loading: false });
+      else {this.setState({ loading: false });}
       this.renderEmpty()
     });
     this.context.getJobStatus().then(status => {
@@ -164,7 +163,7 @@ class Jobs extends TableView {
 
   renderRow(data) {
     // Just render rows if user has permission to access data
-    if (!this.state.hasPermission) return
+    if (!this.state.hasPermission) {return}
     if (this.props.params.section === 'all') {
       return (
         <tr key={data.jobName}>
@@ -333,7 +332,7 @@ class Jobs extends TableView {
 
   tableData() {
     // Return a empty array if user don't have permission to read scheduled jobs
-    if (!this.state.hasPermission) return []
+    if (!this.state.hasPermission) {return []}
     let data = undefined;
     if (this.props.params.section === 'all') {
       if (this.props.availableJobs) {
@@ -358,7 +357,7 @@ class Jobs extends TableView {
           if (Array.isArray(jobs)) {
             data = jobs;
           } else
-            data = jobs.toArray();
+          {data = jobs.toArray();}
         }
         // if (jobs) {
         // data = jobs.toArray();
