@@ -68,28 +68,28 @@ class B4ACloudCode extends CloudCode {
     typeof back4AppNavigation === 'object' && back4AppNavigation.atCloudCodePageEvent()
     await this.fetchSource()
     // define the parameters to show unsaved changes warning modal
-    const unbindHook = this.props.navigate.block(nextLocation => {
-      if (this.state.unsavedChanges || this.state.updatedFiles.length > 0) {
-        const warningModal = <Modal
-          type={Modal.Types.WARNING}
-          icon='warn-triangle-solid'
-          title="Undeployed changes!"
-          buttonsInCenter={true}
-          textModal={true}
-          confirmText='Continue anyway'
-          onConfirm={() => {
-            unbindHook();
-            this.props.navigate(nextLocation);
-            // history.push(nextLocation);
-          }}
-          onCancel={() => { this.setState({ modal: null }); }}
-        >There are undeployed changes, if you leave the page you will lose it.</Modal>;
-        this.setState({ modal: warningModal });
-        return false;
-      } else {
-        unbindHook();
-      }
-    });
+    // const unbindHook = this.props.navigate.block(nextLocation => {
+    //   if (this.state.unsavedChanges || this.state.updatedFiles.length > 0) {
+    //     const warningModal = <Modal
+    //       type={Modal.Types.WARNING}
+    //       icon='warn-triangle-solid'
+    //       title="Undeployed changes!"
+    //       buttonsInCenter={true}
+    //       textModal={true}
+    //       confirmText='Continue anyway'
+    //       onConfirm={() => {
+    //         unbindHook();
+    //         this.props.navigate(nextLocation);
+    //         // history.push(nextLocation);
+    //       }}
+    //       onCancel={() => { this.setState({ modal: null }); }}
+    //     >There are undeployed changes, if you leave the page you will lose it.</Modal>;
+    //     this.setState({ modal: warningModal });
+    //     return false;
+    //   } else {
+    //     unbindHook();
+    //   }
+    // });
   }
 
   componentDidUpdate() {
