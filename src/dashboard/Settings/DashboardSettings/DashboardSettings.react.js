@@ -371,7 +371,7 @@ export default class DashboardSettings extends DashboardView {
             label={<Label text="Export Class Preferences" />}
             input={<FormButton color="blue" value="Export" onClick={() => this.getClasses()} />}
           />
-          <Field
+          {/* <Field
             label={<Label text="Create New User" />}
             input={
               <FormButton
@@ -380,7 +380,7 @@ export default class DashboardSettings extends DashboardView {
                 onClick={() => this.setState({ createUserInput: true })}
               />
             }
-          />
+          /> */}
         </Fieldset>
         {this.state.copyData.show && copyData}
         {this.state.createUserInput && createUserInput}
