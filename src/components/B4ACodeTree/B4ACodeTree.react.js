@@ -1,4 +1,6 @@
 import React from 'react';
+import jstree from 'jstree';
+// 🚫🚫 DO NOT REMOVE ABOVE LINE, as the scripts needs to be loaded that allows to use $('#tree').jstree for proper tree rendering, it took me a whole day to debug 🤯🤯🤯.
 import $ from 'jquery';
 import { Resizable } from 're-resizable';
 import ReactFileReader from 'react-file-reader';
