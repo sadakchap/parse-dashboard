@@ -124,8 +124,8 @@ export default class B4ACodeTree extends React.Component {
             fr.readAsText(selectedFile);
           }
           else {
-            const decodedCode = await B4ATreeActions.decodeFile(selected.data.code);
-            const decodedCodeString = new TextDecoder().decode(decodedCode);
+            const decodedCode = window.atob(selected.data.code.split(',')?.[1]);
+            const decodedCodeString = decodeURIComponent(escape(decodedCode));
             source = decodedCodeString;
             selectedFile = selected.text
             nodeId = selected.id

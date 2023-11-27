@@ -9,9 +9,7 @@ import React from 'react';
 import Editor from 'react-ace';
 import PropTypes from '../../lib/PropTypes';
 
-import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-solarized_dark';
-import 'ace-builds/src-noconflict/snippets/javascript';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
 export default class CodeEditor extends React.Component {
@@ -29,15 +27,25 @@ export default class CodeEditor extends React.Component {
     this.setState({ code });
   }
 
+  componentWillReceiveProps(props){
+    if (props.mode) {
+      require(`ace-builds/src-noconflict/mode-${props.mode}`);
+      require(`ace-builds/src-noconflict/snippets/${props.mode}`);
+    }
+  }
+
   render() {
-    const { placeHolder, fontSize = 18 } = this.props;
+    const { placeHolder, fontSize = 18, style = {}, mode } = this.props;
     const { code } = this.state;
 
     return (
       <Editor
-        mode="javascript"
+        mode={mode}
         theme="solarized_dark"
-        onChange={value => this.setState({ code: value })}
+        onChange={value => {
+          this.setState({ code: value });
+          typeof this.props.onCodeChange === 'function' && this.props.onCodeChange(value);
+        }}
         fontSize={fontSize}
         showPrintMargin={true}
         showGutter={true}
@@ -50,6 +58,7 @@ export default class CodeEditor extends React.Component {
         enableSnippets={false}
         showLineNumbers={true}
         tabSize={2}
+        style={{...style}}
       />
     );
   }
@@ -58,4 +67,15 @@ export default class CodeEditor extends React.Component {
 CodeEditor.propTypes = {
   fontSize: PropTypes.number.describe('Font size of the editor'),
   placeHolder: PropTypes.string.describe('Code place holder'),
+  fileName: PropTypes.string.describe('Name of the file'),
+  style: PropTypes.object.describe('Additional editor styles'),
+  onCodeChange: PropTypes.func.describe('On change code callback'),
+  mode: PropTypes.string.describe('Editor mode')
+};
+
+CodeEditor.defaultProps = {
+  mode: 'javascript',
+  style: {},
+  onCodeChange: () => {},
+  fileName: ''
 };
