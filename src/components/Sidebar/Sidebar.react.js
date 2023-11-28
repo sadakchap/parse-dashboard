@@ -7,7 +7,7 @@
  */
 import AppsManager from 'lib/AppsManager';
 import FooterMenu from 'components/Sidebar/FooterMenu.react';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 // import SidebarHeader  from 'components/Sidebar/SidebarHeader.react';
 import SidebarSection from 'components/Sidebar/SidebarSection.react';
 import SidebarSubItem from 'components/Sidebar/SidebarSubItem.react';
@@ -54,8 +54,9 @@ const Sidebar = ({
   const currentApp = useContext(CurrentApp);
   const [appsMenuOpen, setAppsMenuOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(() => isSidebarCollapsed);
-  const [fixed, setFixed] = useState(true);
+  const [fixed, setFixed] = useState(() => isSidebarFixed);
   const [mobileFriendly, setMobileFriendly] = useState(() => isMobile());
+  const prevShowTour = useRef(showTour);
 
   const windowResizeHandler = () => {
     if (isMobile()) {
@@ -103,13 +104,13 @@ const Sidebar = ({
       setFixed(true);
     }
 
-    if (showTour && !showTour && isMobile()) {
+    if (prevShowTour.current && !showTour && isMobile()) {
       // Tour is over and on mobile device
       setMobileFriendly(true);
       setCollapsed(true);
       setFixed(false);
     }
-  }, [showTour, collapsed]);
+  }, [showTour]);
 
   const sidebarClasses = [styles.sidebar];
 
@@ -120,7 +121,7 @@ const Sidebar = ({
     }
 
     return <div className={sidebarClasses.join(' ')} onMouseEnter={!mobileFriendly ? (() => setCollapsed(false)) : undefined}>
-      <div className={styles.pinContainer} onClick={mobileFriendly && (() => setCollapsed(false))}>
+      <div className={styles.pinContainer} onClick={mobileFriendly ? (() => setCollapsed(false)) : undefined}>
         <Icon className={styles.sidebarPin}
           name={mobileFriendly ? 'expand' : 'pin'}
           width={20}
