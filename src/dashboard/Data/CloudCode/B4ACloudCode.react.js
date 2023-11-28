@@ -5,7 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import React from 'react';
+import React, { createRef } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import Button from 'components/Button/Button.react';
@@ -19,6 +19,7 @@ import styles from 'dashboard/Data/CloudCode/CloudCode.scss';
 import Icon from 'components/Icon/Icon.react';
 import Modal from 'components/Modal/Modal.react';
 import { withRouter } from 'lib/withRouter';
+import { blockRouting } from 'lib/routerWindow';
 
 @withRouter
 class B4ACloudCode extends CloudCode {
@@ -45,6 +46,8 @@ class B4ACloudCode extends CloudCode {
       showTips: localStorage.getItem(this.alertTips) !== 'false',
       showWhatIs: localStorage.getItem(this.alertWhatIs) !== 'false'
     };
+
+    this.unblockRef = createRef(null);
 
     this.onLogClick = this.onLogClick.bind(this);
   }
@@ -94,6 +97,7 @@ class B4ACloudCode extends CloudCode {
 
   componentDidUpdate() {
     if (this.state.updatedFiles.length > 0 || this.state.unsavedChanges === true) {
+      this.unblockRef.current = blockRouting('There are undeployed changes, if you leave the page you will lose it.');
       window.onbeforeunload = function() {
         this.onBeforeUnloadSaveCode = window.onbeforeunload = function() {
           return '';
@@ -105,6 +109,9 @@ class B4ACloudCode extends CloudCode {
   }
 
   componentWillUnmount() {
+    if (this.unblockRef.current) {
+      this.unblockRef.current();
+    }
     if (this.onBeforeUnloadSaveCode) {
       window.removeEventListener('onbeforeunload',this.onBeforeUnloadSaveCode);
     }

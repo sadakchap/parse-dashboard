@@ -71,6 +71,7 @@ import baseStyles from 'stylesheets/base.scss';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardSettings from './Settings/DashboardSettings/DashboardSettings.react';
 import Security from './Settings/Security/Security.react';
+import routerWindow from '../lib/routerWindow';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -425,7 +426,7 @@ export default class Dashboard extends React.Component {
     );
 
     return (
-      <BrowserRouter basename={window.PARSE_DASHBOARD_PATH || '/'}>
+      <BrowserRouter basename={window.PARSE_DASHBOARD_PATH || '/'} window={routerWindow}>
         <Helmet>
           <title>Parse Dashboard</title>
         </Helmet>
