@@ -95,8 +95,8 @@ export default class Performance extends DashboardView {
   componentDidMount() {
     const display = this.displayRef;
     this.displaySize = {
-      width: display.offsetWidth,
-      height: display.offsetHeight,
+      width: display.current.offsetWidth,
+      height: display.current.offsetHeight,
     };
   }
 
