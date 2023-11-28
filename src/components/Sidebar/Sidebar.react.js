@@ -235,7 +235,7 @@ const Sidebar = ({
     }
   };
 
-  const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={20} height={20} onClick={onPinClick} />;
+  const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={20} height={20} onClick={() => setCollapsed(!collapsed)} />;
 
   let sidebarContent;
   if (appsMenuOpen) {
