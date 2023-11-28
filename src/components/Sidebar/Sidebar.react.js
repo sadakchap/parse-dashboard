@@ -218,16 +218,22 @@ const Sidebar = ({
   if (fixed) {
     pinClasses.push(styles.fixed);
   }
-  let onPinClick;
+
   if (mobileFriendly) {
     pinClasses.push(styles.inverseIcon)
-    onPinClick = () => setCollapsed(prev => !prev)
-  } else {
-    onPinClick = () => {
-      setCollapsed(fixed);
-      setFixed(prev => !prev);
-    };
   }
+
+  const onPinClick = () => {
+    if (fixed) {
+      setFixed(false);
+      setCollapsed(true);
+      setAppsMenuOpen(false);
+    } else {
+      setFixed(true);
+      setCollapsed(false);
+    }
+  };
+
   const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={20} height={20} onClick={onPinClick} />;
 
   let sidebarContent;
