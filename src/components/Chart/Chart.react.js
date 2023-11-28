@@ -14,6 +14,7 @@ import React from 'react';
 import Shape from 'components/Chart/Shape.react';
 // import { shortMonth } from 'lib/DateUtils';
 import styles from 'components/Chart/Chart.scss';
+import { shortMonth } from '../../lib/DateUtils';
 
 const MARGIN_TOP = 10;
 const MARGIN_RIGHT = 20;
@@ -140,13 +141,13 @@ export default class Chart extends React.Component {
       if (timeBuckets.length > 20 && i % 2 === 0) {
         return '';
       }
-      if (!last || t.month() !== last.month()) {
-        text += t.format('MMM')
+      if (!last || t.getMonth() !== last.getMonth()) {
+        text += shortMonth(t.getMonth()) + ' ';
       }
-      if (!last || t.day() !== last.day()) {
-        text += t.format(' DD')
-      } else if (last && t.hours() !== last.hours()) {
-        text += t.format(' HH:mm')
+      if (!last || t.getDate() !== last.getDate()) {
+        text += t.getDate();
+      } else if (last && t.getHours() !== last.getHours()) {
+        text += t.getHours() + `:${t.getMinutes()}`;
       }
       last = t;
       return text;
