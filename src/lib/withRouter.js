@@ -1,10 +1,11 @@
-import React from 'react';
-import { useParams, useNavigate, useOutletContext, useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { useParams, useNavigate, useOutletContext, useLocation, UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
 
 export function withRouter(Component) {
   function render(props) {
     const params = useParams();
     const navigate = useNavigate();
+    const { navigator } = useContext(NavigationContext);
     const outletContext = useOutletContext();
     const location = useLocation();
 
@@ -14,6 +15,7 @@ export function withRouter(Component) {
         {...outletContext}
         params={params}
         navigate={navigate}
+        navigator={navigator}
         location={location}
       />
     );

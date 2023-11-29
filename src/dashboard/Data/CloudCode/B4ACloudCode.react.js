@@ -5,7 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import React, { createRef } from 'react';
+import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import Button from 'components/Button/Button.react';
@@ -19,7 +19,6 @@ import styles from 'dashboard/Data/CloudCode/CloudCode.scss';
 import Icon from 'components/Icon/Icon.react';
 import Modal from 'components/Modal/Modal.react';
 import { withRouter } from 'lib/withRouter';
-import { blockRouting } from 'lib/routerWindow';
 
 @withRouter
 class B4ACloudCode extends CloudCode {
@@ -47,8 +46,6 @@ class B4ACloudCode extends CloudCode {
       showWhatIs: localStorage.getItem(this.alertWhatIs) !== 'false'
     };
 
-    this.unblockRef = createRef(null);
-
     this.onLogClick = this.onLogClick.bind(this);
   }
 
@@ -66,38 +63,46 @@ class B4ACloudCode extends CloudCode {
     return `${b4aSettings.BACK4APP_API_PATH}/${this.appsPath}/${this.props.params.appId}/cloud`
   }
 
+  blocker(tx) {
+    const warningModal = <Modal
+      type={Modal.Types.WARNING}
+      icon='warn-triangle-solid'
+      title="Undeployed changes!"
+      buttonsInCenter={true}
+      textModal={true}
+      confirmText='Continue anyway'
+      onConfirm={() => {
+        tx.retry();
+      }}
+      onCancel={() => { this.setState({ modal: null }); }}
+    >There are undeployed changes, if you leave the page you will lose it.</Modal>;
+    this.setState({ modal: warningModal });
+  }
+
   async componentWillMount() {
     // eslint-disable-next-line no-undef
     typeof back4AppNavigation === 'object' && back4AppNavigation.atCloudCodePageEvent()
-    await this.fetchSource()
+    await this.fetchSource();
     // define the parameters to show unsaved changes warning modal
-    // const unbindHook = this.props.navigate.block(nextLocation => {
-    //   if (this.state.unsavedChanges || this.state.updatedFiles.length > 0) {
-    //     const warningModal = <Modal
-    //       type={Modal.Types.WARNING}
-    //       icon='warn-triangle-solid'
-    //       title="Undeployed changes!"
-    //       buttonsInCenter={true}
-    //       textModal={true}
-    //       confirmText='Continue anyway'
-    //       onConfirm={() => {
-    //         unbindHook();
-    //         this.props.navigate(nextLocation);
-    //         // history.push(nextLocation);
-    //       }}
-    //       onCancel={() => { this.setState({ modal: null }); }}
-    //     >There are undeployed changes, if you leave the page you will lose it.</Modal>;
-    //     this.setState({ modal: warningModal });
-    //     return false;
-    //   } else {
-    //     unbindHook();
-    //   }
-    // });
+    this.unblock = this.props.navigator.block(tx => {
+      if (this.state.unsavedChanges || this.state.updatedFiles.length > 0) {
+        const unblock = this.unblock.bind(this);
+        const autoUnblockingTx = {
+          ...tx,
+          retry() {
+            unblock();
+            tx.retry();
+          }
+        };
+        this.blocker(autoUnblockingTx);
+      } else {
+        this.unblock();
+      }
+    });
   }
 
   componentDidUpdate() {
     if (this.state.updatedFiles.length > 0 || this.state.unsavedChanges === true) {
-      this.unblockRef.current = blockRouting('There are undeployed changes, if you leave the page you will lose it.');
       window.onbeforeunload = function() {
         this.onBeforeUnloadSaveCode = window.onbeforeunload = function() {
           return '';
@@ -109,8 +114,8 @@ class B4ACloudCode extends CloudCode {
   }
 
   componentWillUnmount() {
-    if (this.unblockRef.current) {
-      this.unblockRef.current();
+    if (this.unblock) {
+      this.unblock();
     }
     if (this.onBeforeUnloadSaveCode) {
       window.removeEventListener('onbeforeunload',this.onBeforeUnloadSaveCode);
