@@ -86,7 +86,7 @@ class CreateClassDialog extends React.Component {
         }}
         onConfirm={() => {
           const type = this.state.type;
-          const className = type === 'Custom' ? this.state.name : '_' + type;
+          const className = type === 'Custom' ? this.state.name : type;
           this.props.onConfirm(className, this.state.isProtected);
         }}
         width='580px'
