@@ -220,22 +220,32 @@ const Sidebar = ({
     pinClasses.push(styles.fixed);
   }
 
+  let onPinClick;
   if (mobileFriendly) {
-    pinClasses.push(styles.inverseIcon)
+    pinClasses.push(styles.inverseIcon);
+    onPinClick = () => {
+      if (collapsed) {
+        setCollapsed(false);
+        setFixed(true);
+      } else {
+        setCollapsed(true);
+        setFixed(false);
+      }
+    };
+  } else {
+    onPinClick = () => {
+      if (fixed) {
+        setFixed(false);
+        setCollapsed(true);
+        setAppsMenuOpen(false);
+      } else {
+        setFixed(true);
+        setCollapsed(false);
+      }
+    };
   }
 
-  const onPinClick = () => {
-    if (fixed) {
-      setFixed(false);
-      setCollapsed(true);
-      setAppsMenuOpen(false);
-    } else {
-      setFixed(true);
-      setCollapsed(false);
-    }
-  };
-
-  const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={20} height={20} onClick={() => setCollapsed(!collapsed)} />;
+  const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={20} height={20} onClick={onPinClick} />;
 
   let sidebarContent;
   if (appsMenuOpen) {
