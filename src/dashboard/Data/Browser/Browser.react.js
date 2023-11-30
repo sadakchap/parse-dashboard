@@ -236,7 +236,10 @@ class Browser extends DashboardView {
       this.action = new SidebarAction('Create a class', this.showCreateClass.bind(this));
     }
 
-    this.props.schema.dispatch(ActionTypes.FETCH).then(() => this.handleFetchedSchema());
+    this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
+      this.handleFetchedSchema();
+      this.redirectToFirstClass(this.props.schema.data.get('classes'));
+    });
     if (!this.props.params.className && this.props.schema.data.get('classes')) {
       this.redirectToFirstClass(this.props.schema.data.get('classes'));
     } else if (this.props.params.className) {
@@ -291,7 +294,10 @@ class Browser extends DashboardView {
         this.setState({ counts: {} });
         Parse.Object._clearAllState();
 
-        nextProps.schema.dispatch(ActionTypes.FETCH).then(() => this.handleFetchedSchema());
+        nextProps.schema.dispatch(ActionTypes.FETCH).then(() => {
+          this.handleFetchedSchema();
+          this.redirectToFirstClass(nextProps.schema.data.get('classes'), nextContext);
+        });
       }
 
       // check if the changes are in currentApp serverInfo status
@@ -311,9 +317,6 @@ class Browser extends DashboardView {
       }
 
       this.prefetchData(nextProps, nextContext);
-    }
-    if (!nextProps.params.className && nextProps.schema.data.get('classes')) {
-      this.redirectToFirstClass(nextProps.schema.data.get('classes'), nextContext);
     }
   }
 
