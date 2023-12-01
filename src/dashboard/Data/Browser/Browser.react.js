@@ -728,7 +728,7 @@ class Browser extends DashboardView {
       () => {
         this.setState({ showDropClassDialog: false });
         delete this.state.counts[className];
-        this.props.navigate(generatePath(this.context, 'browser'));
+        this.redirectToFirstClass(this.props.schema.data.get('classes'));
       },
       error => {
         let msg = typeof error === 'string' ? error : error.message;
