@@ -10,7 +10,7 @@
 
 .browser {
   position: fixed;
-  top: 48px;
+  top: $toolbar-height;
   left: 300px;
   right: 0;
   bottom: 0;
@@ -75,26 +75,30 @@ body:global(.expanded) {
 }
 
 .addBtn {
+  @include InterFont;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 26px;
   padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 14px;
-  gap: 5px;
+  border-radius: 0.3125rem;
+  font-size: 0.875rem;
+  gap: 0.5rem;
   color: white;
-  background: #66637A;
   margin: 0 4px;
+  border: 1px solid rgba(249, 249, 249, 0.06);
+  font-weight: 500;
+  padding: 0.3125rem 0.875rem;
+  background: #303338;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(249, 249, 249, 0.09);
   }
 
   svg {
     vertical-align: middle;
-    fill: white;
+    fill: $cta-green;
   }
 
   span {
@@ -105,20 +109,26 @@ body:global(.expanded) {
 }
 
 .deleteBtn {
-  cursor: auto;  
+  cursor: pointer;  
   display: flex;
   justify-content: center;
   align-items: center;
   height: 26px;
-  border-radius: 4px;
+  border-radius: 0.3125rem;
   border: 1px solid #66637A;
   font-size: 14px;
   padding: 2px;
   margin: 0 4px;
+  background: #303338;
+  border: 1px solid rgba(249, 249, 249, 0.06);
+
+  &:hover {
+    background: #e85d3e3b;
+  }
 
   svg {
     vertical-align: middle;
-    fill: #66637A;
+    fill: #E85C3E;
   }
 
   &.active {
@@ -133,9 +143,8 @@ body:global(.expanded) {
 
 .verticalSeparator {
   height: 26px;
-  border: 1px solid #66637A;
-  border-radius: 2px;
-  margin: 0 4px;
+  border: 1px solid transparent;
+  margin: 0 1.25rem;
 }
 
 .toolbarButtonDisabled {

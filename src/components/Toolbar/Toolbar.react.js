@@ -28,26 +28,30 @@ const Toolbar = props => {
         <div className={styles.nav}>{backButton}</div>
         <div className={styles.titleText}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div className={styles.subsection} >
+            <div className={styles.subsection}>
+              <span className={styles.section}>
+                {props.section}
+              </span>
               <span className={styles.subsectionName}>
                 {props.subsection}
               </span>
-              <span className={styles.details}>
-                {/* {!props.readWritePermissions && <div className={styles.section}>{props.section}</div>} */}
-                {props.details}
-              </span>
             </div>
-            { props.readWritePermissions && <div>  <div className={styles.seperatorVertical}></div>
-            {/* {props.helpsection} */}
-            {/* Public read and write access */}
-             <div className={styles.publicAccess} onClick={() => props.onClickSecurity(true)}>
-              { props.lockIcon === true ?
-                <Icon name='lock-outline' fill='#FFFFFF' width={17} height={17}></Icon> :
-                <Icon name='lock-open-variant' fill='#FFFFFF' width={17} height={17}></Icon>
-              }
-              <span className={styles.mr5}></span>
-              <a href="javascript:void(0)" className={styles.publicAccessLink}><small>{props.readWritePermissions}</small></a>
-            </div> </div> }
+            {props.readWritePermissions && <div>
+              {/* {props.helpsection} */}
+              {/* Public read and write access */}
+              <div className={styles.publicAccess} onClick={() => props.onClickSecurity(true)}>
+                <div className={styles.publicAccessIcon}>
+                  {props.lockIcon === true ?
+                    <Icon name='b4a-lock-icon' fill='#FFFFFF' width={16} height={16}></Icon> :
+                    <Icon name='b4a-unlock-icon' fill='#27AE60' width={16} height={16}></Icon>
+                  }
+                </div>
+                <div className={styles.publicAccessName}>
+                  <span>{props.className}</span>
+                  <span>{props.details}</span>
+                </div>
+                {/* <a href="javascript:void(0)" className={styles.publicAccessLink}><small>{props.readWritePermissions}</small></a> */}
+              </div> </div> }
           </div>
         </div>
       </div>

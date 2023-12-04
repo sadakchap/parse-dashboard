@@ -67,6 +67,14 @@ $sidebarCollapsedWidth: 54px;
   font-family: 'Source Code Pro', 'Courier New', monospace;
 }
 
+@mixin InterFont {
+  font-family: 'Inter', sans-serif;;
+}
+
+@mixin SoraFont {
+  font-family: 'Sora', sans-serif;;
+}
+
 @mixin MaterialDesignFont {
   font-family: Material-Design-Iconic-Font;
 }

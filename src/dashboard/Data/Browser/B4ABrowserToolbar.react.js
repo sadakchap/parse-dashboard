@@ -307,9 +307,10 @@ const B4ABrowserToolbar = ({
       readWritePermissions={readWritePermissions}
       lockIcon={lockIcon}
       onClickSecurity={onClickSecurity}
-      section={relation ? `Relation <${relation.targetClassName}> | ` : `Class | ${details.join(' \u2022 ')}`}
-      subsection={subsection}
+      section="Database"
+      subsection="Browser"
       details={relation ? details.join(' \u2022 ') : details.join(' \u2022 ')}
+      className={subsection}
       helpsection={helpsection}>
       {onAddRow && (
         <a className={classes.join(' ')} onClick={onClick}>
@@ -325,12 +326,12 @@ const B4ABrowserToolbar = ({
       )}
       {(
         <a className={styles.deleteBtn + ` ${(selectionLength >= 1) && !isPendingEditCloneRows && styles.active}`} onClick={selectionLength === 0 || isPendingEditCloneRows ? null : () => onDeleteRows(selection)}>
-          <Icon name='delete-icon' width={24} height={20} />
+          <Icon name='b4a-delete-icon' fill="#E85C3E" width={24} height={20} />
         </a>
       )}
       <div className={styles.verticalSeparator}></div>
       <a className={styles.toolbarButton + ` ${isPendingEditCloneRows && styles.toolbarButtonDisabled}`} onClick={isPendingEditCloneRows ? null : onRefresh} title='Refresh'>
-        <Icon name='refresh-icon' width={30} height={26} />
+        <Icon name='b4a-refresh-icon' width={24} height={24} />
       </a>
       <BrowserFilter
         setCurrent={setCurrent}
@@ -389,7 +390,7 @@ const B4ABrowserToolbar = ({
       ) : (
         <noscript />
       )} */}
-      {enableSecurityDialog ? <div className={styles.toolbarSeparator} /> : <noscript />}
+      {/* {enableSecurityDialog ? <div className={styles.toolbarSeparator} /> : <noscript />} */}
       {menu}
       {onAddRow && (
         <LoginDialog

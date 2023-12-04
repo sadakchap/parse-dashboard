@@ -241,7 +241,7 @@ export default class BrowserFilter extends React.Component {
     return (
       <div className={wrapperStyle.join(' ')} ref={this.wrapRef}>
         <div className={buttonStyle.join(' ')} onClick={!this.props.disabled ? this.toggle : null}>
-          <Icon name="filter-icon" width={24} height={24} />
+          <Icon name="b4a-browser-filter-icon" width={24} height={24} />
           {/* <span>{this.props.filters.size ? 'Filtered' : 'Filter'}</span> */}
         </div>
         {popover}
