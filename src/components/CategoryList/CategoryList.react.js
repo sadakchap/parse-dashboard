@@ -56,7 +56,7 @@ export default class CategoryList extends React.Component {
               for (let i = 0; i < c.filters?.length; i++) {
                 const filter = c.filters[i];
                 if (queryFilter === filter.filter) {
-                  height += (i + 1) * 20;
+                  height += (i + 1) * (20 + 24); // added 24 for margin top & bottom
                   break;
                 }
               }
@@ -69,9 +69,9 @@ export default class CategoryList extends React.Component {
         if (id === 'classSeparator') {
           height += 13;
         } else if (this.state.openClasses.includes(id)) {
-          height = height + 20 * (c.filters.length + 1);
+          height = (height + 20 + 24) * (c.filters.length + 1);
         } else {
-          height += 20;
+          height += 20 + 24;
         }
       }
       this.highlight.style.display = 'none';
