@@ -68,11 +68,15 @@ $sidebarCollapsedWidth: 54px;
 }
 
 @mixin InterFont {
-  font-family: 'Inter', sans-serif;;
+  font-family: 'Inter', sans-serif;
 }
 
 @mixin SoraFont {
-  font-family: 'Sora', sans-serif;;
+  font-family: 'Sora', sans-serif;
+}
+
+@mixin CourierFont {
+  font-family: 'Courier Prime', monospace;
 }
 
 @mixin MaterialDesignFont {

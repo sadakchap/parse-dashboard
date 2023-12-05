@@ -38,11 +38,11 @@ export default class DataBrowserHeaderBar extends React.Component {
         return;
       }
       const wrapStyle = { width };
-      if (i % 2) {
-        wrapStyle.background = '#726F85';
-      } else {
-        wrapStyle.background = '#66637A';
-      }
+      // if (i % 2) {
+      //   wrapStyle.background = '#726F85';
+      // } else {
+      //   wrapStyle.background = '#66637A';
+      // }
       let onClick = null;
       if (
         !preventSort &&
