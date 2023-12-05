@@ -8,7 +8,7 @@
 import BrowserRow from 'components/BrowserRow/BrowserRow.react';
 import DataBrowserHeaderBar from 'components/DataBrowserHeaderBar/DataBrowserHeaderBar.react';
 import Editor from 'dashboard/Data/Browser/Editor.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import B4aBrowserEmptyState from 'components/B4aBrowserEmptyState/B4aBrowserEmptyState.react';
 import Icon from 'components/Icon/Icon.react';
 import Parse from 'parse';
 import encode from 'parse/lib/browser/encode';
@@ -473,22 +473,24 @@ export default class BrowserTable extends React.Component {
           <div className={styles.table} ref={this.tableRef}>
             <div className={styles.empty}>
               {this.props.relation ? (
-                <EmptyState
+                <B4aBrowserEmptyState
                   title="No data to display"
                   description="This relation has no rows. Attach existing rows or create row."
-                  cta={`Create ${this.props.relation.targetClassName} and attach`}
-                  action={this.props.onAddRow}
-                  secondaryCta={`Attach existing rows from ${this.props.relation.targetClassName}`}
-                  secondaryAction={this.props.onAttachRows}
-                  icon="files-solid"
+                  primaryCtaText={`Create ${this.props.relation.targetClassName} and attach`}
+                  primaryCtaAction={this.props.onAddRow}
+                  secondaryCtaText={`Attach existing rows from ${this.props.relation.targetClassName}`}
+                  secondaryCtaAction={this.props.onAttachRows}
+                  icon="empty-browser"
                 />
               ) : (
-                <EmptyState
+                <B4aBrowserEmptyState
                   title="No data to display"
                   description={this.props.onAddRow && 'Add a row to store an object in this class.'}
-                  icon="files-solid"
-                  cta={this.props.onAddRow && 'Add a row'}
-                  action={this.props.onAddRow}
+                  icon="empty-browser"
+                  primaryCtaText={this.props.onAddRow && 'Add a row'}
+                  primaryCtaAction={this.props.onAddRow}
+                  secondaryCtaText={'Import a file'}
+                  secondaryCtaAction={this.props.onImport}
                 />
               )}
             </div>

@@ -35,7 +35,7 @@ import DataBrowser from 'dashboard/Data/Browser/DataBrowser.react';
 import { DefaultColumns, SpecialClasses } from 'lib/Constants';
 import DeleteRowsDialog from 'dashboard/Data/Browser/DeleteRowsDialog.react';
 import DropClassDialog from 'dashboard/Data/Browser/DropClassDialog.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import B4aBrowserEmptyState from 'components/B4aBrowserEmptyState/B4aBrowserEmptyState.react';
 import ExportDialog from 'dashboard/Data/Browser/ExportDialog.react';
 import AttachRowsDialog from 'dashboard/Data/Browser/AttachRowsDialog.react';
 import AttachSelectedRowsDialog from 'dashboard/Data/Browser/AttachSelectedRowsDialog.react';
@@ -58,7 +58,7 @@ import * as ClassPreferences from 'lib/ClassPreferences';
 import { Helmet } from 'react-helmet';
 import generatePath from 'lib/generatePath';
 import { withRouter } from 'lib/withRouter';
-
+import Icon from 'components/Icon/Icon.react';
 
 const BROWSER_LAST_LOCATION = 'brower_last_location';
 // The initial and max amount of rows fetched by lazy loading
@@ -2223,12 +2223,12 @@ class Browser extends DashboardView {
       if (classes.size === 0) {
         browser = (
           <div className={styles.empty}>
-            <EmptyState
+            <B4aBrowserEmptyState
               title="You have no classes yet"
               description={'This is where you can view and edit your app\u2019s data'}
-              icon="files-solid"
-              cta="Create your first class"
-              action={this.showCreateClass}
+              icon="empty-browser"
+              primaryCtaText="Create your first class"
+              primaryCtaAction={this.showCreateClass}
             />
           </div>
         );
