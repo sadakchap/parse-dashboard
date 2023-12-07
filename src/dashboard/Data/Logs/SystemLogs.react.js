@@ -8,7 +8,7 @@
 import B4AAlert from 'components/B4AAlert/B4AAlert.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
 import DashboardView from 'dashboard/DashboardView.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import EmptyGhostState from 'components/EmptyGhostState/EmptyGhostState.react';
 import React from 'react';
 import ReleaseInfo from 'components/ReleaseInfo/ReleaseInfo';
 import Toolbar from 'components/Toolbar/Toolbar.react';
@@ -168,8 +168,7 @@ export default class SystemLogs extends DashboardView {
       <LoaderContainer loading={this.state.loading} solid={false}>
         <div className={styles.content}>
           {!this.state.loading && this.state.logs === '' && (
-            <EmptyState
-              icon="files-outline"
+            <EmptyGhostState
               title="No System logs in the last 30 days"
               description={'In this section, you will find the messages related to general logs of your Parse Server application and all logging levels associated with either success or error of your Cloud Code Functions provided by options like console.log() or console.error()'}
               cta="Learn more"
