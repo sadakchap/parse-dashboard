@@ -10,11 +10,11 @@
 
 .headers {
   position: fixed;
-  top: 99px;
+  top: calc($header-height + $toolbar-height);
   left: 360px;
   right: 0;
-  background: #66637A;
-  height: 30px;
+  background: $dark;
+  height: 46px;
   white-space: nowrap;
 }
 
@@ -26,33 +26,39 @@ body:global(.expanded) {
 
 .content {
   position: relative;
-  padding-top: 75px;
+  padding-top: calc($toolbar-height + 46px);
   min-height: $content-max-height;
+  background: $dark;
 }
 
 .rows {
-  background: #fdfafb;
+  // background: #fdfafb;
 
   table {
     width: 100%;
   }
 
   tr {
-    background: #fdfafb;
-    border-bottom: 1px solid $borderGrey;
+    // background: #fdfafb;
+    border-bottom: 1px solid rgba(249, 249, 249, 0.06);
   }
 
-  tr:nth-child(2n) {
-    background: #f4f5f7;
-  }
+  // tr:nth-child(2n) {
+  //   background: #f4f5f7;
+  // }
 
   td {
     line-height: 30px;
-    padding: 10px 16px;
+    padding: 10px 1rem 10px 1.5rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 0;
+    color: $white;
+    border-right: 1px solid rgba(249, 249, 249, 0.06);
+    &:last-child {
+      border-right: 0;
+    }
   }
 
   svg {

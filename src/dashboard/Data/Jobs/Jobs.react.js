@@ -167,8 +167,8 @@ class Jobs extends TableView {
     if (this.props.params.section === 'all') {
       return (
         <tr key={data.jobName}>
-          <td style={{ width: '60%' }}>{data.jobName}</td>
-          <td className={styles.buttonCell}>
+          <td style={{ width: '50%' }}>{data.jobName}</td>
+          <td className={styles.buttonCell + ' ' + styles.right}>
             <RunNowButton job={data} width={'100px'} />
           </td>
         </tr>
@@ -215,10 +215,10 @@ class Jobs extends TableView {
   renderHeaders() {
     if (this.props.params.section === 'all') {
       return [
-        <TableHeader key="name" width={60}>
+        <TableHeader key="name" width={50}>
           Name
         </TableHeader>,
-        <TableHeader key="actions" width={40}>
+        <TableHeader key="actions" width={50} textAlign="right">
           Actions
         </TableHeader>,
       ];
@@ -366,13 +366,13 @@ class Jobs extends TableView {
     if (subsections[this.props.params.section]) {
       return (
         <Toolbar
-          section="Jobs"
-          subsection={subsections[this.props.params.section]}
+          section="Cloud Code"
+          subsection={`Jobs > ${subsections[this.props.params.section]}`}
           details={ReleaseInfo({ release: this.props.release })}
         >
           <a className={browserStyles.toolbarButton} style={{ color: 'white' }} onClick={this.onRefresh.bind(this)}>
-            <Icon name="refresh-solid" width={14} height={14} />
-            <span>Refresh</span>
+            <Icon name="refresh" width={24} height={24} />
+            {/* <span>Refresh</span> */}
           </a>
           {this.props.availableJobs && this.props.availableJobs.length > 0 ? (
             <Button color="white" value="Schedule a job" onClick={this.navigateToNew.bind(this)} />

@@ -8,11 +8,15 @@
 import React from 'react';
 import styles from 'components/Table/Table.scss';
 
-const TableHeader = ({ width, ...props }) => {
+const TableHeader = ({ width, textAlign, ...props }) => {
   const style = {};
   if (width !== undefined) {
     style.width = width + '%';
   }
+  if (textAlign !== undefined) {
+    style.textAlign = textAlign;
+  }
+
   return <div {...props} style={style} className={styles.header} />;
 };
 
