@@ -10,8 +10,8 @@
 @import "B4AButton.scss";
 
 .button {
-  @include DosisFont;
-  @include buttonReset($bg: none, $border: 1px solid $blue, $padding: 0 16px);
+  @include InterFont;
+  @include buttonReset($bg: none, $border: 1px solid $cta-green, $padding: 0 16px);
   display: inline-block;
   height: 30px;
   line-height: 28px;
@@ -20,51 +20,52 @@
   border-radius: 5px;
   font-size: 14px;
 
-  color: $blue;
+  color: $cta-green;
 
   &:hover, &:focus {
-    background-color: $blue;
-    color: white;
+    background-color: $cta-green;
+    color: $white;
   }
 }
 
 .primary {
-  background-color: $blue;
+  background-color: $cta-green;
   color: $white;
 
   &:hover, &:focus {
-    background-color: $darkBlue;
+    filter: drop-shadow(1px 1px 10px #92E1B4);
+    background-color: #13A39A!important;
   }
 }
 
 .green {
-  color: $green;
+  color: $cta-green;
   border-color: $green;
 
   &:hover, &:focus {
-    background-color: $lightGreen;
+    background-color: #13A39A;
   }
 
   &.primary {
-    background-color: $green;
+    background-color: $cta-green;
     color: $white;
 
     &:hover, &:focus {
-      background-color: $darkGreen;
+      background-color: #13A39A;
     }
   }
 }
 
 .red {
-  color: $red;
-  border-color: $red;
+  color: $error-red;
+  border-color: $error-red;
 
   &:hover, &:focus {
     background-color: $lightRed;
   }
 
   &.primary {
-    background-color: $red;
+    background-color: $error-log-red;
     color: $white;
 
     &:hover, &:focus {
@@ -128,14 +129,14 @@
 }
 
 .disabled, .disabled.primary {
-  background-color: #e0e0ea;
-  border-color: #e0e0ea;
-  color: white;
+  background-color: transparent;
+  border-radius: 0.3125rem;
+  border: 1px solid $light-grey;
+  opacity: 0.5;
+  background: rgba(48, 51, 56, 0.50);
+  color: $light-grey;
   cursor: default;
   &:hover{
-    background-color: #e0e0ea;
-    border-color: #e0e0ea;
-    color: white;
     text-decoration: none!important;
   }
 }

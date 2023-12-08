@@ -20,7 +20,7 @@ import Option from 'components/Dropdown/Option.react';
 import Parse from 'parse';
 import React, { Component } from 'react';
 import request from 'dashboard/Data/ApiConsole/request';
-import styles from 'dashboard/Data/ApiConsole/ApiConsole.scss';
+import styles from 'dashboard/Data/ApiConsole/RestConsole.scss';
 import TextInput from 'components/TextInput/TextInput.react';
 import Toggle from 'components/Toggle/Toggle.react';
 import Toolbar from 'components/Toolbar/Toolbar.react';
@@ -189,95 +189,100 @@ export default class RestConsole extends Component {
     }
 
     return (
-      <div style={{ padding: '120px 0 0 0' }}>
-        <Fieldset
-          legend="Send a test query"
-          description="Try out some queries, and take a look at what they return."
-        >
-          <Field label={<Label text="What type of request?" />} input={methodDropdown} />
-          <Field
-            label={
-              <Label
-                text="Which endpoint?"
-                description={
-                  <span>
-                    Not sure what endpoint you need?
-                    <br />
-                    Take a look at our{' '}
-                    <a href="http://docs.parseplatform.org/rest/guide/">REST API guide</a>.
-                  </span>
-                }
-              />
-            }
-            input={
-              <TextInput
-                value={this.state.endpoint}
-                monospace={true}
-                placeholder={'classes/_User'}
-                onChange={endpoint => this.setState({ endpoint })}
-              />
-            }
-          />
-          <Field
-            label={<Label text="Use Master Key?" description={'This will bypass any ACL/CLPs.'} />}
-            input={
-              <Toggle
-                value={this.state.useMasterKey}
-                onChange={useMasterKey => this.setState({ useMasterKey })}
-              />
-            }
-          />
-          <Field
-            label={
-              <Label
-                text="Run as..."
-                description={
-                  'Send your query as a specific user. You can use their username or Object ID.'
-                }
-              />
-            }
-            input={
-              <TextInput
-                value={this.state.runAsIdentifier}
-                monospace={true}
-                placeholder={'Username or ID'}
-                onChange={runAsIdentifier => this.setState({ runAsIdentifier })}
-                onBlur={this.fetchUser.bind(this)}
-              />
-            }
-          />
-          <FormNote color="red" show={!!this.state.error}>
-            {this.state.error}
-          </FormNote>
-          <Field
-            label={
-              <Label
-                text="Query parameters"
-                description={
-                  <span>
-                    Learn more about query parameters in our{' '}
-                    <a href="http://docs.parseplatform.org/rest/guide/#queries">REST API guide</a>.
-                  </span>
-                }
-              />
-            }
-            input={
-              <TextInput
-                value={this.state.parameters}
-                monospace={true}
-                multiline={true}
-                placeholder={parameterPlaceholder}
-                onChange={parameters => this.setState({ parameters })}
-              />
-            }
-          />
-        </Fieldset>
-        <Fieldset legend="Results" description="">
-          <div className={fieldStyle.field}>
-            <JsonPrinter object={this.state.response} />
+      <div className={styles.content}>
+        <div className={styles.mainContent}>
+          <div className={styles.header}>
+            <div className={styles.title}>Send a test query</div>
+            <div className={styles.subtitle}>Try out some queries, and take a look at what they return.</div>
           </div>
-        </Fieldset>
-        <Toolbar section="Core" subsection="API Console" />
+          <Fieldset
+            legend=""
+            description=""
+          >
+            <Field label={<Label text="What type of request?" />} input={methodDropdown} />
+            <Field
+              label={
+                <Label
+                  text="Which endpoint?"
+                  description={
+                    <span>
+                      Not sure what endpoint you need?
+                      <br />
+                      Take a look at our{' '}
+                      <a href="http://docs.parseplatform.org/rest/guide/">REST API guide</a>.
+                    </span>
+                  }
+                />
+              }
+              input={
+                <TextInput
+                  value={this.state.endpoint}
+                  monospace={true}
+                  placeholder={'classes/_User'}
+                  onChange={endpoint => this.setState({ endpoint })}
+                />
+              }
+            />
+            <Field
+              label={<Label text="Use Master Key?" description={'This will bypass any ACL/CLPs.'} />}
+              input={
+                <Toggle
+                  value={this.state.useMasterKey}
+                  onChange={useMasterKey => this.setState({ useMasterKey })}
+                />
+              }
+            />
+            <Field
+              label={
+                <Label
+                  text="Run as..."
+                  description={
+                    'Send your query as a specific user. You can use their username or Object ID.'
+                  }
+                />
+              }
+              input={
+                <TextInput
+                  value={this.state.runAsIdentifier}
+                  monospace={true}
+                  placeholder={'Username or ID'}
+                  onChange={runAsIdentifier => this.setState({ runAsIdentifier })}
+                  onBlur={this.fetchUser.bind(this)}
+                />
+              }
+            />
+            <FormNote color="red" show={!!this.state.error}>
+              {this.state.error}
+            </FormNote>
+            <Field
+              label={
+                <Label
+                  text="Query parameters"
+                  description={
+                    <span>
+                      Learn more about query parameters in our{' '}
+                      <a href="http://docs.parseplatform.org/rest/guide/#queries">REST API guide</a>.
+                    </span>
+                  }
+                />
+              }
+              input={
+                <TextInput
+                  value={this.state.parameters}
+                  monospace={true}
+                  multiline={true}
+                  placeholder={parameterPlaceholder}
+                  onChange={parameters => this.setState({ parameters })}
+                />
+              }
+            />
+          </Fieldset>
+          <div className={styles.results}>
+            <div className={styles.title}>Result</div>
+            <div className={styles.resultContent}><JsonPrinter object={this.state.response} /></div>
+          </div>
+        </div>
+        <Toolbar section="API" subsection="Console > REST" />
         <FlowFooter
           primary={
             <Button

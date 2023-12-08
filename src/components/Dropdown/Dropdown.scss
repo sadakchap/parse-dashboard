@@ -6,10 +6,12 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .dropdown {
   position: relative;
-  background: $inputBackgroundColor;
+  background: $regal-blue;
+  color: $white;
   font-size: 16px;
   height: 80px;
   width: 100%;
@@ -25,7 +27,7 @@
 .menu {
   max-height: 215px;
   border: 1px solid $blue;
-  background: white;
+  background: $regal-blue;
   overflow: auto;
 
   button {
@@ -35,7 +37,7 @@
   }
 
   .option {
-    color: $blue;
+    color: $white;
     border-bottom: 1px solid $borderGrey;
 
     &:hover {

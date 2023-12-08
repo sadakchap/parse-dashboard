@@ -6,12 +6,14 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .text_input {
-  @include NotoSansFont;
+  @include InterFont;
+  color: $white;
   border: 0;
   outline: 0;
-  background: $inputBackgroundColor;
+  background: transparent;
   font-size: 16px;
   width: 100%;
   padding: 6px;
@@ -22,6 +24,9 @@
     @include placeholder {
       opacity: 0;
     }
+  }
+  &::placeholder {
+    color: $light-grey;
   }
 }
 
