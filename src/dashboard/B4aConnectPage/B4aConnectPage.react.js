@@ -37,9 +37,11 @@ class B4aConnectPage extends DashboardView {
       >
         <div className={styles['connect-page']}>
           <Toolbar section="API" subsection="Connect" />
-          <Fieldset
-            legend="Get started by adding Back4App to your app"
-          >
+          <div className={styles.content}>
+            <div className={styles.header}>
+              <div className={styles.title}>Add Back4App to your app</div>
+              <div className={styles.subtitle}>Save your App’s data on the Blockchain Network of your choice.NOTE: This feature is on the alpha version.</div>
+            </div>
             <div className={styles['frameworkList-container']}>
               <a
                 className={styles['framework-box']}
@@ -77,6 +79,8 @@ class B4aConnectPage extends DashboardView {
                 <img src={appleImg} />
                 <p>IOS</p>
               </a>
+            </div>
+            <div className={styles['frameworkList-container']}>
               <a
                 className={styles['framework-box']}
                 href="https://www.back4app.com/docs/javascript/parse-javascript-sdk"
@@ -114,7 +118,7 @@ class B4aConnectPage extends DashboardView {
                 <p>Xamarin</p>
               </a>
             </div>
-          </Fieldset>
+          </div>
         </div>
       </LoaderContainer>
     );
