@@ -1,10 +1,9 @@
-import React from "react";
-import ReactDOMServer from "react-dom/server";
-import DashboardView from "dashboard/DashboardView.react";
-import Toolbar from "components/Toolbar/Toolbar.react";
-import Fieldset from "components/Fieldset/Fieldset.react";
-import styles from "dashboard/B4aConnectPage/B4aConnectPage.scss";
-import LoaderContainer from "components/LoaderContainer/LoaderContainer.react";
+import React from 'react';
+import DashboardView from 'dashboard/DashboardView.react';
+import Toolbar from 'components/Toolbar/Toolbar.react';
+import Fieldset from 'components/Fieldset/Fieldset.react';
+import styles from 'dashboard/B4aConnectPage/B4aConnectPage.scss';
+import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
 import reactImg from './react.png';
 import flutterImg from './flutter.png';
 import androidImg from './android-robot.png'
@@ -17,7 +16,7 @@ import xamarinImg from './xamarin-logo.png'
 class B4aConnectPage extends DashboardView {
   constructor() {
     super();
-    this.section = "API";
+    this.section = 'API';
     this.subsection = 'Connect';
     this.state = {}
     this.onClickTechnology = this.onClickTechnology.bind(this);
@@ -25,7 +24,7 @@ class B4aConnectPage extends DashboardView {
 
   onClickTechnology(tech) {
     if (back4AppNavigation && back4AppNavigation.onClickTechnology)
-      back4AppNavigation.onClickTechnology(tech);
+    {back4AppNavigation.onClickTechnology(tech);}
   }
 
   renderContent() {
@@ -36,14 +35,14 @@ class B4aConnectPage extends DashboardView {
         hideAnimation={false}
         solid={true}
       >
-        <div className={styles["connect-page"]}>
-          <Toolbar section="Connect" />
+        <div className={styles['connect-page']}>
+          <Toolbar section="API" subsection="Connect" />
           <Fieldset
             legend="Get started by adding Back4App to your app"
           >
-            <div className={styles["frameworkList-container"]}>
+            <div className={styles['frameworkList-container']}>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/react-native/parse-sdk/react-native-sdk"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'React Native')}
@@ -52,7 +51,7 @@ class B4aConnectPage extends DashboardView {
                 <p>React Native</p>
               </a>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/flutter/parse-sdk/parse-flutter-sdk"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'Flutter')}
@@ -61,7 +60,7 @@ class B4aConnectPage extends DashboardView {
                 <p>Flutter</p>
               </a>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/android/parse-android-sdk"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'Android')}
@@ -70,7 +69,7 @@ class B4aConnectPage extends DashboardView {
                 <p>Android</p>
               </a>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/ios/parse-swift-sdk"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'IOS')}
@@ -79,7 +78,7 @@ class B4aConnectPage extends DashboardView {
                 <p>IOS</p>
               </a>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/javascript/parse-javascript-sdk"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'Javascript')}
@@ -88,7 +87,7 @@ class B4aConnectPage extends DashboardView {
                 <p>Javascript</p>
               </a>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/parse-graphql/graphql-getting-started"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'GraphQL')}
@@ -97,7 +96,7 @@ class B4aConnectPage extends DashboardView {
                 <p>GraphQL</p>
               </a>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/js-framework/ionic/parse-ionic-sdk"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'Ionic')}
@@ -106,7 +105,7 @@ class B4aConnectPage extends DashboardView {
                 <p>IONIC</p>
               </a>
               <a
-                className={styles["framework-box"]}
+                className={styles['framework-box']}
                 href="https://www.back4app.com/docs/xamarin/xamarin-templates"
                 target="_blank"
                 onClick={this.onClickTechnology.bind(this, 'Xamarin')}
