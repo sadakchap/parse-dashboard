@@ -143,7 +143,7 @@ export default class SystemLogs extends DashboardView {
     toolbar = (
       <Toolbar
         section="Cloud Code"
-        subsection="Logs > Access"
+        subsection="Logs > System"
         details={ReleaseInfo({ release: this.state.release })}
       >
         <a

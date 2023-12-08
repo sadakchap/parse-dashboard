@@ -8,7 +8,7 @@
 import B4AAlert from 'components/B4AAlert/B4AAlert.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
 import DashboardView from 'dashboard/DashboardView.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import EmptyGhostState from 'components/EmptyGhostState/EmptyGhostState.react';
 import React from 'react';
 import ReleaseInfo from 'components/ReleaseInfo/ReleaseInfo';
 import Toolbar from 'components/Toolbar/Toolbar.react';
@@ -136,8 +136,8 @@ export default class AccessLogs extends DashboardView {
     let toolbar = null;
     toolbar = (
       <Toolbar
-        section='Logs'
-        subsection='Server Access'
+        section='Cloud Code'
+        subsection='Logs > Access'
         details={ReleaseInfo({ release: this.state.release })}
       >
         <a className={refreshIconStyles} onClick={!this.state.loading ? this.refreshLogs : undefined} title='Refresh'>
@@ -158,13 +158,14 @@ export default class AccessLogs extends DashboardView {
       <LoaderContainer loading={this.state.loading} solid={false}>
         <div className={styles.content}>
           {!this.state.loading && this.state.logs === '' && (
-            <EmptyState
-              icon="files-outline"
-              title="No Access logs in the last 30 days"
-              description="Here you will find a detailed extract of all requests made to your server, including the request time, type, response time, size, and more."
-              cta="Learn more"
-              action={'https://www.back4app.com/docs/platform/parse-server-logs'}
-            />
+            <div style={{ padding: '1.5rem 0' }}>
+              <EmptyGhostState
+                title="No Access logs in the last 30 days"
+                description="Here you will find a detailed extract of all requests made to your server, including the request time, type, response time, size, and more."
+                cta="Learn more"
+                action={'https://www.back4app.com/docs/platform/parse-server-logs'}
+              />
+            </div>
           )}
           {!this.state.loading && this.state.logs !== '' && (
             <div>
