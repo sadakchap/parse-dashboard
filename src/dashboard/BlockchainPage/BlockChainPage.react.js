@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 import { ActionTypes }            from 'lib/stores/SchemaStore';
+import B4aPageHeader              from 'components/B4aPageHeader/B4aPageHeader.react.js';
 import DashboardView              from 'dashboard/DashboardView.react';
 import Dropdown                   from 'components/Dropdown/Dropdown.react';
 import Field                      from 'components/Field/Field.react';
@@ -196,14 +197,8 @@ class BlockChainPage extends DashboardView {
       ).toFixed(9)
     }
     return (
-      <div>
-        <div className={styles.fieldset}>
-          <div className={styles.legendText}>Blockchain Data Storage</div>
-          <div className={styles.descText}>
-            Save your App’s data on the Blockchain Network of your choice.
-            <br /> NOTE: This feature is on the alpha version.
-          </div>
-        </div>
+      <div className={styles.mainContent}>
+        <B4aPageHeader heading="Blockchain Data Storage" description="Save your App’s data on the Blockchain Network of your choice. NOTE: This feature is on the alpha version." />
         <Fieldset
           legend="Network"
           description="You can only connect to a private Ethereum compatible network in this alpha version. Use this network for development purposes at no cost."
@@ -310,7 +305,7 @@ class BlockChainPage extends DashboardView {
           {extra}
           {notification}
         </LoaderContainer>
-        <Toolbar subsection="Blockchain" />
+        <Toolbar section="Database" subsection="Blockchain" />
       </div>
     );
   }
