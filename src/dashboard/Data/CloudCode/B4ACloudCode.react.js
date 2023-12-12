@@ -269,7 +269,21 @@ class B4ACloudCode extends CloudCode {
       </LoaderContainer>
     } else { // render cloud code page
 
-      title = <B4ACloudCodeToolbar />
+      title = <B4ACloudCodeToolbar><Button
+        onClick={this.onLogClick}
+        value="Logs"
+        width='20'
+        additionalStyles={{ minWidth: '70px', background: 'transparent', color: '#f9f9f9', marginRight: '20px', height: '40px', borderColor: 'rgba(249, 249, 249, 0.06)' }}
+      />
+      <Button
+        onClick={this.uploadCode.bind(this)}
+        value={
+          <div className={styles['b4a-cc-deploy-btn']}>Deploy</div>
+        }
+        primary={true}
+        width='20'
+        additionalStyles={{ height: '40px' }}
+      /></B4ACloudCodeToolbar>
 
       content = <B4ACodeTree
         setUpdatedFile={(updatedFiles) => this.setState({ updatedFiles })}
@@ -294,16 +308,13 @@ class B4ACloudCode extends CloudCode {
               <div>
                 <span style={{ color: '#218BEC' }}>Logs</span>
               </div>}
-            primary={true}
             width='20'
             additionalStyles={{ minWidth: '70px', background: 'transparent', color: 'dimgray!important', marginRight: '20px', height: '40px' }}
           />
           <Button
             onClick={this.uploadCode.bind(this)}
             value={
-              <div className={styles['b4a-cc-deploy-btn']}>
-                <Icon name='icon-deploy' fill='#fff' width={17} height={30} /> Deploy
-              </div>
+              <div className={styles['b4a-cc-deploy-btn']}>Deploy</div>
             }
             primary={true}
             width='20'
@@ -317,7 +328,7 @@ class B4ACloudCode extends CloudCode {
       <div className={`${styles.source} ${styles['b4a-source']}`} >
         {title}
         {content}
-        {footer}
+        {/* {footer} */}
         {this.state.modal}
       </div>
     );

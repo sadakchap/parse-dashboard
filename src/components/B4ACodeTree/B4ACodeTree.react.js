@@ -304,11 +304,10 @@ export default class B4ACodeTree extends React.Component {
                   }}
                   disabled={false}
                   value={
-                    <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <img src={addFileIcon} height='24px' width='24px' />
-                      <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>New File</span>
+                    <div style={{ display: 'flex', alignItems: 'center', borderRadius: '0.3125rem', border: '1px solid rgba(249, 249, 249, 0.06)', background: '#303338', padding: '0.3125rem 0.875rem' }}>
+                      <img src={addFileIcon} height='18px' width='18px' />
+                      <span style={{ color: '#f9f9f9', marginRight:'0.25rem' }}>New File</span>
                     </div>}
-                  primary={true}
                   width='20'
                   additionalStyles={{ minWidth: '40px', background: 'transparent', border: 'none', padding: '0' }}
                 />
@@ -319,11 +318,10 @@ export default class B4ACodeTree extends React.Component {
                   handleFiles={this.handleFiles.bind(this)}>
                   <Button
                     value={
-                      <div style={{ fontSize: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <img src={uploadFileIcon} height='24px' width='24px' />
-                        <span style={{ color: 'dimgray', fontSize: '10px', lineHeight: '15px' }}>Upload File</span>
+                      <div style={{ display: 'flex', alignItems: 'center', borderRadius: '0.3125rem', border: '1px solid rgba(249, 249, 249, 0.06)', background: '#303338', padding: '0.3125rem 0.875rem' }}>
+                        <img src={uploadFileIcon} height='18px' width='18px' />
+                        <span style={{ color: '#f9f9f9', marginRight: '0.25rem' }}>Upload File</span>
                       </div>}
-                    primary={true}
                     width='20'
                     additionalStyles={{ minWidth: '60px', background: 'transparent', border: 'none', padding: '0' }}
                   />
