@@ -9,13 +9,13 @@ import PropTypes from 'lib/PropTypes';
 import React from 'react';
 import Icon from 'components/Icon/Icon.react';
 import styles from 'components/Toolbar/Toolbar.scss';
-import { useNavigate, useNavigationType, NavigationType } from 'react-router-dom';
+import { useNavigate, useNavigationType } from 'react-router-dom';
 
 const Toolbar = props => {
   const action = useNavigationType();
   const navigate = useNavigate();
   let backButton;
-  if (props.relation || (props.filters && props.filters.size && action !== NavigationType.Pop)) {
+  if (props.relation || (props.filters && props.filters.size && action !== 'POP')) {
     backButton = (
       <a className={styles.iconButton} onClick={() => navigate(-1)}>
         <Icon width={32} height={32} fill="#ffffff" name="left-outline" />
@@ -38,16 +38,16 @@ const Toolbar = props => {
               </span>
             </div>
             { props.readWritePermissions && <div>  <div className={styles.seperatorVertical}></div>
-            {/* {props.helpsection} */}
-            {/* Public read and write access */}
-             <div className={styles.publicAccess} onClick={() => props.onClickSecurity(true)}>
-              { props.lockIcon === true ?
-                <Icon name='lock-outline' fill='#FFFFFF' width={17} height={17}></Icon> :
-                <Icon name='lock-open-variant' fill='#FFFFFF' width={17} height={17}></Icon>
-              }
-              <span className={styles.mr5}></span>
-              <a href="javascript:void(0)" className={styles.publicAccessLink}><small>{props.readWritePermissions}</small></a>
-            </div> </div> }
+              {/* {props.helpsection} */}
+              {/* Public read and write access */}
+              <div className={styles.publicAccess} onClick={() => props.onClickSecurity(true)}>
+                { props.lockIcon === true ?
+                  <Icon name='lock-outline' fill='#FFFFFF' width={17} height={17}></Icon> :
+                  <Icon name='lock-open-variant' fill='#FFFFFF' width={17} height={17}></Icon>
+                }
+                <span className={styles.mr5}></span>
+                <a href="javascript:void(0)" className={styles.publicAccessLink}><small>{props.readWritePermissions}</small></a>
+              </div> </div> }
           </div>
         </div>
       </div>
