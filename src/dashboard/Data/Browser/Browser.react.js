@@ -238,7 +238,7 @@ class Browser extends DashboardView {
 
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
       this.handleFetchedSchema();
-      this.redirectToFirstClass(this.props.schema.data.get('classes'));
+      !this.props.params.className && this.redirectToFirstClass(this.props.schema.data.get('classes'));
     });
     if (!this.props.params.className && this.props.schema.data.get('classes')) {
       this.redirectToFirstClass(this.props.schema.data.get('classes'));
@@ -296,7 +296,7 @@ class Browser extends DashboardView {
 
         nextProps.schema.dispatch(ActionTypes.FETCH).then(() => {
           this.handleFetchedSchema();
-          this.redirectToFirstClass(nextProps.schema.data.get('classes'), nextContext);
+          !this.props.params.className && this.redirectToFirstClass(nextProps.schema.data.get('classes'), nextContext);
         });
       }
 
@@ -612,7 +612,7 @@ class Browser extends DashboardView {
   }
 
   redirectToFirstClass(classList, context) {
-    if (!classList.isEmpty()) {
+    if (classList && !classList.isEmpty()) {
       classList = Object.keys(classList.toObject());
       const classes = classList.filter(className => className !== '_Role' && className !== '_User' && className !== '_Installation');
       classes.sort((a, b) => {
