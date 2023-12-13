@@ -138,7 +138,7 @@ class IndexManager extends DashboardView {
       data: null,
       showIndexManager: false
     })
-    this.context.currentApp.getIndexes(className).then(data => {
+    this.context.getIndexes(className).then(data => {
       this.setState({
         data,
         loading: false
@@ -230,7 +230,7 @@ class IndexManager extends DashboardView {
       })
     } else {
       const { className } = this.props.params
-      return this.context.currentApp.createIndex(className, indexConfiguration)
+      return this.context.createIndex(className, indexConfiguration)
         .then(() => {
           // add new index row with status PENDING
           // TODO: & start listening to its status
@@ -275,7 +275,7 @@ class IndexManager extends DashboardView {
         showCancelButton: true,
         showLoaderOnConfirm: true,
         preConfirm: () => {
-          return this.context.currentApp.dropIndexes(className, indexesToDrop)
+          return this.context.dropIndexes(className, indexesToDrop)
             .then(() => {
               Swal.close()
               this.refresh()
