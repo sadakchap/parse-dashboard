@@ -72,16 +72,16 @@ export default class Collaborators extends React.Component {
   }
 
   getDefaultClasses() {
-    return this.context.currentApp.classCounts &&
-      this.context.currentApp.classCounts.counts &&
-      lodash.mapValues(this.context.currentApp.classCounts.counts, () => 'Write' )
+    return this.context.classCounts &&
+      this.context.classCounts.counts &&
+      lodash.mapValues(this.context.classCounts.counts, () => 'Write')
   }
 
   handleAdd() {
     //TODO: Show some in-progress thing while the collaborator is being validated, or maybe have some sort of
     //async validator in the parent form. Currently if you mash the add button, they same collaborator gets added many times.
     this.setState({lastError: '', lastSuccess: '', showBtnCollaborator: false });
-    return this.context.currentApp.validateCollaborator(this.state.currentEmail).then((response) => {
+    return this.context.validateCollaborator(this.state.currentEmail).then((response) => {
       // lastError logic assumes we only have 1 input field
       if (response.success) {
         this.setState({
@@ -122,7 +122,7 @@ export default class Collaborators extends React.Component {
   }
 
   sendInvite(featuresPermission, classesPermission, owner) {
-    return this.context.currentApp.sendEmailToInviteCollaborator(this.state.currentEmail, featuresPermission, classesPermission, owner).then((response) => {
+    return this.context.sendEmailToInviteCollaborator(this.state.currentEmail, featuresPermission, classesPermission, owner).then((response) => {
       if (response.status === 200) {
         this.setState({ lastError: '', inviteCollab: false, showDialog: false, lastSuccess: 'The invite has been sent!', currentEmail: '', showBtnCollaborator: false, waiting_collaborators: response.data.response });
         setTimeout(() => {
@@ -140,7 +140,7 @@ export default class Collaborators extends React.Component {
   }
 
   editInvite(featuresPermission, classesPermission) {
-    return this.context.currentApp.editInvitePermissionCollaborator(this.state.currentEmailInput, featuresPermission, classesPermission).then((response) => {
+    return this.context.editInvitePermissionCollaborator(this.state.currentEmailInput, featuresPermission, classesPermission).then((response) => {
       if (response.status === 200) {
         this.setState({
           lastError: '',
@@ -164,7 +164,7 @@ export default class Collaborators extends React.Component {
   }
 
   handleRemoveInvite(collaborator) {
-    return this.context.currentApp.removeInviteCollaborator(collaborator.userEmail).then((response) => {
+    return this.context.removeInviteCollaborator(collaborator.userEmail).then((response) => {
       this.setState({
         waiting_collaborators: response.response
       })
@@ -232,7 +232,7 @@ export default class Collaborators extends React.Component {
         description='Configure how this user can access the App features.'
         advanced={false}
         confirmText='Save'
-        isGDPR={this.context.currentApp.custom && this.context.currentApp.custom.isGDPR}
+        isGDPR={this.context.custom && this.context.custom.isGDPR}
         customFeaturesPermissions={
           (
             (this.state.toEdit || this.state.editInvitePermission && this.state.currentFeaturesPermissions) ?
