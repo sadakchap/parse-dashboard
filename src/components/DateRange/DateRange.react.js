@@ -8,7 +8,7 @@
 import Calendar from 'components/Calendar/Calendar.react';
 import { Directions } from 'lib/Constants';
 import Icon from 'components/Icon/Icon.react';
-import { monthDayStringUTC, monthsFrom, daysFrom } from 'lib/DateUtils';
+import { monthDayStringUTC, monthsFrom, daysFrom, daysToMilli } from 'lib/DateUtils';
 import Popover from 'components/Popover/Popover.react';
 import Position from 'lib/Position';
 import PropTypes from 'lib/PropTypes';
