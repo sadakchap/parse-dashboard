@@ -84,7 +84,7 @@ class Logs extends DashboardView {
   refreshLogs(e) {
     e.preventDefault();
     this.setState({ logs: undefined });
-    this.fetchLogs(this.context.currentApp, this.props.params.type);
+    this.fetchLogs(this.context, this.props.params.type);
   }
 
   // As parse-server doesn't support (yet?) versioning, we are disabling
