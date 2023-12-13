@@ -2158,11 +2158,10 @@ class Browser extends DashboardView {
   }
 
   onClickIndexManager() {
-    const { appId, className } = this.props.params
-    history.push({
-      pathname: `/apps/${appId}/index/${className}`,
+    const { className } = this.props.params
+    this.props.navigate(generatePath(this.context, `index/${className}`), {
       state: { showBackButton: true }
-    })
+    });
   }
 
   onClickSecurity() {
