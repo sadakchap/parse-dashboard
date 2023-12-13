@@ -374,7 +374,7 @@ class IndexManager extends DashboardView {
         <div className={styles.headerContainer}>
           <div className={styles.headerDescriptionContainer}>
             {showBackButton ? (
-              <a className={styles.iconButton} onClick={() => history.goBack()} title='Back to Database Browser'>
+              <a className={styles.iconButton} onClick={() => this.props.navigate(-1)} title='Back to Database Browser'>
                 <Icon width={32} height={32} fill="#ffffff" name="left-outline" />
               </a>
             ) : null}
