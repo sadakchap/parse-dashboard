@@ -157,7 +157,7 @@ export default class FlowView extends React.Component {
         <Button
           disabled={this.state.saveState === SaveButton.States.SAVING}
           onClick={this.resetFields.bind(this)}
-          value="Cancel"
+          value={this.state.saveState === SaveButton.States.SUCCEEDED ? 'Dismiss' : 'Cancel'}
         />
       ),
     } = this.props;
@@ -201,7 +201,7 @@ export default class FlowView extends React.Component {
         state={saveState}
         waitingText={submitText}
         savingText={inProgressText}
-        disabled={!!hasFormValidationError}
+        disabled={!!hasFormValidationError || this.state.errors.length > 0}
         onClick={this.handleClickSaveButton.bind(this)}
       />
     );
@@ -263,4 +263,8 @@ FlowView.propTypes = {
     'A message for the footer when the validate message is "use default"'
   ),
   renderModals: PropTypes.object.describe('An array of modals to render in the document')
+};
+
+FlowView.defaultProps = {
+  afterSave: () => {}
 };
