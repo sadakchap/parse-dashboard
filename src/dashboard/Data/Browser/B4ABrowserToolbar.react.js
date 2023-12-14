@@ -94,7 +94,8 @@ const B4ABrowserToolbar = ({
 }) => {
   const selectionLength = Object.keys(selection).length;
   const isPendingEditCloneRows = editCloneRows && editCloneRows.length > 0;
-  const details = [], lockIcon = false;
+  const details = [];
+  let lockIcon = false;
   if (count !== undefined) {
     if (count === 1) {
       details.push('1 object');

@@ -708,6 +708,7 @@ class Browser extends DashboardView {
     }
     this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
       this.state.counts[className] = 0;
+      this.state.clp[className] = clp;
       this.props.navigate(generatePath(this.context, 'browser/' + className));
       shouldContinue && this.showAddColumn();
     }).then(() => {
