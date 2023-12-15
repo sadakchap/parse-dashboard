@@ -151,6 +151,7 @@ export default class FlowView extends React.Component {
       showFooter = () => true,
       footerContents,
       defaultFooterMessage,
+      renderModals = [],
       renderForm,
       validate = () => '',
       secondaryButton = () => (
@@ -167,6 +168,7 @@ export default class FlowView extends React.Component {
     const setFieldJson = this.setFieldJson.bind(this);
     const fields = this.currentFields();
     const form = renderForm({ fields, changes, setField, resetFields, setFieldJson, errors: this.state.errors });
+    const flowModals = <div>{renderModals.map((modal, key) => <div key={key}>{modal}</div>)}</div>
 
     const invalidFormMessage = validate({ changes, fields });
     const hasFormValidationError =
@@ -219,6 +221,7 @@ export default class FlowView extends React.Component {
     return (
       <div className={styles.flowViewWrapper}>
         {form}
+        {flowModals}
         {footer}
       </div>
     );
