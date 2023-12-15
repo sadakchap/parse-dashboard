@@ -54,6 +54,8 @@
   vertical-align: top;
   text-align: center;
   width: 30px;
+  border-right: 1px solid rgba(249, 249, 249, 0.06);
+  padding-right: 1rem;
   accent-color: $cta-green;
   // background: rgba(224,224,234,0.10);
 }
@@ -64,7 +66,7 @@
   width: 1px;
   background-color: rgba(249, 249, 249, 0.06);
   height: 46px;
-  margin: 0 1rem;
+  // margin: 0 1rem;
   cursor: ew-resize;
 }
 

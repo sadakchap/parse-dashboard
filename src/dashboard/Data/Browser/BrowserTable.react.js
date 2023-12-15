@@ -19,7 +19,7 @@ import { CurrentApp } from 'context/currentApp';
 
 const MAX_ROWS = 200; // Number of rows to render at any time
 const ROWS_OFFSET = 160;
-const ROW_HEIGHT = 30;
+const ROW_HEIGHT = 36;
 
 const READ_ONLY = ['objectId', 'createdAt', 'updatedAt'];
 
@@ -396,13 +396,13 @@ export default class BrowserTable extends React.Component {
           let wrapLeft = 30;
           for (let i = 0; i < this.props.current.col; i++) {
             const column = this.props.order[i];
-            wrapLeft += column.visible ? column.width : 0;
+            wrapLeft += column.visible ? column.width + 1 : 0;
           }
           if (!readonly && !this.props.isUnique) {
             editor = (
               <Editor
                 top={wrapTop}
-                left={wrapLeft}
+                left={wrapLeft + 24}
                 type={type}
                 targetClass={targetClass}
                 value={value}
