@@ -15,7 +15,7 @@ import FormNote from 'components/FormNote/FormNote.react';
 import generateCurl from 'dashboard/Data/ApiConsole/generateCurl';
 import JsonPrinter from 'components/JsonPrinter/JsonPrinter.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import Option from 'components/Dropdown/Option.react';
 import Parse from 'parse';
 import React, { Component } from 'react';
@@ -169,10 +169,10 @@ export default class RestConsole extends Component {
         options
       );
       modal = (
-        <Modal
+        <B4aModal
           title="cURL Request"
           subtitle="Use this to replicate the request"
-          icon="laptop-outline"
+          onClose={() => this.setState({ curlModal: false })}
           customFooter={
             <div className={styles.footer}>
               <Button
@@ -184,7 +184,7 @@ export default class RestConsole extends Component {
           }
         >
           <div className={styles.curl}>{content}</div>
-        </Modal>
+        </B4aModal>
       );
     }
 
