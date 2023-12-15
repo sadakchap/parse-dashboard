@@ -12,7 +12,7 @@ import getFileName from 'lib/getFileName';
 import Parse from 'parse';
 import Pill from 'components/Pill/Pill.react';
 import React, { Component } from 'react';
-import styles from 'components/BrowserCell/BrowserCell.scss';
+import styles from 'components/BrowserCell/B4aBrowserCell.scss';
 import baseStyles from 'stylesheets/base.scss';
 import * as ColumnPreferences from 'lib/ColumnPreferences';
 import labelStyles from 'components/Label/Label.scss';

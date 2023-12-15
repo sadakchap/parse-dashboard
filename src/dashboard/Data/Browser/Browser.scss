@@ -175,25 +175,36 @@ body:global(.expanded) {
 }
 
 .tableRow {
-  @include MonospaceFont;
-  font-size: 12px;
+  @include CourierFont;
+  font-size: 0.875rem;
   white-space: nowrap;
-  height: 30px;
-  border-bottom: 1px solid #e3e3ea;
+  height: 36px;
+  line-height: 140%;
+  color: $light-grey;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid rgba(249, 249, 249, 0.06);
 
-  &:nth-child(odd) {
-    background: #F4F5F7;
+  // &:nth-child(odd) {
+  //   background: #F4F5F7;
+  // }
+  & .cellSeparator {
+    margin: 0 1rem;
+    height: 36px;
+    width: 1px;
+    background: rgba(249, 249, 249, 0.06);
+    display: inline-block;
   }
 }
 
 .checkCell {
   display: inline-block;
   width: 30px;
-  height: 30px;
-  line-height: 31px;
+  height: 36px;
+  line-height: 40px;
   vertical-align: top;
-  border-right: 1px solid #e3e3ea;
+  border-right: 1px solid rgba(249, 249, 249, 0.06);;
   text-align: center;
+  accent-color: $cta-green;
 }
 
 .addRow {
