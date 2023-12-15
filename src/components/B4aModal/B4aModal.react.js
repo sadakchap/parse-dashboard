@@ -26,6 +26,7 @@ const B4aModal = ({
   type = B4aModal.Types.DEFAULT,
   icon,
   iconSize = 36,
+  iconFill="#fff",
   children,
   title,
   subtitle,
@@ -88,6 +89,11 @@ const B4aModal = ({
       <div className={[styles.modal, styles[type]].join(' ')} style={{ width }}>
         {<Icon onClick={onClose} width={10} height={10} className={styles.closeIcon} name="close" fill="#10203A" />}
         <div className={styles.header}>
+          {icon ? (
+            <div className={styles.icon}>
+              <Icon width={iconSize} height={iconSize} name={icon} fill={iconFill} />
+            </div>
+          ) : null}
           <div
             style={{
               top: React.Children.count(subtitle) === 0 ? '29px' : '25px',
@@ -97,11 +103,6 @@ const B4aModal = ({
             {title}
           </div>
           <div className={styles.subtitle}>{subtitle}</div>
-          {icon ? (
-            <div className={styles.icon}>
-              <Icon width={iconSize} height={iconSize} name={icon} fill="#ffffff" />
-            </div>
-          ) : null}
         </div>
         {wrappedChildren}
         {footer}
