@@ -81,7 +81,7 @@ const B4aModal = ({
     </div>
   );
 
-  const wrappedChildren = textModal ? <div className={styles.textModal}>{children}</div> : children;
+  const wrappedChildren = textModal ? <div className={styles.textModal}>{children}</div> : <div style={{ margin: '1rem 0' }}>{children}</div>;
 
   return (
     <Popover fadeIn={true} fixed={true} position={origin} modal={true} color="rgba(17,13,17,0.8)">

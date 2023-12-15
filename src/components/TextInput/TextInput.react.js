@@ -42,6 +42,9 @@ class TextInput extends React.Component {
     if (this.props.className) {
       classes.push(this.props.className);
     }
+    if (this.props.dark) {
+      classes.push(styles.dark);
+    }
 
     if (this.props.multiline || this.props.multiplelines) {
       return (
@@ -96,6 +99,10 @@ TextInput.propTypes = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).describe(
     'The height of the field. Can be a string containing any CSS unit, or a number of pixels. Default is 80px.'
   ),
+};
+
+TextInput.defaultProps = {
+  dark: true
 };
 
 export default withForwardedRef(TextInput);

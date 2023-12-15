@@ -12,7 +12,7 @@ import semver from 'semver/preload.js';
 import Dropdown from 'components/Dropdown/Dropdown.react';
 import Field from 'components/Field/Field.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import Option from 'components/Dropdown/Option.react';
 import TextInput from 'components/TextInput/TextInput.react';
 import Toggle from 'components/Toggle/Toggle.react';
@@ -175,6 +175,7 @@ export default class AddColumnDialog extends React.Component {
             placeholder="Set here a default value"
             multiline={true}
             onChange={async defaultValue => await this.handleDefaultValueChange(defaultValue)}
+            dark={false}
           />
         );
       case 'Number':
@@ -186,6 +187,7 @@ export default class AddColumnDialog extends React.Component {
               type === 'Pointer' ? 'Set a valid object ID here' : 'Set a default value here'
             }
             onChange={async defaultValue => await this.handleDefaultValueChange(defaultValue)}
+            dark={false}
           />
         );
       case 'Date':
@@ -248,17 +250,19 @@ export default class AddColumnDialog extends React.Component {
         }
       }).filter((t => t !== null))
     }
-    let typeDropdown = (
+    const typeDropdown = (
       <Dropdown
         value={this.state.type}
-        onChange={(type) => this.setState({ type: type, defaultValue: undefined, required: false })}>
+        onChange={(type) => this.setState({ type: type, defaultValue: undefined, required: false })}
+        dark={false}
+      >
         {renderOptions(this.props)}
       </Dropdown>
     );
     return (
-      <Modal
-        type={Modal.Types.INFO}
-        icon="ellipses"
+      <B4aModal
+        type={B4aModal.Types.DEFAULT}
+        // icon="ellipses"
         iconSize={30}
         title="Add a new column"
         subtitle="Store another type of data in this class."
@@ -266,6 +270,7 @@ export default class AddColumnDialog extends React.Component {
         confirmText="Add"
         cancelText="Cancel"
         onCancel={this.props.onCancel}
+        onClose={this.props.onCancel}
         continueText={'Add & continue'}
         showContinue={true}
         onContinue={() => {
@@ -277,6 +282,7 @@ export default class AddColumnDialog extends React.Component {
       >
         <Field
           label={<Label text="What type of data do you want to store?" />}
+          theme={Field.Theme.LIGHT}
           input={typeDropdown}
         />
         {this.state.type === 'Pointer' || this.state.type === 'Relation' ? (
@@ -293,9 +299,10 @@ export default class AddColumnDialog extends React.Component {
           }
           input={
             <TextInput
-              placeholder="Give it a good name..."
+              placeholder="Give it a good name"
               value={this.state.name}
               onChange={name => this.setState({ name })}
+              dark={false}
             />
           }
         />
@@ -341,7 +348,7 @@ export default class AddColumnDialog extends React.Component {
               </>
             ) : null
         }
-      </Modal>
+      </B4aModal>
     );
   }
 }

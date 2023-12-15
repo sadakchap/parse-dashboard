@@ -105,6 +105,9 @@ export default class Dropdown extends React.Component {
     if (this.props.disabled) {
       dropdownClasses.push(styles.disabled);
     }
+    if (this.props.dark) {
+      dropdownClasses.push(styles.dark);
+    }
     return (
       <div style={dropdownStyle} className={dropdownClasses.join(' ')} ref={this.dropdownRef}>
         <div

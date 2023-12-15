@@ -10,7 +10,7 @@
 
 .text_input {
   @include InterFont;
-  color: $white;
+  color: $dark;
   border: 0;
   outline: 0;
   background: transparent;
@@ -28,6 +28,9 @@
   &::placeholder {
     color: $light-grey;
   }
+  &.dark {
+    color: $white;
+  }
 }
 
 input.monospace, textarea.monospace {
@@ -35,12 +38,12 @@ input.monospace, textarea.monospace {
 }
 
 input.text_input {
-  text-align: center;
+  text-align: right;
 }
 
 textarea.text_input:not(.monospace) {
   @include placeholder {
-    text-align: center;
+    text-align: right;
     position: relative;
     top: 50%;
     line-height: 9px;

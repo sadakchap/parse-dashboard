@@ -10,12 +10,17 @@
 
 .dropdown {
   position: relative;
-  background: $regal-blue;
-  color: $white;
+  background: transparent;
+  color: $dark;
   font-size: 16px;
   height: 80px;
   width: 100%;
   overflow: hidden;
+
+  &.dark {
+    background: $regal-blue;
+    color: $white;
+  }
 }
 
 .dropdown, .menu {
@@ -24,10 +29,19 @@
   white-space: nowrap;
 }
 
+.dark {
+  .menu {
+    background: $regal-blue;
+  }
+  .option {
+    color: $white;
+  }
+}
+
 .menu {
   max-height: 215px;
   border: 1px solid $blue;
-  background: $regal-blue;
+  background: #ccc;
   overflow: auto;
 
   button {
@@ -37,7 +51,7 @@
   }
 
   .option {
-    color: $white;
+    color: $dark;
     border-bottom: 1px solid $borderGrey;
 
     &:hover {
