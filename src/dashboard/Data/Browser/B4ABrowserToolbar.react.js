@@ -181,7 +181,7 @@ const B4ABrowserToolbar = ({
         ))}
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
-        {onAddRowWithModal ? <MenuItem text="Add a row with modal" onClick={onAddRowWithModal} /> : null}
+        {/* {onAddRowWithModal ? <MenuItem text="Add a row with modal" onClick={onAddRowWithModal} /> : null} */}
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
         <Separator />
