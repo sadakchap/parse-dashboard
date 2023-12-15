@@ -469,7 +469,7 @@ class Browser extends DashboardView {
                     color: { type: 'String' },
                   }
                 }).then(() => {
-                  return context.currentApp.apiRequest('POST', '/classes/B4aVehicle', { name: 'Corolla', price: 19499, color: 'black' }, { useMasterKey: true });
+                  return context.apiRequest('POST', '/classes/B4aVehicle', { name: 'Corolla', price: 19499, color: 'black' }, { useMasterKey: true });
                 }).then(() => {
                   introItems[3].element = getCustomVehicleClassLink();
                   this.nextStep();
