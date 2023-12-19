@@ -10,7 +10,7 @@ import AppName from 'components/Sidebar/AppName.react';
 import html from 'lib/htmlString';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import styles from 'components/Sidebar/Sidebar.scss';
+import styles from 'components/Sidebar/B4aSidebar.scss';
 import baseStyles from 'stylesheets/base.scss';
 import Icon from 'components/Icon/Icon.react';
 

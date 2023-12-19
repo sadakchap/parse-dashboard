@@ -1,7 +1,7 @@
 import React from 'react';
 import Pin from 'components/Sidebar/Pin.react';
 import Tooltip from 'components/Tooltip/SimpleTooltip.react';
-import styles from 'components/Sidebar/Sidebar.scss';
+import styles from 'components/Sidebar/B4aSidebar.scss';
 
 const AppName = ({ name, onClick, pin, onPinClick }) => (
   <div>
