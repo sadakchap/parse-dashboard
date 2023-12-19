@@ -184,6 +184,8 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    justify-content: space-between;
+    width: 100%;
 
     .currentAppName {
       overflow: hidden;
@@ -337,6 +339,7 @@
 
     .section_header > svg {
       margin: 0;
+      fill: $light-blue;
     }
   }
 }
@@ -347,8 +350,12 @@
   .section_header{
     font-weight: 700;
     padding: 1rem 2rem;
+    color: $white;
     &:hover{
       background: rgba(16, 32, 58, 0.3);
+    }
+    & svg {
+      fill: currentColor;
     }
   }
 }
@@ -359,7 +366,7 @@
   // height: 65px;
   font-size: 18px;
   padding: 1rem 2rem;
-  color: $white;
+  color: $light-blue;
 
   &:hover{
     background: rgba(16, 32, 58, 0.3);
@@ -373,6 +380,7 @@
 
   > svg {
     margin-right: 14px;
+    fill: currentColor;
   }
 }
 
