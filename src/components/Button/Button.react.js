@@ -7,12 +7,12 @@
  */
 import baseStyles from 'stylesheets/base.scss';
 import PropTypes from 'lib/PropTypes';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styles from 'components/Button/Button.scss';
 
 const noop = () => {};
 
-const Button = props => {
+const Button = forwardRef(function Button(props, ref) {
   const hasOnClick = props.onClick && !props.disabled;
   const classes = [styles.button, baseStyles.unselectable];
   // if a button is disabled, that overrides any color selection
@@ -48,6 +48,7 @@ const Button = props => {
   }
   return (
     <button
+      ref={ref ?? null}
       type="button"
       style={styleOverride}
       className={classes.join(' ')}
@@ -61,7 +62,7 @@ const Button = props => {
       <span>{props.value}</span>
     </button>
   );
-};
+})
 
 export default Button;
 
