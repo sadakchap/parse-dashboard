@@ -13,7 +13,7 @@ import Field                      from 'components/Field/Field.react';
 import Fieldset                   from 'components/Fieldset/Fieldset.react';
 import Icon                       from 'components/Icon/Icon.react';
 import Label                      from 'components/Label/Label.react';
-import LoaderContainer            from 'components/LoaderContainer/LoaderContainer.react';
+import B4aLoaderContainer            from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import Option                     from 'components/Dropdown/Option.react';
 import ParseApp                   from 'lib/ParseApp';
 import PropTypes                  from 'lib/PropTypes';
@@ -300,11 +300,11 @@ class BlockChainPage extends DashboardView {
 
     return (
       <div className={styles.content}>
-        <LoaderContainer loading={this.state.loading}>
+        <B4aLoaderContainer loading={this.state.loading}>
           {this.renderForm()}
           {extra}
           {notification}
-        </LoaderContainer>
+        </B4aLoaderContainer>
         <Toolbar section="Database" subsection="Blockchain" />
       </div>
     );
