@@ -402,29 +402,10 @@ export default class ParseApp {
     // if (new Date() - this.settings.lastFetched < 60000) {
     //   return Promise.resolve(this.settings.fields);
     // }
-    const fields = {
-      'fields': {
-        'owner_email': 'prerna@back4app.com',
-        'owner_name': 'prerna@back4app.com',
-        'collaborators': [],
-        'waiting_collaborators': [],
-        'urls': [],
-        'gcm_credentials': [],
-        'pricing_plan': {},
-        'dashboardAPI': 'https://parseapi-homolog.back4app.com',
-        'databaseURL': 'mongodb://admin:FkWzqrbKizPpjwEcui3wsmu9@mongohomolog.back4app.com:4000/1d51e301c93a4767b7592129e6970825',
-        'parseVersion': '5.2.3',
-        'mongoVersion': '3.6',
-        'databaseVersion': '3.6',
-        'parseOptions': {},
-        'clientPush': false,
-        'clientClassCreation': true
-      }
-    }
-    // const path = '/apps/' + this.slug + '/dashboard_ajax/settings';
-    // let fields = await axios.get(path);
+    const path = '/apps/' + this.slug + '/dashboard_ajax/settings';
+    let fields = await axios.get(path);
 
-    // fields = fields.data;
+    fields = fields.data;
     for (const f in fields) {
       this.settings.fields[f] = fields[f];
       this.settings.lastFetched = new Date();
