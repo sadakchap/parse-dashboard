@@ -1182,15 +1182,17 @@ class Browser extends DashboardView {
     const classes = await Parse.Schema.all();
     const schema = classes.find(c => c.className === this.props.params.className);
 
-    const fieldKeys = Object.keys(schema.fields)
-    for (let i = 0; i < fieldKeys.length; i++) {
-      const schemaKey = fieldKeys[i];
-      const schVal = schema.fields[schemaKey];
-      if (schVal.type === 'Pointer') {
-        const defaultPointerKey = await localStorage.getItem(schVal.targetClass) || 'objectId';
-        if (defaultPointerKey !== 'objectId') {
-          query.include(schemaKey);
-          query.select(schemaKey + '.' + defaultPointerKey);
+    if (schema) {
+      const fieldKeys = Object.keys(schema.fields)
+      for (let i = 0; i < fieldKeys.length; i++) {
+        const schemaKey = fieldKeys[i];
+        const schVal = schema.fields[schemaKey];
+        if (schVal.type === 'Pointer') {
+          const defaultPointerKey = localStorage.getItem(schVal.targetClass) || 'objectId';
+          if (defaultPointerKey !== 'objectId') {
+            query.include(schemaKey);
+            query.select(schemaKey + '.' + defaultPointerKey);
+          }
         }
       }
     }
