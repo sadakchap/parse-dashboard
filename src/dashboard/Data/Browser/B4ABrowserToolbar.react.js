@@ -13,8 +13,8 @@ import Toolbar              from 'components/Toolbar/Toolbar.react';
 import Toggle               from 'components/Toggle/Toggle.react';
 import Button               from 'components/Button/Button.react'
 import VideoTutorialButton  from 'components/VideoTutorialButton/VideoTutorialButton.react';
-import ColumnsConfiguration
-  from 'components/ColumnsConfiguration/ColumnsConfiguration.react';
+import B4aColumnsConfiguration
+  from 'components/ColumnsConfiguration/B4aColumnsConfiguration.react';
 import SubMenuItem from '../../../components/BrowserMenu/SubMenuItem.react';
 
 const apiDocsButtonStyle = {
@@ -343,7 +343,7 @@ const B4ABrowserToolbar = ({
         blacklistedFilters={onAddRow ? [] : ['unique']}
         disabled={isPendingEditCloneRows}
       />
-      <ColumnsConfiguration
+      <B4aColumnsConfiguration
         disabled={isPendingEditCloneRows}
         handleColumnsOrder={handleColumnsOrder}
         handleColumnDragDrop={handleColumnDragDrop}
