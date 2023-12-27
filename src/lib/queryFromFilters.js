@@ -16,7 +16,7 @@ export default function queryFromFilters(className, filters) {
     query = className.query();
   }
   filters.forEach(filter => {
-    addConstraint(query, filter);
+    addConstraint(query, filter, className);
   });
   return query;
 }
@@ -106,7 +106,7 @@ function addConstraint(query, filter, className) {
       break;
     case 'isNull':
       query.exists(filter.get('field'));
-      let nullQuery = new Parse.Query(className);
+      const nullQuery = new Parse.Query(className);
       nullQuery.equalTo(filter.get('field'), null);
       query = Parse.Query.and(query, nullQuery);
       break;
