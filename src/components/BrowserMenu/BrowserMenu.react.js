@@ -10,7 +10,7 @@ import Icon from 'components/Icon/Icon.react';
 import Position from 'lib/Position';
 import PropTypes from 'lib/PropTypes';
 import React from 'react';
-import styles from 'components/BrowserMenu/BrowserMenu.scss';
+import styles from 'components/BrowserMenu/B4aBrowserMenu.scss';
 
 export default class BrowserMenu extends React.Component {
   constructor() {
