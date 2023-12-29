@@ -139,14 +139,9 @@ export default class BrowserFilter extends React.Component {
             onClick={() => this.props.setCurrent(null)}
             id={POPOVER_CONTENT_ID}
           >
-            <div
-              onClick={this.toggle}
-              style={{
-                cursor: 'pointer',
-                width: node.clientWidth,
-                height: node.clientHeight,
-              }}
-            ></div>
+            <div className={styles.title} onClick={this.toggle}>
+              <Icon name="b4a-browser-filter-icon" width={24} height={24} />
+            </div>
             <div className={styles.body}>
               <Filter
                 className={this.props.className}
