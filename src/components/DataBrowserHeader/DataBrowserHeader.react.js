@@ -73,6 +73,7 @@ class DataBrowserHeader extends React.Component {
       style,
       isDragging,
       isOver,
+      required
     } = this.props;
     const classes = [styles.header, baseStyles.unselectable];
     if (order) {
@@ -88,7 +89,7 @@ class DataBrowserHeader extends React.Component {
       connectDropTarget(
         <div className={classes.join(' ')} style={style}>
           <div className={styles.name}>{name}</div>
-          <div className={styles.type}>{targetClass ? `${type} <${targetClass}>` : type}</div>
+          <div className={styles.type}>{targetClass ? `${type} <${targetClass}>` : type} {required && <span>*</span>}</div>
         </div>
       )
     );
