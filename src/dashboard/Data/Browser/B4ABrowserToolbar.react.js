@@ -218,7 +218,6 @@ const B4ABrowserToolbar = ({
           : <noscript />}
         {enableExportClass ?
           <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
-            <MenuItem text="Export this data" onClick={onExport} />
             <MenuItem text={'Export all rows'} onClick={() => onExportSelectedRows({ '*': true })} />
             <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`Export ${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
             <MenuItem text={'Export schema'} onClick={() => onExportSchema()} />
