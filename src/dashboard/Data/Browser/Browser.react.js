@@ -1935,6 +1935,16 @@ class Browser extends DashboardView {
       query.limit(objectIds.length);
     }
 
+    if (!this.state.filters.isEmpty()) {
+      // Export filtered
+      const objectIds = [];
+      for (const obj of this.state.data) {
+        objectIds.push(obj.id);
+      }
+      query.containedIn('objectId', objectIds);
+      query.limit(objectIds.length);
+    }
+
     const processObjects = objects => {
       const classColumns = this.getClassColumns(className, false);
       // create object with classColumns as property keys needed for ColumnPreferences.getOrder function
@@ -2035,7 +2045,7 @@ class Browser extends DashboardView {
       document.body.removeChild(element);
     };
 
-    if (!rows['*']) {
+    if (!rows['*'] || !this.state.filters.isEmpty()) {
       const objects = await query.find({ useMasterKey: true });
       processObjects(objects);
       this.setState({ exporting: false, exportingCount: objects.length });
@@ -2609,7 +2619,7 @@ class Browser extends DashboardView {
         <ExportSelectedRowsDialog
           className={className}
           selection={this.state.rowsToExport}
-          count={this.state.counts[className]}
+          count={this.state.filters.isEmpty() ? this.state.counts[className] : this.state.data?.length}
           data={this.state.data}
           onCancel={this.cancelExportSelectedRows}
           onConfirm={(type, indentation) =>
