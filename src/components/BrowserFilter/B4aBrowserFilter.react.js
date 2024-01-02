@@ -58,7 +58,10 @@ export default class B4aBrowserFilter extends React.Component {
     }
     this.setState(prevState => ({
       open: !prevState.open,
-      filters: filters
+      filters: filters,
+      name: '',
+      confirmName: false,
+      editMode: this.props.filters.size === 0,
     }));
     this.props.setCurrent(null);
   }
