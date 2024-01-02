@@ -1,4 +1,4 @@
-import BrowserFilter        from 'components/BrowserFilter/BrowserFilter.react';
+import B4aBrowserFilter        from 'components/BrowserFilter/B4aBrowserFilter.react';
 import BrowserMenu          from 'components/BrowserMenu/BrowserMenu.react';
 import Icon                 from 'components/Icon/Icon.react';
 import LoginDialog          from 'dashboard/Data/Browser/LoginDialog.react';
@@ -332,7 +332,7 @@ const B4ABrowserToolbar = ({
       <a className={styles.toolbarButton + ` ${isPendingEditCloneRows && styles.toolbarButtonDisabled}`} onClick={isPendingEditCloneRows ? null : onRefresh} title='Refresh'>
         <Icon name='refresh-icon' width={30} height={26} />
       </a>
-      <BrowserFilter
+      <B4aBrowserFilter
         setCurrent={setCurrent}
         schema={schemaSimplifiedData}
         filters={filters}
