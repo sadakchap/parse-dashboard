@@ -296,7 +296,7 @@ class Browser extends DashboardView {
 
         nextProps.schema.dispatch(ActionTypes.FETCH).then(() => {
           this.handleFetchedSchema();
-          !this.props.params.className && this.redirectToFirstClass(nextProps.schema.data.get('classes'), nextContext);
+          !this.props.params.className && this.redirectToFirstClass(this.props.schema.data.get('classes'), nextContext);
         });
       }
 
