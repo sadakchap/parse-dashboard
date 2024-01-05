@@ -8,20 +8,12 @@
 import PropTypes from 'lib/PropTypes';
 import React from 'react';
 import styles from 'components/B4aLoaderContainer/B4aLoaderContainer.scss';
-import { useLottie } from 'lottie-react';
+import Lottie from 'lottie-react';
 import b4aLoadingAnimation from './b4aLoadingAnimation.json';
 
 //Loader wrapper component
 //Wraps child component with a layer and <Loader/> centered
 const B4aLoaderContainer = ({ loading, hideAnimation, children, solid = true }) => {
-
-  const options = {
-    animationData: b4aLoadingAnimation,
-    loop: true
-  };
-
-  const { View } = useLottie(options, { height: 100 });
-
   return(<div className={styles.loaderContainer}>
     <div className={styles.children}>{children}</div>
     <div
@@ -32,12 +24,13 @@ const B4aLoaderContainer = ({ loading, hideAnimation, children, solid = true }) 
       ].join(' ')}
     >
       {hideAnimation || !loading ? null : <div className={styles.loader}>
-        {View}
+        <Lottie animationData={b4aLoadingAnimation} loop={true} height={100} />
         <div className={styles.text}>Loading</div>
       </div>}
     </div>
   </div>
-  )};
+  )
+};
 
 export default B4aLoaderContainer;
 
