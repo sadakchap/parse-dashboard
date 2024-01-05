@@ -13,7 +13,7 @@ import B4ACodeTree from 'components/B4ACodeTree/B4ACodeTree.react';
 import { updateTreeContent } from 'components/B4ACodeTree/B4ATreeActions';
 import B4ACloudCodeToolbar from 'dashboard/Data/CloudCode/B4ACloudCodeToolbar.react';
 import CloudCode from 'dashboard/Data/CloudCode/CloudCode.react';
-import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
+import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import LoaderDots from 'components/LoaderDots/LoaderDots.react';
 import styles from 'dashboard/Data/CloudCode/CloudCode.scss';
 import Icon from 'components/Icon/Icon.react';
@@ -264,9 +264,9 @@ class B4ACloudCode extends CloudCode {
 
     // Show loading page before fetch data
     if (this.state.loading) {
-      content = <LoaderContainer loading={true} solid={false}>
+      content = <B4aLoaderContainer loading={true} solid={false}>
         <div className={styles.loading}></div>
-      </LoaderContainer>
+      </B4aLoaderContainer>
     } else { // render cloud code page
 
       title = <B4ACloudCodeToolbar><Button

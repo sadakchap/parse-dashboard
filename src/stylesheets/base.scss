@@ -10,13 +10,13 @@
 
 html, body {
   min-height: $content-max-height;
-  background-color: #fdf9fb;
+  background-color: $dark;
 }
 
 body {
   @include NotoSansFont;
   box-sizing: border-box;
-  color: $mainTextColor;
+  color: $white;
   padding-top: $header-height;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }

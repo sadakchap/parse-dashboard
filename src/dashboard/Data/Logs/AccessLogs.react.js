@@ -12,7 +12,7 @@ import EmptyGhostState from 'components/EmptyGhostState/EmptyGhostState.react';
 import React from 'react';
 import ReleaseInfo from 'components/ReleaseInfo/ReleaseInfo';
 import Toolbar from 'components/Toolbar/Toolbar.react';
-import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
+import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import Icon from 'components/Icon/Icon.react';
 import ServerLogsView  from 'components/ServerLogsView/ServerLogsView.react';
 import { withRouter } from 'lib/withRouter';
@@ -155,7 +155,7 @@ export default class AccessLogs extends DashboardView {
       />
     );
     content = (
-      <LoaderContainer loading={this.state.loading} solid={false}>
+      <B4aLoaderContainer loading={this.state.loading} solid={false}>
         <div className={styles.content}>
           {!this.state.loading && this.state.logs === '' && (
             <div style={{ padding: '1.5rem 0' }}>
@@ -174,7 +174,7 @@ export default class AccessLogs extends DashboardView {
             </div>
           )}
         </div>
-      </LoaderContainer>
+      </B4aLoaderContainer>
     );
 
     return (

@@ -3,7 +3,7 @@ import DashboardView from 'dashboard/DashboardView.react';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import Fieldset from 'components/Fieldset/Fieldset.react';
 import styles from 'dashboard/B4aConnectPage/B4aConnectPage.scss';
-import LoaderContainer from 'components/LoaderContainer/LoaderContainer.react';
+import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import reactImg from './react.png';
 import flutterImg from './flutter.png';
 import androidImg from './android-robot.png'
@@ -29,7 +29,7 @@ class B4aConnectPage extends DashboardView {
 
   renderContent() {
     return (
-      <LoaderContainer
+      <B4aLoaderContainer
         className={styles.loading}
         loading={false}
         hideAnimation={false}
@@ -120,7 +120,7 @@ class B4aConnectPage extends DashboardView {
             </div>
           </div>
         </div>
-      </LoaderContainer>
+      </B4aLoaderContainer>
     );
   }
 }

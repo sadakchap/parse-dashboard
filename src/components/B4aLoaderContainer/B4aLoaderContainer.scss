@@ -33,14 +33,23 @@
   display: block;
   width: 140px;
   height: 140px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-  svg {
+  .text {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    fill: $white;
-    transform: translate(-50%, -50%);
+    bottom: 25%;
+    right: 29%;
   }
+
+  // svg {
+  //   position: absolute;
+  //   width: 20px;
+  //   height: 20px;
+  //   border-radius: 100%;
+  //   fill: $white;
+  //   transform: translate(-50%, -50%);
+  // }
 }
 
