@@ -21,7 +21,7 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import postgresqlImg from './postgresql.png';
-import PermissionsDialog from 'components/PermissionsDialog/PermissionsDialog.react';
+import B4aPermissionsDialog from 'components/PermissionsDialog/B4aPermissionsDialog.react';
 import validateEntry from 'lib/validateCLPEntry.js';
 import PointerKeyDialog from 'dashboard/Data/Browser/PointerKeyDialog.react';
 import ConfirmDeleteColumnDialog from './ConfirmDeleteColumnDialog.react';
@@ -2562,7 +2562,7 @@ class Browser extends DashboardView {
       }
       const perms = this.state.clp[className];
       extras = (
-        <PermissionsDialog
+        <B4aPermissionsDialog
           title="Edit Class Level Permissions"
           enablePointerPermissions={parseServerSupportsPointerPermissions}
           advanced={true}
