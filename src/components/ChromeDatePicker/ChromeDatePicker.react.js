@@ -5,15 +5,18 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import Calendar from 'components/Calendar/Calendar.react';
+import Calendar       from 'components/Calendar/Calendar.react';
 import { Directions } from 'lib/Constants';
-import Icon from 'components/Icon/Icon.react';
-import { monthDayStringUTC } from 'lib/DateUtils';
-import Popover from 'components/Popover/Popover.react';
-import Position from 'lib/Position';
-import PropTypes from 'lib/PropTypes';
-import React from 'react';
-import styles from 'components/ChromeDatePicker/ChromeDatePicker.scss';
+import Icon           from 'components/Icon/Icon.react';
+import {
+  monthDayStringUTC
+}                     from 'lib/DateUtils';
+import Popover        from 'components/Popover/Popover.react';
+import Position       from 'lib/Position';
+import PropTypes      from 'lib/PropTypes';
+import React          from 'react';
+import ReactDOM       from 'react-dom';
+import styles         from 'components/ChromeDatePicker/ChromeDatePicker.scss';
 
 export default class ChromeDatePicker extends React.Component {
   constructor() {
@@ -23,8 +26,10 @@ export default class ChromeDatePicker extends React.Component {
       open: false,
       position: null,
     };
+  }
 
-    this.wrapRef = React.createRef();
+  componentDidMount() {
+    this.node = ReactDOM.findDOMNode(this);
   }
 
   toggle() {
@@ -32,13 +37,13 @@ export default class ChromeDatePicker extends React.Component {
       if (this.state.open) {
         return { open: false };
       }
-      const pos = Position.inWindow(this.wrapRef.current);
+      let pos = Position.inWindow(this.node);
       if (this.props.align === Directions.RIGHT) {
-        pos.x += this.wrapRef.current.clientWidth;
+        pos.x += this.node.clientWidth;
       }
       return {
         open: true,
-        position: pos,
+        position: pos
       };
     });
   }
@@ -50,7 +55,7 @@ export default class ChromeDatePicker extends React.Component {
 
   close() {
     this.setState({
-      open: false,
+      open: false
     });
   }
 
@@ -58,23 +63,21 @@ export default class ChromeDatePicker extends React.Component {
     let popover = null;
     let content = null;
     if (this.state.open) {
-      const classes = [styles.open];
+      let classes = [styles.open];
       if (this.props.align === Directions.RIGHT) {
         classes.push(styles.right);
       }
       popover = (
-        <Popover
-          fixed={true}
-          position={this.state.position}
-          onExternalClick={this.close.bind(this)}
-        >
+        <Popover fixed={true} position={this.state.position} onExternalClick={this.close.bind(this)}>
           <div className={classes.join(' ')}>
             <div className={styles.calendar}>
-              <Calendar value={this.props.value} onChange={this.onChange.bind(this)} />
+              <Calendar
+                value={this.props.value}
+                onChange={this.onChange.bind(this)} />
             </div>
             <div className={styles.chrome} onClick={this.close.bind(this)}>
               <span>{`${monthDayStringUTC(this.props.value)}`}</span>
-              <Icon width={18} height={18} name="calendar-solid" fill="#169CEE" />
+              <Icon width={18} height={18} name='calendar-solid' fill='#169CEE' />
             </div>
           </div>
         </Popover>
@@ -83,13 +86,13 @@ export default class ChromeDatePicker extends React.Component {
       content = (
         <div className={styles.chrome}>
           <span>{`${monthDayStringUTC(this.props.value)}`}</span>
-          <Icon width={18} height={18} name="calendar-solid" fill="#169CEE" />
+          <Icon width={18} height={18} name='calendar-solid' fill='#169CEE' />
         </div>
       );
     }
 
     return (
-      <div className={styles.wrap} onClick={this.toggle.bind(this)} ref={this.wrapRef}>
+      <div className={styles.wrap} onClick={this.toggle.bind(this)}>
         {content}
         {popover}
       </div>
@@ -98,7 +101,9 @@ export default class ChromeDatePicker extends React.Component {
 }
 
 ChromeDatePicker.propTypes = {
-  value: PropTypes.object.describe('The Date value of the picker.'),
+  value: PropTypes.object.describe(
+    'The Date value of the picker.'
+  ),
   onChange: PropTypes.func.describe(
     'A function called when the date picker is changed. It receives a new Date value.'
   ),

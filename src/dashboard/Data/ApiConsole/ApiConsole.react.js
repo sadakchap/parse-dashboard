@@ -8,11 +8,8 @@
 import React from 'react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
 import DashboardView from 'dashboard/DashboardView.react';
-import { Outlet } from 'react-router-dom';
-import { withRouter } from 'lib/withRouter';
 
-@withRouter
-class ApiConsole extends DashboardView {
+export default class ApiConsole extends DashboardView {
   constructor() {
     super();
     this.section = 'API';
@@ -20,8 +17,8 @@ class ApiConsole extends DashboardView {
   }
 
   renderSidebar() {
-    const { pathname } = this.props.location;
-    const current = pathname.substr(pathname.lastIndexOf('/') + 1, pathname.length - 1);
+    const { path } = this.props.match;
+    const current = path.substr(path.lastIndexOf('/') + 1, path.length - 1);
     return (
       <CategoryList
         current={current}
@@ -36,8 +33,7 @@ class ApiConsole extends DashboardView {
   }
 
   renderContent() {
-    return <Outlet />;
+    const child = React.Children.only(this.props.children);
+    return React.cloneElement(child, { ...child.props });
   }
 }
-
-export default ApiConsole;

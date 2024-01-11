@@ -13,11 +13,11 @@ module.exports = function(src) {
     return {};
   }
 
-  const classMatch = src.match(/\.([a-zA-Z]\w*)\s*\{/g);
-  const classMap = {};
+  var classMatch = src.match(/\.([a-zA-Z]\w*)\s*\{/g);
+  var classMap = {};
   if (classMatch) {
-    for (let i = 0; i < classMatch.length; i++) {
-      const c = classMatch[i].replace(/[^a-zA-Z0-9\-_]/g, '');
+    for (var i = 0; i < classMatch.length; i++) {
+      var c = classMatch[i].replace(/[^a-zA-Z0-9\-_]/g, '');
       classMap[c] = c;
     }
   }

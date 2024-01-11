@@ -15,7 +15,13 @@ const version = process.env.version;
 export default class SidebarHeader extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { };
+  }
+  componentWillMount() {
+    let mountPath = window.PARSE_DASHBOARD_PATH;
+    fetch(mountPath).then(response => {
+      this.setState({ dashboardUser: response.headers.get('username') });
+    });
   }
   render() {
     return (
@@ -38,6 +44,5 @@ export default class SidebarHeader extends React.Component {
         {/*</Link>*/}
       </div>
     );
-    return <div className={styles.header}>{headerContent}</div>;
   }
 }

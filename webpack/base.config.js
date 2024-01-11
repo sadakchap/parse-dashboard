@@ -7,79 +7,73 @@
  */
 //This file should be imported by another config file, like build.config.js
 
-const path = require('path');
-const SvgPrepPlugin = require('./plugins/svg-prep');
+var path = require('path');
+var SvgPrepPlugin = require('./plugins/svg-prep');
 
 // pulls in package.json and gets version
-const webpack = require('webpack');
-const fs = require('fs');
-const json = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-const version = json.version;
-const settings = require('@back4app/back4app-settings');
-const BACK4APP_API_PATH = process.env.ENVIRONMENT == 'local' ? settings.BACK4APP_API_PATH : undefined
+var webpack = require('webpack');
+var fs = require('fs');
+var json = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+var version = json.version;
+var settings = require('@back4app/back4app-settings');
+var BACK4APP_API_PATH = process.env.ENVIRONMENT == "local" ? settings.BACK4APP_API_PATH : undefined
 
 module.exports = {
   context: path.join(__dirname, '../src'),
   output: {
     filename: '[name].bundle.js',
-    publicPath: 'bundles/',
-    assetModuleFilename: 'img/[hash][ext]',
-    clean: {
-      keep(asset) {
-        return !asset.includes('.js');
-      },
-    }
+    publicPath: 'bundles/'
   },
   resolve: {
-    modules: [__dirname, path.join(__dirname, '../src'), path.join(__dirname, '../node_modules')],
-    fallback: {
-      util: require.resolve('util/')
-    }
+    modules: [__dirname,path.join(__dirname, '../src'), path.join(__dirname, '../node_modules')]
   },
   resolveLoader: {
-    modules: [path.join(__dirname, '../node_modules')],
+    modules: [path.join(__dirname, '../node_modules')]
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
-      },
-      {
+        use: {
+          loader: 'babel-loader',
+          query: {
+            plugins: [['@babel/plugin-proposal-decorators', { 'legacy': true }], '@babel/transform-regenerator', '@babel/transform-runtime'],
+            presets: ['@babel/preset-react', '@babel/preset-env']
+          },
+        },
+      }, {
         test: /\.scss$/,
         use: [
           'style-loader',
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              importLoaders: 2,
+              modules: {
+                localIdentName: '[local]__[hash:base64:5]'
+              },
+              importLoaders: 2
             },
           },
           {
             loader: 'sass-loader',
             options: {
               sassOptions: {
-                includePaths: [path.resolve(__dirname, '../src')],
-              },
-            },
-          },
-        ],
-      },
-      {
+                includePaths: [path.resolve(__dirname, '../src')]
+              }
+            }
+          }
+        ]
+      }, {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
+        use: [ 'style-loader', 'css-loader' ]
+      }, {
         test: /\.png$/,
-        type: 'asset/resource',
-      },
-      {
+        use: { loader: 'file-loader?name=img/[hash].[ext]' }
+      }, {
         test: /\.jpg$/,
-        type: 'asset/resource',
-      },
-      {
+        use: { loader: 'file-loader?name=img/[hash].[ext]' }
+      }, {
         test: /\.flow$/,
         use: 'null-loader'
       }, {
@@ -90,7 +84,7 @@ module.exports = {
   },
   plugins: [
     new SvgPrepPlugin({
-      source: path.join(__dirname, '../src', 'icons'),
+      source: path.join(__dirname,'../src', 'icons')
     }),
     new webpack.DefinePlugin({
       'process.env': {

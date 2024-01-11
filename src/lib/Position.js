@@ -16,7 +16,7 @@ export default class Position {
   }
 
   static inDocument(node) {
-    const pos = Position.inWindow(node);
+    let pos = Position.inWindow(node);
     pos.x += window.pageXOffset;
     pos.y += window.pageYOffset;
     return pos;
@@ -30,7 +30,7 @@ export default class Position {
   }
 
   static inWindow(node) {
-    const rect = node.getBoundingClientRect();
+    let rect = node.getBoundingClientRect();
     return new Position(rect.left, rect.top);
   }
 }

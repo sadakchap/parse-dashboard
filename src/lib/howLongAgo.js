@@ -22,7 +22,7 @@ export default function howLongAgo(date) {
   if (isNaN(date)) {
     return 'unknown time ago';
   }
-  const delta = new Date() - date;
+  let delta = new Date() - date;
   if (delta < 0) {
     return 'in the future';
   }

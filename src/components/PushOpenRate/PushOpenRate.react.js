@@ -6,8 +6,8 @@
  * the root directory of this source tree.
  */
 import PropTypes from 'lib/PropTypes';
-import React from 'react';
-import styles from 'components/PushOpenRate/PushOpenRate.scss';
+import React     from 'react';
+import styles    from 'components/PushOpenRate/PushOpenRate.scss';
 
 function getRateString(rateNum) {
   let rateStr;
@@ -24,24 +24,23 @@ function getRateString(rateNum) {
   return rateStr;
 }
 
-const PushOpenRate = ({
-  numOpened,
-  numSent,
-  color,
-  isExperiment = false,
-  isWinner = false,
-  customColor,
-}) => {
-  let rateNum = (numOpened / numSent) * 100;
-  if (isNaN(rateNum)) {
-    //check for case when numSent is 0
+let PushOpenRate = ({
+    numOpened,
+    numSent,
+    color,
+    isExperiment = false,
+    isWinner = false,
+    customColor,
+  }) => {
+  let rateNum = numOpened / numSent * 100;
+  if(isNaN(rateNum)){ //check for case when numSent is 0
     rateNum = 0;
   }
   /* eslint-disable no-unused-vars */
-  const rateStr = getRateString(rateNum);
+  let rateStr = getRateString(rateNum);
   /* eslint-enable */
 
-  const customStyles = {
+  let customStyles = {
     standardColor: {},
     inverseColor: {},
   };
@@ -61,24 +60,16 @@ const PushOpenRate = ({
 
   return (
     <div className={styles.wrapper}>
-      {isExperiment ? (
-        <div
-          style={customStyles[isWinner ? 'standard' : 'inverse']}
-          className={[styles.title, styles[color]].join(' ')}
-        >
-          {isWinner ? 'WINNER' : ''}
-        </div>
-      ) : null}
-      <div
-        style={customStyles[isWinner ? 'inverse' : 'standard']}
-        className={[styles.percent, styles[color + (isWinner ? '_inv' : '')]].join(' ')}
-      >
-        {/*<div className={styles.rate}>{rateStr}%</div>*/}
+      {isExperiment ?
+        <div style={customStyles[isWinner ? 'standard' : 'inverse']} className={[styles.title, styles[color]].join(' ')}>{isWinner ? 'WINNER' : ''}</div>
+        : null}
+      <div style={customStyles[isWinner ? 'inverse' : 'standard']} className={[styles.percent, styles[color + (isWinner ? '_inv' : '')]].join(' ')}>
+        { /*<div className={styles.rate}>{rateStr}%</div>*/ }
         <div className={styles.rate}>N/A</div>
         <div className={styles.rate_label}>Open Rate</div>
       </div>
       <div className={styles.count_wrap} style={{ float: 'left', width: '50%' }}>
-        {/*<div className={styles.count}>{numOpened}</div>*/}
+        { /*<div className={styles.count}>{numOpened}</div>*/ }
         <div className={styles.count}>N/A</div>
         <div className={styles.count_label}>Push Opens</div>
       </div>
@@ -93,11 +84,19 @@ const PushOpenRate = ({
 export default PushOpenRate;
 
 PushOpenRate.propTypes = {
-  numOpened: PropTypes.number.isRequired.describe('Number of pushes opened.'),
-  numSent: PropTypes.number.isRequired.describe('Number of pushes sent'),
+  numOpened: PropTypes.number.isRequired.describe(
+    'Number of pushes opened.'
+  ),
+  numSent: PropTypes.number.isRequired.describe(
+    'Number of pushes sent'
+  ),
   color: PropTypes.oneOf(['blue', 'yellow', 'pink']).isRequired.describe(
     'Color of text and circle'
   ),
-  isExperiment: PropTypes.bool.describe('Whether or not this is an A/B test group'),
-  isWinner: PropTypes.bool.describe('Whether or not this group won the A/B test'),
+  isExperiment: PropTypes.bool.describe(
+    'Whether or not this is an A/B test group'
+  ),
+  isWinner: PropTypes.bool.describe(
+    'Whether or not this group won the A/B test'
+  ),
 };

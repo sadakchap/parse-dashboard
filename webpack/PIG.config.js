@@ -6,11 +6,11 @@
  * the root directory of this source tree.
  */
 var configuration = require('./base.config.js');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var path = require('path');
 
 configuration.mode = 'development';
-configuration.entry = { PIG: './parse-interface-guide/index.js' };
+configuration.entry = {PIG: './parse-interface-guide/index.js'};
 configuration.output.path = require('path').resolve('./PIG/bundles');
 configuration.output.filename = "[name].[chunkhash].js";
 

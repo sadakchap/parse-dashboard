@@ -9,13 +9,13 @@ import Button from 'components/Button/Button.react';
 import React from 'react';
 import styles from 'components/FormButton/FormButton.scss';
 
-const FormButton = props => (
+let FormButton = (props) => (
   <div className={styles.input}>
-    <Button {...props} primary={true} width="80%" />
+    <Button {...props} primary={true} width='80%' />
   </div>
 );
 
-const { ...otherPropTypes } = Button.propTypes;
+let { ...otherPropTypes } = Button.propTypes;
 FormButton.propTypes = otherPropTypes;
 
 export default FormButton;

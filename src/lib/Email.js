@@ -48,10 +48,10 @@ const domains = [
 
 const domainMap = {};
 for (let i = domains.length; i--;) {
-  const levels = domains[i].split('.');
-  const secondLevel = levels.shift();
-  const tld = levels.join('.');
-  const pairs = domainMap[secondLevel];
+  let levels = domains[i].split('.');
+  let secondLevel = levels.shift();
+  let tld = levels.join('.');
+  let pairs = domainMap[secondLevel];
   if (!pairs) {
     domainMap[secondLevel] = [tld];
   } else {
@@ -70,9 +70,9 @@ export function dist(a, b) {
     return a.length;
   }
 
-  const vectors = [];
+  let vectors = [];
   for (let i = 0; i <= a.length; i++) {
-    const row = [];
+    let row = [];
     for (let j = 0; j <= b.length; j++) {
       row[j] = 0;
     }
@@ -107,16 +107,16 @@ export const emailRegex = /^([^@<>\s]+)@([^@<>\s]{2,}\.[^@<>\s]{2,})$/;
 // If we think there's a typo, return a string suggesting a correction
 // Return null if we have no suggestion
 export function suggestion(email, checkTLD) {
-  const match = email.match(emailRegex);
+  let match = email.match(emailRegex);
   if (!match) {
     return null;
   }
-  const emailDomain = match[2].toLowerCase();
-  const emailSecondLevel = emailDomain.split('.').shift();
+  let emailDomain = match[2].toLowerCase();
+  let emailSecondLevel = emailDomain.split('.').shift();
 
   let closestDistance = Infinity;
   let closestDomain = '';
-  const secondLevelDomains = Object.keys(domainMap);
+  let secondLevelDomains = Object.keys(domainMap);
   let i;
   let d;
   for (i = secondLevelDomains.length; i--;) {
@@ -132,12 +132,12 @@ export function suggestion(email, checkTLD) {
   if (closestDistance > 3 || (!checkTLD && closestDistance === 0)) {
     return null;
   }
-  const selectedDomain = closestDomain;
+  let selectedDomain = closestDomain;
   closestDistance = Infinity;
 
-  const tlds = domainMap[selectedDomain];
+  let tlds = domainMap[selectedDomain];
   for (i = tlds.length; i--;) {
-    const joined = selectedDomain + '.' + tlds[i];
+    let joined = selectedDomain + '.' + tlds[i];
     d = dist(emailDomain, joined);
     if (d < closestDistance) {
       closestDistance = d;

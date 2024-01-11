@@ -8,16 +8,18 @@
 import PropTypes from 'lib/PropTypes';
 import React from 'react';
 import styles from 'components/TextInput/TextInput.scss';
-import { withForwardedRef } from 'lib/withForwardedRef';
 
-class TextInput extends React.Component {
-  componentDidUpdate(props) {
+export default class TextInput extends React.Component {
+  componentWillReceiveProps(props) {
     if (props.multiline !== this.props.multiline) {
-      const node = props.forwardedRef.current;
-      // node.focus();
-      if (this.props.value) {
-        node.setSelectionRange(this.props.value.length, this.props.value.length);
-      }
+      const previousInput = this.refs.input;
+      // wait a little while for component to re-render
+      setTimeout(function() {
+        const newInput = previousInput ? this.refs.textarea : this.refs.input;
+        newInput.focus();
+        newInput.value = '';
+        newInput.value = props.value;
+      }.bind(this), 1);
     }
   }
 
@@ -35,7 +37,7 @@ class TextInput extends React.Component {
   }
 
   render() {
-    const classes = [styles.text_input];
+    let classes = [styles.text_input];
     if (this.props.monospace) {
       classes.push(styles.monospace);
     }
@@ -46,34 +48,30 @@ class TextInput extends React.Component {
     if (this.props.multiline || this.props.multiplelines) {
       return (
         <textarea
-          ref={this.props.forwardedRef}
+          ref="textarea"
           id={this.props.id}
           disabled={!!this.props.disabled}
           className={classes.join(' ')}
           rows={this.props.rows && this.props.rows > 3 ? this.props.rows : null}
-          style={
-            this.props.rows && this.props.rows > 3 ? null : { height: this.props.height || 80 }
-          }
+          style={this.props.rows && this.props.rows > 3 ? null : {height: this.props.height || 80}}
           placeholder={this.props.placeholder}
           value={this.props.value}
           onChange={this.changeValue.bind(this)}
-          onBlur={this.updateValue.bind(this)}
-        />
+          onBlur={this.updateValue.bind(this)} />
       );
     }
     return (
       <input
-        ref={this.props.forwardedRef}
+        ref="input"
         id={this.props.id}
         type={this.props.hidden ? 'password' : 'text'}
         disabled={!!this.props.disabled}
         className={classes.join(' ')}
-        style={{ height: this.props.height || 80 }}
+        style={{height: this.props.height || 80}}
         placeholder={this.props.placeholder}
         value={this.props.value}
         onChange={this.changeValue.bind(this)}
-        onBlur={this.updateValue.bind(this)}
-      />
+        onBlur={this.updateValue.bind(this)} />
     );
   }
 }
@@ -82,20 +80,28 @@ TextInput.propTypes = {
   monospace: PropTypes.bool.describe(
     'Determines whether the input is formatted with a monospace font'
   ),
-  disabled: PropTypes.bool.describe('Determines whether the input is disabled'),
-  hidden: PropTypes.bool.describe('Determines whether the contents are hidden (password field)'),
+  disabled: PropTypes.bool.describe(
+    'Determines whether the input is disabled'
+  ),
+  hidden: PropTypes.bool.describe(
+    'Determines whether the contents are hidden (password field)'
+  ),
   multiline: PropTypes.bool.describe(
     'Determines whether the input is a multiline input (<textarea>), or has a single input line.'
   ),
   onChange: PropTypes.func.isRequired.describe(
     'A function fired when the input is changed. It receives the new value as its only parameter.'
   ),
-  onBlur: PropTypes.func.describe('A function fired when the input is blurred.'),
-  placeholder: PropTypes.string.describe('A placeholder string, for when the input is empty'),
-  value: PropTypes.string.describe('The current value of the controlled input'),
+  onBlur: PropTypes.func.describe(
+    'A function fired when the input is blurred.'
+  ),
+  placeholder: PropTypes.string.describe(
+    'A placeholder string, for when the input is empty'
+  ),
+  value: PropTypes.any.describe(
+    'The current value of the controlled input'
+  ),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).describe(
     'The height of the field. Can be a string containing any CSS unit, or a number of pixels. Default is 80px.'
   ),
 };
-
-export default withForwardedRef(TextInput);

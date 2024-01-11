@@ -27,12 +27,12 @@ export const DeleteAppModal = ({ context, setParentState }) => {
   buttonsInCenter={true}
   onCancel={() => setParentState({ showDeleteAppModal: false })}
   onConfirm={() => {
-    if ( name !== context.name ) {
+    if ( name !== context.currentApp.name ) {
       setNote('App name doesn\'t match');
       return;
     }
     setProcessing(true);
-    context.deleteApp().then(() => {
+    context.currentApp.deleteApp().then(() => {
       setParentState({
         cleanupFilesMessage: 'Your app has been deleted.',
         cleanupNoteColor: 'orange',
@@ -50,7 +50,7 @@ export const DeleteAppModal = ({ context, setParentState }) => {
   <Field
     label={<Label
       text={'App Name.'}
-      description={<span>Please enter the name of the app ({context.name}) for confirmation</span>} />
+      description={<span>Please enter the name of the app ({context.currentApp.name}) for confirmation</span>} />
     }
     input={<TextInput
       height={100}

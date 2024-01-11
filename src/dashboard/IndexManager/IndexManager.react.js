@@ -2,8 +2,11 @@ import { ActionTypes }  from 'lib/stores/SchemaStore'
 import CategoryList from 'components/CategoryList/CategoryList.react'
 import DashboardView from 'dashboard/DashboardView.react'
 import EmptyState from 'components/EmptyState/EmptyState.react'
+import history from 'dashboard/history'
 import Icon from 'components/Icon/Icon.react'
 import IndexForm from './IndexForm.react'
+import ParseApp from 'lib/ParseApp'
+import PropTypes from 'prop-types'
 import React from 'react'
 import { SpecialClasses } from 'lib/Constants'
 import stringCompare from 'lib/stringCompare'
@@ -11,14 +14,11 @@ import styles from './IndexManager.scss'
 import subscribeTo from 'lib/subscribeTo'
 import Swal from 'sweetalert2'
 import AccountManager from 'lib/AccountManager';
-import generatePath from 'lib/generatePath';
-import { withRouter } from 'lib/withRouter';
 
 @subscribeTo('Schema', 'schema')
-@withRouter
 class IndexManager extends DashboardView {
-  constructor() {
-    super();
+  constructor(props, context) {
+    super(props, context);
 
     this.section = 'Database';
     this.subsection = 'Index Manager'
@@ -28,8 +28,8 @@ class IndexManager extends DashboardView {
       selected: {},
       data: null,
       showIndexManager: false,
-      canCreate: undefined,
-      canDelete: undefined
+      canCreate: this.context.currentApp.custom.isOwner,
+      canDelete: this.context.currentApp.custom.isOwner
     }
 
     this.refresh = this.refresh.bind(this)
@@ -45,15 +45,11 @@ class IndexManager extends DashboardView {
     const { className } = this.props.params
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
       if (!className && this.props.schema.data.get('classes')) {
-        this.redirectToFirstClass(this.props.schema.data.get('classes'), this.context);
+        this.redirectToFirstClass(this.props.schema.data.get('classes'));
       }
-    });
-    this.setState({
-      canCreate: this.context.custom.isOwner,
-      canDelete: this.context.custom.isOwner
     })
     if (className) {
-      this.context.getIndexes(className).then(data => {
+      this.context.currentApp.getIndexes(className).then(data => {
         this.setState({
           data,
           loading: false
@@ -61,13 +57,13 @@ class IndexManager extends DashboardView {
       })
     }
     // if not owner then check for collaborator
-    if (!this.context.custom.isOwner) {
-      const currentEmail = AccountManager.currentUser().email;
+    if (!this.context.currentApp.custom.isOwner) {
+      let currentEmail = AccountManager.currentUser().email;
 
-      if (Object.keys(this.context.settings.fields).length !== 0) { // if collaborators field is already loaded
-        this.allowCollaboratorToCreate(this.context.settings.fields.fields.collaborators, currentEmail);
+      if (Object.keys(this.context.currentApp.settings.fields).length !== 0) { // if collaborators field is already loaded
+        this.allowCollaboratorToCreate(this.context.currentApp.settings.fields.fields.collaborators, currentEmail);
       } else {
-        this.context.fetchSettingsFields().then(({ fields }) => {
+        this.context.currentApp.fetchSettingsFields().then(({ fields }) => {
           this.allowCollaboratorToCreate(fields.collaborators, currentEmail)
         });
       }
@@ -75,7 +71,7 @@ class IndexManager extends DashboardView {
   }
 
   allowCollaboratorToCreate (collaborators, currentEmail) {
-    const isCollab = collaborators.findIndex(collab => collab.userEmail === currentEmail);
+    let isCollab = collaborators.findIndex(collab => collab.userEmail === currentEmail);
     if (isCollab !== -1) {
       this.setState({
         canCreate: true
@@ -83,10 +79,10 @@ class IndexManager extends DashboardView {
     }
   }
 
-  redirectToFirstClass(classList, context) {
+  redirectToFirstClass(classList) {
     if (!classList.isEmpty()) {
       classList = Object.keys(classList.toObject())
-      const classes = classList.filter(className => className !== '_Role' && className !== '_Session' && className !== '_Installation')
+      let classes = classList.filter(className => className !== '_Role' && className !== '_Session' && className !== '_Installation')
       classes.sort((a, b) => {
         if (a[0] === '_' && b[0] !== '_') {
           return -1
@@ -97,31 +93,25 @@ class IndexManager extends DashboardView {
         return a.toUpperCase() < b.toUpperCase() ? -1 : 1
       })
       if (classes[0]) {
-        this.props.navigate(generatePath(context || this.context, 'index/' + classes[0]), {
-          replace: true
-        });
+        history.replace(this.context.generatePath(`index/${classes[0]}`))
       } else {
         if (classList.indexOf('_User') !== -1) {
-          this.props.navigate(generatePath(context || this.context, 'index/_User'), {
-            replace: true,
-          });
+          history.replace(this.context.generatePath('index/_User'))
         } else {
-          this.props.navigate(generatePath(context || this.context, 'index/' + classList[0]), {
-            replace: true,
-          });
+          history.replace(this.context.generatePath(`index/${classList[0]}`))
         }
       }
     }
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    const { className } = this.props.params;
-    const { className: newClassName } = nextProps.params;
+  componentWillReceiveProps(props, context) {
+    const { className } = this.props.params
+    const { className: newClassName } = props.params
     if (newClassName !== className) {
       this.setState({
         loading: true
       });
-      nextContext.getIndexes(newClassName).then(data => {
+      context.currentApp.getIndexes(newClassName).then(data => {
         this.setState({
           data,
           loading: false
@@ -138,7 +128,7 @@ class IndexManager extends DashboardView {
       data: null,
       showIndexManager: false
     })
-    this.context.getIndexes(className).then(data => {
+    this.context.currentApp.getIndexes(className).then(data => {
       this.setState({
         data,
         loading: false
@@ -230,11 +220,11 @@ class IndexManager extends DashboardView {
       })
     } else {
       const { className } = this.props.params
-      return this.context.createIndex(className, indexConfiguration)
+      return this.context.currentApp.createIndex(className, indexConfiguration)
         .then(() => {
           // add new index row with status PENDING
           // TODO: & start listening to its status
-          const data = this.state.data;
+          let data = this.state.data;
           data.push({
             creationType: 'Manual',
             index: JSON.stringify(indexConfiguration.index),
@@ -275,7 +265,7 @@ class IndexManager extends DashboardView {
         showCancelButton: true,
         showLoaderOnConfirm: true,
         preConfirm: () => {
-          return this.context.dropIndexes(className, indexesToDrop)
+          return this.context.currentApp.dropIndexes(className, indexesToDrop)
             .then(() => {
               Swal.close()
               this.refresh()
@@ -367,14 +357,14 @@ class IndexManager extends DashboardView {
       className = className.substr(1, className.length - 1)
     }
     const { showBackButton } = this.props.location.state || {};
-    const selectionLength = Object.entries(this.state.selected).filter(([, isSelected]) => isSelected).length;
+    let selectionLength = Object.entries(this.state.selected).filter(([, isSelected]) => isSelected).length;
 
     return (
       <div className={styles.indexManager}>
         <div className={styles.headerContainer}>
           <div className={styles.headerDescriptionContainer}>
             {showBackButton ? (
-              <a className={styles.iconButton} onClick={() => this.props.navigate(-1)} title='Back to Database Browser'>
+              <a className={styles.iconButton} onClick={() => history.goBack()} title='Back to Database Browser'>
                 <Icon width={32} height={32} fill="#ffffff" name="left-outline" />
               </a>
             ) : null}
@@ -397,8 +387,8 @@ class IndexManager extends DashboardView {
               <Icon name='refresh-icon' width={30} height={26} />
             </a>
             {this.state.canDelete && (
-              <a
-                className={styles.deleteBtn + ` ${(selectionLength > 0) && styles.active}`}
+              <a 
+                className={styles.deleteBtn + ` ${(selectionLength > 0) && styles.active}`} 
                 onClick={selectionLength === 0 ? null : this.dropIndexes}
               >
                 <Icon name='delete-icon' width={24} height={20} />
@@ -436,6 +426,10 @@ class IndexManager extends DashboardView {
       </div>
     )
   }
+}
+
+IndexManager.contextTypes = {
+  currentApp: PropTypes.instanceOf(ParseApp)
 }
 
 export default IndexManager

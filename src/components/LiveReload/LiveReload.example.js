@@ -6,18 +6,15 @@
  * the root directory of this source tree.
  */
 import LiveReload from 'components/LiveReload/LiveReload.react';
-import React from 'react';
+import React      from 'react';
 
 export const component = LiveReload;
 export const demos = [
   {
-    render: () => (
-      <LiveReload
-        source={() => Promise.resolve(Math.random())}
-        render={num => <span>{num}</span>}
-        refreshIntervalMillis={100}
-        initialData={0}
-      />
-    ),
+    render: () => <LiveReload
+			source={() => Promise.resolve(Math.random())}
+			render={num => <span>{num}</span>}
+			refreshIntervalMillis={100}
+			initialData={0}/>,
   },
-];
+ ];

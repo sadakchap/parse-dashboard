@@ -6,34 +6,25 @@
  * the root directory of this source tree.
  */
 import * as CSRFManager from 'lib/CSRFManager';
-import encodeFormData from 'lib/encodeFormData';
+import encodeFormData   from 'lib/encodeFormData';
 
 let basePath = '';
 export function setBasePath(newBasePath) {
   basePath = newBasePath || '';
   if (basePath.endsWith('/')) {
-    basePath = basePath.slice(0, basePath.length - 1);
+    basePath = basePath.slice(0, basePath.length-1);
   }
 }
 
 // abortable flag used to pass xhr reference so user can abort accordingly
-export function request(
-  method,
-  url,
-  body,
-  abortable = false,
-  withCredentials = true,
-  useRequestedWith = true
-) {
-  if (
-    !url.startsWith('http://') &&
-    !url.startsWith('https://') &&
-    basePath.length &&
-    !url.startsWith(basePath + '/')
-  ) {
+export function request(method, url, body, abortable = false, withCredentials = true, useRequestedWith = true) {
+  if (!url.startsWith('http://')
+      && !url.startsWith('https://')
+      && basePath.length
+      && !url.startsWith(basePath + '/')) {
     url = basePath + url;
   }
-  const xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   if (method === 'POST' || method === 'PUT' || method === 'DELETE') {
     xhr.setRequestHeader('X-CSRF-Token', CSRFManager.getToken());
@@ -44,7 +35,7 @@ export function request(
   xhr.withCredentials = withCredentials;
   let resolve;
   let reject;
-  const p = new Promise((res, rej) => {
+  let p = new Promise((res, rej) => {
     resolve = res;
     reject = rej;
   });
@@ -67,7 +58,7 @@ export function request(
       let json = {};
       try {
         json = JSON.parse(this.responseText);
-      } catch (ex) {
+      } catch(ex) {
         p.reject(this.responseText);
         return;
       }
@@ -89,11 +80,11 @@ export function request(
       let json = {};
       try {
         json = JSON.parse(this.responseText);
-      } catch (ex) {
-        p.reject(this.responseText);
+      } catch(ex) {
+        p.reject(this.responseText)
         return;
       }
-      const message = json.message || json.error || json.notice || 'Request Error';
+      let message = json.message || json.error || json.notice || 'Request Error';
       p.reject({
         status: this.status,
         success: false,
@@ -117,10 +108,13 @@ export function request(
     if (body instanceof FormData) {
       xhr.send(body);
     } else {
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+      xhr.setRequestHeader(
+        'Content-Type',
+        'application/x-www-form-urlencoded; charset=UTF-8'
+      );
       // Encode it as a url parameter string
-      const formData = [];
-      for (const k in body) {
+      let formData = [];
+      for (let k in body) {
         formData.push(encodeFormData(k, body[k]));
       }
       xhr.send(formData.join('&'));
@@ -131,8 +125,8 @@ export function request(
   if (abortable) {
     return {
       xhr,
-      promise: p,
-    };
+      promise: p
+    }
   }
   return p;
 }

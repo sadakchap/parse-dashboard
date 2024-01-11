@@ -6,21 +6,24 @@
  * the root directory of this source tree.
  */
 
-import Parse from 'parse';
-import React from 'react';
-import styles from 'dashboard/Data/Browser/Browser.scss';
-import ProtectedFieldsDialog from 'components/ProtectedFieldsDialog/ProtectedFieldsDialog.react';
-import { CurrentApp } from 'context/currentApp';
+import Parse                  from 'parse';
+import React                  from 'react';
+import styles                 from 'dashboard/Data/Browser/Browser.scss';
+import ProtectedFieldsDialog  from 'components/ProtectedFieldsDialog/ProtectedFieldsDialog.react';
+import ParseApp               from 'lib/ParseApp';
+import PropTypes              from 'prop-types';
 
 const pointerPrefix = 'userField:';
 
 function validateEntry(pointers, text, parseServerSupportsPointerPermissions) {
   if (parseServerSupportsPointerPermissions) {
-    const fieldName = text.startsWith(pointerPrefix) ? text.substring(pointerPrefix.length) : text;
+    let fieldName = text.startsWith(pointerPrefix)
+      ? text.substring(pointerPrefix.length)
+      : text;
     if (pointers.includes(fieldName)) {
       return Promise.resolve({
         entry: pointerPrefix + fieldName,
-        type: 'pointer',
+        type: 'pointer'
       });
     }
   }
@@ -42,10 +45,10 @@ function validateEntry(pointers, text, parseServerSupportsPointerPermissions) {
   if (text.startsWith('user:')) {
     // no need to query roles
     roleQuery = {
-      find: () => Promise.resolve([]),
+      find: () => Promise.resolve([])
     };
 
-    const user = text.substring(5);
+    let user = text.substring(5);
     userQuery = new Parse.Query.or(
       new Parse.Query(Parse.User).equalTo('username', user),
       new Parse.Query(Parse.User).equalTo('objectId', user)
@@ -53,9 +56,9 @@ function validateEntry(pointers, text, parseServerSupportsPointerPermissions) {
   } else if (text.startsWith('role:')) {
     // no need to query users
     userQuery = {
-      find: () => Promise.resolve([]),
+      find: () => Promise.resolve([])
     };
-    const role = text.substring(5);
+    let role = text.substring(5);
     roleQuery = new Parse.Query.or(
       new Parse.Query(Parse.Role).equalTo('name', role),
       new Parse.Query(Parse.Role).equalTo('objectId', role)
@@ -75,7 +78,7 @@ function validateEntry(pointers, text, parseServerSupportsPointerPermissions) {
 
   return Promise.all([
     userQuery.find({ useMasterKey: true }),
-    roleQuery.find({ useMasterKey: true }),
+    roleQuery.find({ useMasterKey: true })
   ]).then(([user, role]) => {
     if (user.length > 0) {
       return { entry: user[0], type: 'user' };
@@ -88,7 +91,6 @@ function validateEntry(pointers, text, parseServerSupportsPointerPermissions) {
 }
 
 export default class SecureFieldsDialog extends React.Component {
-  static contextType = CurrentApp;
   constructor(props) {
     super(props);
     this.state = { open: false };
@@ -110,13 +112,13 @@ export default class SecureFieldsDialog extends React.Component {
   }
 
   handleClose() {
-    this.setState({ open: false }, () => this.props.onEditPermissions(false));
+    this.setState({ open: false },() => this.props.onEditPermissions(false));
   }
 
   render() {
     let dialog = null;
-    const parseServerSupportsPointerPermissions =
-      this.context.serverInfo.features.schemas.editClassLevelPermissions;
+    let parseServerSupportsPointerPermissions = this.context.currentApp
+      .serverInfo.features.schemas.editClassLevelPermissions;
     if (this.props.perms && this.state.open) {
       dialog = (
         <ProtectedFieldsDialog
@@ -126,25 +128,34 @@ export default class SecureFieldsDialog extends React.Component {
           protectedFields={this.props.perms.protectedFields}
           enablePointerPermissions={parseServerSupportsPointerPermissions}
           advanced={true}
-          confirmText="Save"
+          confirmText="Save Fields"
           details={
-            <a target="_blank" href="http://docs.parseplatform.org/ios/guide/#security">
+            <a
+              target="_blank"
+              href="http://docs.parseplatform.org/ios/guide/#security"
+            >
               Learn more about CLPs and app security
             </a>
           }
           validateEntry={entry =>
-            validateEntry(this.props.userPointers, entry, parseServerSupportsPointerPermissions)
+            validateEntry(
+              this.props.userPointers,
+              entry,
+              parseServerSupportsPointerPermissions
+            )
           }
           onCancel={this.handleClose}
           onConfirm={protectedFields => {
-            const newPerms = this.props.perms;
+            let newPerms = this.props.perms;
             newPerms.protectedFields = protectedFields;
-            this.props.onChangeCLP(newPerms).then(this.handleClose);
+            this.props
+              .onChangeCLP(newPerms)
+              .then(this.handleClose);
           }}
         />
       );
     }
-    const classes = [styles.toolbarButton];
+    let classes = [styles.toolbarButton];
     if (this.props.disabled) {
       classes.push(styles.toolbarButtonDisabled);
     }
@@ -152,3 +163,7 @@ export default class SecureFieldsDialog extends React.Component {
     return dialog;
   }
 }
+
+SecureFieldsDialog.contextTypes = {
+  currentApp: PropTypes.instanceOf(ParseApp)
+};

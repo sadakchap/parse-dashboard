@@ -5,18 +5,18 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import ACLEditor from 'components/ACLEditor/ACLEditor.react';
-import BooleanEditor from 'components/BooleanEditor/BooleanEditor.react';
+import ACLEditor      from 'components/ACLEditor/ACLEditor.react';
+import BooleanEditor  from 'components/BooleanEditor/BooleanEditor.react';
 import DateTimeEditor from 'components/DateTimeEditor/DateTimeEditor.react';
-import FileEditor from 'components/FileEditor/FileEditor.react';
+import FileEditor     from 'components/FileEditor/FileEditor.react';
 import GeoPointEditor from 'components/GeoPointEditor/GeoPointEditor.react';
-import NumberEditor from 'components/NumberEditor/NumberEditor.react';
-import Parse from 'parse';
-import decode from 'parse/lib/browser/decode';
-import React from 'react';
-import StringEditor from 'components/StringEditor/StringEditor.react';
+import NumberEditor   from 'components/NumberEditor/NumberEditor.react';
+import Parse          from 'parse';
+import decode         from 'parse/lib/browser/decode';
+import React          from 'react';
+import StringEditor   from 'components/StringEditor/StringEditor.react';
 
-const Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit, onCancel }) => {
+let Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit, onCancel }) => {
   let content = null;
   if (type === 'String') {
     content = (
@@ -27,18 +27,17 @@ const Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit
         width={width}
         onCommit={onCommit}
         resizable={true}
-        setFocus={true}
-      />
+        setFocus={true} />
     );
   } else if (type === 'Array' || type === 'Object') {
-    const encodeCommit = json => {
+    let encodeCommit = (json) => {
       try {
-        const obj = decode(JSON.parse(json));
+        let obj = decode(JSON.parse(json));
         onCommit(obj);
       } catch (e) {
         onCommit(value);
       }
-    };
+    }
     content = (
       <StringEditor
         value={JSON.stringify(value, null, 2)}
@@ -46,22 +45,18 @@ const Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit
         multiline={true}
         width={width}
         onCommit={encodeCommit}
-        setFocus={true}
-      />
+        setFocus={true} />
     );
   } else if (type === 'Polygon') {
-    const encodeCommit = json => {
+    let encodeCommit = (json) => {
       try {
-        const coordinates = JSON.parse(json);
+        let coordinates = JSON.parse(json);
         if (coordinates.length < 3) {
           throw 'Polygon must have at least 3 coordinates';
         }
         if (value && value.coordinates && value.coordinates.length === coordinates.length) {
-          const dirty = coordinates.some((coord, index) => {
-            if (
-              value.coordinates[index][0] !== coord[0] ||
-              value.coordinates[index][1] !== coord[1]
-            ) {
+          let dirty = coordinates.some((coord, index) => {
+            if (value.coordinates[index][0] !== coord[0] || value.coordinates[index][1] !== coord[1]) {
               return true;
             }
           });
@@ -69,24 +64,23 @@ const Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit
             throw 'No change in coordinates';
           }
         }
-        const obj = {
-          __type: 'Polygon',
-          coordinates,
-        };
+        let obj = {
+          '__type': 'Polygon',
+          coordinates
+        }
         onCommit(obj);
       } catch (e) {
         onCommit(value);
       }
-    };
+    }
     content = (
       <StringEditor
-        value={JSON.stringify((value && value.coordinates) || [['lat', 'lon']], null, 2)}
+        value={JSON.stringify(value && value.coordinates || [['lat', 'lon']], null, 2)}
         resizable={true}
         multiline={true}
         width={width}
         onCommit={encodeCommit}
-        setFocus={true}
-      />
+        setFocus={true} />
     );
   } else if (type === 'Date') {
     if (readonly) {
@@ -108,26 +102,49 @@ const Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit
       );
     }
   } else if (type === 'Boolean') {
-    content = <BooleanEditor value={value} width={width} onCommit={onCommit} setFocus={true} />;
+    content = (
+      <BooleanEditor value={value} width={width} onCommit={onCommit} />
+    );
   } else if (type === 'Number') {
-    content = <NumberEditor value={value} width={width} onCommit={onCommit} setFocus={true} />;
+    content = (
+      <NumberEditor
+        value={value}
+        width={width}
+        onCommit={onCommit}
+        setFocus={true} />
+    );
   } else if (type === 'GeoPoint') {
-    content = <GeoPointEditor value={value} width={width} onCommit={onCommit} setFocus={true} />;
+    content = (
+      <GeoPointEditor
+        value={value}
+        width={width}
+        onCommit={onCommit}
+        setFocus={true} />
+    );
   } else if (type === 'File') {
-    content = <FileEditor value={value} width={width} onCommit={onCommit} onCancel={onCancel} />;
+    content = (
+      <FileEditor
+        value={value}
+        width={width}
+        onCommit={onCommit}
+        setFocus={true}
+        onCancel={onCancel} />
+    );
   } else if (type === 'ACL') {
-    content = <ACLEditor value={value} onCommit={onCommit} />;
+    content = (
+      <ACLEditor
+        value={value}
+        onCommit={onCommit} />
+    );
   } else if (type === 'Pointer') {
-    const encodeCommit = pointer => {
+    let encodeCommit = (pointer) => {
       if (pointer.length === 0) {
         onCommit(undefined);
       } else {
-        onCommit(
-          Parse.Object.fromJSON({
-            className: targetClass,
-            objectId: pointer,
-          })
-        );
+        onCommit(Parse.Object.fromJSON({
+          className: targetClass,
+          objectId: pointer
+        }));
       }
     };
     content = (
@@ -139,7 +156,11 @@ const Editor = ({ top, left, type, targetClass, value, readonly, width, onCommit
     );
   }
 
-  return <div style={{ position: 'absolute', top: top, left: left }}>{content}</div>;
+  return (
+    <div style={{ position: 'absolute', top: top, left: left }}>
+      {content}
+    </div>
+  );
 };
 
 export default Editor;
