@@ -13,7 +13,7 @@
   position: relative;
   // border-width: 1px 1px 0 1px;
   min-height: 80px;
-  background: rgba(51, 51, 51, 0.06);
+  background: rgba(51, 51, 51, 0.03);
   color: $dark;
   display: flex;
   margin-bottom: 1px;
@@ -30,7 +30,7 @@
 .left {
   display: flex;
   align-items: center;
-  background: #f9f9f9;
+  // background: #f9f9f9;
 }
 
 .right {
@@ -43,7 +43,8 @@
   justify-content: flex-end;
   align-items: center;
   flex: 1;
-  padding: 0 1rem;
+  background: rgba(51, 51, 51, 0.03);
+  // padding: 0 1rem;
 }
 
 .dark {

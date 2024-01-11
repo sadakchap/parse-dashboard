@@ -40,9 +40,9 @@
 
 .menu {
   max-height: 215px;
-  border: 1px solid $blue;
-  background: #ccc;
+  background: $white;
   overflow: auto;
+  box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.10);
 
   button {
     @include buttonReset;
@@ -52,10 +52,10 @@
 
   .option {
     color: $dark;
-    border-bottom: 1px solid $borderGrey;
+    border-bottom: 1px solid rgba($light-grey, 0.3);
 
     &:hover {
-      background: rgba(0,0,0,0.1);
+      background: rgba(51, 51, 51, 0.06);
     }
   }
 
@@ -66,6 +66,7 @@
 
 .current {
   text-align: center;
+  color: $dark;
   height: 80px;
 
   &:not(.hideArrow){

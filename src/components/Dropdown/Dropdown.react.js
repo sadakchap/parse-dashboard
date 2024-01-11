@@ -25,14 +25,15 @@ export default class Dropdown extends React.Component {
   }
 
   toggle() {
-    this.setState(() => {
-      if (this.state.open) {
+    this.setState((prevState) => {
+      if (prevState.open) {
         return { open: false };
       }
       let pos = Position.inDocument(this.dropdownRef.current);
       if (this.props.fixed) {
         pos = Position.inWindow(this.dropdownRef.current);
       }
+      pos.y += this.dropdownRef.current.clientHeight;
       return {
         open: true,
         position: pos,
@@ -40,10 +41,12 @@ export default class Dropdown extends React.Component {
     });
   }
 
-  close() {
-    this.setState({
-      open: false,
-    });
+  close(e) {
+    if (this.dropdownRef.current && !this.dropdownRef.current.contains(e.target)) {
+      this.setState({
+        open: false,
+      });
+    }
   }
 
   select(value) {

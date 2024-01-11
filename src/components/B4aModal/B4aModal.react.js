@@ -87,7 +87,7 @@ const B4aModal = ({
   return (
     <Popover fadeIn={true} fixed={true} position={origin} modal={true} color="rgba(17,13,17,0.8)">
       <div className={[styles.modal, styles[type]].join(' ')} style={{ width }}>
-        {<Icon onClick={onClose} width={10} height={10} className={styles.closeIcon} name="close" fill="#10203A" />}
+        {<Icon onClick={onCancel} width={10} height={10} className={styles.closeIcon} name="close" fill="#10203A" />}
         <div className={styles.header}>
           {icon ? (
             <div className={styles.icon}>
