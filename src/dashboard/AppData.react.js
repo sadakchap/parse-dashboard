@@ -5,62 +5,49 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import React from 'react';
+import React       from 'react';
+import PropTypes   from 'lib/PropTypes';
 import AppSelector from 'dashboard/AppSelector.react';
 import AppsManager from 'lib/AppsManager';
-import { CurrentApp } from 'context/currentApp';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import history     from 'dashboard/history';
+import ParseApp    from 'lib/ParseApp';
+import createClass from 'create-react-class';
 
-import baseStyles from 'stylesheets/base.scss';
-import EmptyState from 'components/EmptyState/EmptyState.react';
-import Loader from 'components/Loader/Loader.react';
+let AppData = createClass({
+  childContextTypes: {
+    generatePath: PropTypes.func,
+    currentApp: PropTypes.instanceOf(ParseApp)
+  },
 
-function AppData() {
-  const navigate = useNavigate();
-  const params = useParams();
+  getChildContext() {
+    return {
+      generatePath: this.generatePath,
+      currentApp: this.props.apps.find(ap => ap.slug === this.props.params.appId)
+    };
+  },
 
-  if (params.appId === '_') {
-    return <AppSelector />;
-  }
+  generatePath(path) {
+    return '/apps/' + this.props.params.appId + '/' + path;
+  },
 
-  // Find by name to catch edge cases around escaping apostrophes in URLs
-  const current = AppsManager.findAppBySlugOrName(params.appId);
-
-  if (current) {
-    current.setParseKeys();
-    if (current.serverInfo.status === 'LOADING') {
-      return (
-        <div className={baseStyles.pageCenter}>
-          <Loader />
-        </div>
-      );
-    } else if (current.serverInfo.error) {
-      return (
-        <div className={baseStyles.pageCenter}>
-          <div style={{ height: '800px', position: 'relative' }}>
-            <EmptyState
-              icon={'cloud-surprise'}
-              title={'Couldn\'t load this app'}
-              description={
-                'Something went wrong while loading this app, could you please try opening another app.'
-              }
-              cta={'Go to apps'}
-              action={() => (window.location = '/apps')}
-            ></EmptyState>
-          </div>
-        </div>
-      );
+  render() {
+    if (this.props.params.appId === '_') {
+      return <AppSelector />;
     }
-  } else {
-    navigate('/apps', { replace: true });
-    return <div />;
+    //Find by name to catch edge cases around escaping apostrophes in URLs
+    let current = this.props.apps.find(ap => ap.slug === this.props.params.appId);
+    if (current) {
+      current.setParseKeys();
+    } else {
+      history.replace('/apps');
+      return <div />;
+    }
+    return (
+      <div>
+        {this.props.children}
+      </div>
+    );
   }
-
-  return (
-    <CurrentApp.Provider value={current}>
-      <Outlet />
-    </CurrentApp.Provider>
-  );
-}
+});
 
 export default AppData;

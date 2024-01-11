@@ -1,11 +1,11 @@
-const configuration = require('./publish.config.js');
-const webpack = require('webpack');
+var configuration = require('./publish.config.js');
+var webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 
 configuration.plugins.push(
   new webpack.DefinePlugin({
     'process.env': {
-      'NODE_ENV': JSON.stringify('homolog')
+      'NODE_ENV': '"homolog"'
     }
   }),
   new webpack.SourceMapDevToolPlugin({
@@ -24,13 +24,12 @@ configuration.optimization = {
       }
     }
   },
-  minimize: true,
   minimizer: [
     new TerserPlugin({
-      // cache: true,
+      cache: true,
       parallel: true,
+      sourceMap: true, // Must be set to true if using source-maps in production
       terserOptions: {
-        sourceMap: true,
         mangle: false
       }
     })

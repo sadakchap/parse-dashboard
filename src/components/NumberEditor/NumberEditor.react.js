@@ -14,19 +14,18 @@ export default class NumberEditor extends React.Component {
     super();
 
     this.state = {
-      value: props.value || 0,
+      value: props.value || 0
     };
 
     this.checkExternalClick = this.checkExternalClick.bind(this);
     this.handleKey = this.handleKey.bind(this);
-    this.inputRef = React.createRef();
   }
 
   componentDidMount() {
-    this.inputRef.current.setSelectionRange(0, String(this.state.value).length);
+    this.refs.input.setSelectionRange(0, String(this.state.value).length);
     document.body.addEventListener('click', this.checkExternalClick);
     document.body.addEventListener('keypress', this.handleKey);
-    this.props.setFocus && this.inputRef.current.focus();
+    this.props.setFocus && this.refs.input.focus();
   }
 
   componentWillUnmount() {
@@ -35,8 +34,8 @@ export default class NumberEditor extends React.Component {
   }
 
   checkExternalClick(e) {
-    if (e.target !== this.inputRef.current) {
-      this.commitValue();
+    if (e.target !== this.refs.input) {
+      this.commitValue()
     }
   }
 
@@ -59,15 +58,16 @@ export default class NumberEditor extends React.Component {
   }
 
   render() {
-    const onChange = e => {
-      const value = e.target.value;
-      this.setState({
-        value: validateNumeric(value) ? value : this.state.value,
-      });
+    let onChange = (e) => {
+      let value = e.target.value;
+      this.setState({ value: validateNumeric(value) ? value : this.state.value });
     };
     return (
       <div style={{ width: this.props.width }} className={styles.editor}>
-        <input ref={this.inputRef} value={this.state.value} onChange={onChange} />
+        <input
+          ref='input'
+          value={this.state.value}
+          onChange={onChange} />
       </div>
     );
   }

@@ -10,16 +10,16 @@
  * Used to escape the POST body and GET parameters
  * when exporting a request to cURL
  */
-const escapeValueForCURL = value => {
+let escapeValueForCURL = (value) => {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\$/g, '\\$');
-};
+}
 
 export default function generateCurl(app, method, path, body, options) {
   if (path[0] === '/') {
     path = path.substr(1);
   }
-
-  const headers = [[`-H "X-Parse-Application-Id: ${app.applicationId}" \\`]];
+  
+  let headers = [[`-H "X-Parse-Application-Id: ${app.applicationId}" \\`]];
   if (options.useMasterKey) {
     headers.push([`-H "X-Parse-Master-Key: ${app.masterKey}" \\`]);
   } else {
@@ -29,9 +29,9 @@ export default function generateCurl(app, method, path, body, options) {
     headers.push([`-H "X-Parse-Session-Token: ${options.sessionToken}" \\`]);
   }
 
-  const _body = escapeValueForCURL(body);
+  let _body = escapeValueForCURL(body);
 
-  let request = 'curl -X ' + method + ' \\\n' + headers.join('\n') + '\n';
+  let request = 'curl -X ' + method +' \\\n' + headers.join('\n') + '\n';
   if (_body && _body.length) {
     if (method === 'GET') {
       request += '-G \\\n';

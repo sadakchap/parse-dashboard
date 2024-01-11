@@ -5,55 +5,66 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
+import PropTypes from 'lib/PropTypes';
+import ParseApp from 'lib/ParseApp';
 import React from 'react';
 import * as StoreManager from 'lib/stores/StoreManager';
-import { CurrentApp } from 'context/currentApp';
 
 export default function subscribeTo(name, prop) {
-  return function (Component) {
+  return function(Component) {
     const store = StoreManager.getStore(name);
     const displayName = Component.displayName || Component.name || 'Component';
 
-    function SubscribedComponent(props) {
-      const currentApp = React.useContext(CurrentApp);
-      const [data, setData] = React.useState(store.getData(currentApp));
+    class SubscribedComponent extends React.Component {
 
-      React.useEffect(() => {
-        setData(store.getData(currentApp));
-      }, [currentApp]);
+      constructor(props, context) {
+        super(props, context);
 
-      React.useEffect(() => {
-        const handleNewData = newData => {
-          if (data !== newData) {
-            setData(newData);
+        this.state = {
+          data: store.getData(context.currentApp)
+        };
+      }
+
+      handleNewData(data) {
+        if (this.state.data !== data) {
+          this.setState({ data });
+        }
+      }
+
+      componentWillReceiveProps(nextProps, nextContext) {
+        this.setState({ data: store.getData(nextContext.currentApp) });
+      }
+
+      componentWillMount() {
+        this.subscriptionId = store.subscribe(this.handleNewData.bind(this));
+      }
+
+      componentWillUnmount() {
+        store.unsubscribe(this.subscriptionId);
+      }
+
+      render() {
+        let dispatch = (type, params={}) => {
+          if (store.isGlobal) {
+            return store.dispatch(type, params);
+          }
+          return store.dispatch(type, params, this.context.currentApp);
+        };
+        let extras = {
+          [prop]: {
+            data: this.state.data,
+            dispatch: dispatch,
           }
         };
-
-        const subscriptionId = store.subscribe(handleNewData);
-
-        return () => {
-          store.unsubscribe(subscriptionId);
-        };
-      }, []);
-
-      const dispatch = (type, params = {}) => {
-        if (store.isGlobal) {
-          return store.dispatch(type, params);
-        }
-        return store.dispatch(type, params, currentApp);
-      };
-
-      const extras = {
-        [prop]: {
-          data,
-          dispatch,
-        },
-      };
-
-      return <Component {...props} {...extras} />;
+        return <Component {...this.props} {...extras} />;
+      }
     }
 
     SubscribedComponent.displayName = `subscribeTo(${displayName})`;
+    SubscribedComponent.contextTypes = {
+      currentApp: PropTypes.instanceOf(ParseApp),
+      generatePath: PropTypes.func,
+    };
 
     // In case you need to add static properties to the original Component
     SubscribedComponent.original = Component;

@@ -1,9 +1,12 @@
-import $ from 'jquery'
-import Swal from 'sweetalert2'
+import React            from 'react';
+import $                from 'jquery'
+import jstree           from 'jstree';
+import Swal             from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Base64 } from 'js-base64'
+import { Base64 }       from 'js-base64'
+import * as base64 from 'base64-async';
 
-// import emptyFolderIcon from './icons/folder-empty.png';
+import emptyFolderIcon from './icons/folder-empty.png';
 import folderIcon from './icons/folder.png';
 import file from './icons/file.png';
 import fileCheck from './icons/file-check.png';
@@ -86,8 +89,9 @@ const remove = (data, showAlert=false) => {
 }
 
 // Decode base64 file content.
-const decodeFile = (code) => {
-  return Base64.decode(code.split(',')[1]);
+const decodeFile = async (code) => {
+  let encodedCode = code.split(',')[1];
+  return base64.decode(encodedCode);
 }
 
 const encodeFile = async (code, extension) => {

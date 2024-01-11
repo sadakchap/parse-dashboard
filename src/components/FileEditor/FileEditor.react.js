@@ -15,20 +15,18 @@ export default class FileEditor extends React.Component {
     super();
 
     this.state = {
-      value: props.value,
+      value: props.value
     };
 
     this.checkExternalClick = this.checkExternalClick.bind(this);
     this.handleKey = this.handleKey.bind(this);
     this.removeFile = this.removeFile.bind(this);
-    this.inputRef = React.createRef();
-    this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
     document.body.addEventListener('click', this.checkExternalClick);
     document.body.addEventListener('keypress', this.handleKey);
-    const fileInputElement = document.getElementById('fileInput');
+    let fileInputElement = document.getElementById('fileInput');
     if (fileInputElement) {
       fileInputElement.click();
     }
@@ -41,7 +39,7 @@ export default class FileEditor extends React.Component {
 
   checkExternalClick(e) {
     const { onCancel } = this.props;
-    if (!hasAncestor(e.target, this.inputRef.current) && onCancel) {
+    if (!hasAncestor(e.target, this.refs.input) && onCancel) {
       onCancel();
     }
   }
@@ -63,14 +61,14 @@ export default class FileEditor extends React.Component {
   }
 
   removeFile() {
-    this.fileInputRef.current.value = '';
+    this.refs.fileInput.value = '';
     this.props.onCommit(undefined);
   }
 
   async handleChange(e) {
-    const file = e.target.files[0];
+    let file = e.target.files[0];
     if (file) {
-      const base64 = await this.getBase64(file);
+      let base64 = await this.getBase64(file);
       this.props.onCommit(new Parse.File(file.name, { base64 }));
     }
   }
@@ -78,18 +76,9 @@ export default class FileEditor extends React.Component {
   render() {
     const file = this.props.value;
     return (
-      <div
-        ref={this.inputRef}
-        style={{ minWidth: this.props.width, display: 'none' }}
-        className={styles.editor}
-      >
+      <div ref='input' style={{ minWidth: this.props.width, display: 'none' }} className={styles.editor}>
         <a className={styles.upload}>
-          <input
-            ref={this.fileInputRef}
-            id="fileInput"
-            type="file"
-            onChange={this.handleChange.bind(this)}
-          />
+          <input ref='fileInput' id='fileInput' type='file' onChange={this.handleChange.bind(this)} />
           <span>{file ? 'Replace file' : 'Upload file'}</span>
         </a>
       </div>

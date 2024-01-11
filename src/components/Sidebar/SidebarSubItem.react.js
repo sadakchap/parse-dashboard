@@ -20,7 +20,7 @@ let SidebarSubItem = ({ active, name, action, link, children, badge }) => {
   if (active) {
     return (
       <div>
-        <div className={styles.subitem + ' subitem'}>
+        <div className={styles.subitem}>
           {name}
           {action
             ? React.isValidElement(action)

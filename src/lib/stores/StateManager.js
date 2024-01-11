@@ -42,7 +42,7 @@ export function setAppState(name, app, state) {
   if (!name) {
     throw new Error('Cannot set state without a state identifier');
   }
-  const prev = getAppState(app.applicationId, name);
+  let prev = getAppState(app.applicationId, name);
   appStates[app.applicationId][name] = state;
   return prev;
 }
@@ -62,7 +62,7 @@ export function setGlobalState(name, state) {
   if (!name) {
     throw new Error('Cannot set state without a state identifier');
   }
-  const prev = getGlobalState(name);
+  let prev = getGlobalState(name);
   globalStates[name] = state;
   return prev;
 }

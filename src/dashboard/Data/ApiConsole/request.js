@@ -6,7 +6,7 @@
  * the root directory of this source tree.
  */
 export default function request(app, method, path, body, options) {
-  const xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   if (path.startsWith('/') && app.serverURL.endsWith('/')) {
     path = path.substr(1);
   }
@@ -24,16 +24,14 @@ export default function request(app, method, path, body, options) {
     xhr.setRequestHeader('X-Parse-Session-Token', options.sessionToken);
   }
   xhr.withCredentials = app.custom && app.custom.isGDPR;
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     xhr.onload = function() {
       let response = xhr.responseText;
       try {
         response = JSON.parse(response);
-      } catch (e) {
-        /**/
-      }
+      } catch (e) {/**/}
       resolve(response);
-    };
+    }
     xhr.send(body);
   });
 }

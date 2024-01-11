@@ -5,7 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import React from 'react';
+import React    from 'react';
 import Markdown from 'components/Markdown/Markdown.react';
 
 export const component = Markdown;
@@ -14,7 +14,7 @@ export const demos = [
   {
     name: 'Demo name',
     render: () => {
-      const content = `
+      let content = `
 **bold** *italic*
 
 ~~This code is a mistake~~
@@ -35,7 +35,10 @@ export const demos = [
 some code block
 \`\`\`
 `;
-      return <Markdown content={content} />;
-    },
-  },
+      return (
+        <Markdown
+          content={content} />
+      );
+    }
+  }
 ];

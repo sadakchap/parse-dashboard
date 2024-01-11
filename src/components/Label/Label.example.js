@@ -15,9 +15,8 @@ export const demos = [
   {
     render: () => (
       <Field
-        label={<Label text="This is my text." description="This is my description." />}
-        input={null}
-      />
-    ),
-  },
+        label={<Label text='This is my text.' description='This is my description.' />}
+        input={null} />
+    )
+  }
 ];

@@ -6,9 +6,9 @@
  * the root directory of this source tree.
  */
 import DateTimePicker from 'components/DateTimePicker/DateTimePicker.react';
-import hasAncestor from 'lib/hasAncestor';
-import React from 'react';
-import styles from 'components/DateTimeEditor/DateTimeEditor.scss';
+import hasAncestor    from 'lib/hasAncestor';
+import React          from 'react';
+import styles         from 'components/DateTimeEditor/DateTimeEditor.scss';
 
 export default class DateTimeEditor extends React.Component {
   constructor(props) {
@@ -18,13 +18,11 @@ export default class DateTimeEditor extends React.Component {
       open: false,
       position: null,
       value: props.value,
-      text: props.value.toISOString(),
+      text: props.value && props.value.toISOString()
     };
 
     this.checkExternalClick = this.checkExternalClick.bind(this);
     this.handleKey = this.handleKey.bind(this);
-    this.inputRef = React.createRef();
-    this.editorRef = React.createRef();
   }
 
   componentWillReceiveProps(props) {
@@ -36,17 +34,19 @@ export default class DateTimeEditor extends React.Component {
 
   componentDidMount() {
     document.body.addEventListener('click', this.checkExternalClick);
-    this.inputRef.current.addEventListener('keypress', this.handleKey);
+    this.refs.input.addEventListener('keypress', this.handleKey);
     this.props.setFocus && this.toggle();
+
   }
 
   componentWillUnmount() {
     document.body.removeEventListener('click', this.checkExternalClick);
-    this.inputRef.current.removeEventListener('keypress', this.handleKey);
+    this.refs.input.removeEventListener('keypress', this.handleKey);
+
   }
 
   checkExternalClick(e) {
-    if (!hasAncestor(e.target, this.editorRef.current)) {
+    if (!hasAncestor(e.target, this.refs.editor)) {
       this.props.onCommit(this.state.value);
     }
   }
@@ -59,7 +59,7 @@ export default class DateTimeEditor extends React.Component {
   }
 
   toggle() {
-    this.setState(state => ({ open: !state.open }));
+    this.setState((state) => ({ open: !state.open }));
   }
 
   inputDate(e) {
@@ -80,25 +80,20 @@ export default class DateTimeEditor extends React.Component {
     }
     date = new Date(this.state.text);
     if (isNaN(date.getTime())) {
-      this.setState({
-        value: this.props.value,
-        text: this.props.value.toISOString(),
-      });
+      this.setState({ value: this.props.value, text: this.props.value.toISOString() });
     } else {
       if (this.state.text.endsWith('Z')) {
         this.setState({ value: date });
       } else {
-        const utc = new Date(
-          Date.UTC(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            date.getHours(),
-            date.getMinutes(),
-            date.getSeconds(),
-            date.getMilliseconds()
-          )
-        );
+        let utc = new Date(Date.UTC(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          date.getHours(),
+          date.getMinutes(),
+          date.getSeconds(),
+          date.getMilliseconds()
+        ));
         this.setState({ value: utc });
       }
     }
@@ -112,27 +107,24 @@ export default class DateTimeEditor extends React.Component {
           <DateTimePicker
             value={this.state.value}
             width={240}
-            onChange={value => this.setState({ value: value, text: value.toISOString() })}
-            close={() =>
-              this.setState({ open: false }, () => this.props.onCommit(this.state.value))
-            }
-          />
+            onChange={(value) => this.setState({ value: value, text: value.toISOString() })}
+            close={() => this.setState({ open: false }, () => this.props.onCommit(this.state.value))} />
         </div>
       );
     }
 
     return (
-      <div ref={this.editorRef} style={{ width: this.props.width }} className={styles.editor}>
+      <div ref='editor' style={{ width: this.props.width }} className={styles.editor}>
         <input
           autoFocus
-          type="text"
-          ref={this.inputRef}
+          type='text'
+          ref='input'
+          onFocus={e => e.target.select()}
           value={this.state.text}
           onFocus={e => e.target.select()}
           onClick={this.toggle.bind(this)}
           onChange={this.inputDate.bind(this)}
-          onBlur={this.commitDate.bind(this)}
-        />
+          onBlur={this.commitDate.bind(this)} />
         {popover}
       </div>
     );

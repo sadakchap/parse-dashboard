@@ -11,7 +11,7 @@ let currentToken = null;
 
 export function getToken() {
   if (!currentToken) {
-    const tokenScript = document.getElementById('csrf');
+    let tokenScript = document.getElementById('csrf');
     if (tokenScript) {
       currentToken = JSON.parse(unescape(tokenScript.innerHTML));
     }

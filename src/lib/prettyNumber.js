@@ -15,8 +15,8 @@ export default function prettyNumber(number, places) {
     places = 3;
   }
   if (number.toFixed().length < places) {
-    const fullLength = number.toString().length;
-    const truncatedLength = number.toFixed().length;
+    let fullLength = number.toString().length;
+    let truncatedLength = number.toFixed().length;
     if (fullLength > truncatedLength) {
       // has a decimal piece
       return number.toFixed(places - truncatedLength);
@@ -29,6 +29,6 @@ export default function prettyNumber(number, places) {
     shortened /= 1000;
     suffixIndex++;
   }
-  const remainder = places - shortened.toFixed().length;
+  let remainder = places - shortened.toFixed().length;
   return shortened.toFixed(remainder) + SUFFIXES[suffixIndex];
 }

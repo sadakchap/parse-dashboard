@@ -43,15 +43,6 @@
       fill: #9593a1;
     }
   }
-
-  &.disabled {
-    cursor: not-allowed;
-    color: #66637A;
-
-    &:hover svg {
-      fill: #66637A;
-    }
-  }
 }
 
 .entry.active {
@@ -116,7 +107,7 @@
   padding: 11px 0;
   text-align: center;
 
-  > button {
+  > a {
     margin-right: 10px;
 
     &:last-child {
@@ -156,7 +147,6 @@
 }
 
 .remove {
-  @include buttonReset;
   display: inline-block;
   height: 14px;
   margin: 8px;

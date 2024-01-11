@@ -6,6 +6,6 @@
  * the root directory of this source tree.
  */
 export default function getSiteDomain() {
-  const host = location.host.split('.');
+  let host = location.host.split('.');
   return location.protocol + '//' + host.slice(host.length - 2).join('.');
 }
