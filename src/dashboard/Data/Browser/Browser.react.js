@@ -10,7 +10,7 @@ import { post } from 'lib/AJAX';
 import AccountManager from 'lib/AccountManager';
 import ImportDialog from 'dashboard/Data/Browser/ImportDialog.react';
 import ImportRelationDialog from 'dashboard/Data/Browser/ImportRelationDialog.react';
-import ExportSelectedRowsDialog from 'dashboard/Data/Browser/ExportSelectedRowsDialog.react';
+import B4aExportSelectedRowsDialog from 'dashboard/Data/Browser/B4aExportSelectedRowsDialog.react';
 import semver from 'semver/preload.js';
 import Tour from 'components/Tour/Tour.react';
 import { isMobile } from 'lib/browserUtils';
@@ -2604,7 +2604,7 @@ class Browser extends DashboardView {
       )
     } else if (this.state.rowsToExport) {
       extras = (
-        <ExportSelectedRowsDialog
+        <B4aExportSelectedRowsDialog
           className={className}
           selection={this.state.rowsToExport}
           count={this.state.counts[className]}

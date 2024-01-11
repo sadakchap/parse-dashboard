@@ -51,6 +51,7 @@
   }
 
   .option {
+    text-align: justify;
     color: $dark;
     border-bottom: 1px solid rgba($light-grey, 0.3);
 
@@ -65,7 +66,7 @@
 }
 
 .current {
-  text-align: center;
+  // text-align: center;
   color: $dark;
   height: 80px;
 

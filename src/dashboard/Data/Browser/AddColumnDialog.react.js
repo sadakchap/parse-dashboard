@@ -15,7 +15,7 @@ import Label from 'components/Label/Label.react';
 import B4aModal from 'components/B4aModal/B4aModal.react';
 import Option from 'components/Dropdown/Option.react';
 import TextInput from 'components/TextInput/TextInput.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import DateTimeInput from 'components/DateTimeInput/DateTimeInput.react';
 import SegmentSelect from 'components/SegmentSelect/SegmentSelect.react';
 import FileInput from 'components/FileInput/FileInput.react';
@@ -176,6 +176,8 @@ export default class AddColumnDialog extends React.Component {
             multiline={true}
             onChange={async defaultValue => await this.handleDefaultValueChange(defaultValue)}
             dark={false}
+            textAlign="left"
+            padding={0}
           />
         );
       case 'Number':
@@ -188,6 +190,8 @@ export default class AddColumnDialog extends React.Component {
             }
             onChange={async defaultValue => await this.handleDefaultValueChange(defaultValue)}
             dark={false}
+            textAlign="left"
+            padding={0}
           />
         );
       case 'Date':
@@ -298,13 +302,18 @@ export default class AddColumnDialog extends React.Component {
             />
           }
           input={
-            <TextInput
-              placeholder="Give it a good name"
-              value={this.state.name}
-              onChange={name => this.setState({ name })}
-              dark={false}
-            />
+            <div style={{ padding: '0 1rem' }}>
+              <TextInput
+                placeholder="Give it a good name"
+                value={this.state.name}
+                onChange={name => this.setState({ name })}
+                dark={false}
+                textAlign="left"
+                padding={0}
+              />
+            </div>
           }
+          className={styles.addColumnToggleWrapper}
         />
         {
           /*
@@ -323,7 +332,9 @@ export default class AddColumnDialog extends React.Component {
                       description="If no value is specified for this column, it will be filled with its default value."
                     />
                   }
-                  input={this.renderDefaultValueInput()}
+                  input={<div style={{ padding: '0 1rem' }}>
+                    {this.renderDefaultValueInput()}
+                  </div>}
                   className={styles.addColumnToggleWrapper}
                 />
                 <Field
@@ -336,12 +347,15 @@ export default class AddColumnDialog extends React.Component {
                     />
                   }
                   input={
-                    <Toggle
-                      value={this.state.required}
-                      type={Toggle.Types.YES_NO}
-                      onChange={required => this.setState({ required })}
-                      additionalStyles={{ margin: '0px' }}
-                    />
+                    <div style={{ padding: '0 1rem' }}>
+                      <B4aToggle
+                        value={this.state.required}
+                        type={B4aToggle.Types.YES_NO}
+                        onChange={required => this.setState({ required })}
+                        additionalStyles={{ margin: '0px' }}
+                        invertLabels={true}
+                      />
+                    </div>
                   }
                   className={styles.addColumnToggleWrapper}
                 />

@@ -60,7 +60,7 @@ const B4aModal = ({
 
   const footer = customFooter || (
     <div style={{ textAlign: buttonsInCenter ? 'center' : 'right' }} className={styles.footer}>
-      {showCancel && <Button value={cancelText} onClick={onCancel} disabled={!canCancel} />}
+      {showCancel && <Button color="white" width="auto" additionalStyles={{ border: '1px solid #ccc', color: '#303338' }} value={cancelText} onClick={onCancel} disabled={!canCancel} />}
       {showContinue && (
         <Button
           primary={true}

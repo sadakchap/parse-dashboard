@@ -71,7 +71,7 @@ class TextInput extends React.Component {
         type={this.props.hidden ? 'password' : 'text'}
         disabled={!!this.props.disabled}
         className={classes.join(' ')}
-        style={{ height: this.props.height || 80 }}
+        style={{ height: this.props.height || 80, textAlign: this.props.textAlign, padding: this.props.padding }}
         placeholder={this.props.placeholder}
         value={this.props.value}
         onChange={this.changeValue.bind(this)}

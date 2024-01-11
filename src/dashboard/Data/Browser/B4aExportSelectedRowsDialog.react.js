@@ -12,11 +12,11 @@ import Field from 'components/Field/Field.react';
 import Icon from 'components/Icon/Icon.react';
 import Label from 'components/Label/Label.react';
 import Option from 'components/Dropdown/Option.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import TextInput from 'components/TextInput/TextInput.react';
 import styles from 'dashboard/Data/Browser/ExportSelectedRowsDialog.scss';
 
-export default class ExportSelectedRowsDialog extends React.Component {
+export default class B4aExportSelectedRowsDialog extends React.Component {
   constructor() {
     super();
 
@@ -103,13 +103,16 @@ export default class ExportSelectedRowsDialog extends React.Component {
           <Field
             label={<Label text="Indentation" />}
             input={
-              <Toggle
-                value={this.state.indentation}
-                type={Toggle.Types.YES_NO}
-                onChange={indentation => {
-                  this.setState({ indentation });
-                }}
-              />
+              <div style={{ padding: '0 1rem' }}>
+                <B4aToggle
+                  value={this.state.indentation}
+                  type={B4aToggle.Types.YES_NO}
+                  onChange={indentation => {
+                    this.setState({ indentation });
+                  }}
+                  invertLabels={true}
+                />
+              </div>
             }
           />
         )}
@@ -119,12 +122,16 @@ export default class ExportSelectedRowsDialog extends React.Component {
               <Label text="Confirm this action" description='Enter "export all" to continue.' />
             }
             input={
-              <TextInput
-                placeholder="export all"
-                value={this.state.confirmation}
-                onChange={confirmation => this.setState({ confirmation })}
-                dark={false}
-              />
+              <div style={{ padding: '0 1rem' }}>
+                <TextInput
+                  placeholder={'Enter ”export all” to continue'}
+                  value={this.state.confirmation}
+                  onChange={confirmation => this.setState({ confirmation })}
+                  dark={false}
+                  textAlign="left"
+                  padding={0}
+                />
+              </div>
             }
           />
         )}
