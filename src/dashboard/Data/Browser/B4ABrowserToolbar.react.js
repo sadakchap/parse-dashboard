@@ -186,11 +186,11 @@ const B4ABrowserToolbar = ({
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Change pointer key' onClick={onShowPointerKey} />
-        <MenuItem
+        {/* <MenuItem
           disabled={selectionLength !== 1}
           text={'Edit this row with modal'}
           onClick={onEditSelectedRow}
-        />
+        /> */}
         <MenuItem
           disabled={!selectionLength || isPendingEditCloneRows}
           text={`Attach ${selectionLength <= 1 ? 'this row' : 'these rows'} to relation`}
