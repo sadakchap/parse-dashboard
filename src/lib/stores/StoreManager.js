@@ -7,43 +7,50 @@
  */
 import * as StateManager from 'lib/stores/StateManager';
 
-const stores = {};
+let stores = {};
 let subCount = 0;
 
 export function registerStore(name, store, isGlobal) {
   if (stores[name]) {
-    throw new Error('Conflict! Attempted to register multiple stores with the name ' + name);
+    throw new Error(
+      'Conflict! Attempted to register multiple stores with the name ' + name
+    );
   }
 
   stores[name] = {
     store: store,
     subscribers: {},
-    isGlobal: !!isGlobal,
+    isGlobal: !!isGlobal
   };
 }
 
 export function getStore(name) {
-  const storeData = stores[name];
+  let storeData = stores[name];
   if (!storeData) {
-    throw new Error('Unknown store! Attempted to retrieve store with the name ' + name);
+    throw new Error(
+      'Unknown store! Attempted to retrieve store with the name ' + name
+    );
   }
 
-  const stateGetter = storeData.isGlobal ? StateManager.getGlobalState : StateManager.getAppState;
+  let stateGetter = (storeData.isGlobal ?
+    StateManager.getGlobalState :
+    StateManager.getAppState
+  );
 
   return {
     getData: stateGetter.bind(null, name),
     isGlobal: storeData.isGlobal,
     dispatch(type, params, app) {
-      const action = { ...params, type, app };
-      const newState = storeData.store(stateGetter(name, app), action);
+      let action = {...params, type, app};
+      let newState = storeData.store(stateGetter(name, app), action);
       if (newState instanceof Promise) {
-        return newState.then(result => {
+        return newState.then((result) => {
           if (storeData.isGlobal) {
             StateManager.setGlobalState(name, result);
           } else {
             StateManager.setAppState(name, app, result);
           }
-          for (const id in storeData.subscribers) {
+          for (let id in storeData.subscribers) {
             storeData.subscribers[id](result);
           }
         });
@@ -53,18 +60,18 @@ export function getStore(name) {
         } else {
           StateManager.setAppState(name, app, newState);
         }
-        for (const id in storeData.subscribers) {
+        for (let id in storeData.subscribers) {
           storeData.subscribers[id](newState);
         }
       }
     },
     subscribe(cb) {
-      const id = 'sub' + subCount++;
+      let id = 'sub' + subCount++;
       storeData.subscribers[id] = cb;
       return id;
     },
     unsubscribe(id) {
       delete storeData.subscribers[id];
-    },
-  };
+    }
+  }
 }

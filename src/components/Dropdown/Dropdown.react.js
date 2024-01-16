@@ -6,22 +6,25 @@
  * the root directory of this source tree.
  */
 import { Directions } from 'lib/Constants';
-import Popover from 'components/Popover/Popover.react';
-import Position from 'lib/Position';
-import PropTypes from 'lib/PropTypes';
-import React from 'react';
-import SliderWrap from 'components/SliderWrap/SliderWrap.react';
-import styles from 'components/Dropdown/Dropdown.scss';
+import Popover        from 'components/Popover/Popover.react';
+import Position       from 'lib/Position';
+import PropTypes      from 'lib/PropTypes';
+import React          from 'react';
+import ReactDOM       from 'react-dom';
+import SliderWrap     from 'components/SliderWrap/SliderWrap.react';
+import styles         from 'components/Dropdown/Dropdown.scss';
 
 export default class Dropdown extends React.Component {
   constructor() {
     super();
     this.state = {
       open: false,
-      position: null,
-    };
+      position: null
+    }
+  }
 
-    this.dropdownRef = React.createRef();
+  componentDidMount() {
+    this.node = ReactDOM.findDOMNode(this);
   }
 
   toggle() {
@@ -29,20 +32,20 @@ export default class Dropdown extends React.Component {
       if (this.state.open) {
         return { open: false };
       }
-      let pos = Position.inDocument(this.dropdownRef.current);
+      let pos = Position.inDocument(this.node);
       if (this.props.fixed) {
-        pos = Position.inWindow(this.dropdownRef.current);
+        pos = Position.inWindow(this.node);
       }
       return {
         open: true,
-        position: pos,
+        position: pos
       };
     });
   }
 
   close() {
     this.setState({
-      open: false,
+      open: false
     });
   }
 
@@ -50,40 +53,30 @@ export default class Dropdown extends React.Component {
     if (value === this.props.value) {
       return this.setState({ open: false });
     }
-    this.setState(
-      {
-        open: false,
-      },
-      () => {
-        this.props.onChange(value);
-      }
-    );
+    this.setState({
+      open: false
+    }, () => {
+      this.props.onChange(value);
+    });
   }
 
   render() {
     let popover = null;
     if (this.state.open && !this.props.disabled) {
-      const width = this.dropdownRef.current.clientWidth;
-      const popoverChildren = (
+      let width = this.node.clientWidth;
+      let popoverChildren = (
         <SliderWrap direction={Directions.DOWN} expanded={true}>
           <div style={{ width }} className={styles.menu}>
             {React.Children.map(this.props.children, c => (
-              <button type="button" onClick={this.select.bind(this, c.props.value)}>
-                {c}
-              </button>
+              <a href='javascript:;' onClick={this.select.bind(this, c.props.value)}>{c}</a>
             ))}
           </div>
         </SliderWrap>
       );
-      popover = (
-        <Popover
-          fixed={this.props.fixed}
-          position={this.state.position}
-          onExternalClick={this.close.bind(this)}
-        >
+      popover =
+        <Popover fixed={this.props.fixed} position={this.state.position} onExternalClick={this.close.bind(this)}>
           {popoverChildren}
-        </Popover>
-      );
+        </Popover>;
     }
     let content = null;
     React.Children.forEach(this.props.children, c => {
@@ -92,25 +85,26 @@ export default class Dropdown extends React.Component {
       }
     });
     if (!content) {
-      content = <div className={styles.placeHolder}>{this.props.placeHolder}</div>;
+      content = (
+        <div className={styles.placeHolder}>
+          {this.props.placeHolder}
+        </div>
+      );
     }
     let dropdownStyle = {};
     if (this.props.width) {
       dropdownStyle = {
         width: this.props.width,
-        float: 'left',
+        float: 'left'
       };
     }
-    const dropdownClasses = [styles.dropdown];
+    let dropdownClasses = [styles.dropdown];
     if (this.props.disabled) {
       dropdownClasses.push(styles.disabled);
     }
     return (
-      <div style={dropdownStyle} className={dropdownClasses.join(' ')} ref={this.dropdownRef}>
-        <div
-          className={[styles.current, this.props.currentStyleClassName, this.props.hideArrow ? styles.hideArrow : ''].join(' ')}
-          onClick={this.toggle.bind(this)}
-        >
+      <div style={dropdownStyle} className={dropdownClasses.join(' ')}>
+        <div className={[styles.current, this.props.currentStyleClassName, this.props.hideArrow ? styles.hideArrow : ''].join(' ')} onClick={this.toggle.bind(this)}>
           {content}
         </div>
         {popover}
@@ -123,7 +117,9 @@ Dropdown.propTypes = {
   onChange: PropTypes.func.isRequired.describe(
     'A function called when the dropdown is changed. It receives the new value as the only parameter.'
   ),
-  value: PropTypes.string.describe('The currently-selected value of this controlled input.'),
+  value: PropTypes.string.describe(
+    'The currently-selected value of this controlled input.'
+  ),
   disabled: PropTypes.bool.describe('Set to true to disable the dropdown.'),
   children: PropTypes.node.isRequired.describe(
     'The children of Dropdown should only be <Option> components.'
@@ -131,6 +127,10 @@ Dropdown.propTypes = {
   fixed: PropTypes.bool.describe(
     'Fixes the dropdown in place. Set to true in modals or other places where you don\u2019t want the dropdown to move when you scroll.'
   ),
-  placeHolder: PropTypes.string.describe('Placeholder text used in place of default selection.'),
-  hideArrow: PropTypes.bool.describe('Flag to hide the dropdown arrow.'),
-};
+  placeHolder: PropTypes.string.describe(
+    'Placeholder text used in place of default selection.'
+  ),
+  hideArrow: PropTypes.bool.describe(
+    'Flag to hide the dropdown arrow.'
+  ),
+}

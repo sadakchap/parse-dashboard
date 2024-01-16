@@ -1,23 +1,20 @@
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
+import React            from 'react'
+import ReactDOMServer       from 'react-dom/server'
 import CategoryList from "components/CategoryList/CategoryList.react";
-import DashboardView from 'dashboard/DashboardView.react'
-import Toolbar from 'components/Toolbar/Toolbar.react'
-import Fieldset from 'components/Fieldset/Fieldset.react';
-import styles from 'dashboard/B4aHubPublishPage/B4aHubPublishPage.scss'
-import ReactPlayer from 'react-player';
-import Label from 'components/Label/Label.react';
-import Button from 'components/Button/Button.react';
-import Field from 'components/Field/Field.react';
-import B4aHubPublishModal from 'dashboard/B4aHubPublishPage/B4aHubPublishModal'
-import B4aHubUnpublishModal from 'dashboard/B4aHubPublishPage/B4aHubUnpublishModal'
-import Swal from 'sweetalert2'
-import LoaderContainer  from 'components/LoaderContainer/LoaderContainer.react';
-import { CurrentApp } from 'context/currentApp';
-
+import DashboardView    from 'dashboard/DashboardView.react'
+import Toolbar          from 'components/Toolbar/Toolbar.react'
+import Fieldset         from 'components/Fieldset/Fieldset.react';
+import styles           from 'dashboard/B4aHubPublishPage/B4aHubPublishPage.scss'
+import ReactPlayer      from 'react-player';
+import Label            from 'components/Label/Label.react';
+import Button           from 'components/Button/Button.react';
+import Field            from 'components/Field/Field.react';
+import B4aHubPublishModal    from 'dashboard/B4aHubPublishPage/B4aHubPublishModal'
+import B4aHubUnpublishModal    from 'dashboard/B4aHubPublishPage/B4aHubUnpublishModal'
+import Swal                 from 'sweetalert2'
+import LoaderContainer  from 'components/LoaderContainer/LoaderContainer.react'
 
 class B4aHubPublishPage extends DashboardView {
-  static contextType = CurrentApp;
   constructor() {
     super()
     this.section = 'More',
@@ -33,14 +30,14 @@ class B4aHubPublishPage extends DashboardView {
   }
 
   async componentDidMount() {
-    if (!this.context.custom.isDatabasePublic) {
+    if (!this.context.currentApp.custom.isDatabasePublic) {
       this.setState({
         loading: false
       })
       return
     }
 
-    const publicDatabase = await this.context.getPublicDatabase()
+    const publicDatabase = await this.context.currentApp.getPublicDatabase()
 
     this.setState({
       loading: false,
@@ -88,7 +85,7 @@ class B4aHubPublishPage extends DashboardView {
                 {this.state.isDatabasePublic ? (
                   <Button
                     onClick={() => {
-                      if (!this.context.custom.isOwner) {
+                      if (!this.context.currentApp.custom.isOwner) {
                         Swal.queue([{
                           type: 'error',
                           html: ReactDOMServer.renderToStaticMarkup(
@@ -101,7 +98,7 @@ class B4aHubPublishPage extends DashboardView {
                         }])
                         return;
                       }
-                      B4aHubUnpublishModal.show(this.context, () => {
+                      B4aHubUnpublishModal.show(this.context.currentApp, () => {
                         this.setState({
                           isDatabasePublic: false,
                           publicDatabaseURL: undefined
@@ -116,7 +113,7 @@ class B4aHubPublishPage extends DashboardView {
                 ) : (
                   <Button
                     onClick={() => {
-                      if (!this.context.custom.isOwner) {
+                      if (!this.context.currentApp.custom.isOwner) {
                         Swal.queue([{
                           type: 'error',
                           html: ReactDOMServer.renderToStaticMarkup(
@@ -129,7 +126,7 @@ class B4aHubPublishPage extends DashboardView {
                         }])
                         return;
                       }
-                      if (this.context.custom.isGDPR) {
+                      if (this.context.currentApp.custom.isGDPR) {
                         Swal.queue([{
                           type: 'error',
                           html: ReactDOMServer.renderToStaticMarkup(
@@ -142,7 +139,7 @@ class B4aHubPublishPage extends DashboardView {
                         }])
                         return;
                       }
-                      B4aHubPublishModal.show(this.context, result => {
+                      B4aHubPublishModal.show(this.context.currentApp, result => {
                         this.setState({
                           isDatabasePublic: true,
                           publicDatabaseURL: `https://www.back4app.com/database/${result.author.slug}/${result.database.slug}`

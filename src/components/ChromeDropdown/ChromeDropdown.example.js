@@ -6,7 +6,7 @@
  * the root directory of this source tree.
  */
 import ChromeDropdown from 'components/ChromeDropdown/ChromeDropdown.react';
-import React from 'react';
+import React          from 'react';
 
 export const component = ChromeDropdown;
 
@@ -22,9 +22,8 @@ class DropdownDemo extends React.Component {
       <ChromeDropdown
         value={this.state.color}
         color={this.state.color.toLowerCase()}
-        onChange={color => this.setState({ color })}
-        options={['Blue', 'Purple']}
-      />
+        onChange={(color) => this.setState({ color })}
+        options={['Blue', 'Purple']} />
     );
   }
 }
@@ -42,9 +41,8 @@ class DropdownDemo2 extends React.Component {
         placeholder={'Choose a color'}
         value={this.state.color}
         color={this.state.color.toLowerCase()}
-        onChange={color => this.setState({ color })}
-        options={['Blue', 'Purple']}
-      />
+        onChange={(color) => this.setState({ color })}
+        options={['Blue', 'Purple']} />
     );
   }
 }
@@ -62,18 +60,17 @@ class DropdownDemo3 extends React.Component {
         placeholder={'Choose a color'}
         value={this.state.color}
         color={this.state.color}
-        onChange={color => this.setState({ color })}
+        onChange={(color) => this.setState({ color })}
         options={[
           {
             key: 'blue',
-            value: 'Blue',
+            value: 'Blue'
           },
           {
             key: 'purple',
-            value: 'Purple',
-          },
-        ]}
-      />
+            value: 'Purple'
+          }
+        ]} />
     );
   }
 }
@@ -84,7 +81,7 @@ export const demos = [
       <div>
         <DropdownDemo />
       </div>
-    ),
+    )
   },
   {
     name: 'ChromeDropdown with placeholder',
@@ -92,7 +89,7 @@ export const demos = [
       <div>
         <DropdownDemo2 />
       </div>
-    ),
+    )
   },
   {
     name: 'ChromeDropdown with object',
@@ -100,6 +97,6 @@ export const demos = [
       <div>
         <DropdownDemo3 />
       </div>
-    ),
-  },
+    )
+  }
 ];

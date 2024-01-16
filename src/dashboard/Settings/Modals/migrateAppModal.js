@@ -14,13 +14,13 @@ onSubmit={() => {
     state.migrationMongoURL,
     state.migrationWarnings,
     warnings => setState({migrationWarnings: warnings}),
-    connectionString => context.beginMigration(connectionString)
+    connectionString => context.currentApp.beginMigration(connectionString)
   );
   promise.catch(({ error }) => setState({showMongoConnectionValidationErrors: error !== 'Warnings'}));
   return promise;
 }}
 onClose={closeModalWithConnectionString}
-onSuccess={() => history.push(`/apps/${context.slug}/migration`)}
+onSuccess={() => history.push(`/apps/${context.currentApp.slug}/migration`)}
 clearFields={() => setState({
   migrationMongoURL: '',
   migrationWarnings: [],

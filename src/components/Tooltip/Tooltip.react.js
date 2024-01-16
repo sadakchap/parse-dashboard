@@ -6,15 +6,17 @@
  * the root directory of this source tree.
  */
 import PropTypes from 'lib/PropTypes';
-import React from 'react';
-import styles from 'components/Tooltip/Tooltip.scss';
+import React     from 'react';
+import styles    from 'components/Tooltip/Tooltip.scss';
 
-const Tooltip = ({ value, children }) => {
+let Tooltip = ({ value, children }) => {
   return (
     <div className={styles.tooltipWrap}>
       {children}
       <div className={styles.tooltip}>
-        <div className={styles.tooltipContent}>{value}</div>
+        <div className={styles.tooltipContent}>
+          {value}
+        </div>
         <div className={styles.callout1} />
         <div className={styles.callout2} />
       </div>
@@ -25,6 +27,10 @@ const Tooltip = ({ value, children }) => {
 export default Tooltip;
 
 Tooltip.propTypes = {
-  value: PropTypes.node.isRequired.describe('The tooltip text.'),
-  children: PropTypes.node.describe('The content that should reveal a tooltip when hovered.'),
+  value: PropTypes.node.isRequired.describe(
+    'The tooltip text.'
+  ),
+  children: PropTypes.node.describe(
+    'The content that should reveal a tooltip when hovered.'
+  )
 };

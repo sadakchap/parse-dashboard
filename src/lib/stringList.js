@@ -17,7 +17,7 @@
  * @return {String} human  - friendly list
  */
 export default function stringList(strings, endDelineator = 'and') {
-  const progress = [];
+  let progress = [];
   strings.forEach((s, i) => {
     if (i > 0) {
       if (i === strings.length - 1) {

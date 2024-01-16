@@ -6,41 +6,33 @@
  * the root directory of this source tree.
  */
 import Dropdown from 'components/Dropdown/Dropdown.react';
-import Option from 'components/Dropdown/Option.react';
-import React from 'react';
+import Option   from 'components/Dropdown/Option.react';
+import React    from 'react';
 
-const hourOptions = [];
+let hourOptions = [];
 for (let i = 0; i < 24; i++) {
-  hourOptions.push(
-    <Option key={`hour_${i}`} value={String(i)}>
-      {i}
-    </Option>
-  );
+  hourOptions.push(<Option key={`hour_${i}`} value={String(i)}>{i}</Option>);
 }
 
-const minuteOptions = [];
+let minuteOptions = [];
 for (let i = 0; i < 60; i++) {
   let content = String(i);
   if (content.length === 1) {
     content = '0' + content;
   }
-  minuteOptions.push(
-    <Option key={`minute_${i}`} value={content}>
-      {content}
-    </Option>
-  );
+  minuteOptions.push(<Option key={`minute_${i}`} value={content}>{content}</Option>);
 }
 
-const TimeInput = ({ hours, minutes, onChange }) => {
+let TimeInput = ({ hours, minutes, onChange }) => {
   return (
     <div>
       <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top' }}>
-        <Dropdown value={hours} onChange={newHours => onChange(newHours, minutes)}>
+        <Dropdown value={hours} onChange={(newHours) => onChange(newHours, minutes)}>
           {hourOptions}
         </Dropdown>
       </div>
       <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top' }}>
-        <Dropdown value={minutes} onChange={newMinutes => onChange(hours, newMinutes)}>
+        <Dropdown value={minutes} onChange={(newMinutes) => onChange(hours, newMinutes)}>
           {minuteOptions}
         </Dropdown>
       </div>

@@ -1,11 +1,5 @@
 {
-  "compilerOptions": {
-    "experimentalDecorators": true
-  },
-  "typeAcquisition": {
-      "include": [
-          "jest"
-      ]
-  },
-  "exclude": ["node_modules"]
+    "compilerOptions": {
+        "experimentalDecorators": true
+    },
 }

@@ -29,13 +29,11 @@
     }
 
     .queryLabel {
-      @include buttonReset;
       color: $mainTextColor;
     }
   }
 
   .del {
-    @include buttonReset;
     position: absolute;
     right: 24px;
     color: $red;

@@ -9,8 +9,8 @@ jest.dontMock('../../../Parse-Dashboard/Authentication.js');
 jest.dontMock('bcryptjs');
 
 const Authentication = require('../../../Parse-Dashboard/Authentication');
-const apps = [{ appId: 'test123' }, { appId: 'test789' }];
-const readOnlyApps = apps.map(app => {
+const apps = [{appId: 'test123'}, {appId: 'test789'}];
+const readOnlyApps = apps.map((app) => { 
   app.readOnly = true;
   return app;
 });
@@ -18,12 +18,12 @@ const readOnlyApps = apps.map(app => {
 const unencryptedUsers = [
   {
     user: 'parse.dashboard',
-    pass: 'abc123',
+    pass: 'abc123'
   },
   {
     user: 'parse.apps',
     pass: 'xyz789',
-    apps: apps,
+    apps: apps
   },
   {
     user: 'parse.readonly',
@@ -34,129 +34,106 @@ const unencryptedUsers = [
     user: 'parse.readonly.apps',
     pass: 'abc123',
     apps: readOnlyApps,
-  },
+  }
 ];
 const encryptedUsers = [
   {
     user: 'parse.dashboard',
-    pass: '$2a$08$w92YfzwkhB3WGFTBjHwZLO2tSwNIS2rX0qQER.TF8izEzWF5M.U8S',
+    pass: '$2a$08$w92YfzwkhB3WGFTBjHwZLO2tSwNIS2rX0qQER.TF8izEzWF5M.U8S'
   },
   {
     user: 'parse.apps',
     pass: '$2a$08$B666bpJqE9v/R5KNbgfOMOjycvHzv6zWs0sGky/QuBZb4HY0M6LE2',
-    apps: apps,
-  },
-];
+    apps: apps
+  }
+]
 
-function createAuthenticationResult(
-  isAuthenticated,
-  matchingUsername,
-  appsUserHasAccessTo,
-  isReadOnly
-) {
+function createAuthenticationResult(isAuthenticated, matchingUsername, appsUserHasAccessTo, isReadOnly) {
   isReadOnly = !!isReadOnly;
   return {
     isAuthenticated,
     matchingUsername,
     appsUserHasAccessTo,
-    isReadOnly,
-    otpMissingLength: false,
-    otpValid: true,
-  };
+    isReadOnly
+  }
 }
 
 describe('Authentication', () => {
   it('does not authenticate with no users', () => {
-    const authentication = new Authentication(null, false);
-    expect(authentication.authenticate({ name: 'parse.dashboard', pass: 'abc123' })).toEqual(
-      createAuthenticationResult(false, null, null)
-    );
+    let authentication = new Authentication(null, false);
+    expect(authentication.authenticate({name: 'parse.dashboard', pass: 'abc123'}))
+      .toEqual(createAuthenticationResult(false, null, null));
   });
 
   it('does not authenticate with no auth', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate(null)).toEqual(
-      createAuthenticationResult(false, null, null)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate(null))
+      .toEqual(createAuthenticationResult(false, null, null));
   });
 
   it('does not authenticate invalid user', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate({ name: 'parse.invalid', pass: 'abc123' })).toEqual(
-      createAuthenticationResult(false, null, null)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.invalid', pass: 'abc123'}))
+      .toEqual(createAuthenticationResult(false, null, null));
   });
 
   it('does not authenticate valid user with invalid unencrypted password', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate({ name: 'parse.dashboard', pass: 'xyz789' })).toEqual(
-      createAuthenticationResult(false, null, null)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.dashboard', pass: 'xyz789'}))
+      .toEqual(createAuthenticationResult(false, null, null));
   });
 
   it('authenticates valid user with valid unencrypted password', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate({ name: 'parse.dashboard', pass: 'abc123' })).toEqual(
-      createAuthenticationResult(true, 'parse.dashboard', null)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.dashboard', pass: 'abc123'}))
+      .toEqual(createAuthenticationResult(true, 'parse.dashboard', null));
   });
 
   it('returns apps if valid user', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate({ name: 'parse.apps', pass: 'xyz789' })).toEqual(
-      createAuthenticationResult(true, 'parse.apps', apps)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.apps', pass: 'xyz789'}))
+      .toEqual(createAuthenticationResult(true, 'parse.apps', apps));
   });
 
   it('authenticates valid user with valid encrypted password', () => {
-    const authentication = new Authentication(encryptedUsers, true);
-    expect(authentication.authenticate({ name: 'parse.dashboard', pass: 'abc123' })).toEqual(
-      createAuthenticationResult(true, 'parse.dashboard', null)
-    );
+    let authentication = new Authentication(encryptedUsers, true);
+    expect(authentication.authenticate({name: 'parse.dashboard', pass: 'abc123'}))
+      .toEqual(createAuthenticationResult(true, 'parse.dashboard', null));
   });
 
   it('does not authenticate valid user with invalid encrypted password', () => {
-    const authentication = new Authentication(encryptedUsers, true);
-    expect(authentication.authenticate({ name: 'parse.dashboard', pass: 'xyz789' })).toEqual(
-      createAuthenticationResult(false, null, null)
-    );
+    let authentication = new Authentication(encryptedUsers, true);
+    expect(authentication.authenticate({name: 'parse.dashboard', pass: 'xyz789'}))
+      .toEqual(createAuthenticationResult(false, null, null));
   });
 
   it('authenticates valid user with valid username and usernameOnly', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate({ name: 'parse.dashboard' }, true)).toEqual(
-      createAuthenticationResult(true, 'parse.dashboard', null)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.dashboard'}, true))
+      .toEqual(createAuthenticationResult(true, 'parse.dashboard', null));
   });
 
   it('does not authenticate valid user with valid username and no usernameOnly', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate({ name: 'parse.dashboard' })).toEqual(
-      createAuthenticationResult(false, null, null)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.dashboard'}))
+      .toEqual(createAuthenticationResult(false, null, null));
   });
 
   it('authenticates valid user with valid username and usernameOnly and encrypted password', () => {
-    const authentication = new Authentication(encryptedUsers, true);
-    expect(authentication.authenticate({ name: 'parse.dashboard' }, true)).toEqual(
-      createAuthenticationResult(true, 'parse.dashboard', null)
-    );
+    let authentication = new Authentication(encryptedUsers, true);
+    expect(authentication.authenticate({name: 'parse.dashboard'}, true))
+      .toEqual(createAuthenticationResult(true, 'parse.dashboard', null));
   });
 
   it('makes readOnly auth when specified', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(authentication.authenticate({ name: 'parse.readonly', pass: 'abc123' })).toEqual(
-      createAuthenticationResult(true, 'parse.readonly', null, true)
-    );
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.readonly', pass: 'abc123'}))
+      .toEqual(createAuthenticationResult(true, 'parse.readonly', null, true));
   });
 
   it('makes readOnly auth when specified in apps', () => {
-    const authentication = new Authentication(unencryptedUsers, false);
-    expect(
-      authentication.authenticate({
-        name: 'parse.readonly.apps',
-        pass: 'abc123',
-      })
-    ).toEqual(createAuthenticationResult(true, 'parse.readonly.apps', readOnlyApps, false));
+    let authentication = new Authentication(unencryptedUsers, false);
+    expect(authentication.authenticate({name: 'parse.readonly.apps', pass: 'abc123'}))
+      .toEqual(createAuthenticationResult(true, 'parse.readonly.apps', readOnlyApps, false));
   });
 });

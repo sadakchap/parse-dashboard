@@ -9,6 +9,7 @@ import React from 'react';
 import Editor from 'react-ace';
 import PropTypes from '../../lib/PropTypes';
 
+import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/theme-solarized_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
@@ -39,20 +40,29 @@ export default class CodeEditor extends React.Component {
       // eslint-disable-next-line no-undef
       ace.config.setModuleUrl('ace/mode/javascript_worker', `${window.PARSE_DASHBOARD_PATH}/worker-javascript.js`);
     }
-
   }
 
   render() {
-    const { placeHolder, fontSize = 18, style = {}, mode } = this.props;
-    const { code } = this.state;
-
+    const { fontSize = 18, mode = 'javascript', height } = this.props;
+    
     return (
       <Editor
         mode={mode}
         theme="solarized_dark"
         onChange={value => {
           this.setState({ code: value });
-          typeof this.props.onCodeChange === 'function' && this.props.onCodeChange(value);
+          this.props.onCodeChange(value);
+        }}
+        onLoad={editor => {
+          editor.once("change", () => {
+            editor.session.getUndoManager().reset();
+          });
+          editor.on('change', () => {
+            if ( this.state.reset ){
+              editor.session.getUndoManager().reset();
+              this.setState({ reset: false })
+            }
+          });
         }}
         onLoad={editor => {
           editor.once('change', () => {
@@ -65,19 +75,19 @@ export default class CodeEditor extends React.Component {
             }
           });
         }}
+        height={height || '100%'}
         fontSize={fontSize}
         showPrintMargin={true}
         showGutter={true}
         highlightActiveLine={true}
         width="100%"
-        height='100%'
-        value={code || placeHolder}
+        value={this.state.code}
         enableBasicAutocompletion={true}
         enableLiveAutocompletion={true}
         enableSnippets={false}
         showLineNumbers={true}
         tabSize={2}
-        style={{...style}}
+        style={this.props.style}
       />
     );
   }
@@ -86,15 +96,9 @@ export default class CodeEditor extends React.Component {
 CodeEditor.propTypes = {
   fontSize: PropTypes.number.describe('Font size of the editor'),
   placeHolder: PropTypes.string.describe('Code place holder'),
-  fileName: PropTypes.string.describe('Name of the file'),
-  style: PropTypes.object.describe('Additional editor styles'),
+  height: PropTypes.string.describe('Code Editor height'),
+  style: PropTypes.node.describe('Additional editor styles'),
   onCodeChange: PropTypes.func.describe('On change code callback'),
-  mode: PropTypes.string.describe('Editor mode')
-};
-
-CodeEditor.defaultProps = {
-  mode: 'javascript',
-  style: {},
-  onCodeChange: () => {},
-  fileName: ''
+  mode: PropTypes.string.describe('Editor mode'),
+  code: PropTypes.string.describe('Default code to display')
 };

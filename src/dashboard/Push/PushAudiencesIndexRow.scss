@@ -60,7 +60,6 @@
 }
 
 .moreDetails {
-  @include buttonReset;
   color: $blue;
   font-size: 14px;
 
@@ -74,7 +73,6 @@
 }
 
 .newPushButton {
-  @include buttonReset;
   font-size: 14px;
   display: block;
   margin: -5px 0 -10px 0;
@@ -86,7 +84,6 @@
 
 //NOTE: May be used to global so SVG icons wrapped by <a> can have common styles.
 .removeIcon {
-  @include buttonReset;
   &:hover, &:focus {
     svg {
       fill: $blue;

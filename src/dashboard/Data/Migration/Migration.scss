@@ -5,7 +5,6 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-@use 'sass:math';
 @import 'stylesheets/globals.scss';
 
 $migrationStatesWidth: 175px;
@@ -101,14 +100,14 @@ $progressRowPadding: 15px;
 
 .detailBackground {
 	background-color: $progressBarGrey;
-	border-radius: math.div($progressBarHeight, 2);
+	border-radius: $progressBarHeight / 2;
 	height: $progressBarHeight;
 }
 
 .detailCompletion {
 	position: absolute;
 	top: 0;
-	border-radius: math.div($progressBarHeight, 2);
+	border-radius: $progressBarHeight / 2;
 	height: $progressBarHeight;
 	min-width: $progressBarHeight;
 }

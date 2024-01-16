@@ -5,22 +5,22 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import FormTableCollab from 'components/FormTableCollab/FormTableCollab.react';
+import AccountManager      from 'lib/AccountManager';
+import Field               from 'components/Field/Field.react';
+import Fieldset            from 'components/Fieldset/Fieldset.react';
+import FormTableCollab           from 'components/FormTableCollab/FormTableCollab.react';
+import FormNote            from 'components/FormNote/FormNote.react';
+import InlineSubmitInput   from 'components/InlineSubmitInput/InlineSubmitInput.react';
+import Label               from 'components/Label/Label.react';
+import ParseApp            from 'lib/ParseApp';
+import PropTypes           from 'lib/PropTypes';
+import React               from 'react';
+import TextInput           from 'components/TextInput/TextInput.react';
+import validateEmailFormat from 'lib/validateEmailFormat';
 import PermissionsCollaboratorDialog from 'components/PermissionsCollaboratorDialog/PermissionsCollaboratorDialog.react';
-import Swal from 'sweetalert2'
+import Swal                from 'sweetalert2'
 
 import lodash from 'lodash'
-import AccountManager from 'lib/AccountManager';
-import Field from 'components/Field/Field.react';
-import Fieldset from 'components/Fieldset/Fieldset.react';
-import FormNote from 'components/FormNote/FormNote.react';
-import InlineSubmitInput from 'components/InlineSubmitInput/InlineSubmitInput.react';
-import Label from 'components/Label/Label.react';
-import PropTypes from 'lib/PropTypes';
-import React from 'react';
-import TextInput from 'components/TextInput/TextInput.react';
-import validateEmailFormat from 'lib/validateEmailFormat';
-import { CurrentApp } from 'context/currentApp';
 
 // Component for displaying and modifying an app's collaborator emails.
 // There is a single input field for new collaborator emails. As soon as the
@@ -33,7 +33,6 @@ import { CurrentApp } from 'context/currentApp';
 // The parent also is responsible for passing onRemove, which is called when the
 // users removes a collaborator.
 export default class Collaborators extends React.Component {
-  static contextType = CurrentApp;
   constructor() {
     super();
 
@@ -72,16 +71,16 @@ export default class Collaborators extends React.Component {
   }
 
   getDefaultClasses() {
-    return this.context.classCounts &&
-      this.context.classCounts.counts &&
-      lodash.mapValues(this.context.classCounts.counts, () => 'Write')
+    return this.context.currentApp.classCounts &&
+      this.context.currentApp.classCounts.counts &&
+      lodash.mapValues(this.context.currentApp.classCounts.counts, () => 'Write' )
   }
 
   handleAdd() {
     //TODO: Show some in-progress thing while the collaborator is being validated, or maybe have some sort of
     //async validator in the parent form. Currently if you mash the add button, they same collaborator gets added many times.
     this.setState({lastError: '', lastSuccess: '', showBtnCollaborator: false });
-    return this.context.validateCollaborator(this.state.currentEmail).then((response) => {
+    return this.context.currentApp.validateCollaborator(this.state.currentEmail).then((response) => {
       // lastError logic assumes we only have 1 input field
       if (response.success) {
         this.setState({
@@ -122,7 +121,7 @@ export default class Collaborators extends React.Component {
   }
 
   sendInvite(featuresPermission, classesPermission, owner) {
-    return this.context.sendEmailToInviteCollaborator(this.state.currentEmail, featuresPermission, classesPermission, owner).then((response) => {
+    return this.context.currentApp.sendEmailToInviteCollaborator(this.state.currentEmail, featuresPermission, classesPermission, owner).then((response) => {
       if (response.status === 200) {
         this.setState({ lastError: '', inviteCollab: false, showDialog: false, lastSuccess: 'The invite has been sent!', currentEmail: '', showBtnCollaborator: false, waiting_collaborators: response.data.response });
         setTimeout(() => {
@@ -140,7 +139,7 @@ export default class Collaborators extends React.Component {
   }
 
   editInvite(featuresPermission, classesPermission) {
-    return this.context.editInvitePermissionCollaborator(this.state.currentEmailInput, featuresPermission, classesPermission).then((response) => {
+    return this.context.currentApp.editInvitePermissionCollaborator(this.state.currentEmailInput, featuresPermission, classesPermission).then((response) => {
       if (response.status === 200) {
         this.setState({
           lastError: '',
@@ -164,7 +163,7 @@ export default class Collaborators extends React.Component {
   }
 
   handleRemoveInvite(collaborator) {
-    return this.context.removeInviteCollaborator(collaborator.userEmail).then((response) => {
+    return this.context.currentApp.removeInviteCollaborator(collaborator.userEmail).then((response) => {
       this.setState({
         waiting_collaborators: response.response
       })
@@ -214,14 +213,14 @@ export default class Collaborators extends React.Component {
 
   validateEmail(email) {
     // We allow mixed-case emails for Parse accounts
-    const collabs = this.props.collaborators;
-    const waitCollabs = this.state.waiting_collaborators;
-    const allEmails = collabs.concat(waitCollabs);
+    let collabs = this.props.collaborators;
+    let waitCollabs = this.state.waiting_collaborators;
+    let allEmails = collabs.concat(waitCollabs);
     // We allow mixed-case emails for Parse accounts
-    const isExistingCollaborator = !!allEmails.find(collab => email.toLowerCase() === collab.userEmail.toLowerCase());
+    let isExistingCollaborator = !!allEmails.find(collab => email.toLowerCase() === collab.userEmail.toLowerCase());
     return validateEmailFormat(email) &&
       !isExistingCollaborator &&
-      AccountManager.currentUser().email.toLowerCase() !== email.toLowerCase()
+      AccountManager.currentUser().email.toLowerCase() !== email.toLowerCase();
   }
 
   setCollabPermissions() {
@@ -232,7 +231,7 @@ export default class Collaborators extends React.Component {
         description='Configure how this user can access the App features.'
         advanced={false}
         confirmText='Save'
-        isGDPR={this.context.custom && this.context.custom.isGDPR}
+        isGDPR={this.context.currentApp.custom && this.context.currentApp.custom.isGDPR}
         customFeaturesPermissions={
           (
             (this.state.toEdit || this.state.editInvitePermission && this.state.currentFeaturesPermissions) ?
@@ -431,24 +430,25 @@ export default class Collaborators extends React.Component {
         {this.props.collaborators.length > 0 ? this.renderCollaborators() : null}
         {this.state.waiting_collaborators.length > 0 ? this.renderStandByCollaborators() : null}
       </Fieldset>
+
     )
   }
 }
 
+Collaborators.contextTypes = {
+  currentApp: PropTypes.instanceOf(ParseApp)
+};
+
 Collaborators.propTypes = {
-  legend: PropTypes.string.isRequired.describe('Title of this section'),
+  legend: PropTypes.string.isRequired.describe(
+    'Title of this section'
+  ),
   description: PropTypes.string.isRequired.describe(
     'Description fo this section (shows below title)'
   ),
-  collaborators: PropTypes.arrayOf(PropTypes.any).isRequired.describe(
-    'An array of current collaborators of this app'
-  ),
-  owner_email: PropTypes.string.describe(
-    'The email of the owner, to be displayed if the viewer is a collaborator.'
-  ),
-  viewer_email: PropTypes.string.describe(
-    'The email of the viewer, if the viewer is a collaborator, they will not be able to remove collaborators except themselves.'
-  ),
+  collaborators: PropTypes.arrayOf(PropTypes.any).isRequired.describe('An array of current collaborators of this app'),
+  owner_email: PropTypes.string.describe('The email of the owner, to be displayed if the viewer is a collaborator.'),
+  viewer_email: PropTypes.string.describe('The email of the viewer, if the viewer is a collaborator, they will not be able to remove collaborators except themselves.'),
   onAdd: PropTypes.func.isRequired.describe(
     'A function that will be called whenever a user adds a valid collaborator email. It receives the new email and an updated array of all collaborators for this app.'
   ),
