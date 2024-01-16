@@ -41,7 +41,7 @@ export default class SlowQueriesFilter extends React.Component {
   }
 
   render() {
-    let { method, path, respStatus, respTime } = this.props;
+    const { method, path, respStatus, respTime, onRunQuery } = this.props;
     let popover = null;
     let active = method || path || respStatus || respTime;
     if (this.state.open) {
@@ -88,6 +88,13 @@ export default class SlowQueriesFilter extends React.Component {
                   disabled={!active}
                   width='120px'
                   onClick={this.clear.bind(this)} />
+                <Button
+                  color="white"
+                  primary={true}
+                  value='Run Query'
+                  disabled={!active}
+                  width='120px'
+                  onClick={onRunQuery} />
               </div>
             </div>
           </div>
