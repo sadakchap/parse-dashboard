@@ -5,8 +5,6 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import { centered } from 'components/Field/Field.scss';
-import PropTypes    from 'lib/PropTypes';
 import React        from 'react';
 import styles       from 'components/B4ALabelTemplate/B4ALabelTemplate.scss';
 import B4aBadge     from 'components/B4aBadge/B4aBadge.react'
@@ -27,7 +25,7 @@ let B4ALabelTemplate = (props) => {
   let padding = (props.padding || 20) + 'px';
   return (
     <div
-      className={[styles.labelTemplate, centered].join(' ')}
+      className={[styles.labelTemplate].join(' ')}
       style={{ padding: '0 ' + padding }}>
 
         <div className={styles.imageWrapper}>
