@@ -16,7 +16,7 @@ export default class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { code: '' };
+    this.state = { code: '', reset: false };
   }
 
   get value() {
@@ -28,14 +28,21 @@ export default class CodeEditor extends React.Component {
   }
 
   componentWillReceiveProps(props){
+    if (this.state.code !== props.placeHolder && this.state.fileName !== props.fileName) {
+      this.setState({ code: props.placeHolder, fileName: props.fileName, reset: true });
+    }
     if (props.mode) {
       require(`ace-builds/src-noconflict/mode-${props.mode}`);
       require(`ace-builds/src-noconflict/snippets/${props.mode}`);
     }
+    if (props.mode === 'javascript') {
+      // eslint-disable-next-line no-undef
+      ace.config.setModuleUrl('ace/mode/javascript_worker', `${window.PARSE_DASHBOARD_PATH}/worker-javascript.js`);
+    }
   }
 
   render() {
-    const { placeHolder, fontSize = 18, style = {}, mode } = this.props;
+    const { placeHolder, fontSize = 18, style = {}, mode, height } = this.props;
     const { code } = this.state;
 
     return (
@@ -46,12 +53,23 @@ export default class CodeEditor extends React.Component {
           this.setState({ code: value });
           typeof this.props.onCodeChange === 'function' && this.props.onCodeChange(value);
         }}
+        onLoad={editor => {
+          editor.once('change', () => {
+            editor.session.getUndoManager().reset();
+          });
+          editor.on('change', () => {
+            if (this.state.reset){
+              editor.session.getUndoManager().reset();
+              this.setState({ reset: false })
+            }
+          });
+        }}
         fontSize={fontSize}
         showPrintMargin={true}
         showGutter={true}
         highlightActiveLine={true}
         width="100%"
-        height='100%'
+        height={height || '100%'}
         value={code || placeHolder}
         enableBasicAutocompletion={true}
         enableLiveAutocompletion={true}
