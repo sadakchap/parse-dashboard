@@ -260,12 +260,12 @@ export const refreshEmptyFolderIcons = () => {
   for( let i = 0; i < leaves.length; i++ ){
     // folder or undeployed folder.
     if (
-      leaves[i].querySelector('.jstree-themeicon').style['background-image'] === "url(\""+require('./icons/folder.png').default+"\")"
+      leaves[i].querySelector('.jstree-themeicon').style['background-image'] === "url(\""+require('./icons/folder.png')+"\")"
     ) {
-      leaves[i].querySelector('.jstree-themeicon').style = "background-image: url(\""+require('./icons/folder-empty.png').default+"\"); background-position: center center; background-size: auto;";
+      leaves[i].querySelector('.jstree-themeicon').style = "background-image: url(\""+require('./icons/folder-empty.png')+"\"); background-position: center center; background-size: auto;";
     }
-    else if ( leaves[i].querySelector('.jstree-themeicon').style['background-image'] === "url(\""+require('./icons/folder-notdeployed.png').default+"\")" ) {
-      leaves[i].querySelector('.jstree-themeicon').style = "background-image: url(\""+require('./icons/folder-empty-undeployed.png').default+"\"); background-position: center center; background-size: auto;";
+    else if ( leaves[i].querySelector('.jstree-themeicon').style['background-image'] === "url(\""+require('./icons/folder-notdeployed.png')+"\")" ) {
+      leaves[i].querySelector('.jstree-themeicon').style = "background-image: url(\""+require('./icons/folder-empty-undeployed.png')+"\"); background-position: center center; background-size: auto;";
     }
   }
 }
