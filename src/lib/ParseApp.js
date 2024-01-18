@@ -149,6 +149,7 @@ export default class ParseApp {
 
   apiRequest(method, path, params, options) {
     this.setParseKeys();
+    if (this.custom && this.custom.isGDPR) {options.credentials = 'include'}
     return Parse._request(method, path, params, options);
   }
 
