@@ -71,6 +71,18 @@ $sidebarCollapsedWidth: 54px;
   font-family: Material-Design-Iconic-Font;
 }
 
+@mixin InterFont {
+  font-family: 'Inter', sans-serif;
+}
+
+@mixin SoraFont {
+  font-family: 'Sora', sans-serif;
+}
+
+@mixin CourierFont {
+  font-family: 'Courier Prime', monospace;
+}
+
 @mixin arrow($direction, $base, $height, $color) {
   border-style: solid;
 

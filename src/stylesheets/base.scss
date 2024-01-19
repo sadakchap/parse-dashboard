@@ -10,7 +10,8 @@
 
 html, body {
   min-height: $content-max-height;
-  background-color: #fdf9fb;
+  background-color: $dark;
+  color: $white;
 }
 
 body {
