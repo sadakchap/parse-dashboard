@@ -222,10 +222,10 @@ export default class DashboardView extends React.Component {
       name: 'App Templates',
       link: '/app-templates'
     })
-    moreSubSection.push({
-      name: 'Dashboard Settings',
-      link: '/settings/dashboard'
-    });
+    // moreSubSection.push({
+    //   name: 'Dashboard Settings',
+    //   link: '/settings/dashboard'
+    // });
 
     const pushSubsections = [];
 

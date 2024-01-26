@@ -151,13 +151,14 @@ export default class FlowView extends React.Component {
       showFooter = () => true,
       footerContents,
       defaultFooterMessage,
+      renderModals = [],
       renderForm,
       validate = () => '',
       secondaryButton = () => (
         <Button
           disabled={this.state.saveState === SaveButton.States.SAVING}
           onClick={this.resetFields.bind(this)}
-          value="Cancel"
+          value={this.state.saveState === SaveButton.States.SUCCEEDED ? 'Dismiss' : 'Cancel'}
         />
       ),
     } = this.props;
@@ -167,6 +168,7 @@ export default class FlowView extends React.Component {
     const setFieldJson = this.setFieldJson.bind(this);
     const fields = this.currentFields();
     const form = renderForm({ fields, changes, setField, resetFields, setFieldJson, errors: this.state.errors });
+    const flowModals = <div>{renderModals.map((modal, key) => <div key={key}>{modal}</div>)}</div>
 
     const invalidFormMessage = validate({ changes, fields });
     const hasFormValidationError =
@@ -201,7 +203,7 @@ export default class FlowView extends React.Component {
         state={saveState}
         waitingText={submitText}
         savingText={inProgressText}
-        disabled={!!hasFormValidationError}
+        disabled={!!hasFormValidationError || this.state.errors.length > 0}
         onClick={this.handleClickSaveButton.bind(this)}
       />
     );
@@ -219,6 +221,7 @@ export default class FlowView extends React.Component {
     return (
       <div className={styles.flowViewWrapper}>
         {form}
+        {flowModals}
         {footer}
       </div>
     );
@@ -263,4 +266,8 @@ FlowView.propTypes = {
     'A message for the footer when the validate message is "use default"'
   ),
   renderModals: PropTypes.object.describe('An array of modals to render in the document')
+};
+
+FlowView.defaultProps = {
+  afterSave: () => {}
 };

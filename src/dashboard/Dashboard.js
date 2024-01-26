@@ -314,7 +314,7 @@ export default class Dashboard extends React.Component {
 
     const SettingsRoute = (
       <Route element={<SettingsData />}>
-        <Route path='dashboard' element={<DashboardSettings />} />
+        {/* <Route path='dashboard' element={<DashboardSettings />} /> */}
         <Route path='security' element={<Security />} />
         <Route path='general' element={<GeneralSettings />} />
         <Route path='keys' element={<SecuritySettings />} />

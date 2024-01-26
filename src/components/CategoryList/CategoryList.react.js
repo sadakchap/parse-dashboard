@@ -167,6 +167,7 @@ export default class CategoryList extends React.Component {
                           e.preventDefault();
                           this.props.filterClicked(url);
                         }}
+                        to={{ pathname: url }}
                         key={name + index}
                       >
                         <span>{name}</span>
@@ -182,7 +183,8 @@ export default class CategoryList extends React.Component {
                       </a>
                     </div>
                   );
-                })}
+                })
+              }
             </div>
           );
         })}

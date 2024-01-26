@@ -48,8 +48,9 @@ export default class ExplorerMenuButton extends React.Component {
     // Verify if the click is outside the picker
     if (this.state.currentView && this.parentNode && !this.parentNode.contains(e.target)) {
       // Click target is not inside the configuration dropdown
-      if (e.target.parentNode && !e.target.parentNode.className.match('menu'))
-        this.toggle() // Close picker
+      if (e.target.parentNode && !e.target.parentNode.className.match('menu')) {
+        this.toggle()
+      } // Close picker
     }
   }
 
@@ -69,8 +70,7 @@ export default class ExplorerMenuButton extends React.Component {
         position.x += this.wrapRef.current.clientWidth;
         align = Directions.RIGHT;
       }
-      // Add the button height to the picker appear on the bottom
-      position.y += this.node.clientHeight - window.pageYOffset
+
       return {
         currentView: 'picker',
         position,

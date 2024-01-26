@@ -6,7 +6,7 @@
  * the root directory of this source tree.
  */
 import Button from 'components/Button/Button.react';
-import React from 'react';
+import React, { createRef } from 'react';
 import { CurrentApp } from 'context/currentApp';
 
 export default class RunNowButton extends React.Component {
@@ -21,6 +21,7 @@ export default class RunNowButton extends React.Component {
     };
 
     this.timeout = null;
+    this.buttonRef = createRef(null);
   }
 
   componentWillUnmount() {
@@ -32,7 +33,10 @@ export default class RunNowButton extends React.Component {
     this.context.runJob(this.props.job).then(
       () => {
         this.setState({ progress: false, result: 'success' });
-        this.timeout = setTimeout(() => this.setState({ result: null }), 3000);
+        this.timeout = setTimeout(() => {
+          this.setState({ result: null })
+          this.buttonRef.current && this.buttonRef.current.blur();
+        }, 3000);
       },
       err => {
         // Verify error message, used to control collaborators permissions
@@ -61,6 +65,7 @@ export default class RunNowButton extends React.Component {
     }
     return (
       <Button
+        ref={this.buttonRef}
         progress={this.state.progress}
         onClick={this.handleClick.bind(this)}
         color={this.state.result === 'error' ? 'red' : 'blue'}

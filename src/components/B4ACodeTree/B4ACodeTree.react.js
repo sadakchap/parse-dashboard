@@ -169,7 +169,7 @@ export default class B4ACodeTree extends React.Component {
     const ecodedValue = await B4ATreeActions.encodeFile(value, 'data:plain/text;base64');
     this.setState({ source: value });
 
-    this.state.selectedNodeData?.instance.set_icon(this.state.selectedNodeData.node, require('./icons/file.png').default);
+    this.state.selectedNodeData?.instance.set_icon(this.state.selectedNodeData.node, require('./icons/file.png'));
 
     $('#tree').jstree('get_selected', true).pop().data.code = ecodedValue;
     $('#tree').jstree().redraw(true);

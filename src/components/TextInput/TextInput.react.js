@@ -14,7 +14,7 @@ class TextInput extends React.Component {
   componentDidUpdate(props) {
     if (props.multiline !== this.props.multiline) {
       const node = props.forwardedRef.current;
-      node.focus();
+      // node.focus();
       if (this.props.value) {
         node.setSelectionRange(this.props.value.length, this.props.value.length);
       }

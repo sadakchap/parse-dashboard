@@ -238,7 +238,7 @@ class Browser extends DashboardView {
 
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
       this.handleFetchedSchema();
-      this.redirectToFirstClass(this.props.schema.data.get('classes'));
+      !this.props.params.className && this.redirectToFirstClass(this.props.schema.data.get('classes'));
     });
     if (!this.props.params.className && this.props.schema.data.get('classes')) {
       this.redirectToFirstClass(this.props.schema.data.get('classes'));
@@ -296,7 +296,7 @@ class Browser extends DashboardView {
 
         nextProps.schema.dispatch(ActionTypes.FETCH).then(() => {
           this.handleFetchedSchema();
-          this.redirectToFirstClass(nextProps.schema.data.get('classes'), nextContext);
+          !this.props.params.className && this.redirectToFirstClass(this.props.schema.data.get('classes'), nextContext);
         });
       }
 
@@ -469,7 +469,7 @@ class Browser extends DashboardView {
                     color: { type: 'String' },
                   }
                 }).then(() => {
-                  return context.currentApp.apiRequest('POST', '/classes/B4aVehicle', { name: 'Corolla', price: 19499, color: 'black' }, { useMasterKey: true });
+                  return context.apiRequest('POST', '/classes/B4aVehicle', { name: 'Corolla', price: 19499, color: 'black' }, { useMasterKey: true });
                 }).then(() => {
                   introItems[3].element = getCustomVehicleClassLink();
                   this.nextStep();
@@ -612,7 +612,7 @@ class Browser extends DashboardView {
   }
 
   redirectToFirstClass(classList, context) {
-    if (!classList.isEmpty()) {
+    if (classList && !classList.isEmpty()) {
       classList = Object.keys(classList.toObject());
       const classes = classList.filter(className => className !== '_Role' && className !== '_User' && className !== '_Installation');
       classes.sort((a, b) => {
@@ -708,6 +708,7 @@ class Browser extends DashboardView {
     }
     this.props.schema.dispatch(ActionTypes.CREATE_CLASS, { className, clp }).then(() => {
       this.state.counts[className] = 0;
+      this.state.clp[className] = clp;
       this.props.navigate(generatePath(this.context, 'browser/' + className));
       shouldContinue && this.showAddColumn();
     }).then(() => {
@@ -1181,15 +1182,17 @@ class Browser extends DashboardView {
     const classes = await Parse.Schema.all();
     const schema = classes.find(c => c.className === this.props.params.className);
 
-    const fieldKeys = Object.keys(schema.fields)
-    for (let i = 0; i < fieldKeys.length; i++) {
-      const schemaKey = fieldKeys[i];
-      const schVal = schema.fields[schemaKey];
-      if (schVal.type === 'Pointer') {
-        const defaultPointerKey = await localStorage.getItem(schVal.targetClass) || 'objectId';
-        if (defaultPointerKey !== 'objectId') {
-          query.include(schemaKey);
-          query.select(schemaKey + '.' + defaultPointerKey);
+    if (schema) {
+      const fieldKeys = Object.keys(schema.fields)
+      for (let i = 0; i < fieldKeys.length; i++) {
+        const schemaKey = fieldKeys[i];
+        const schVal = schema.fields[schemaKey];
+        if (schVal.type === 'Pointer') {
+          const defaultPointerKey = localStorage.getItem(schVal.targetClass) || 'objectId';
+          if (defaultPointerKey !== 'objectId') {
+            query.include(schemaKey);
+            query.select(schemaKey + '.' + defaultPointerKey);
+          }
         }
       }
     }
@@ -1932,6 +1935,16 @@ class Browser extends DashboardView {
       query.limit(objectIds.length);
     }
 
+    if (!this.state.filters.isEmpty()) {
+      // Export filtered
+      const objectIds = [];
+      for (const obj of this.state.data) {
+        objectIds.push(obj.id);
+      }
+      query.containedIn('objectId', objectIds);
+      query.limit(objectIds.length);
+    }
+
     const processObjects = objects => {
       const classColumns = this.getClassColumns(className, false);
       // create object with classColumns as property keys needed for ColumnPreferences.getOrder function
@@ -2032,7 +2045,7 @@ class Browser extends DashboardView {
       document.body.removeChild(element);
     };
 
-    if (!rows['*']) {
+    if (!rows['*'] || !this.state.filters.isEmpty()) {
       const objects = await query.find({ useMasterKey: true });
       processObjects(objects);
       this.setState({ exporting: false, exportingCount: objects.length });
@@ -2158,11 +2171,10 @@ class Browser extends DashboardView {
   }
 
   onClickIndexManager() {
-    const { appId, className } = this.props.params
-    history.push({
-      pathname: `/apps/${appId}/index/${className}`,
+    const { className } = this.props.params
+    this.props.navigate(generatePath(this.context, `index/${className}`), {
       state: { showBackButton: true }
-    })
+    });
   }
 
   onClickSecurity() {
@@ -2607,7 +2619,7 @@ class Browser extends DashboardView {
         <B4aExportSelectedRowsDialog
           className={className}
           selection={this.state.rowsToExport}
-          count={this.state.counts[className]}
+          count={this.state.filters.isEmpty() ? this.state.counts[className] : this.state.data?.length}
           data={this.state.data}
           onCancel={this.cancelExportSelectedRows}
           onConfirm={(type, indentation) =>

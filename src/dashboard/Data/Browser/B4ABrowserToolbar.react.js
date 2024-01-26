@@ -1,4 +1,4 @@
-import BrowserFilter        from 'components/BrowserFilter/BrowserFilter.react';
+import B4aBrowserFilter        from 'components/BrowserFilter/B4aBrowserFilter.react';
 import BrowserMenu          from 'components/BrowserMenu/BrowserMenu.react';
 import Icon                 from 'components/Icon/Icon.react';
 import LoginDialog          from 'dashboard/Data/Browser/LoginDialog.react';
@@ -94,7 +94,8 @@ const B4ABrowserToolbar = ({
 }) => {
   const selectionLength = Object.keys(selection).length;
   const isPendingEditCloneRows = editCloneRows && editCloneRows.length > 0;
-  const details = [], lockIcon = false;
+  const details = [];
+  let lockIcon = false;
   if (count !== undefined) {
     if (count === 1) {
       details.push('1 object');
@@ -180,16 +181,16 @@ const B4ABrowserToolbar = ({
         ))}
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Add a row' onClick={onAddRow} />
-        {onAddRowWithModal ? <MenuItem text="Add a row with modal" onClick={onAddRowWithModal} /> : null}
+        {/* {onAddRowWithModal ? <MenuItem text="Add a row with modal" onClick={onAddRowWithModal} /> : null} */}
         {enableColumnManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a column' onClick={onAddColumn} /> : <noscript />}
         {enableClassManipulation ? <MenuItem disabled={isPendingEditCloneRows} text='Add a class' onClick={onAddClass} /> : <noscript />}
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Change pointer key' onClick={onShowPointerKey} />
-        <MenuItem
+        {/* <MenuItem
           disabled={selectionLength !== 1}
           text={'Edit this row with modal'}
           onClick={onEditSelectedRow}
-        />
+        /> */}
         <MenuItem
           disabled={!selectionLength || isPendingEditCloneRows}
           text={`Attach ${selectionLength <= 1 ? 'this row' : 'these rows'} to relation`}
@@ -217,9 +218,8 @@ const B4ABrowserToolbar = ({
           : <noscript />}
         {enableExportClass ?
           <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
-            <MenuItem disabled={isPendingEditCloneRows} text='all rows as JSON' onClick={onExport} />
-            <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'} as CSV`} onClick={() => onExportSelectedRows(selection)} />
-            <MenuItem disabled={isPendingEditCloneRows} text='all rows as CSV' onClick={() => onExportSelectedRows({'*': true})} />
+            <MenuItem text={'Export all rows'} onClick={() => onExportSelectedRows({ '*': true })} />
+            <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`Export ${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
             <MenuItem text={'Export schema'} onClick={() => onExportSchema()} />
           </SubMenuItem>
           : <noscript />}
@@ -333,7 +333,7 @@ const B4ABrowserToolbar = ({
       <a className={styles.toolbarButton + ` ${isPendingEditCloneRows && styles.toolbarButtonDisabled}`} onClick={isPendingEditCloneRows ? null : onRefresh} title='Refresh'>
         <Icon name='b4a-refresh-icon' width={24} height={24} />
       </a>
-      <BrowserFilter
+      <B4aBrowserFilter
         setCurrent={setCurrent}
         schema={schemaSimplifiedData}
         filters={filters}

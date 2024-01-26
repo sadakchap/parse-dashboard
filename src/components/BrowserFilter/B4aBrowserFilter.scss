@@ -8,24 +8,44 @@
 @import 'stylesheets/globals.scss';
 
 .wrap {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 38px;
+  width: 38px;
+  padding: 4px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &.active {
+    background: $blue;
+  }
 }
 
 .entry {
-  height: 30px;
-  padding: 8px;
-
   svg {
-    fill: #66637A;
-  }
-
-  &:hover svg {
     fill: white;
+  }
+  
+  &.disabled {
+    cursor: not-allowed;
+    color: #bbbbbb;
+
+    svg {
+      fill: #bbbbbb;
+    }
+
+    &:hover svg {
+      fill: #9593a1;
+    }
   }
 }
 
 .entry.active {
-  background: $blue;
   border-radius: 5px;
 
   svg {
@@ -39,7 +59,7 @@
 
 .title {
   background: #797691;
-  padding: 8px;
+  padding: 7px 3px;
   border-radius: 5px 5px 0 0;
 
   svg {
@@ -48,16 +68,14 @@
 }
 
 .entry, .title {
-  @include DosisFont;
+  @include NotoSansFont;
   position: relative;
-  bottom: -4px;
   font-size: 14px;
   color: #ffffff;
   cursor: pointer;
 
   svg {
     vertical-align: top;
-    margin-right: 6px;
   }
 
   span {
@@ -68,14 +86,34 @@
   }
 }
 
+.objectPickerContent {
+  .entry svg {
+    fill: rgba(0, 0, 0, 0.3);
+  }
+}
+
 .body {
   position: absolute;
-  top: 30px;
+  top: 31px;
   right: 0;
   border-radius: 5px 0 5px 5px;
   background: #797691;
-  width: 670px;
+  width: 535px;
   font-size: 14px;
+}
+
+.footer {
+  background: rgba(0,0,0,0.2);
+  padding: 11px 0;
+  text-align: center;
+
+  > button {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .row {
@@ -84,7 +122,7 @@
   > * {
     margin-right: 10px;
 
-    &:nth-last-child(1) {
+    &:nth-last-child(2) {
       margin-right: 0;
     }
   }
@@ -108,19 +146,13 @@
   background: #0E69A1;
 }
 
-.footer {
-  background: rgba(0,0,0,0.2);
-  padding: 11px;
-  text-align: center;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
+.remove {
+  display: inline-block;
+  height: 14px;
+  margin: 8px;
+}
 
-  > a {
-    margin-right: 10px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
+.date {
+  display: inline-block;
+  vertical-align: top;
 }

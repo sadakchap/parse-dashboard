@@ -50,9 +50,9 @@ class CreateClassDialog extends React.Component {
 
   render() {
     const availableClasses = ['Custom'];
-    for (const raw in SpecialClasses) {
-      if (raw !== '_Session' && raw !== '_PushStatus' && this.props.currentClasses.indexOf(raw) < 0) {
-        availableClasses.push(SpecialClasses[raw]);
+    for (const raw of SpecialClasses) {
+      if (raw !== '_Session' && raw !== '_PushStatus' && !this.props.currentClasses.includes(raw)) {
+        availableClasses.push(raw);
       }
     }
 

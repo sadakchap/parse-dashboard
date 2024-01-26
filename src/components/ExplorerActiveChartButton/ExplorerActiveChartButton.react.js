@@ -79,8 +79,7 @@ export default class ExplorerActiveChartButton extends React.Component {
       position.x += this.wrapRef.current.clientWidth;
       align = Directions.RIGHT;
     }
-    // Add the button height to the picker appear on the bottom
-    position.y += this.node.clientHeight - window.pageYOffset
+
     this.setState({
       open: !this.state.open,
       position,
@@ -104,7 +103,7 @@ export default class ExplorerActiveChartButton extends React.Component {
     if (!this.props.disableDropdown) {
       dropdown = (
         <div
-          className={[styles.rightArrow, verticalCenter].join(' ')}
+          className={[styles.rightArrow, baseStyles.verticalCenter].join(' ')}
           onClick={this.handleOpenPopover.bind(this)} />
       );
     }
