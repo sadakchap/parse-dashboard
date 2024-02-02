@@ -10,7 +10,8 @@
 
 .content {
   background-color: $dark;
-  min-height: $content-max-height;
+  max-height: $content-max-height;
+  overflow: hidden;
   padding-top: $toolbar-height;
   & .mainContent {
     max-width: 50rem;

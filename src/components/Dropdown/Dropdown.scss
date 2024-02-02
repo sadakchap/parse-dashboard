@@ -29,15 +29,6 @@
   white-space: nowrap;
 }
 
-.dark {
-  .menu {
-    background: $regal-blue;
-  }
-  .option {
-    color: $white;
-  }
-}
-
 .menu {
   max-height: 215px;
   background: $white;
@@ -62,6 +53,17 @@
 
   > *:last-child .option {
     border-bottom: none;
+  }
+
+  &.dark {
+    background: $regal-blue;
+    color: $white;
+    .option {
+      color: $white;
+      &:hover {
+        background: rgba($dark-grey, 0.1);
+      }
+    }
   }
 }
 
@@ -107,5 +109,17 @@
 
   .option {
     padding: 0 14px;
+  }
+}
+
+.dark {
+  .menu {
+    background: $regal-blue !important;
+  }
+  .option {
+    color: $white !important;
+  }
+  .current {
+    color: $light-grey !important;
   }
 }

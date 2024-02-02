@@ -210,8 +210,10 @@ class BlockChainPage extends DashboardView {
                 value="Back4App ETH Development"
                 disabled
                 onChange={() => {}}
+                dark={true}
               />
             }
+            theme={Field.Theme.DARK}
           />
           <Field
             label={<Label text="Balance (development eth)" />}
@@ -228,6 +230,7 @@ class BlockChainPage extends DashboardView {
                 />
               )
             }
+            theme={Field.Theme.DARK}
           />
         </Fieldset>
         <Fieldset
@@ -246,6 +249,7 @@ class BlockChainPage extends DashboardView {
                   })
                 }
                 value={this.state.selectedClass}
+                dark={true}
               >
                 {classes.map((cls, idx) => (
                   <Option key={idx} value={cls}>
@@ -254,6 +258,7 @@ class BlockChainPage extends DashboardView {
                 ))}
               </Dropdown>
             }
+            theme={Field.Theme.BLUE}
           />
           {this.renderClassesAtBlockchain()}
         </Fieldset>
