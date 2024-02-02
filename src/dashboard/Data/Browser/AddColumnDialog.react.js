@@ -332,7 +332,7 @@ export default class AddColumnDialog extends React.Component {
                       description="If no value is specified for this column, it will be filled with its default value."
                     />
                   }
-                  input={<div style={{ padding: '0 1rem' }}>
+                  input={<div style={{ padding: '0 1rem', width: '100%' }}>
                     {this.renderDefaultValueInput()}
                   </div>}
                   className={styles.addColumnToggleWrapper}
