@@ -15,7 +15,7 @@ import {
 } from 'lib/DateUtils';
 import PropTypes from 'lib/PropTypes';
 import React from 'react';
-import styles from 'components/Calendar/Calendar.scss';
+import styles from 'components/Calendar/B4aCalendar.scss';
 
 export default class Calendar extends React.Component {
   constructor(props) {
