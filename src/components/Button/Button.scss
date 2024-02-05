@@ -76,29 +76,28 @@
 }
 
 .white {
-  color: $white;
-  border-color: $white;
+  color: $light-grey;
+  border-color: $light-grey;
   line-height: 28px;
 
   &:hover, &:focus{
-    background-color: $white;
-    color: $blue;
+    background-color: rgba($light-grey, 0.06);
+    color: $white;
   }
 
   &.primary {
-    background-color: $white;
+    background-color: $light-grey;
     color: $blue;
 
     &:hover, &:focus {
-      background-color: $blue;
-      border-color: $blue;
-      color: white;
+      background-color: rgba($light-grey, 0.06);
+      color: $white;
     }
   }
 
   &.disabled {
     background-color: transparent;
-    border-color: white;
+    border-color: $white;
     opacity: 0.2;
   }
 }

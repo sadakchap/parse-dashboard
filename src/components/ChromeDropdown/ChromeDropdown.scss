@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .dropdown {
   display: inline-block;
@@ -17,13 +18,14 @@
 }
 
 .current, .menu {
-  background: $purple;
+  background: $old-dark-blue;
   border-radius: 5px;
-  color: white;
+  color: $white;
   cursor: pointer;
+  border-radius: 4px;
 
   &.blue {
-    background: $darkBlue;
+    background: $old-blue;
   }
 }
 
@@ -32,6 +34,7 @@
   height: 30px;
   line-height: 30px;
   padding: 0 30px 0 10px;
+  border: 1px solid rgba($light-blue, 0.7);
 
   div {
     overflow-x: hidden;
@@ -53,9 +56,9 @@
   height: 30px;
   line-height: 30px;
   padding: 0 30px 0 10px;
-  background: $purple;
+  background: $old-dark-blue;
   border-radius: 5px;
-  color: white;
+  color: $white;
   cursor: pointer;
 
   div {
@@ -64,7 +67,7 @@
   }
 
   &.blue {
-    background: $darkBlue;
+    background: $old-dark-blue;
   }
 }
 
@@ -72,11 +75,22 @@
   max-height: 360px;
   overflow-y: auto;
   font-size: 14px;
+  border: 1px solid rgba($white, 0.06);
 
   div {
     height: 30px;
     line-height: 30px;
     padding: 0 10px;
+    border-bottom: 1px solid rgba($light-blue, 0.3);
+
+    &:first-of-type {
+      border: 1px solid rgba($light-blue, 0.7);
+      border-radius: 5px;
+    }
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
 
     &:hover {
       background: rgba(255, 255, 255, 0.1);
