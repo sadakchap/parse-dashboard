@@ -26,7 +26,7 @@ const B4aModal = ({
   type = B4aModal.Types.DEFAULT,
   icon,
   iconSize = 36,
-  iconFill="#fff",
+  iconFill = '#fff',
   children,
   title,
   subtitle,
@@ -46,8 +46,7 @@ const B4aModal = ({
   continueText,
   onContinue,
   showContinue,
-  buttonsInCenter = React.Children.count(children) === 0,
-  onClose = () => {},
+  buttonsInCenter = false,
 }) => {
   if (children) {
     children = React.Children.map(children, c => {

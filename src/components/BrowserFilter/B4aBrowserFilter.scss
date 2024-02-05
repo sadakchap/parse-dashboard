@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .wrap {
   display: flex;
@@ -22,21 +23,21 @@
   }
 
   &.active {
-    background: $blue;
+    background: $old-blue;
   }
 }
 
 .entry {
   svg {
-    fill: white;
+    fill: $white;
   }
   
   &.disabled {
     cursor: not-allowed;
-    color: #bbbbbb;
+    color: $light-grey;
 
     svg {
-      fill: #bbbbbb;
+      fill: $light-grey;
     }
 
     &:hover svg {
@@ -49,7 +50,7 @@
   border-radius: 5px;
 
   svg {
-    fill: white;
+    fill: $white;
   }
 }
 
@@ -58,20 +59,29 @@
 }
 
 .title {
-  background: #797691;
+  background: $old-dark-blue;
   padding: 7px 3px;
   border-radius: 5px 5px 0 0;
 
   svg {
-    fill: white;
+    fill: $white;
   }
 }
 
+.activeMenu {
+  background: $old-dark-blue;
+  border: 1px solid #F9F9F90F;
+  background: linear-gradient(0deg, #114370, #114370), linear-gradient(0deg, rgba(249, 249, 249, 0.06), rgba(249, 249, 249, 0.06));
+  width: 38px;
+  height: 38px;
+  border-radius: 5px;
+}
+
 .entry, .title {
-  @include NotoSansFont;
+  @include InterFont;
   position: relative;
   font-size: 14px;
-  color: #ffffff;
+  color: $white;
   cursor: pointer;
 
   svg {
@@ -93,21 +103,25 @@
 }
 
 .body {
+  margin-top: 10px;
   position: absolute;
   top: 31px;
   right: 0;
   border-radius: 5px 0 5px 5px;
-  background: #797691;
+  background: $old-dark-blue;
   width: 535px;
   font-size: 14px;
+  box-shadow: 0px 6px 16px 0px #0000001A;
+  border: 1px solid rgba($white, 0.06);
 }
 
 .footer {
-  background: rgba(0,0,0,0.2);
-  padding: 11px 0;
-  text-align: center;
+  padding: 11px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  > button {
+  > div > button {
     margin-right: 10px;
 
     &:last-child {
@@ -118,26 +132,21 @@
 
 .row {
   padding: 8px 15px;
-
-  > * {
-    margin-right: 10px;
-
-    &:nth-last-child(2) {
-      margin-right: 0;
-    }
-  }
+  display: flex;
+  gap: 10px;
+  align-items: center;
 
   input {
     @include MonospaceFont;
     height: 30px;
     width: 140px;
-    background: #343445;
+    background: transparent;
     border: none;
     outline: none;
     border-radius: 5px;
     vertical-align: top;
     padding: 0 8px;
-    color: white;
+    color: $white;
     font-size: 14px;
   }
 }
@@ -148,8 +157,6 @@
 
 .remove {
   display: inline-block;
-  height: 14px;
-  margin: 8px;
 }
 
 .date {

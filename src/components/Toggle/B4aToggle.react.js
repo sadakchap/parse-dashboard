@@ -95,13 +95,6 @@ export default class B4aToggle extends React.Component {
         break;
     }
 
-    const switchClasses = [styles.switch];
-    if (colored) {
-      switchClasses.push(styles.colored);
-    }
-    if (this.props.switchNoMargin) {
-      switchClasses.push(styles.switchNoMargin);
-    }
     const toggleClasses = [styles.toggle, baseStyles.unselectable, fieldStyles.input];
     if (left) {
       toggleClasses.push(styles.left);

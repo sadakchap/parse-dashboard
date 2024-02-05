@@ -103,7 +103,7 @@ const B4aFilterRow = ({
       options={constraints.map((c) => Constraints[c].name)}
       onChange={(c) => onChangeConstraint(constraintLookup[c])} />
     {compareValue(compareInfo, compareTo, onChangeCompareTo, active, parentContentId, setFocus)}
-    <a role='button' href='javascript:;' className={styles.remove} onClick={onDeleteRow}><Icon name='minus-solid' width={14} height={14} fill='rgba(0,0,0,0.4)' /></a>
+    <a role='button' href='javascript:;' className={styles.remove} onClick={onDeleteRow}><Icon name='b4a-minus' width={18} height={18} fill='#f9f9f9' /></a>
   </div>
 };
 

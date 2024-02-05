@@ -1,0 +1,121 @@
+/*
+ * Copyright (c) 2016-present, Parse, LLC
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ */
+ @import 'stylesheets/globals.scss';
+ @import 'stylesheets/back4app.scss';
+
+ .calendar {
+   @include InterFont;
+   background: $dark-grey;
+   color: $white;
+   width: 182px;
+   height: auto;
+ }
+ 
+ .month {
+   margin-bottom: 10px;
+ 
+   button {
+     @include buttonReset;
+     position: relative;
+     display: inline-block;
+     width: 14px;
+     height: 14px;
+     border: none;
+     opacity: 0.5;
+     margin: 0 6px;
+ 
+     &:hover {
+       opacity: 1;
+     }
+ 
+     &:first-of-type {
+       float: left;
+ 
+       &:before {
+         content: '';
+         position: absolute;
+         @include arrow('left', 8px, 4px, $white);
+         top: 2px;
+         left: 4px;
+       }
+     }
+ 
+     &:last-of-type {
+       float: right;
+ 
+       &:after {
+         content: '';
+         position: absolute;
+         @include arrow('right', 8px, 4px, white);
+         top: 2px;
+         left: 3px;
+       }
+     }
+   }
+ 
+   div {
+     font-size: 14px;
+     text-align: center;
+   }
+ }
+ 
+ .weekdays {
+   opacity: 0.5;
+   font-size: 12px;
+   margin-bottom: 8px;
+ 
+   span {
+     display: inline-block;
+     width: 26px;
+     height: 13px;
+     line-height: 13px;
+     font-size: 13px;
+     text-align: center;
+   }
+ }
+ 
+ .days {
+   span, button {
+     @include buttonReset;
+     display: inline-block;
+     vertical-align: bottom;
+     width: 26px;
+     height: 20px;
+     line-height: 20px;
+     font-size: 12px;
+     text-align: center;
+     margin: 0;
+     color: $white;
+   }
+ 
+   .selected {
+     color: white;
+     background: $old-blue;
+   }
+ }
+ 
+ .shadeBefore {
+   button {
+     background: #efeff1;
+   }
+ 
+   .selected {
+     background: $darkBlue;
+   }
+ 
+   .selected ~ button {
+     background: white;
+   }
+ }
+ 
+ .shadeAfter {
+   .selected ~ button {
+     background: #efeff1;
+   }
+ }
+ 

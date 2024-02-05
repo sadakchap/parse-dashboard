@@ -7,7 +7,7 @@
  */
 import Field from 'components/Field/Field.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import React from 'react';
 import TextInput from 'components/TextInput/TextInput.react';
 
@@ -53,9 +53,8 @@ export default class CloneSelectedRowsDialog extends React.Component {
       );
     }
     return (
-      <Modal
-        type={Modal.Types.DANGER}
-        icon="warn-outline"
+      <B4aModal
+        type={B4aModal.Types.DEFAULT}
         title={
           this.props.selection['*']
             ? 'Clone all rows?'
@@ -69,9 +68,10 @@ export default class CloneSelectedRowsDialog extends React.Component {
         cancelText="Cancel"
         onCancel={this.props.onCancel}
         onConfirm={this.props.onConfirm}
+        buttonsInCenter={true}
       >
         {content}
-      </Modal>
+      </B4aModal>
     );
   }
 }

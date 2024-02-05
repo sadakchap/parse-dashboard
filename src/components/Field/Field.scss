@@ -36,7 +36,7 @@
 .right {
   position: relative;
   min-height: 80px;
-  text-align: right;
+  // text-align: right;
   padding: 0;
   background: transparent;
   display: flex;
@@ -49,14 +49,24 @@
 
 .dark {
   &.field {
-    background: #1e283f;
+    background: #1d293d;
+    color: $white;
+  }
+  .right {
+    background: $dark-grey;
+  }
+}
+
+
+.blue {
+  &.field {
+    background: #1d293d;
     color: $white;
   }
   .right {
     background: $regal-blue;
   }
 }
-
 
 .header {
   min-height: 56px;

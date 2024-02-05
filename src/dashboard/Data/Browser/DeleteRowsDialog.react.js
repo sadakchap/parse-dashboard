@@ -7,7 +7,7 @@
  */
 import Field from 'components/Field/Field.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import React from 'react';
 import TextInput from 'components/TextInput/TextInput.react';
 
@@ -68,6 +68,7 @@ export default class DeleteRowsDialog extends React.Component {
               placeholder="delete all"
               value={this.state.confirmation}
               onChange={confirmation => this.setState({ confirmation })}
+              dark={false}
             />
           }
         />
@@ -75,9 +76,8 @@ export default class DeleteRowsDialog extends React.Component {
     }
     const deleteText = this.props.relation ? 'Detach' : 'Delete';
     return (
-      <Modal
-        type={Modal.Types.DANGER}
-        icon="warn-outline"
+      <B4aModal
+        type={B4aModal.Types.DANGER}
         title={
           this.props.selection['*']
             ? `${deleteText} all rows?`
@@ -95,9 +95,10 @@ export default class DeleteRowsDialog extends React.Component {
         cancelText="Cancel"
         onCancel={this.props.onCancel}
         onConfirm={this.props.onConfirm}
+        buttonsInCenter={true}
       >
         {content}
-      </Modal>
+      </B4aModal>
     );
   }
 }

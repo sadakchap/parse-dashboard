@@ -69,7 +69,7 @@ export default class Dropdown extends React.Component {
       const width = this.dropdownRef.current.clientWidth;
       const popoverChildren = (
         <SliderWrap direction={Directions.DOWN} expanded={true}>
-          <div style={{ width }} className={styles.menu}>
+          <div style={{ width }} className={styles.menu + ` ${this.props.dark ? styles.dark : ''}`}>
             {React.Children.map(this.props.children, c => (
               <button type="button" onClick={this.select.bind(this, c.props.value)}>
                 {c}

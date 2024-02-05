@@ -401,7 +401,7 @@ export default class BrowserTable extends React.Component {
           if (!readonly && !this.props.isUnique) {
             editor = (
               <Editor
-                top={wrapTop}
+                top={wrapTop + ROW_HEIGHT}
                 left={wrapLeft + 24}
                 type={type}
                 targetClass={targetClass}

@@ -29,15 +29,6 @@
   white-space: nowrap;
 }
 
-.dark {
-  .menu {
-    background: $regal-blue;
-  }
-  .option {
-    color: $white;
-  }
-}
-
 .menu {
   max-height: 215px;
   background: $white;
@@ -63,6 +54,19 @@
   > *:last-child .option {
     border-bottom: none;
   }
+
+  &.dark {
+    background: $regal-blue;
+    color: $white;
+    border: 1px solid rgba($light-grey, 0.3);;
+    .option {
+      background: $regal-blue;
+      color: $white;
+      &:hover {
+        background: rgba($dark-grey, 0.1);
+      }
+    }
+  }
 }
 
 .current {
@@ -86,7 +90,8 @@
   }
 
   .placeHolder {
-    color: $secondaryTextColor
+    color: $secondaryTextColor;
+    padding: 0 1rem;
   }
 }
 
@@ -106,5 +111,20 @@
 
   .option {
     padding: 0 14px;
+  }
+}
+
+.dark {
+  .current {
+    color: $light-grey !important;
+    &:not(.hideArrow){
+      &:after {
+        @include arrow('down', 12px, 8px, rgba(249, 249, 249, 0.7));
+        position: absolute;
+        content: '';
+        top: 36px;
+        right: 20px;
+      }
+    }
   }
 }

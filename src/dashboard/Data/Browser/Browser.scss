@@ -393,11 +393,12 @@ body:global(.expanded) {
   justify-content: flex-start;
   align-items: center;
   padding-left: 15px;
-  background: #f6fafb;
   gap: 10px;
+  text-align: left;
+  font-size: 14px;
   
   input[type=radio]{
-    width: 20px;
+    width: 12px;
     height: 2em;
   }
 }

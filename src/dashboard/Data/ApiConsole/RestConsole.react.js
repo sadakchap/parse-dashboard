@@ -9,7 +9,6 @@ import Button from 'components/Button/Button.react';
 import Dropdown from 'components/Dropdown/Dropdown.react';
 import Field from 'components/Field/Field.react';
 import Fieldset from 'components/Fieldset/Fieldset.react';
-import fieldStyle from 'components/Field/Field.scss';
 import FlowFooter from 'components/FlowFooter/FlowFooter.react';
 import FormNote from 'components/FormNote/FormNote.react';
 import generateCurl from 'dashboard/Data/ApiConsole/generateCurl';
@@ -22,7 +21,7 @@ import React, { Component } from 'react';
 import request from 'dashboard/Data/ApiConsole/request';
 import styles from 'dashboard/Data/ApiConsole/RestConsole.scss';
 import TextInput from 'components/TextInput/TextInput.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import { CurrentApp } from 'context/currentApp';
 
@@ -134,7 +133,7 @@ export default class RestConsole extends Component {
 
   render() {
     const methodDropdown = (
-      <Dropdown onChange={method => this.setState({ method })} value={this.state.method}>
+      <Dropdown onChange={method => this.setState({ method })} value={this.state.method} dark={true}>
         <Option value="GET">GET</Option>
         <Option value="POST">POST</Option>
         <Option value="PUT">PUT</Option>
@@ -199,7 +198,7 @@ export default class RestConsole extends Component {
             legend=""
             description=""
           >
-            <Field label={<Label text="What type of request?" />} input={methodDropdown} />
+            <Field label={<Label text="What type of request?" />} input={methodDropdown} theme={Field.Theme.BLUE} />
             <Field
               label={
                 <Label
@@ -209,28 +208,35 @@ export default class RestConsole extends Component {
                       Not sure what endpoint you need?
                       <br />
                       Take a look at our{' '}
-                      <a href="http://docs.parseplatform.org/rest/guide/">REST API guide</a>.
+                      <a href="http://docs.parseplatform.org/rest/guide/" className={styles.helpLink}>REST API guide</a>.
                     </span>
                   }
                 />
               }
               input={
-                <TextInput
-                  value={this.state.endpoint}
-                  monospace={true}
-                  placeholder={'classes/_User'}
-                  onChange={endpoint => this.setState({ endpoint })}
-                />
+                <div style={{ padding: '0 1rem', width: '100%' }}>
+                  <TextInput
+                    value={this.state.endpoint}
+                    monospace={true}
+                    placeholder={'classes/_User'}
+                    onChange={endpoint => this.setState({ endpoint })}
+                  />
+                </div>
               }
+              theme={Field.Theme.BLUE}
             />
             <Field
               label={<Label text="Use Master Key?" description={'This will bypass any ACL/CLPs.'} />}
               input={
-                <Toggle
-                  value={this.state.useMasterKey}
-                  onChange={useMasterKey => this.setState({ useMasterKey })}
-                />
+                <div style={{ padding: '1rem', width: '100%' }}>
+                  <B4aToggle
+                    type={B4aToggle.Types.TRUE_FALSE}
+                    value={this.state.useMasterKey}
+                    onChange={useMasterKey => this.setState({ useMasterKey })}
+                  />
+                </div>
               }
+              theme={Field.Theme.BLUE}
             />
             <Field
               label={
@@ -242,14 +248,17 @@ export default class RestConsole extends Component {
                 />
               }
               input={
-                <TextInput
-                  value={this.state.runAsIdentifier}
-                  monospace={true}
-                  placeholder={'Username or ID'}
-                  onChange={runAsIdentifier => this.setState({ runAsIdentifier })}
-                  onBlur={this.fetchUser.bind(this)}
-                />
+                <div style={{ padding: '0 1rem', width: '100%' }}>
+                  <TextInput
+                    value={this.state.runAsIdentifier}
+                    monospace={true}
+                    placeholder={'Username or ID'}
+                    onChange={runAsIdentifier => this.setState({ runAsIdentifier })}
+                    onBlur={this.fetchUser.bind(this)}
+                  />
+                </div>
               }
+              theme={Field.Theme.BLUE}
             />
             <FormNote color="red" show={!!this.state.error}>
               {this.state.error}
@@ -261,20 +270,24 @@ export default class RestConsole extends Component {
                   description={
                     <span>
                       Learn more about query parameters in our{' '}
-                      <a href="http://docs.parseplatform.org/rest/guide/#queries">REST API guide</a>.
+                      <a href="http://docs.parseplatform.org/rest/guide/#queries" className={styles.helpLink}>REST API guide</a>.
                     </span>
                   }
                 />
               }
               input={
-                <TextInput
-                  value={this.state.parameters}
-                  monospace={true}
-                  multiline={true}
-                  placeholder={parameterPlaceholder}
-                  onChange={parameters => this.setState({ parameters })}
-                />
+                <div style={{ padding: '0 1rem', width: '100%' }}>
+                  <TextInput
+                    value={this.state.parameters}
+                    monospace={true}
+                    multiline={true}
+                    placeholder={parameterPlaceholder}
+                    onChange={parameters => this.setState({ parameters })}
+                    className={styles.textarea}
+                  />
+                </div>
               }
+              theme={Field.Theme.BLUE}
             />
           </Fieldset>
           <div className={styles.results}>

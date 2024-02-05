@@ -206,12 +206,16 @@ class BlockChainPage extends DashboardView {
           <Field
             label={<Label text="Blockchain Network" />}
             input={
-              <TextInput
-                value="Back4App ETH Development"
-                disabled
-                onChange={() => {}}
-              />
+              <div style={{ padding: '0 1rem', width: '100%' }}>
+                <TextInput
+                  value="Back4App ETH Development"
+                  disabled
+                  onChange={() => {}}
+                  dark={true}
+                />
+              </div>
             }
+            theme={Field.Theme.DARK}
           />
           <Field
             label={<Label text="Balance (development eth)" />}
@@ -221,13 +225,16 @@ class BlockChainPage extends DashboardView {
                   <div className={styles.spinner}></div>
                 </div>
               ) : (
-                <TextInput
-                  value={formattedBalance}
-                  disabled
-                  onChange={() => {}}
-                />
+                <div style={{ padding: '0 1rem', width: '100%' }}>
+                  <TextInput
+                    value={formattedBalance}
+                    disabled
+                    onChange={() => {}}
+                  />
+                </div>
               )
             }
+            theme={Field.Theme.DARK}
           />
         </Fieldset>
         <Fieldset
@@ -246,6 +253,7 @@ class BlockChainPage extends DashboardView {
                   })
                 }
                 value={this.state.selectedClass}
+                dark={true}
               >
                 {classes.map((cls, idx) => (
                   <Option key={idx} value={cls}>
@@ -254,6 +262,7 @@ class BlockChainPage extends DashboardView {
                 ))}
               </Dropdown>
             }
+            theme={Field.Theme.BLUE}
           />
           {this.renderClassesAtBlockchain()}
         </Fieldset>
