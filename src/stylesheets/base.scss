@@ -41,12 +41,6 @@ svg {
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: $blue;
-  cursor: pointer;
-  text-decoration: none;
-}
-
 span, div {
   letter-spacing: 0;
 }
@@ -115,4 +109,8 @@ table {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+label {
+  margin: 0;
 }
