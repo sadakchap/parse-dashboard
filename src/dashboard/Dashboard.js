@@ -525,7 +525,7 @@ const NavbarWrapper = () => {
 
   return <Navbar
     user={user}
-    overLimitAppsPlansCount={(appsPlans && appsPlans.filter(appPlan => appPlan.status === AppPlanStatus.OVER_LIMITS).length) || undefined}
+    overLimitAppsPlansCount={(appsPlans && appsPlans.filter(appPlan => appPlan.status === 'OVER_LIMITS').length) || undefined}
     router={router}
     Link={LinkImpl}
     parseDashboardURL={b4aSettings.PARSE_DASHBOARD_URL}
