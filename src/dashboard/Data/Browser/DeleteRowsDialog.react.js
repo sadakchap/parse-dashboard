@@ -64,12 +64,14 @@ export default class DeleteRowsDialog extends React.Component {
         <Field
           label={<Label text="Confirm this action" description='Enter "delete all" to continue.' />}
           input={
-            <TextInput
-              placeholder="delete all"
-              value={this.state.confirmation}
-              onChange={confirmation => this.setState({ confirmation })}
-              dark={false}
-            />
+            <div style={{ padding: '0 1rem' }}>
+              <TextInput
+                placeholder="delete all"
+                value={this.state.confirmation}
+                onChange={confirmation => this.setState({ confirmation })}
+                dark={false}
+              />
+            </div>
           }
         />
       );

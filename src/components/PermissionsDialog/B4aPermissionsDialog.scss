@@ -44,7 +44,7 @@
   padding: 1rem 2rem;
   .close {
   position: absolute;
-  top: 20px;
+  top: 5px;
   right: 15px;
   cursor: pointer;
 
@@ -188,12 +188,13 @@ width: $addFieldColWidth;
 
 .footer {
   position: relative;
-  height: 51px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 
   .details {
     font-size: 12px;
-    padding-left: 20px;
-
     a {
       display: inline-block;
       color: $old-blue;
@@ -212,7 +213,6 @@ width: $addFieldColWidth;
 
   .actions {
     float: right;
-    padding: 10px 15px;
 
     button {
       margin-left: 10px;

@@ -54,12 +54,14 @@ export default class DropClassDialog extends React.Component {
             />
           }
           input={
-            <TextInput
-              placeholder="Current class name"
-              value={this.state.confirmation}
-              onChange={confirmation => this.setState({ confirmation })}
-              dark={false}
-            />
+            <div style={{ padding: '0 1rem' }}>
+              <TextInput
+                placeholder="Current class name"
+                value={this.state.confirmation}
+                onChange={confirmation => this.setState({ confirmation })}
+                dark={false}
+              />
+            </div>
           }
         />
       </B4aModal>

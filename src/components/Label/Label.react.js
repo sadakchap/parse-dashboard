@@ -15,7 +15,7 @@ const Label = props => {
   return (
     <div
       className={[styles.label, fieldStyles.centered].join(' ')}
-      style={{ padding: '0 ' + padding, ...props.style }}>
+      style={{ padding: '9px ' + padding, ...props.style }}>
       <div className={styles.text}>{props.text}</div>
       {props.description ? <div className={styles.description}>{props.description}</div> : null}
     </div>

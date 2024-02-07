@@ -40,7 +40,8 @@
 }
 
 .green {
-  color: $cta-green;
+  background-color: $cta-green !important;
+  color: $white;
   border-color: $green;
 
   &:hover, &:focus {
@@ -67,17 +68,17 @@
   }
 
   &.primary {
-    background-color: $error-log-red;
+    background-color: $error-log-red !important;
     color: $white;
 
     &:hover, &:focus {
-      background-color: $darkRed;
+      background-color: $darkRed !important;
     }
   }
 }
 
 .white {
-  color: $light-grey;
+  color: $light-grey !important;
   border-color: $light-grey;
   line-height: 28px;
 

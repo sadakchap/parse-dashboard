@@ -124,7 +124,9 @@ body:global(.expanded) {
   margin-left: 2.5rem;
   align-items: center;
   .publicAccessIcon {
-    padding: 0.38rem;
+    padding: 0 0.38rem;
+    width: 28px;
+    height: 28px;
     background: rgba(249, 249, 249, 0.06);
     border-radius: 1.25rem;
   }

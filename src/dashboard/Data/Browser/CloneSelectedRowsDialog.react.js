@@ -43,11 +43,14 @@ export default class CloneSelectedRowsDialog extends React.Component {
             />
           }
           input={
-            <TextInput
-              placeholder="Current class name"
-              value={this.state.confirmation}
-              onChange={confirmation => this.setState({ confirmation })}
-            />
+            <div style={{ padding: '0 1rem' }}>
+              <TextInput
+                placeholder="Current class name"
+                value={this.state.confirmation}
+                onChange={confirmation => this.setState({ confirmation })}
+                dark={false}
+              />
+            </div>
           }
         />
       );
@@ -68,7 +71,7 @@ export default class CloneSelectedRowsDialog extends React.Component {
         cancelText="Cancel"
         onCancel={this.props.onCancel}
         onConfirm={this.props.onConfirm}
-        buttonsInCenter={true}
+        buttonsInCenter={!(this.props.selection['*'] || selectionLength >= 10)}
       >
         {content}
       </B4aModal>

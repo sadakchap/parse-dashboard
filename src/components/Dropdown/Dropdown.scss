@@ -42,6 +42,7 @@
   }
 
   .option {
+    font-size: 14px;
     text-align: justify;
     color: $dark;
     border-bottom: 1px solid rgba($light-grey, 0.3);
@@ -70,17 +71,25 @@
 }
 
 .current {
-  // text-align: center;
+  font-size: 14px;
   color: $dark;
   height: 80px;
 
   &:not(.hideArrow){
     &:after {
-      @include arrow('down', 12px, 8px, rgba(0,0,0,0.3));
       position: absolute;
-      content: '';
-      top: 36px;
+      content: ' ';
+      top: 32px;
       right: 20px;
+      width: 10px;
+      height: 10px;
+      border-right: 1px solid $dark-blue;
+      border-bottom: 1px solid $dark-blue;
+      transform: rotate(45deg);
+    }
+
+    &.arrowUp::after {
+      transform: rotate(226deg);
     }
   }
 
