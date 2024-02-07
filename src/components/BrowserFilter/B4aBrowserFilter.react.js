@@ -130,7 +130,7 @@ export default class B4aBrowserFilter extends React.Component {
           }}
           id={POPOVER_CONTENT_ID}
           >
-            <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={24} height={24} fill="#f9f9f9" onClick={this.toggle} />
+            <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={18} height={18} fill="#f9f9f9" onClick={this.toggle} />
             <div className={styles.body}>
               <Filter
                 blacklist={this.state.blacklistedFilters}
@@ -216,7 +216,7 @@ export default class B4aBrowserFilter extends React.Component {
     }
     return (
       <div className={wrapperStyle.join(' ')} onClick={!this.props.disabled ? this.toggle : null}>
-        <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={24} height={24} fill="#f9f9f9" />
+        <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={18} height={18} fill="#f9f9f9" />
         {popover}
       </div>
     );

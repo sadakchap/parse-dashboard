@@ -52,11 +52,12 @@ body:global(.expanded) {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  height: 38px;
-  width: 38px;
-  margin: 0 6px;
+  height: 28px;
+  width: 30px;
+  margin: 0 8px;
   padding: 4px;
   border-radius: 5px;
+  border: 1px solid #F9F9F90F;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);

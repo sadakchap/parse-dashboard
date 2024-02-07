@@ -29,7 +29,8 @@
 }
 
 .primary {
-  background-color: $cta-green;
+  background-color: $cta-green !important;
+  font-weight: 600;
   color: $white;
 
   &:hover, &:focus {
@@ -129,7 +130,8 @@
 }
 
 .disabled, .disabled.primary {
-  background-color: transparent;
+  pointer-events: none;
+  font-weight: 600;
   border-radius: 0.3125rem;
   border: 1px solid $light-grey;
   opacity: 0.5;

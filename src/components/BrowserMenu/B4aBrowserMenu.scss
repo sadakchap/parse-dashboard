@@ -13,10 +13,11 @@
    align-items: center;
    justify-content: center;
    cursor: pointer;
-   height: 38px;
-   width: 38px;
+   height: 28px;
+   width: 30px;
    padding: 4px;
    border-radius: 5px;
+   border: 1px solid rgba($white, 0.06);
  
    &:hover {
      background-color: rgba(255, 255, 255, 0.2);
@@ -52,8 +53,8 @@
  .title {
    background: $old-dark-blue;
    // padding: 7px 2px 1px 2px;
-   height: 38px;
-   width: 38px;
+   height: 28px;
+   width: 30px;
    margin-bottom: 5px;
    border-radius: 0.25rem;
    border: 1px solid rgba(249, 249, 249, 0.06);
@@ -72,9 +73,9 @@
  }
  
  .entry {
-   @include NotoSansFont;
+   @include InterFont;
+   font-size: 0;
    position: relative;
-   font-size: 14px;
    color: $white;
    cursor: pointer;
  
