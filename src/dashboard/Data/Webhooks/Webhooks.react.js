@@ -75,7 +75,7 @@ class Webhooks extends TableView {
 
   renderToolbar() {
     return (
-      <Toolbar section="Integrations" subsection="Webhooks">
+      <Toolbar section="Webhooks">
         <Button
           color="white"
           value="Create a Webhook"

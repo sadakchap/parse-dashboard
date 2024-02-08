@@ -100,7 +100,7 @@ export default class GeneralSettings extends DashboardView {
 
   renderContent() {
     if (!this.props.initialFields) {
-      return <Toolbar section='Settings' subsection='General' />
+      return <Toolbar section='App Settings' subsection='General' />
     }
 
     const initialFields = this.getInitialFields();
