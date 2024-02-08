@@ -172,33 +172,38 @@ export default class B4aBrowserFilter extends React.Component {
               )}
               {!this.state.confirmName && (
                 <div className={styles.footer}>
-                  <Button
-                    color="white"
-                    value={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-                      <Icon name="b4a-add-fill" width={16} height={16} fill="#27AE60" />
-                      Add Filter
-                    </div>}
+                  <button
+                    className={styles.addFilterBtn}
                     disabled={Object.keys(available).length === 0}
                     onClick={() => this.addRow()}
-                    width="auto"
-                    additionalStyles={{ border: 0 }}
-                  />
+                  >
+                    <div>
+                      <Icon name="b4a-add-fill" width={16} height={16} fill="#27AE60" />
+                      Add Filter
+                    </div>
+                  </button>
                   <div className="">
                     <Button
                       color="white"
                       value="Clear All"
                       disabled={this.state.filters.size === 0}
                       onClick={() => this.clear()}
+                      width="auto"
+                      additionalStyles={{ fontWeight: '500' }}
                     />
                     <Button
                       color="white"
                       value="Save"
                       onClick={() => this.setState({ confirmName: true })}
+                      width="auto"
+                      additionalStyles={{ fontWeight: '500' }}
                     />
                     <Button
                       primary={true}
                       value="Apply Filter"
                       onClick={() => this.apply()}
+                      width="auto"
+                      additionalStyles={{ border: 'none', backgroundColor: 'transparent !important' }}
                     />
                   </div>
                 </div>

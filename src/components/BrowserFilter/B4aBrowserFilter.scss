@@ -150,6 +150,7 @@
     padding: 0 8px;
     color: $white;
     font-size: 14px;
+    border: 1px solid $light-blue;
   }
 }
 
@@ -159,9 +160,40 @@
 
 .remove {
   display: inline-block;
+  line-height: 14px;
+  & svg {
+    fill: $light-blue;
+  }
 }
 
 .date {
   display: inline-block;
   vertical-align: top;
+}
+
+.addFilterBtn {
+  @include InterFont;
+  outline: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: transparent;
+  transition: 0.5s ease-in-out all;
+  border-radius: 4px;
+  padding: 0 0.5rem;
+  height: 30px;
+
+  & div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  &:hover {
+    background-color: rgba($white, 0.03);
+  }
+
+  & svg {
+    margin-right: 10px;
+  }
 }

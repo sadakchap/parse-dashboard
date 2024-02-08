@@ -128,11 +128,17 @@
     color: $light-grey !important;
     &:not(.hideArrow){
       &:after {
-        @include arrow('down', 12px, 8px, rgba(249, 249, 249, 0.7));
-        position: absolute;
-        content: '';
-        top: 36px;
+        content: ' ';
+        top: 32px;
         right: 20px;
+        width: 10px;
+        height: 10px;
+        border-right: 1px solid $dark-blue;
+        border-bottom: 1px solid $dark-blue;
+        transform: rotate(45deg);
+      }
+      &.arrowUp::after {
+        transform: rotate(226deg);
       }
     }
   }
