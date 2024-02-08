@@ -24,23 +24,24 @@
      position: relative;
      display: inline-block;
      width: 14px;
-     height: 14px;
+     height: 20px;
      border: none;
-     opacity: 0.5;
      margin: 0 6px;
- 
-     &:hover {
-       opacity: 1;
-     }
+
  
      &:first-of-type {
        float: left;
  
        &:before {
-         content: '';
+         content: ' ';
          position: absolute;
-         @include arrow('left', 8px, 4px, $white);
-         top: 2px;
+         width: 8px;
+         height: 8px;
+         border: 1.5px solid $white;
+         border-right: 0;
+         border-bottom: 0;
+         top: 50%;
+         transform: rotate(-45deg) translateY(-50%);
          left: 4px;
        }
      }
@@ -49,11 +50,16 @@
        float: right;
  
        &:after {
-         content: '';
-         position: absolute;
-         @include arrow('right', 8px, 4px, white);
-         top: 2px;
-         left: 3px;
+          content: ' ';
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          border: 1.5px solid $white;
+          border-left: 0;
+          border-bottom: 0;
+          top: 50%;
+          transform: rotate(45deg) translateY(-50%);
+          left: 3px;
        }
      }
    }
@@ -65,29 +71,35 @@
  }
  
  .weekdays {
-   opacity: 0.5;
-   font-size: 12px;
-   margin-bottom: 8px;
+   font-size: 14px;
+   display: grid;
+   grid-template-columns: repeat(7, 1fr);
+   place-content: center;
  
    span {
+    @include InterFont;
      display: inline-block;
-     width: 26px;
-     height: 13px;
-     line-height: 13px;
-     font-size: 13px;
+     width: 30px;
+     height: 30px;
+     line-height: 30px;
+     font-size: 14px;
      text-align: center;
    }
  }
  
  .days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  place-content: center;
    span, button {
+     @include InterFont;
      @include buttonReset;
      display: inline-block;
      vertical-align: bottom;
-     width: 26px;
-     height: 20px;
-     line-height: 20px;
-     font-size: 12px;
+     width: 30px;
+     height: 30px;
+     line-height: 30px;
+     font-size: 14px;
      text-align: center;
      margin: 0;
      color: $white;
