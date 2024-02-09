@@ -1317,7 +1317,8 @@ export default class B4aPermissionsDialog extends React.Component {
                         border: 'none',
                         background: 'transparent',
                         marginTop: '10px',
-                        marginLeft: '10px'
+                        marginLeft: '10px',
+                        color:'#10203A',
                       }}
                       suggestionsStyle={{
                         width: '250px',
