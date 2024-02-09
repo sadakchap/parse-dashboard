@@ -189,14 +189,14 @@ export default class B4aBrowserFilter extends React.Component {
                       disabled={this.state.filters.size === 0}
                       onClick={() => this.clear()}
                       width="auto"
-                      additionalStyles={{ fontWeight: '500' }}
+                      additionalStyles={{ fontWeight: '500', color: '#ccc' }}
                     />
                     <Button
                       color="white"
                       value="Save"
                       onClick={() => this.setState({ confirmName: true })}
                       width="auto"
-                      additionalStyles={{ fontWeight: '500' }}
+                      additionalStyles={{ fontWeight: '500', color: '#ccc' }}
                     />
                     <Button
                       primary={true}

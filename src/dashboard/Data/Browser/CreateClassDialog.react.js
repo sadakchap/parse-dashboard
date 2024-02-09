@@ -103,7 +103,7 @@ class CreateClassDialog extends React.Component {
               />
             }
             input={
-              <div style={{ padding: '0 1rem' }}>
+              <div style={{ padding: '0 1rem', width: '100%' }}>
                 <TextInput
                   placeholder="Give it a good name..."
                   value={this.state.name}
