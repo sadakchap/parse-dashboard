@@ -33,7 +33,7 @@ export default class DropClassDialog extends React.Component {
   render() {
     return (
       <B4aModal
-        type={B4aModal.Types.DEFAULT}
+        type={B4aModal.Types.DANGER}
         icon="warn-triangle-outline"
         iconFill="#E85C3E"
         iconSize={40}
@@ -54,12 +54,14 @@ export default class DropClassDialog extends React.Component {
             />
           }
           input={
-            <TextInput
-              placeholder="Current class name"
-              value={this.state.confirmation}
-              onChange={confirmation => this.setState({ confirmation })}
-              dark={false}
-            />
+            <div style={{ padding: '0 1rem', width: '100%' }}>
+              <TextInput
+                placeholder="Current class name"
+                value={this.state.confirmation}
+                onChange={confirmation => this.setState({ confirmation })}
+                dark={false}
+              />
+            </div>
           }
         />
       </B4aModal>

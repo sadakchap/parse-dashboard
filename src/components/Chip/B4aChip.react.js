@@ -6,11 +6,11 @@
  * the root directory of this source tree.
  */
 import React from 'react';
-import styles from 'components/Chip/Chip.scss';
+import styles from 'components/Chip/B4aChip.scss';
 import PropTypes from 'lib/PropTypes';
 import Icon from 'components/Icon/Icon.react';
 
-const Chip = ({ value, onClose }) => (
+const B4aChip = ({ value, onClose }) => (
   <div className={[styles.chip].join(' ')}>
     <div
       onClick={e => {
@@ -30,9 +30,9 @@ const Chip = ({ value, onClose }) => (
   </div>
 );
 
-export default Chip;
+export default B4aChip;
 
-Chip.propTypes = {
+B4aChip.propTypes = {
   onClose: PropTypes.func.isRequired.describe(
     'A function called when the close button clicked. It receives the value of as the only parameter.'
   ),

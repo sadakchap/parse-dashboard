@@ -87,20 +87,13 @@ const AppCard = ({ app, icon }) => {
   }
 
   if (app.serverInfo.status === 'ERROR') {
-    appStatusIcon = <Icon name='warn-triangle-outline' fill='#F2C94C' width={18} height={18} />
+    appStatusIcon = <Icon name='warn-triangle-outline' fill='#F2C94C' width={16} height={16} />
     appNameStyles.push(styles.disabled);
     appIconStyle.push(styles.disabled);
   }
 
   return (
     <li onClick={canBrowse} style={{ background: app.primaryBackgroundColor }}>
-      {/* <a className={styles.icon}>
-        {icon ? (
-          <img src={'appicons/' + icon} width={56} height={56} />
-        ) : (
-          <Icon width={56} height={56} name="blank-app-outline" fill="#1E384D" />
-        )}
-      </a> */}
       <div className={styles.details}>
         <a className={styles.appname}>{app.name} {appStatusIcon}</a>
         {versionMessage}

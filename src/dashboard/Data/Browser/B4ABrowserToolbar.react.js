@@ -331,7 +331,7 @@ const B4ABrowserToolbar = ({
       )}
       <div className={styles.verticalSeparator}></div>
       <a className={styles.toolbarButton + ` ${isPendingEditCloneRows && styles.toolbarButtonDisabled}`} onClick={isPendingEditCloneRows ? null : onRefresh} title='Refresh'>
-        <Icon name='b4a-refresh-icon' width={24} height={24} />
+        <Icon name='b4a-refresh-icon' width={18} height={18} />
       </a>
       <B4aBrowserFilter
         setCurrent={setCurrent}

@@ -66,7 +66,7 @@ class Config extends TableView {
 
   renderToolbar() {
     return (
-      <Toolbar section="Core" subsection="Config">
+      <Toolbar section="Config" >
         <a className={browserStyles.toolbarButton} onClick={this.onRefresh.bind(this)}>
           <Icon name="refresh-solid" width={14} height={14} />
           <span>Refresh</span>

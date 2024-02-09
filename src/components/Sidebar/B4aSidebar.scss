@@ -24,20 +24,6 @@
     left: 0;
     width: 54px;
 
-    .pinContainer {
-      height: 79px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #094162;
-      cursor: pointer;
-      // padding: 18px;
-
-      &:hover {
-        background-color: #1184ca;
-      }
-    }
-
     .footer {
       height: 79px;
       justify-content: center;
@@ -179,13 +165,17 @@
   font-family: 'Sora', sans-serif;
   font-size: 1.375rem;
   font-weight: 600;
+  border-bottom: 1px solid rgba($white, 0.06);
 
   .appNameContainer {
     display: flex;
     align-items: center;
     cursor: pointer;
-    justify-content: space-between;
-    width: 100%;
+    gap: 0.5rem;
+
+    svg {
+      fill: $white;
+    }
 
     .currentAppName {
       overflow: hidden;
@@ -193,68 +183,17 @@
       max-width: 215px;
     }
 
-    // &:after {
-    //   @include arrow('down', 10px, 7px, #132B39);
-    //   content: '';
-    //   margin-left: 10px;
-    // }
-
-    // &:hover {
-    //   &:after {
-    //     border-top-color: white;
-    //   }
-    // }
-
-  .currentAppName {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 215px;
-    cursor: pointer;
-  }
-
-  .appsSelectorArrow {
-    @include arrow('down', 10px, 7px, #fff);
-    margin-left: 8px;
-  }
-
-  .sidebarPin {
-    cursor: pointer;
-    height: 30px;
-    width: 30px;
-    padding: 6px;
-    fill: lightgrey;
-
-    &:hover {
-      fill: white;
+    .currentAppName {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 215px;
+      cursor: pointer;
     }
 
-    &.fixed {
-      fill: white;
+    .appsSelectorArrow {
+      @include arrow('down', 10px, 7px, #fff);
+      margin-left: 8px;
     }
-
-    &.inverseIcon {
-      transform: rotate(180deg);
-    }
-  }
-  }
-}
-.sidebarPin {
-  cursor: pointer;
-  height: 30px;
-  width: 30px;
-  padding: 6px;
-  fill: lightgrey;
-
-  &:hover {
-    fill: white;
-  }
-
-  &.fixed {
-    fill: white;
-  }
-
-  &.inverseIcon {
-    transform: rotate(180deg);
   }
 }
 
@@ -528,16 +467,15 @@ a.subitem {
 }
 
 .pinContainer {
-  height: 79px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #094162;
+  cursor: pointer;
 
   svg {
     cursor: pointer;
-    height: 30px;
-    width: 30px;
-    fill: white;
+    height: 24px;
+    width: 24px;
+    fill: $white;
   }
 }

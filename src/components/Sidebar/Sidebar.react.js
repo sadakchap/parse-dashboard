@@ -266,7 +266,6 @@ const Sidebar = ({
               name={currentApp.name}
               onClick={() => setAppsMenuOpen(true)}
               pin={pin}
-              onPinClick={onPinClick}
             />
           </div>
         )}

@@ -29,7 +29,8 @@
 }
 
 .primary {
-  background-color: $cta-green;
+  background-color: $cta-green !important;
+  font-weight: 600;
   color: $white;
 
   &:hover, &:focus {
@@ -39,7 +40,8 @@
 }
 
 .green {
-  color: $cta-green;
+  background-color: $cta-green !important;
+  color: $white;
   border-color: $green;
 
   &:hover, &:focus {
@@ -66,17 +68,17 @@
   }
 
   &.primary {
-    background-color: $error-log-red;
+    background-color: $error-log-red !important;
     color: $white;
 
     &:hover, &:focus {
-      background-color: $darkRed;
+      background-color: $darkRed !important;
     }
   }
 }
 
 .white {
-  color: $light-grey;
+  // color: $light-grey !important;
   border-color: $light-grey;
   line-height: 28px;
 
@@ -129,7 +131,8 @@
 }
 
 .disabled, .disabled.primary {
-  background-color: transparent;
+  pointer-events: none;
+  font-weight: 600;
   border-radius: 0.3125rem;
   border: 1px solid $light-grey;
   opacity: 0.5;

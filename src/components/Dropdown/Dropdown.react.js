@@ -114,7 +114,7 @@ export default class Dropdown extends React.Component {
     return (
       <div style={dropdownStyle} className={dropdownClasses.join(' ')} ref={this.dropdownRef}>
         <div
-          className={[styles.current, this.props.currentStyleClassName, this.props.hideArrow ? styles.hideArrow : ''].join(' ')}
+          className={[styles.current, this.props.currentStyleClassName, this.props.hideArrow ? styles.hideArrow : '', this.state.open ? styles.arrowUp : ''].join(' ')}
           onClick={this.toggle.bind(this)}
         >
           {content}

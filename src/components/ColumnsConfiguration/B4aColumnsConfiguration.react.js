@@ -74,19 +74,19 @@ export default class B4aColumnsConfiguration extends React.Component {
     const { handleColumnDragDrop, handleColumnsOrder, order, disabled } = this.props;
     const title = (
       <div className={styles.title} onClick={this.toggle.bind(this)}>
-        <Icon name='b4a-visibility-icon' width={24} height={24} />
+        <Icon name='b4a-visibility-icon' width={18} height={18} />
       </div>
     );
 
     let entry = (
       <div className={`${styles.entry} ${styles.toolbarButton}`} onClick={this.toggle.bind(this)} ref={this.entryRef}>
-        <Icon name='b4a-visibility-icon' width={24} height={24} />
+        <Icon name='b4a-visibility-icon' width={18} height={18} />
       </div>
     );
 
     if (disabled) {
       entry = <div className={styles.toolbarButton + ' ' + styles.disabled} onClick={null}>
-        <Icon name='b4a-visibility-icon' width={24} height={24} />
+        <Icon name='b4a-visibility-icon' width={18} height={18} />
       </div>;
     }
 

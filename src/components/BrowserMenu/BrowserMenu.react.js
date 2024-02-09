@@ -36,7 +36,7 @@ export default class BrowserMenu extends React.Component {
         >
           <div className={styles.menu}>
             <div className={titleStyle.join(' ')} onClick={() => this.setState({ open: false })}>
-              <Icon name={this.props.icon} width={35} height={24} />
+              <Icon name={this.props.icon} width={18} height={18} />
               {/* <span>{this.props.title}</span> */}
             </div>
             <div className={styles.body} style={{ minWidth: this.wrapRef.current.clientWidth }}>
@@ -72,8 +72,7 @@ export default class BrowserMenu extends React.Component {
     return (
       <div className={styles.wrap} ref={this.wrapRef}>
         <div className={classes.join(' ')} onClick={onClick} title={this.props.title}>
-          <Icon name={this.props.icon} width={35} height={24} />
-          {/* <span>{this.props.title}</span> */}
+          <Icon name={this.props.icon} width={18} height={18} />
         </div>
         {menu}
       </div>

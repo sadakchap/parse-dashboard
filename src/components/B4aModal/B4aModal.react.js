@@ -20,6 +20,7 @@ const buttonColors = {
   warning: 'yellow',
   info: 'blue',
   valid: 'green',
+  default: 'green',
 };
 
 const B4aModal = ({

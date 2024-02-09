@@ -10,21 +10,20 @@ import Button from 'components/Button/Button.react';
 import Autocomplete from 'components/Autocomplete/Autocomplete.react';
 import Icon from 'components/Icon/Icon.react';
 import { Map } from 'immutable';
-import Pill from 'components/Pill/Pill.react';
 import Popover from 'components/Popover/Popover.react';
 import Position from 'lib/Position';
 import React from 'react';
 import ScrollHint from 'components/ScrollHint/ScrollHint.react';
-import styles from 'components/ProtectedFieldsDialog/ProtectedFieldsDialog.scss';
-import MultiSelect from 'components/MultiSelect/MultiSelect.react';
-import MultiSelectOption from 'components/MultiSelect/MultiSelectOption.react';
+import styles from 'components/ProtectedFieldsDialog/B4aProtectedFieldsDialog.scss';
+import B4aMultiSelect from 'components/MultiSelect/B4aMultiSelect.react';
+import B4aMultiSelectOption from 'components/MultiSelect/B4aMultiSelectOption.react';
 import TrackVisibility from 'components/TrackVisibility/TrackVisibility.react';
 import baseStyles from 'stylesheets/base.scss';
 
 const origin = new Position(0, 0);
 const intersectionMargin = '10px 0px 0px 20px';
 
-export default class ProtectedFieldsDialog extends React.Component {
+export default class B4aProtectedFieldsDialog extends React.Component {
   constructor({ protectedFields, columns }) {
     super();
 
@@ -218,12 +217,12 @@ export default class ProtectedFieldsDialog extends React.Component {
       const pillText = type + (targetClass ? `<${targetClass}>` : '');
 
       options.push(
-        <MultiSelectOption key={`col-${field}`} value={field} dense={true}>
+        <B4aMultiSelectOption key={`col-${field}`} value={field} dense={true}>
           {field}
           <span className={styles.pillType}>
             {pillText}
           </span>
-        </MultiSelectOption>
+        </B4aMultiSelectOption>
       );
     }
 
@@ -241,7 +240,7 @@ export default class ProtectedFieldsDialog extends React.Component {
 
     return (
       <div className={(styles.second, styles.multiselect, styles.content)}>
-        <MultiSelect
+        <B4aMultiSelect
           fixed={false}
           dense={true}
           chips={true}
@@ -252,7 +251,7 @@ export default class ProtectedFieldsDialog extends React.Component {
           placeHolder={placeholder}
         >
           {options}
-        </MultiSelect>
+        </B4aMultiSelect>
       </div>
     );
   }

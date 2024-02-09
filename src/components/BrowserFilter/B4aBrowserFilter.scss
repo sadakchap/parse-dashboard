@@ -13,10 +13,12 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  height: 38px;
-  width: 38px;
+  height: 28px;
+  width: 30px;
   padding: 4px;
   border-radius: 5px;
+  border: 1px solid rgba($white, 0.06);
+  margin-right: 8px;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -72,9 +74,10 @@
   background: $old-dark-blue;
   border: 1px solid #F9F9F90F;
   background: linear-gradient(0deg, #114370, #114370), linear-gradient(0deg, rgba(249, 249, 249, 0.06), rgba(249, 249, 249, 0.06));
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 28px;
   border-radius: 5px;
+  padding: 4px !important;
 }
 
 .entry, .title {
@@ -103,11 +106,10 @@
 }
 
 .body {
-  margin-top: 10px;
   position: absolute;
   top: 31px;
   right: 0;
-  border-radius: 5px 0 5px 5px;
+  border-radius: 5px;
   background: $old-dark-blue;
   width: 535px;
   font-size: 14px;
@@ -148,6 +150,7 @@
     padding: 0 8px;
     color: $white;
     font-size: 14px;
+    border: 1px solid $light-blue;
   }
 }
 
@@ -157,9 +160,40 @@
 
 .remove {
   display: inline-block;
+  line-height: 14px;
+  & svg {
+    fill: $light-blue;
+  }
 }
 
 .date {
   display: inline-block;
   vertical-align: top;
+}
+
+.addFilterBtn {
+  @include InterFont;
+  outline: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: transparent;
+  transition: 0.5s ease-in-out all;
+  border-radius: 4px;
+  padding: 0 0.5rem;
+  height: 30px;
+
+  & div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  &:hover {
+    background-color: rgba($white, 0.03);
+  }
+
+  & svg {
+    margin-right: 10px;
+  }
 }

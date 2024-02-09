@@ -16,7 +16,7 @@ import React from 'react';
 import ScrollHint from 'components/ScrollHint/ScrollHint.react';
 // import SliderWrap from 'components/SliderWrap/SliderWrap.react';
 import styles from 'components/PermissionsDialog/B4aPermissionsDialog.scss';
-import B4aTabToggle from 'components/Toggle/B4aTabToggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import Autocomplete from 'components/Autocomplete/Autocomplete.react';
 import { Map, fromJS } from 'immutable';
 import TrackVisibility from 'components/TrackVisibility/TrackVisibility.react';
@@ -1247,11 +1247,14 @@ export default class B4aPermissionsDialog extends React.Component {
           </div>
           <div className={styles.body}>
             {this.props.advanced ? <div className={styles.level}>
-              <B4aTabToggle
+              <B4aToggle
+                type={B4aToggle.Types.CUSTOM}
                 darkBg={true}
                 value={this.state.level}
                 optionLeft="Simple"
                 optionRight="Advanced"
+                labelLeft="Simple"
+                labelRight="Advanced"
                 onChange={level => {
                   if (this.state.transitioning || this.state.level === level) {
                     return;
@@ -1314,7 +1317,8 @@ export default class B4aPermissionsDialog extends React.Component {
                         border: 'none',
                         background: 'transparent',
                         marginTop: '10px',
-                        marginLeft: '10px'
+                        marginLeft: '10px',
+                        color:'#10203A',
                       }}
                       suggestionsStyle={{
                         width: '250px',

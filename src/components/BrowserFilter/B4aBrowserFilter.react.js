@@ -130,7 +130,7 @@ export default class B4aBrowserFilter extends React.Component {
           }}
           id={POPOVER_CONTENT_ID}
           >
-            <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={24} height={24} fill="#f9f9f9" onClick={this.toggle} />
+            <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={18} height={18} fill="#f9f9f9" onClick={this.toggle} />
             <div className={styles.body}>
               <Filter
                 blacklist={this.state.blacklistedFilters}
@@ -172,33 +172,38 @@ export default class B4aBrowserFilter extends React.Component {
               )}
               {!this.state.confirmName && (
                 <div className={styles.footer}>
-                  <Button
-                    color="white"
-                    value={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-                      <Icon name="b4a-add-fill" width={16} height={16} fill="#27AE60" />
-                      Add Filter
-                    </div>}
+                  <button
+                    className={styles.addFilterBtn}
                     disabled={Object.keys(available).length === 0}
                     onClick={() => this.addRow()}
-                    width="auto"
-                    additionalStyles={{ border: 0 }}
-                  />
+                  >
+                    <div>
+                      <Icon name="b4a-add-fill" width={16} height={16} fill="#27AE60" />
+                      Add Filter
+                    </div>
+                  </button>
                   <div className="">
                     <Button
                       color="white"
                       value="Clear All"
                       disabled={this.state.filters.size === 0}
                       onClick={() => this.clear()}
+                      width="auto"
+                      additionalStyles={{ fontWeight: '500', color: '#ccc' }}
                     />
                     <Button
                       color="white"
                       value="Save"
                       onClick={() => this.setState({ confirmName: true })}
+                      width="auto"
+                      additionalStyles={{ fontWeight: '500', color: '#ccc' }}
                     />
                     <Button
                       primary={true}
                       value="Apply Filter"
                       onClick={() => this.apply()}
+                      width="auto"
+                      additionalStyles={{ border: 'none', backgroundColor: 'transparent !important' }}
                     />
                   </div>
                 </div>
@@ -216,7 +221,7 @@ export default class B4aBrowserFilter extends React.Component {
     }
     return (
       <div className={wrapperStyle.join(' ')} onClick={!this.props.disabled ? this.toggle : null}>
-        <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={24} height={24} fill="#f9f9f9" />
+        <Icon className={buttonStyle.join(' ')} name="b4a-browser-filter-icon" width={18} height={18} fill="#f9f9f9" />
         {popover}
       </div>
     );
