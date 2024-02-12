@@ -171,6 +171,7 @@
    align-items: center;
    padding: 1rem;
    color: rgba($light-grey, 0.03);
+   flex-shrink: 0;
  
    & > span > p {
      @include InterFont;
