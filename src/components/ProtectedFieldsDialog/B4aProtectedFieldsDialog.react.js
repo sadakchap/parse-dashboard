@@ -497,7 +497,7 @@ export default class B4aProtectedFieldsDialog extends React.Component {
           <div className={styles.footer}>
             <ScrollHint ref={this.refScrollIndicator} />
             <div className={styles.actions}>
-              <Button value="Cancel" onClick={this.props.onCancel} width="auto" additionalStyles={{ color: '#303338 !important' }} />
+              <Button value="Cancel" color="white" onClick={this.props.onCancel} width="auto" additionalStyles={{ color: '#303338', border: '1px solid #ccc' }} />
               <Button
                 primary={true}
                 value={this.props.confirmText}
