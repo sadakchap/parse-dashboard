@@ -332,6 +332,7 @@ export default class EditRowDialog extends React.Component {
               disabled={isDisabled}
               value={selectedObject[name]}
               onChange={newValue => this.handleChange(newValue, name)}
+              dark={false}
             />
           );
           break;

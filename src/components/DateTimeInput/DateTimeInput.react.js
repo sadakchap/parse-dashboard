@@ -70,6 +70,7 @@ export default class DateTimeInput extends React.Component {
             width={this.inputRef.current.clientWidth}
             onChange={this.props.onChange}
             close={() => this.setState({ open: false })}
+            dark={this.props.dark}
           />
         </Popover>
       );
