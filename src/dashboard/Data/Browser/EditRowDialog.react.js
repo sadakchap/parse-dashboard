@@ -319,11 +319,13 @@ export default class EditRowDialog extends React.Component {
               dark={false}
             />
           ) : (
-            <B4aToggle
-              type={B4aToggle.Types.TRUE_FALSE}
-              value={selectedObject[name]}
-              onChange={newValue => this.handleChange(newValue, name)}
-            />
+            <div style={{ paddingTop: '20px' }}>
+              <B4aToggle
+                type={B4aToggle.Types.TRUE_FALSE}
+                value={selectedObject[name]}
+                onChange={newValue => this.handleChange(newValue, name)}
+              />
+            </div>
           );
           break;
         case 'Date':
@@ -343,7 +345,7 @@ export default class EditRowDialog extends React.Component {
             <GeoPointEditor
               disableAutoFocus={true}
               value={selectedObject[name]}
-              style={{ position: 'inherit' }}
+              style={{ position: 'inherit', background: 'none', boxShadow: 'none', height: '100%' }}
               onCommit={newValue => this.handleChange(newValue, name)}
               dark={false}
             />
@@ -355,7 +357,7 @@ export default class EditRowDialog extends React.Component {
           inputComponent = (
             <div className={[styles.editRowDialogFileCell]}>
               {file && <Pill value={fileName} fileDownloadLink={file.url()} dark={false} />}
-              <div style={{ cursor: 'pointer' }}>
+              <div style={{ cursor: 'pointer', paddingTop: file ? 0 : '12px', }}>
                 <Pill
                   value={file ? 'Change file' : 'Select file'}
                   onClick={() => this.openFileEditor(name)}
@@ -388,7 +390,8 @@ export default class EditRowDialog extends React.Component {
             <div
               style={{
                 cursor: 'pointer',
-                maxWidth: '60%'
+                maxWidth: '60%',
+                paddingTop: pointerId ? '17px' : '30px',
               }}
             >
               {pointerId && (
@@ -425,7 +428,7 @@ export default class EditRowDialog extends React.Component {
               <div
                 style={{
                   cursor: 'pointer',
-                  maxWidth: '60%'
+                  maxWidth: '60%', paddingTop: '17px'
                 }}
               >
                 <Pill
@@ -465,7 +468,7 @@ export default class EditRowDialog extends React.Component {
           key={name}
           label={<Label text={name} description={description} />}
           labelWidth={50}
-          input={<div style={{ width: '100%', padding: '0 0 0 1rem' }}>{inputComponent}</div>}
+          input={<div style={{ width: '100%', padding: '0 0 0 1rem', height: '100%' }}>{inputComponent}</div>}
         />
       );
     });
