@@ -354,18 +354,24 @@ body:global(.expanded) {
 .objectPickerContent {
   min-height: 150px;
   max-height: 60vh;
-  overflow-y: scroll;
-
+  border-radius: 8px;
+  overflow: hidden auto;
+  
   .browser {
     position: relative;
     top: 0;
     left: 0;
     height: 60vh;
     width: calc(100% - 140px);
+    margin-top: 0;
+    background: $white;
 
     .empty {
       position: unset;
     }
+  }
+  .toolbar {
+    margin-top: 0;
   }
 
   .toolbarButton svg {

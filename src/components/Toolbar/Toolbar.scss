@@ -48,7 +48,7 @@ body:global(.expanded) {
 .title {
   display: flex;
   align-items: center;
-  margin-left: 15px;
+  // margin-left: 15px;
   height: 100%;
 }
 
@@ -58,9 +58,18 @@ body:global(.expanded) {
 
 .iconButton {
   display: block;
-  padding-top: 10px;
-  padding-right: 10px;
+  margin-right: 40px;
   cursor: pointer;
+  background: rgba(249, 249, 249, 0.06);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    transform: rotate(-90deg);
+  }
 }
 
 .titleText {

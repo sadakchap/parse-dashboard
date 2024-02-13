@@ -345,7 +345,7 @@ export default class EditRowDialog extends React.Component {
             <GeoPointEditor
               disableAutoFocus={true}
               value={selectedObject[name]}
-              style={{ position: 'inherit', background: 'none', boxShadow: 'none', height: '100%' }}
+              style={{ position: 'inherit', background: 'none', boxShadow: 'none', height: '100%', padding: 0 }}
               onCommit={newValue => this.handleChange(newValue, name)}
               dark={false}
             />

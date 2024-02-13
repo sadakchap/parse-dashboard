@@ -18,7 +18,7 @@ const Toolbar = props => {
   if (props.relation || (props.filters && props.filters.size && action !== 'POP')) {
     backButton = (
       <a className={styles.iconButton} onClick={() => navigate(-1)}>
-        <Icon width={32} height={32} fill="#ffffff" name="left-outline" />
+        <Icon width={24} height={24} fill="#ffffff" name="b4a-up-arrow" />
       </a>
     );
   }
