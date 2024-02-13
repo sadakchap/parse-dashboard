@@ -354,11 +354,12 @@ export default class EditRowDialog extends React.Component {
           const fileName = file ? (file.url() ? getFileName(file) : file.name()) : '';
           inputComponent = (
             <div className={[styles.editRowDialogFileCell]}>
-              {file && <Pill value={fileName} fileDownloadLink={file.url()} />}
+              {file && <Pill value={fileName} fileDownloadLink={file.url()} dark={false} />}
               <div style={{ cursor: 'pointer' }}>
                 <Pill
                   value={file ? 'Change file' : 'Select file'}
                   onClick={() => this.openFileEditor(name)}
+                  dark={false}
                 />
                 {this.state.showFileEditor === name && (
                   <FileEditor
@@ -386,9 +387,8 @@ export default class EditRowDialog extends React.Component {
           ) : (
             <div
               style={{
-                textAlign: 'center',
                 cursor: 'pointer',
-                paddingTop: pointerId ? '17px' : '35px',
+                maxWidth: '60%'
               }}
             >
               {pointerId && (
@@ -396,9 +396,10 @@ export default class EditRowDialog extends React.Component {
                   onClick={() => this.openPointer(targetClass, pointerId)}
                   value={pointerId}
                   followClick={true}
+                  dark={false}
                 />
               )}
-              <Pill onClick={() => this.toggleObjectPicker(name, true)} value={`Select ${name}`} />
+              <Pill onClick={() => this.toggleObjectPicker(name, true)} value={`Select ${name}`} dark={false} />
             </div>
           );
           break;
@@ -423,19 +424,20 @@ export default class EditRowDialog extends React.Component {
             selectedObject.id && (
               <div
                 style={{
-                  textAlign: 'center',
                   cursor: 'pointer',
-                  paddingTop: '17px',
+                  maxWidth: '60%'
                 }}
               >
                 <Pill
                   onClick={() => this.openRelation(relation)}
                   value={`View ${type}`}
                   followClick={true}
+                  dark={false}
                 />
                 <Pill
                   onClick={() => this.toggleObjectPicker(name, true)}
                   value={`Select ${name}`}
+                  dark={false}
                 />
               </div>
             )
