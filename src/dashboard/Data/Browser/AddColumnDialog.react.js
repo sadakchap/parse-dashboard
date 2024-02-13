@@ -203,6 +203,8 @@ export default class AddColumnDialog extends React.Component {
                 : undefined
             }
             onChange={async defaultValue => await this.handleDefaultValueChange(defaultValue)}
+            dark={false}
+            width={240}
           />
         );
       case 'Boolean':

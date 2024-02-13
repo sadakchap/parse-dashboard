@@ -333,6 +333,8 @@ export default class EditRowDialog extends React.Component {
               value={selectedObject[name]}
               onChange={newValue => this.handleChange(newValue, name)}
               dark={false}
+              xPaddingWidth={16}
+              width={260}
             />
           );
           break;
