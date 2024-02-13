@@ -1,12 +1,12 @@
 import React from 'react';
 import Parse from 'parse';
 import { dateStringUTC } from 'lib/DateUtils';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import Field from 'components/Field/Field.react';
 import Label from 'components/Label/Label.react';
 import TextInput from 'components/TextInput/TextInput.react';
 import DateTimeInput from 'components/DateTimeInput/DateTimeInput.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import Pill from 'components/Pill/Pill.react';
 import GeoPointEditor from 'components/GeoPointEditor/GeoPointEditor.react';
 import FileEditor from 'components/FileEditor/FileEditor.react';
@@ -264,6 +264,7 @@ export default class EditRowDialog extends React.Component {
               value={currentObject[name]}
               onChange={newValue => this.updateCurrentObject(newValue, name)}
               onBlur={newValue => this.handleChange(newValue, name)}
+              dark={false}
             />
           );
           break;
@@ -285,6 +286,7 @@ export default class EditRowDialog extends React.Component {
                   name
                 )
               }
+              dark={false}
             />
           );
           break;
@@ -304,6 +306,7 @@ export default class EditRowDialog extends React.Component {
               value={currentObject[name]}
               onChange={newValue => this.updateCurrentObject(newValue, name)}
               onBlur={newValue => this.handleChange(JSON.parse(newValue), name, type)}
+              dark={false}
             />
           );
           break;
@@ -313,10 +316,11 @@ export default class EditRowDialog extends React.Component {
               disabled={true}
               placeholder={val === undefined && '(undefined)'}
               value={selectedObject[name]}
+              dark={false}
             />
           ) : (
-            <Toggle
-              type={Toggle.Types.TRUE_FALSE}
+            <B4aToggle
+              type={B4aToggle.Types.TRUE_FALSE}
               value={selectedObject[name]}
               onChange={newValue => this.handleChange(newValue, name)}
             />
@@ -333,14 +337,13 @@ export default class EditRowDialog extends React.Component {
           break;
         case 'GeoPoint':
           inputComponent = (
-            <div style={{ padding: '25px' }}>
-              <GeoPointEditor
-                disableAutoFocus={true}
-                value={selectedObject[name]}
-                style={{ position: 'inherit' }}
-                onCommit={newValue => this.handleChange(newValue, name)}
-              />
-            </div>
+            <GeoPointEditor
+              disableAutoFocus={true}
+              value={selectedObject[name]}
+              style={{ position: 'inherit' }}
+              onCommit={newValue => this.handleChange(newValue, name)}
+              dark={false}
+            />
           );
           break;
         case 'File':
@@ -444,7 +447,7 @@ export default class EditRowDialog extends React.Component {
           {targetClass ? `${type} <${targetClass}>` : type}
           <div style={{ marginTop: '2px' }}>
             {expandedTextAreas[name] && expandedTextAreas[name].rows > 3 && (
-              <a style={{ color: '#169cee' }} onClick={() => this.toggleExpandTextArea(name)}>
+              <a className={styles.editRowExpandCollapse} onClick={() => this.toggleExpandTextArea(name)}>
                 {expandedTextAreas[name].expanded ? 'collapse' : 'expand'}
               </a>
             )}
@@ -456,22 +459,20 @@ export default class EditRowDialog extends React.Component {
         <Field
           key={name}
           label={<Label text={name} description={description} />}
-          labelWidth={33}
-          input={inputComponent}
+          labelWidth={50}
+          input={<div style={{ width: '100%', padding: '0 0 0 1rem' }}>{inputComponent}</div>}
         />
       );
     });
 
     return (
-      <Modal
+      <B4aModal
         open
-        type={Modal.Types.INFO}
-        icon="edit-solid"
-        iconSize={30}
+        type={B4aModal.Types.DEFAULT}
         title={
           selectedObject.id ? (
             <span>
-              Edit <strong>{selectedObject.id}</strong>
+              Edit <strong>&ldquo;{selectedObject.id}&bdquo;</strong>
             </span>
           ) : (
             <span>
@@ -480,16 +481,16 @@ export default class EditRowDialog extends React.Component {
           )
         }
         subtitle={
-          <div style={{ fontSize: '12px' }}>
+          <div style={{ lineHeight: '140%', fontSize: '14px' }}>
             {selectedObject.createdAt && (
-              <p>
+              <div>
                 CreatedAt <strong>{dateStringUTC(selectedObject.createdAt)}</strong>
-              </p>
+              </div>
             )}
             {selectedObject.updatedAt && (
-              <p>
+              <div style={{ marginTop: '-4px' }}>
                 UpdatedAt <strong>{dateStringUTC(selectedObject.updatedAt)}</strong>
-              </p>
+              </div>
             )}
           </div>
         }
@@ -497,9 +498,10 @@ export default class EditRowDialog extends React.Component {
         onConfirm={this.openAcl}
         confirmText="Edit ACL"
         cancelText="Close"
+        width="640px"
       >
         <div className={[styles.objectPickerContent]}>{fields}</div>
-      </Modal>
+      </B4aModal>
     );
   }
 }
