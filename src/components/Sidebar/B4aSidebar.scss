@@ -19,10 +19,11 @@
   transition: left 0.5s ease-in;
   z-index: 100;
   background: #112C4D;
+  transition: width 0.2s ease-in-out;
 
   &.collapsed {
     left: 0;
-    width: 54px;
+    width: 88px;
 
     .footer {
       height: 79px;
@@ -42,8 +43,13 @@
       margin: 0;
     }
 
+    .pinContainer {
+      height: 79px;
+    }
+
     .pinContainer > svg {
-      fill: white;
+      fill: $white;
+      transform: rotate(180deg);
     }
   }
 }
@@ -356,20 +362,39 @@ a.subitem {
 }
 
 .action {
-  @include SoraFont;
+  @include InterFont;
   position: absolute;
   font-size: 12px;
-  font-weight: 400;
-  padding: 0 8px;
+  font-weight: 500;
+  padding: 2px 6px;
   line-height: 20px;
-  top: 4px;
+  top: 0px;
   right: 0px;
-  background: #0c5987;
-  color: white;
-  border-radius: 3px;
+  color: $cta-green;
+  border-radius: 5px;
+  border: 1px solid $cta-green;
+  cursor: pointer;
+  overflow: hidden;
+
+  & svg {
+    fill: $cta-green;
+  }
+
+  & > span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
+  }
 
   &:hover {
-    background: #094162;
+    background: rgba($cta-green, $alpha: 0.1);
+    // color: $white;
+    // & svg {
+    //   fill: $white;
+    // }
   }
 }
 
