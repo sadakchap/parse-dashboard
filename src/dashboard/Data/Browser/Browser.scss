@@ -277,7 +277,6 @@ body:global(.expanded) {
 }
 
 .b4aNotificationError {
-  color: $red;
   & svg {
     fill: $error-red;
   }
