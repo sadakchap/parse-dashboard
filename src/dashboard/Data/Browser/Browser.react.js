@@ -43,7 +43,7 @@ import CloneSelectedRowsDialog from 'dashboard/Data/Browser/CloneSelectedRowsDia
 import EditRowDialog from 'dashboard/Data/Browser/EditRowDialog.react';
 import ExportSchemaDialog from 'dashboard/Data/Browser/ExportSchemaDialog.react';
 import { List, Map } from 'immutable';
-import Notification from 'dashboard/Data/Browser/Notification.react';
+import B4aNotification from 'dashboard/Data/Browser/B4aNotification.react';
 import Parse from 'parse';
 import prettyNumber from 'lib/prettyNumber';
 import queryFromFilters from 'lib/queryFromFilters';
@@ -58,7 +58,6 @@ import * as ClassPreferences from 'lib/ClassPreferences';
 import { Helmet } from 'react-helmet';
 import generatePath from 'lib/generatePath';
 import { withRouter } from 'lib/withRouter';
-import Icon from 'components/Icon/Icon.react';
 
 const BROWSER_LAST_LOCATION = 'brower_last_location';
 // The initial and max amount of rows fetched by lazy loading
@@ -2633,12 +2632,12 @@ class Browser extends DashboardView {
     const pageTitle = `${this.props.params.className} - Parse Dashboard`;
 
     if (this.state.lastError) {
-      notification = <Notification note={this.state.lastError} isErrorNote={true} />;
+      notification = <B4aNotification note={this.state.lastError} isErrorNote={true} />;
     } else if (this.state.lastNote) {
-      notification = <Notification note={this.state.lastNote} isErrorNote={false} />;
+      notification = <B4aNotification note={this.state.lastNote} isErrorNote={false} />;
     } else if (this.state.exporting) {
       notification = (
-        <Notification
+        <B4aNotification
           note={`Exporting ${this.state.exportingCount}+ objects...`}
           isErrorNote={false}
         />

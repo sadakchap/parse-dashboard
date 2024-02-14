@@ -258,6 +258,35 @@ body:global(.expanded) {
   }
 }
 
+.b4aNotificationMessage, .b4aNotificationError {
+  @include animation('fade-in 0.2s ease-out');
+  @include InterFont;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: $white;
+  padding: 1rem 1.5rem;
+  font-size: 14px;
+  width: 340px;
+  border-radius: 0 0 5px 5px;
+  color: $dark;
+  & svg {
+    margin-right: 8px;
+    fill: $cta-green;
+  }
+}
+
+.b4aNotificationError {
+  color: $red;
+  & svg {
+    fill: $error-red;
+  }
+}
+
+.b4aNotificationMessage {
+  color: $dark;
+}
+
 .notificationMessage, .notificationError {
   @include animation('fade-in 0.2s ease-out');
   position: absolute;
