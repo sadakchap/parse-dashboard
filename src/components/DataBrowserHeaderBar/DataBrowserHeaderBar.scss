@@ -122,7 +122,7 @@
 
 .b4aLoadingWrapper {
   width: calc(100vw - 360px);
-  height: 100%;
+  height: calc(100% - 54px);
   display: flex;
   justify-content: center;
   align-items: center;
