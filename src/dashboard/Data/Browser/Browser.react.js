@@ -58,6 +58,7 @@ import * as ClassPreferences from 'lib/ClassPreferences';
 import { Helmet } from 'react-helmet';
 import generatePath from 'lib/generatePath';
 import { withRouter } from 'lib/withRouter';
+import Icon from 'components/Icon/Icon.react';
 
 const BROWSER_LAST_LOCATION = 'brower_last_location';
 // The initial and max amount of rows fetched by lazy loading
@@ -232,7 +233,7 @@ class Browser extends DashboardView {
   componentWillMount() {
     const currentApp = this.context;
     if (!currentApp.preventSchemaEdits) {
-      this.action = new SidebarAction('Create a class', this.showCreateClass.bind(this));
+      this.action = new SidebarAction(<span><Icon width={16} height={16} name="b4a-add-outline-circle" /> Add class</span>, this.showCreateClass.bind(this));
     }
 
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
