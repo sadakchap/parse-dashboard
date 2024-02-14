@@ -11,6 +11,14 @@
 .label {
   font-size: 13px;
   line-height: 140%;
+  &.dark {
+    .text {
+      color: $white;
+    }
+    .description {
+      color: $white;
+    }
+  }
 }
 
 .text {
@@ -19,6 +27,7 @@
   display: flex;
   font-size: 14px;
   align-items: center;
+  color: $dark-blue;
 }
 
 .description {

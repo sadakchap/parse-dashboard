@@ -198,7 +198,7 @@ export default class RestConsole extends Component {
             legend=""
             description=""
           >
-            <Field label={<Label text="What type of request?" />} input={methodDropdown} theme={Field.Theme.BLUE} />
+            <Field label={<Label text="What type of request?" dark={true} />} input={methodDropdown} theme={Field.Theme.BLUE} />
             <Field
               label={
                 <Label
@@ -211,6 +211,7 @@ export default class RestConsole extends Component {
                       <a href="http://docs.parseplatform.org/rest/guide/" className={styles.helpLink}>REST API guide</a>.
                     </span>
                   }
+                  dark={true}
                 />
               }
               input={
@@ -226,7 +227,7 @@ export default class RestConsole extends Component {
               theme={Field.Theme.BLUE}
             />
             <Field
-              label={<Label text="Use Master Key?" description={'This will bypass any ACL/CLPs.'} />}
+              label={<Label text="Use Master Key?" description={'This will bypass any ACL/CLPs.'} dark={true} />}
               input={
                 <div style={{ padding: '1rem', width: '100%' }}>
                   <B4aToggle
@@ -245,6 +246,7 @@ export default class RestConsole extends Component {
                   description={
                     'Send your query as a specific user. You can use their username or Object ID.'
                   }
+                  dark={true}
                 />
               }
               input={
@@ -273,6 +275,7 @@ export default class RestConsole extends Component {
                       <a href="http://docs.parseplatform.org/rest/guide/#queries" className={styles.helpLink}>REST API guide</a>.
                     </span>
                   }
+                  dark={true}
                 />
               }
               input={
