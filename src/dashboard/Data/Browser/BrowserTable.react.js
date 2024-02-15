@@ -16,6 +16,7 @@ import React from 'react';
 import styles from 'dashboard/Data/Browser/Browser.scss';
 import Button from 'components/Button/Button.react';
 import { CurrentApp } from 'context/currentApp';
+import B4aLoader from 'components/B4aLoader/B4aLoader.react';
 
 const MAX_ROWS = 200; // Number of rows to render at any time
 const ROWS_OFFSET = 160;
@@ -497,6 +498,10 @@ export default class BrowserTable extends React.Component {
           </div>
         );
       }
+    } else {
+      table = <div ref={this.tableRef} className={styles.b4aLoadingWrapper}>
+        <B4aLoader />
+      </div>
     }
     return (
       <div className={styles.browser} id="browser">
