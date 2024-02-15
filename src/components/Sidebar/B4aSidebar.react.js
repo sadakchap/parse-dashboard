@@ -112,16 +112,21 @@ const B4aSidebar = ({
     }
   }, [showTour]);
 
+  useEffect(() => {
+    if (collapsed && document.body.className.indexOf(' expanded') === -1) {
+      document.body.className += ' expanded';
+    } else if (!collapsed && document.body.className.indexOf(' expanded') !== -1 && !mobileFriendly) {
+      document.body.className = document.body.className.replace(' expanded', '')
+    }
+  }, [collapsed])
+
   const sidebarClasses = [styles.sidebar];
 
-  if (!fixed && collapsed) {
+  if (collapsed) {
     sidebarClasses.push(styles.collapsed);
-    if (document.body.className.indexOf(' expanded') === -1) {
-      document.body.className += ' expanded';
-    }
 
-    return <div className={sidebarClasses.join(' ')} onMouseEnter={mobileFriendly ? (() => setCollapsed(false)) : undefined}>
-      <div className={styles.pinContainer} onClick={mobileFriendly ? (() => setCollapsed(false)) : undefined}>
+    return <div className={sidebarClasses.join(' ')}>
+      <div className={styles.pinContainer} onClick={() => setCollapsed(false)}>
         <Icon className={styles.sidebarPin}
           name="b4a-collapse-sidebar"
           width={20}
@@ -159,10 +164,6 @@ const B4aSidebar = ({
         <Icon height={18} width={18} name='ellipses' fill='white' />
       </div>
     </div>
-  }
-
-  if (fixed) {
-    document.body.className = document.body.className.replace(' expanded', '');
   }
 
   const _subMenu = subsections => {
@@ -205,46 +206,12 @@ const B4aSidebar = ({
     footerButtons.push(<FooterMenu key={1}>{footerMenuButtons}</FooterMenu>);
   }
 
-  const onMouseLeave = (mobileFriendly && !collapsed && !fixed && (
-    e => {
-      if (!isInsidePopover(e.relatedTarget)) {
-        setCollapsed(true);
-      }
-    }
-  )) || undefined;
-
   const pinClasses = [styles.sidebarPin];
-  if (fixed) {
-    pinClasses.push(styles.fixed);
-  }
 
-  let onPinClick;
+  const onPinClick = () => setCollapsed(prev => !prev);
   if (mobileFriendly) {
     pinClasses.push(styles.inverseIcon);
-    onPinClick = () => {
-      setCollapsed(prev => !prev);
-      // if (collapsed) {
-      //   setCollapsed(false);
-      //   setFixed(true);
-      // } else {
-      //   setCollapsed(true);
-      //   setFixed(false);
-      // }
-    };
-  } else {
-    onPinClick = () => {
-      // if (fixed) {
-      //   setFixed(false);
-      //   setCollapsed(true);
-      //   setAppsMenuOpen(false);
-      // } else {
-      //   setFixed(true);
-      //   setCollapsed(false);
-      // }
-    };
   }
-
-  const pin = <Icon className={pinClasses.join(' ')} name={mobileFriendly ? 'expand' : 'pin'} width={20} height={20} onClick={onPinClick} />;
 
   let sidebarContent;
   if (appsMenuOpen) {
@@ -264,7 +231,6 @@ const B4aSidebar = ({
             <AppName
               name={currentApp.name}
               onClick={() => setAppsMenuOpen(true)}
-              pin={mobileFriendly ? pin : null}
               onPinClick={onPinClick}
             />
           </div>
@@ -303,9 +269,8 @@ const B4aSidebar = ({
     )
   }
 
-  return <div className={sidebarClasses.join(' ')} onMouseLeave={onMouseLeave} id="sidebar">
+  return <div className={sidebarClasses.join(' ')} id="sidebar">
     {sidebarContent}
-    {/* <div className={styles.help}></div> */}
     <div className={styles.footer + ' footer'}>{footerButtons}</div>
   </div>
 
