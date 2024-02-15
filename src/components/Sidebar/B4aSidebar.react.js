@@ -9,29 +9,15 @@ import AppsManager from 'lib/AppsManager';
 import FooterMenu from 'components/Sidebar/FooterMenu.react';
 import React, { useEffect, useState, useContext, useRef } from 'react';
 // import SidebarHeader  from 'components/Sidebar/SidebarHeader.react';
-import SidebarSection from 'components/Sidebar/SidebarSection.react';
+import B4aSidebarSection from 'components/Sidebar/B4aSidebarSection.react';
 import SidebarSubItem from 'components/Sidebar/SidebarSubItem.react';
 import styles from 'components/Sidebar/B4aSidebar.scss';
-import Button from 'components/Button/Button.react'
 import Icon from 'components/Icon/Icon.react';
 import { isMobile } from 'lib/browserUtils';
 import B4aBadge from 'components/B4aBadge/B4aBadge.react';
 import AppsMenu from 'components/Sidebar/AppsMenu.react';
 import AppName from 'components/Sidebar/AppName.react';
 import { CurrentApp } from 'context/currentApp';
-
-const isInsidePopover = node => {
-  let cur = node.parentNode;
-  while (cur && cur.nodeType === 1) {
-    // If id starts with "fixed_wrapper", we consider it as the
-    // root element of the Popover component
-    if (/^fixed_wrapper/g.test(cur.id)) {
-      return true;
-    }
-    cur = cur.parentNode;
-  }
-  return false;
-}
 
 let isSidebarFixed = !isMobile();
 let isSidebarCollapsed = !isSidebarFixed;
@@ -78,6 +64,7 @@ const B4aSidebar = ({
     if (mobileFriendly && !collapsed) {
       for (let current = target; current && current.id !== 'browser_mount'; current = current.parentNode) {
         if (/^sidebar/g.test(current.className) || /^introjs-tooltipReferenceLayer/g.test(current.className) || /^fixed_wrapper/g.test(current.id)) {
+          console.log('coming here')
           return;
         }
       }
@@ -120,52 +107,6 @@ const B4aSidebar = ({
     }
   }, [collapsed])
 
-  const sidebarClasses = [styles.sidebar];
-
-  if (collapsed) {
-    sidebarClasses.push(styles.collapsed);
-
-    return <div className={sidebarClasses.join(' ')}>
-      <div className={styles.pinContainer} onClick={() => setCollapsed(false)}>
-        <Icon className={styles.sidebarPin}
-          name="b4a-collapse-sidebar"
-          width={20}
-          height={20}
-        />
-      </div>
-      <div className={styles.content} style={contentStyle}>
-        {sections.map(({
-          name,
-          icon,
-          style,
-          link,
-        }) => {
-          const active = name === section;
-          // If link points to another component, adds the prefix
-          link = link.startsWith('/') ? prefix + link : link;
-          return (
-            <SidebarSection
-              key={name}
-              name={name}
-              link={link}
-              icon={icon}
-              style={style}
-              active={active}
-              primaryBackgroundColor={primaryBackgroundColor}
-              isCollapsed={true}
-              onClick={active
-                ? (() => setCollapsed(false))
-                : (() => isSidebarCollapsed = false)}>
-            </SidebarSection>
-          );
-        })}
-      </div>
-      <div className={styles.footer} onClick={() => setCollapsed(false)}>
-        <Icon height={18} width={18} name='ellipses' fill='white' />
-      </div>
-    </div>
-  }
-
   const _subMenu = subsections => {
     if (!subsections) {
       return null;
@@ -192,6 +133,55 @@ const B4aSidebar = ({
         })}
       </div>
     );
+  }
+
+  const sidebarClasses = [styles.sidebar];
+
+  if (collapsed) {
+    sidebarClasses.push(styles.collapsed);
+
+    return <div className={sidebarClasses.join(' ')}>
+      <div className={styles.pinContainer} onClick={() => setCollapsed(false)}>
+        <Icon className={styles.sidebarPin}
+          name="b4a-collapse-sidebar"
+          width={20}
+          height={20}
+        />
+      </div>
+      <div className={styles.content} style={contentStyle}>
+        {sections.map(({
+          name,
+          icon,
+          style,
+          link,
+          subsections
+        }) => {
+          const active = name === section;
+          // If link points to another component, adds the prefix
+          link = link.startsWith('/') ? prefix + link : link;
+          return (
+            <B4aSidebarSection
+              key={name}
+              name={name}
+              link={link}
+              icon={icon}
+              style={style}
+              active={active}
+              primaryBackgroundColor={primaryBackgroundColor}
+              isCollapsed={true}
+              onClick={active
+                ? (() => setCollapsed(false))
+                : (() => isSidebarCollapsed = false)}
+            >
+              {_subMenu(subsections)}
+            </B4aSidebarSection>
+          );
+        })}
+      </div>
+      <div className={styles.footer} onClick={() => setCollapsed(false)}>
+        <Icon height={18} width={18} name='ellipses' fill='white' />
+      </div>
+    </div>
   }
 
   const apps = [].concat(AppsManager.apps()).sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0)));
@@ -249,7 +239,7 @@ const B4aSidebar = ({
             // If link points to another component, adds the prefix
             link = link.startsWith('/') ? prefix + link : link;
             return (
-              <SidebarSection
+              <B4aSidebarSection
                 key={name}
                 name={name}
                 icon={icon}
@@ -261,7 +251,7 @@ const B4aSidebar = ({
                 badge={badge}
               >
                 {active ? _subMenu(subsections) : null}
-              </SidebarSection>
+              </B4aSidebarSection>
             );
           })}
         </div>

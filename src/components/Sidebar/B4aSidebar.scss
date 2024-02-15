@@ -338,6 +338,12 @@
   & > div > div:last-child {
   margin-bottom: 0;
   }
+  &.popover {
+    padding: 24px;
+    min-width: 320px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
 }
 
 .subitem {
