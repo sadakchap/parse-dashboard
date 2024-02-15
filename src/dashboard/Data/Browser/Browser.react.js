@@ -43,7 +43,7 @@ import CloneSelectedRowsDialog from 'dashboard/Data/Browser/CloneSelectedRowsDia
 import EditRowDialog from 'dashboard/Data/Browser/EditRowDialog.react';
 import ExportSchemaDialog from 'dashboard/Data/Browser/ExportSchemaDialog.react';
 import { List, Map } from 'immutable';
-import Notification from 'dashboard/Data/Browser/Notification.react';
+import B4aNotification from 'dashboard/Data/Browser/B4aNotification.react';
 import Parse from 'parse';
 import prettyNumber from 'lib/prettyNumber';
 import queryFromFilters from 'lib/queryFromFilters';
@@ -233,7 +233,7 @@ class Browser extends DashboardView {
   componentWillMount() {
     const currentApp = this.context;
     if (!currentApp.preventSchemaEdits) {
-      this.action = new SidebarAction('Create a class', this.showCreateClass.bind(this));
+      this.action = new SidebarAction(<span><Icon width={16} height={16} name="b4a-add-outline-circle" /> Add class</span>, this.showCreateClass.bind(this));
     }
 
     this.props.schema.dispatch(ActionTypes.FETCH).then(() => {
@@ -2127,9 +2127,9 @@ class Browser extends DashboardView {
     });
     special.sort((a, b) => stringCompare(a.name, b.name));
     categories.sort((a, b) => stringCompare(a.name, b.name));
-    if (special.length > 0 && categories.length > 0) {
-      special.push({ type: 'separator', id: 'classSeparator' });
-    }
+    // if (special.length > 0 && categories.length > 0) {
+    //   special.push({ type: 'separator', id: 'classSeparator' });
+    // }
     const allCategories = [];
     for (const row of [...special, ...categories]) {
       const { filters = [] } = ClassPreferences.getPreferences(
@@ -2633,12 +2633,12 @@ class Browser extends DashboardView {
     const pageTitle = `${this.props.params.className} - Parse Dashboard`;
 
     if (this.state.lastError) {
-      notification = <Notification note={this.state.lastError} isErrorNote={true} />;
+      notification = <B4aNotification note={this.state.lastError} isErrorNote={true} />;
     } else if (this.state.lastNote) {
-      notification = <Notification note={this.state.lastNote} isErrorNote={false} />;
+      notification = <B4aNotification note={this.state.lastNote} isErrorNote={false} />;
     } else if (this.state.exporting) {
       notification = (
-        <Notification
+        <B4aNotification
           note={`Exporting ${this.state.exportingCount}+ objects...`}
           isErrorNote={false}
         />

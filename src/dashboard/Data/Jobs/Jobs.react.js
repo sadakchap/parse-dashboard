@@ -94,7 +94,7 @@ class Jobs extends TableView {
   componentWillReceiveProps(nextProps) {
     if (nextProps.availableJobs) {
       if (nextProps.availableJobs.length > 0) {
-        this.action = new SidebarAction('Schedule a job', this.navigateToNew.bind(this));
+        this.action = new SidebarAction(<span><Icon width={16} height={16} name="b4a-add-outline-circle" />Schedule job</span>, this.navigateToNew.bind(this));
         return;
       }
     }

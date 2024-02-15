@@ -6,10 +6,9 @@
  * the root directory of this source tree.
  */
 import PropTypes from 'lib/PropTypes';
-import React from 'react';
 import styles from 'components/B4aLoaderContainer/B4aLoaderContainer.scss';
-import Lottie from 'lottie-react';
-import b4aLoadingAnimation from './b4aLoadingAnimation.json';
+import React from 'react';
+import B4aLoader from 'components/B4aLoader/B4aLoader.react';
 
 //Loader wrapper component
 //Wraps child component with a layer and <Loader/> centered
@@ -24,8 +23,7 @@ const B4aLoaderContainer = ({ loading, hideAnimation, children, solid = true }) 
       ].join(' ')}
     >
       {hideAnimation || !loading ? null : <div className={styles.loader}>
-        <Lottie animationData={b4aLoadingAnimation} loop={true} height={100} />
-        <div className={styles.text}>Loading</div>
+        <B4aLoader />
       </div>}
     </div>
   </div>

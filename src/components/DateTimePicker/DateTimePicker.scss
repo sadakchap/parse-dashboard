@@ -9,13 +9,27 @@
 @import 'stylesheets/back4app.scss';
 
 .picker {
-  // border: 1px solid $blue;
-  background: $dark-grey;
+  background: $white;
+  &.dark {
+    background: $dark-grey;
+    > *:first-child {
+      background: $dark-grey;
+      color: $white;
+    }
+    .time {
+      border-top: 1px solid $light-grey;
+      input {
+        border: 1px solid rgba($white, 0.06);
+        color: $light-grey;
+      }
+    }
+  }
 
   > *:first-child {
-    background: $dark-grey;
+    background: $white;
     padding: 1rem;
     width: 100%;
+    color: $dark;
   }
 }
 
@@ -39,8 +53,8 @@
     width: 40px;
     height: 30px;
     background: transparent;
-    border: 1px solid rgba($white, 0.06);
-    color: $light-grey;
+    border: 1px solid rgba($dark, 0.07);
+    color: $dark;
     border-radius: 5px;
     outline: none;
     text-align: center;

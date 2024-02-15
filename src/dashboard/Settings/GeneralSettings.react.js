@@ -192,7 +192,7 @@ export default class GeneralSettings extends DashboardView {
               cleanUpSystemLogMessage={this.state.cleanupSystemLogMessage} />
           </div>;
         }} />
-      <Toolbar section='Settings' subsection='General' />
+      <Toolbar section='App Settings' subsection='General' />
     </div>;
   }
 }

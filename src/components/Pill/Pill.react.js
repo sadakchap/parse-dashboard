@@ -16,9 +16,10 @@ const Pill = ({
   fileDownloadLink,
   followClick = false,
   shrinkablePill = false,
+  dark = true,
 }) => (
   <span
-    className={[styles.pill, !followClick && onClick ? styles.action : void 0].join(' ')}
+    className={[styles.pill, !followClick && onClick ? styles.action : void 0, dark ? styles.dark : ''].join(' ')}
     onClick={!followClick && onClick ? onClick : null}
   >
     <span

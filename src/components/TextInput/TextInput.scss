@@ -43,7 +43,6 @@ input.text_input {
 
 textarea.text_input:not(.monospace) {
   @include placeholder {
-    text-align: right;
     position: relative;
     top: 50%;
     line-height: 9px;

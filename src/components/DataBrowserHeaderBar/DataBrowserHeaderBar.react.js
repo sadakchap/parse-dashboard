@@ -11,6 +11,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import React from 'react';
 import styles from 'components/DataBrowserHeaderBar/DataBrowserHeaderBar.scss';
 import { DndProvider } from 'react-dnd';
+import B4aLoader from 'components/B4aLoader/B4aLoader.react';
 
 export default class DataBrowserHeaderBar extends React.Component {
   render() {
@@ -113,11 +114,21 @@ export default class DataBrowserHeaderBar extends React.Component {
       );
     }
 
+    function renderB4aLoading() {
+      if (isDataLoaded) {
+        return null;
+      }
+      return <div className={styles.b4aLoadingWrapper}>
+        <B4aLoader />
+      </div>
+    }
+
     return (
       <DndProvider backend={HTML5Backend}>
-        <div className={styles.bar}>
+        <div className={styles.bar + ` ${!isDataLoaded ? styles.loading : ''}`}>
           {elements}
-          {renderSkeleton()}
+          {/* {renderSkeleton()} */}
+          {renderB4aLoading()}
         </div>
       </DndProvider>
     );

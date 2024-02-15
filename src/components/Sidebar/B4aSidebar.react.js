@@ -120,13 +120,13 @@ const B4aSidebar = ({
       document.body.className += ' expanded';
     }
 
-    return <div className={sidebarClasses.join(' ')} onMouseEnter={!mobileFriendly ? (() => setCollapsed(false)) : undefined}>
+    return <div className={sidebarClasses.join(' ')} onMouseEnter={mobileFriendly ? (() => setCollapsed(false)) : undefined}>
       <div className={styles.pinContainer} onClick={mobileFriendly ? (() => setCollapsed(false)) : undefined}>
         <Icon className={styles.sidebarPin}
-          name={mobileFriendly ? 'expand' : 'pin'}
+          name="b4a-collapse-sidebar"
           width={20}
           height={20}
-          fill={mobileFriendly ? 'white' : 'lightgrey'} />
+        />
       </div>
       <div className={styles.content} style={contentStyle}>
         {sections.map(({
@@ -205,7 +205,7 @@ const B4aSidebar = ({
     footerButtons.push(<FooterMenu key={1}>{footerMenuButtons}</FooterMenu>);
   }
 
-  const onMouseLeave = (!mobileFriendly && !collapsed && !fixed && (
+  const onMouseLeave = (mobileFriendly && !collapsed && !fixed && (
     e => {
       if (!isInsidePopover(e.relatedTarget)) {
         setCollapsed(true);
@@ -222,24 +222,25 @@ const B4aSidebar = ({
   if (mobileFriendly) {
     pinClasses.push(styles.inverseIcon);
     onPinClick = () => {
-      if (collapsed) {
-        setCollapsed(false);
-        setFixed(true);
-      } else {
-        setCollapsed(true);
-        setFixed(false);
-      }
+      setCollapsed(prev => !prev);
+      // if (collapsed) {
+      //   setCollapsed(false);
+      //   setFixed(true);
+      // } else {
+      //   setCollapsed(true);
+      //   setFixed(false);
+      // }
     };
   } else {
     onPinClick = () => {
-      if (fixed) {
-        setFixed(false);
-        setCollapsed(true);
-        setAppsMenuOpen(false);
-      } else {
-        setFixed(true);
-        setCollapsed(false);
-      }
+      // if (fixed) {
+      //   setFixed(false);
+      //   setCollapsed(true);
+      //   setAppsMenuOpen(false);
+      // } else {
+      //   setFixed(true);
+      //   setCollapsed(false);
+      // }
     };
   }
 

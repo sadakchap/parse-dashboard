@@ -28,7 +28,7 @@
 
 body:global(.expanded) {
   .browser {
-    left: 54px;
+    left: 88px;
   }
 }
 
@@ -258,6 +258,34 @@ body:global(.expanded) {
   }
 }
 
+.b4aNotificationMessage, .b4aNotificationError {
+  @include animation('fade-in 0.2s ease-out');
+  @include InterFont;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: $white;
+  padding: 1rem 1.5rem;
+  font-size: 14px;
+  width: 340px;
+  border-radius: 0 0 5px 5px;
+  color: $dark;
+  & svg {
+    margin-right: 8px;
+    fill: $cta-green;
+  }
+}
+
+.b4aNotificationError {
+  & svg {
+    fill: $error-red;
+  }
+}
+
+.b4aNotificationMessage {
+  color: $dark;
+}
+
 .notificationMessage, .notificationError {
   @include animation('fade-in 0.2s ease-out');
   position: absolute;
@@ -354,18 +382,24 @@ body:global(.expanded) {
 .objectPickerContent {
   min-height: 150px;
   max-height: 60vh;
-  overflow-y: scroll;
-
+  border-radius: 8px;
+  overflow: hidden auto;
+  
   .browser {
     position: relative;
     top: 0;
     left: 0;
     height: 60vh;
     width: calc(100% - 140px);
+    margin-top: 0;
+    background: $white;
 
     .empty {
       position: unset;
     }
+  }
+  .toolbar {
+    margin-top: 0;
   }
 
   .toolbarButton svg {
@@ -450,8 +484,8 @@ body:global(.expanded) {
 }
 
 .editRowDialogFileCell {
-  max-width: 100%;
-  padding: 25px;
+  max-width: 170px;
+  padding-top: 17px;
   span {
     display: flex;
     span {
@@ -461,4 +495,19 @@ body:global(.expanded) {
       position: relative;
     }
   }
-} 
+}
+
+.editRowExpandCollapse {
+  position: relative;
+  cursor: pointer;
+  color: $old-blue;
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    top: 100%;
+    left: 0;
+  }
+}
