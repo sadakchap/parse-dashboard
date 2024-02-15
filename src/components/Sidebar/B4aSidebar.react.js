@@ -64,7 +64,6 @@ const B4aSidebar = ({
     if (mobileFriendly && !collapsed) {
       for (let current = target; current && current.id !== 'browser_mount'; current = current.parentNode) {
         if (/^sidebar/g.test(current.className) || /^introjs-tooltipReferenceLayer/g.test(current.className) || /^fixed_wrapper/g.test(current.id)) {
-          console.log('coming here')
           return;
         }
       }
