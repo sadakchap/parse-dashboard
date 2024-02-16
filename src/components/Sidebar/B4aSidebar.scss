@@ -23,7 +23,7 @@
 
   &.collapsed {
     left: 0;
-    width: 88px;
+    width: $b4aSidebarCollapsedWidth;
 
     .footer {
       height: 79px;
@@ -337,6 +337,12 @@
   }
   & > div > div:last-child {
   margin-bottom: 0;
+  }
+  &.popover {
+    padding: 24px;
+    min-width: 320px;
+    max-height: 80vh;
+    overflow-y: auto;
   }
 }
 

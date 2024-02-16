@@ -26,9 +26,9 @@
   }
 }
 
-body:global(.expanded) {
+body:global(.sidebarCollapsed) {
   .browser {
-    left: 88px;
+    left: $b4aSidebarCollapsedWidth;
   }
 }
 
@@ -510,4 +510,13 @@ body:global(.expanded) {
     top: 100%;
     left: 0;
   }
+}
+
+.b4aLoadingWrapper {
+  width: calc(100vw - 360px);
+  height: calc(100% - 54px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

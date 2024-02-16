@@ -11,6 +11,7 @@ import styles from 'components/CategoryList/CategoryList.scss';
 import { Link } from 'react-router-dom';
 import generatePath from 'lib/generatePath';
 import { CurrentApp } from 'context/currentApp';
+import Icon from 'components/Icon/Icon.react';
 
 export default class CategoryList extends React.Component {
   static contextType = CurrentApp;
@@ -179,7 +180,7 @@ export default class CategoryList extends React.Component {
                           this.props.removeFilter(filterData);
                         }}
                       >
-                        ×
+                        <Icon name='b4a-delete-icon' className={styles.deleteIcon} width={18} height={18} />
                       </a>
                     </div>
                   );

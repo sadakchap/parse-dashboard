@@ -18,9 +18,9 @@
   white-space: nowrap;
 }
 
-body:global(.expanded) {
+body:global(.sidebarCollapsed) {
   .headers {
-    left: $sidebarCollapsedWidth;
+    left: $b4aSidebarCollapsedWidth;
   }
 }
 

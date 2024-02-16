@@ -65,7 +65,7 @@ export default class BrowserRow extends Component {
       requiredCols = ['authData'];
     }
     return (
-      <div className={styles.tableRow} style={{ minWidth: rowWidth }}>
+      <div className={styles.tableRow} style={{ minWidth: rowWidth + 34 }}> { /** 34 -> extra padding to cover up last column */}
         <span className={styles.checkCell}>
           <input
             disabled={row < 0}

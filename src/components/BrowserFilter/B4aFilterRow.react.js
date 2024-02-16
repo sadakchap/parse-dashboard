@@ -40,7 +40,7 @@ function compareValue(info, value, onChangeCompareTo, active, parentContentId, s
           ref={setFocus} />
       );
     case 'Boolean':
-      return <ChromeDropdown color={active ? 'blue' : 'purple'} value={value ? 'True' : 'False'} options={['True', 'False']} onChange={(val) => onChangeCompareTo(val === 'True')} />;
+      return <ChromeDropdown color={active ? '' : 'purple'} value={value ? 'True' : 'False'} options={['True', 'False']} onChange={(val) => onChangeCompareTo(val === 'True')} />;
     case 'Number':
       return (
         <input
@@ -92,13 +92,13 @@ const B4aFilterRow = ({
 
   return <div className={styles.row}>
     <ChromeDropdown
-      color={active ? 'blue' : 'purple'}
+      color={active ? '' : 'purple'}
       value={currentField}
       options={fields}
       onChange={onChangeField} />
     <ChromeDropdown
       width={compareInfo.type ? '175' : '325'}
-      color={active ? 'blue' : 'purple'}
+      color={active ? '' : 'purple'}
       value={Constraints[currentConstraint].name}
       options={constraints.map((c) => Constraints[c].name)}
       onChange={(c) => onChangeConstraint(constraintLookup[c])} />
