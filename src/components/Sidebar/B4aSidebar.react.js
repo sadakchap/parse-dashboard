@@ -20,7 +20,7 @@ import AppName from 'components/Sidebar/AppName.react';
 import { CurrentApp } from 'context/currentApp';
 
 let isSidebarFixed = !isMobile();
-let isSidebarCollapsed = !isSidebarFixed;
+let isSidebarCollapsed = isMobile();
 
 const B4aSidebar = ({
   showTour,
@@ -46,14 +46,14 @@ const B4aSidebar = ({
 
   const windowResizeHandler = () => {
     if (isMobile()) {
-      if (document.body.className.indexOf(' expanded') === -1) {
-        document.body.className += ' expanded';
+      if (document.body.className.indexOf(' sidebarCollapsed') === -1) {
+        document.body.className += ' sidebarCollapsed';
       }
       setMobileFriendly(true);
       setCollapsed(true);
       setFixed(false);
     } else {
-      document.body.className = document.body.className.replace(' expanded', '');
+      document.body.className = document.body.className.replace(' sidebarCollapsed', '');
       setMobileFriendly(false);
       setCollapsed(false);
       setFixed(true);
@@ -99,10 +99,10 @@ const B4aSidebar = ({
   }, [showTour]);
 
   useEffect(() => {
-    if (collapsed && document.body.className.indexOf(' expanded') === -1) {
-      document.body.className += ' expanded';
-    } else if (!collapsed && document.body.className.indexOf(' expanded') !== -1 && !mobileFriendly) {
-      document.body.className = document.body.className.replace(' expanded', '')
+    if (collapsed && document.body.className.indexOf(' sidebarCollapsed') === -1) {
+      document.body.className += ' sidebarCollapsed';
+    } else if (!collapsed && document.body.className.indexOf(' sidebarCollapsed') !== -1 && !mobileFriendly) {
+      document.body.className = document.body.className.replace(' sidebarCollapsed', '')
     }
   }, [collapsed])
 

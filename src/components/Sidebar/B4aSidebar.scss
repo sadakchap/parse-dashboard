@@ -23,7 +23,7 @@
 
   &.collapsed {
     left: 0;
-    width: 88px;
+    width: $b4aSidebarCollapsedWidth;
 
     .footer {
       height: 79px;

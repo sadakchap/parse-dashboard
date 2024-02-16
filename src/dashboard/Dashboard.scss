@@ -14,9 +14,9 @@
   overflow: auto;
 }
 
-body:global(.expanded) {
+body:global(.sidebarCollapsed) {
   .content {
-    margin-left: 54px;
+    margin-left: $b4aSidebarCollapsedWidth;
   }
 }
 

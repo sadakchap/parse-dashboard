@@ -23,9 +23,9 @@
   z-index: 0;
 }
 
-body:global(.expanded) {
+body:global(.sidebarCollapsed) {
   .toolbar {
-    left: 88px;
+    left: $b4aSidebarCollapsedWidth;
   }
 }
 

@@ -26,9 +26,9 @@
   }
 }
 
-body:global(.expanded) {
+body:global(.sidebarCollapsed) {
   .browser {
-    left: 88px;
+    left: $b4aSidebarCollapsedWidth;
   }
 }
 
