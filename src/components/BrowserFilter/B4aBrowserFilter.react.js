@@ -142,32 +142,41 @@ export default class B4aBrowserFilter extends React.Component {
                 )}
               />
               {this.state.confirmName && (
-                <Field
-                  label={<Label text="Filter view name" />}
-                  input={
-                    <TextInput
-                      placeholder="Give it a good name..."
-                      value={this.state.name}
-                      onChange={name => this.setState({ name })}
-                    />
-                  }
-                />
+                <div className={styles.saveFilterInputWrapper}>
+                  <Field
+                    label={<Label text="Filter view name" dark={true} />}
+                    input={
+                      <div style={{ width: '100%', padding: '0 1rem' }}>
+                        <TextInput
+                          placeholder="Give it a good name..."
+                          value={this.state.name}
+                          onChange={name => this.setState({ name })}
+                        />
+                      </div>
+                    }
+                    theme={Field.Theme.DARK}
+                  />
+                </div>
               )}
               {this.state.confirmName && (
                 <div className={styles.footer}>
-                  <Button
-                    color="white"
-                    value="Back"
-                    width="120px"
-                    onClick={() => this.setState({ confirmName: false })}
-                  />
-                  <Button
-                    color="white"
-                    value="Confirm"
-                    primary={true}
-                    width="120px"
-                    onClick={() => this.save()}
-                  />
+                  <div className=""></div>
+                  <div className="">
+                    <Button
+                      color="white"
+                      value="Cancel"
+                      width="auto"
+                      additionalStyles={{ color: '#f9f9f9' }}
+                      onClick={() => this.setState({ confirmName: false })}
+                    />
+                    <Button
+                      color="green"
+                      value="Confirm"
+                      disabled={!this.state.name.trim()}
+                      primary={true}
+                      onClick={() => this.save()}
+                    />
+                  </div>
                 </div>
               )}
               {!this.state.confirmName && (
@@ -185,16 +194,16 @@ export default class B4aBrowserFilter extends React.Component {
                   <div className="">
                     <Button
                       color="white"
-                      value="Clear All"
-                      disabled={this.state.filters.size === 0}
-                      onClick={() => this.clear()}
+                      value="Save Filters"
+                      onClick={() => this.setState({ confirmName: true })}
                       width="auto"
                       additionalStyles={{ fontWeight: '500', color: '#ccc' }}
                     />
                     <Button
                       color="white"
-                      value="Save"
-                      onClick={() => this.setState({ confirmName: true })}
+                      value="Clear All"
+                      disabled={this.state.filters.size === 0}
+                      onClick={() => this.clear()}
                       width="auto"
                       additionalStyles={{ fontWeight: '500', color: '#ccc' }}
                     />
