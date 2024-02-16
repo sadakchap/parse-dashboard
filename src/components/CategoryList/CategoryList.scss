@@ -170,6 +170,7 @@
 
 .childLink {
   display: flex;
+  margin: 0.75rem 0;
   a {
     &:first-of-type {
       flex-grow: 1;
@@ -182,5 +183,13 @@
       flex-grow: 1;
       margin-right: 0px !important;
     }
+  }
+
+  .deleteIcon {
+    fill: $light-blue;
+  }
+
+  &:hover .deleteIcon {
+    fill: $white;
   }
 }
