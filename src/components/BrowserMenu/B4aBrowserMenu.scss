@@ -170,3 +170,12 @@
      @include arrow('left', 8px, 4px, $white);
    }
  }
+ 
+ .objectPickerContent {
+  .wrap {
+    border-color: $light-grey;
+    svg {
+      fill: $dark;
+    }
+  }
+}

@@ -23,6 +23,12 @@
   align-items: center;
 }
 
+.objectPickerContent {
+  .header {
+    height: 36px;
+  }
+}
+
 .name {
   color: $white;
   font-size: 0.875rem;

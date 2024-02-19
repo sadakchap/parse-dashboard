@@ -10,7 +10,7 @@ import B4aToggle from 'components/Toggle/B4aToggle.react';
 import Pill from 'components/Pill/Pill.react';
 import GeoPointEditor from 'components/GeoPointEditor/GeoPointEditor.react';
 import FileEditor from 'components/FileEditor/FileEditor.react';
-import ObjectPickerDialog from 'dashboard/Data/Browser/ObjectPickerDialog.react';
+import B4aObjectPickerDialog from 'dashboard/Data/Browser/B4aObjectPickerDialog.react';
 import styles from 'dashboard/Data/Browser/Browser.scss';
 import getFileName from 'lib/getFileName';
 import encode from 'parse/lib/browser/encode';
@@ -377,7 +377,7 @@ export default class EditRowDialog extends React.Component {
         case 'Pointer':
           const pointerId = selectedObject[name] && selectedObject[name].id;
           inputComponent = openObjectPickers[name] ? (
-            <ObjectPickerDialog
+            <B4aObjectPickerDialog
               schema={schema}
               column={column}
               className={targetClass}
@@ -412,7 +412,7 @@ export default class EditRowDialog extends React.Component {
           relation.targetClassName = targetClass;
 
           inputComponent = openObjectPickers[name] ? (
-            <ObjectPickerDialog
+            <B4aObjectPickerDialog
               schema={schema}
               column={column}
               className={targetClass}
