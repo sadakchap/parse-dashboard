@@ -13,7 +13,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 import baseStyles from 'stylesheets/base.scss';
 import EmptyState from 'components/EmptyState/EmptyState.react';
-import Loader from 'components/Loader/Loader.react';
+import B4aLoader from 'components/B4aLoader/B4aLoader.react';
 
 function AppData() {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ function AppData() {
     if (current.serverInfo.status === 'LOADING') {
       return (
         <div className={baseStyles.pageCenter}>
-          <Loader />
+          <B4aLoader />
         </div>
       );
     } else if (current.serverInfo.error) {

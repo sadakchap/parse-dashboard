@@ -26,7 +26,7 @@ import IndexManager from './IndexManager/IndexManager.react'
 import JobEdit from 'dashboard/Data/Jobs/JobEdit.react';
 import Jobs from './Data/Jobs/Jobs.react';
 import JobsData from 'dashboard/Data/Jobs/JobsData.react';
-import Loader from 'components/Loader/Loader.react';
+import B4aLoader from 'components/B4aLoader/B4aLoader.react';
 import InfoLogs from './Data/Logs/InfoLogs.react';
 import ErrorLogs from './Data/Logs/ErrorLogs.react';
 import AccessLogs from './Data/Logs/AccessLogs.react';
@@ -287,7 +287,7 @@ class Dashboard extends React.Component {
     if (this.state.configLoadingState === AsyncStatus.PROGRESS) {
       return (
         <div className={baseStyles.center}>
-          <Loader />
+          <B4aLoader />
         </div>
       );
     }
