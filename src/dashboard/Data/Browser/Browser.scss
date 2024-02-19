@@ -463,6 +463,7 @@ body:global(.sidebarCollapsed) {
   .deleteBtn {
     background: none;
     border: 1px solid $light-grey;
+    margin-right: 0;
 
     &:hover {
       background: rgba($error-red, 0.03);
@@ -479,6 +480,7 @@ body:global(.sidebarCollapsed) {
   }
   .toolbarButton {
     border-color: $light-grey;
+    margin-left: 0;
     svg {
       fill: $dark;
     }
