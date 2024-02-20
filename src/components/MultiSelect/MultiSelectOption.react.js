@@ -12,7 +12,13 @@ import styles from 'components/MultiSelect/MultiSelect.scss';
 const MultiSelectOption = ({ checked, children, dense, disabled, ...other }) => {
   const classes = [styles.option, disabled ? styles.disabled : undefined];
 
-  const icon = <div className={checked ? styles.checked : styles.unchecked} />
+  const icon = checked ? (
+    <div className={styles.checked}>
+      <Icon width={dense ? 15 : 20} height={dense ? 15 : 20} name="check" fill="#ffffff" />
+    </div>
+  ) : (
+    <div className={styles.unchecked} />
+  );
 
   return (
     <div {...other} className={classes.join(' ')}>
