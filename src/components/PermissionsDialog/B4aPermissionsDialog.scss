@@ -119,7 +119,7 @@
  }
 
  .tableWrap {
-   height: 288px;
+  //  height: 288px;
    overflow-y: auto;
    overflow-x: hidden;
  }
@@ -159,7 +159,7 @@ width: $addFieldColWidth;
 
 .table {
   position: relative;
-  min-height:300px;
+  // min-height:300px;
 
   .overlay {
     position: absolute;
@@ -245,7 +245,7 @@ width: $addFieldColWidth;
       left: 100%;
       top: 100%;
       width: 1px;
-      height: 288px;
+      // height: 288px;
       background: rgba($light-grey, 0.3);
     }
    }
@@ -298,6 +298,10 @@ width: $addFieldColWidth;
   border-bottom: 1px solid rgba($light-grey, 0.3);
   white-space: nowrap;
   background: rgba(51, 51, 51, 0.03);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
 }
 
 .row.public {
