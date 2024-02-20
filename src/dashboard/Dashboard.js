@@ -286,7 +286,7 @@ class Dashboard extends React.Component {
   render() {
     if (this.state.configLoadingState === AsyncStatus.PROGRESS) {
       return (
-        <div className={baseStyles.center}>
+        <div className={baseStyles.center} style={{ background: '#0F1C32' }}>
           <B4aLoader />
         </div>
       );
