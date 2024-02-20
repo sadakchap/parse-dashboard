@@ -72,10 +72,12 @@ const B4aSidebar = ({
   }
 
   useEffect(() => {
+    console.log('mounting the sidebar');
     window.addEventListener('resize', windowResizeHandler);
     document.body.addEventListener('click', checkExternalClick);
 
     return () => {
+      console.log('unmoutning the sidebar');
       window.removeEventListener('resize', windowResizeHandler);
       document.body.removeEventListener('click', checkExternalClick);
       isSidebarFixed = fixed;

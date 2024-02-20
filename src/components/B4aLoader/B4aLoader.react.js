@@ -8,7 +8,7 @@ const B4aLoader = () => {
   return (
     <>
       <Lottie animationData={b4aLoadingAnimation} loop={true} height={100} />
-      <div className={styles.text}>Loading</div>
+      <div className={styles.text} style={{ fontSize: '14px', marginTop: '-20px' }}>Loading</div>
     </>
   )
 }

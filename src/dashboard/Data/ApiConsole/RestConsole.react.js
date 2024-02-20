@@ -171,7 +171,7 @@ export default class RestConsole extends Component {
         <B4aModal
           title="cURL Request"
           subtitle="Use this to replicate the request"
-          onClose={() => this.setState({ curlModal: false })}
+          onCancel={() => this.setState({ curlModal: false })}
           customFooter={
             <div className={styles.footer}>
               <Button
@@ -298,21 +298,23 @@ export default class RestConsole extends Component {
             <div className={styles.resultContent}><JsonPrinter object={this.state.response} /></div>
           </div>
         </div>
-        <Toolbar section="API" subsection="Console > REST" />
-        <FlowFooter
-          primary={
-            <Button
-              primary={true}
-              disabled={hasError}
-              value="Send Query"
-              progress={this.state.inProgress}
-              onClick={this.makeRequest.bind(this)}
-            />
-          }
-          secondary={
-            <Button disabled={hasError} value="Export to cURL" onClick={this.showCurl.bind(this)} />
-          }
-        />
+        <Toolbar section="API" subsection="Console > REST">
+          <FlowFooter
+            borderTop="none"
+            primary={
+              <Button
+                primary={true}
+                disabled={hasError}
+                value="Send Query"
+                progress={this.state.inProgress}
+                onClick={this.makeRequest.bind(this)}
+              />
+            }
+            secondary={
+              <Button disabled={hasError} value="Export to cURL" onClick={this.showCurl.bind(this)} />
+            }
+          />
+        </Toolbar>
         {modal}
       </div>
     );

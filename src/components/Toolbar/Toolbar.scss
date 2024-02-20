@@ -31,9 +31,10 @@ body:global(.sidebarCollapsed) {
 
 .objectPickerContent {
   .toolbar {
-    background: #00db7c;
-    height: 80px;
-    right: 135px;
+    background: #f9f9f9;
+    // height: 80px;
+    right: 6px;
+    margin-top: 26px;
 
     .nav {
       display: none;
@@ -41,6 +42,12 @@ body:global(.sidebarCollapsed) {
 
     .titleText {
       display: none;
+    }
+    .iconButton {
+      border: 1px solid $light-grey;
+      svg {
+        fill: $dark;
+      }
     }
   }
 }
@@ -122,6 +129,7 @@ body:global(.sidebarCollapsed) {
   display: flex;
   align-items: center;
   top: 0;
+  right: 24px;
   display: flex;
   align-items: center;
   justify-content: center;

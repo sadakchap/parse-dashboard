@@ -153,7 +153,7 @@ const B4ABrowserToolbar = ({
         />
       </BrowserMenu>
     );
-  } else {
+  } else if (onAddRow) {
     menu = (
       <BrowserMenu title='Edit' icon='more-icon' setCurrent={setCurrent} active={currentUser ? true : false} >
         {isPendingEditCloneRows ?
@@ -324,12 +324,14 @@ const B4ABrowserToolbar = ({
           <span>Column</span>
         </a>
       )}
-      {(
-        <a className={styles.deleteBtn + ` ${(selectionLength >= 1) && !isPendingEditCloneRows && styles.active}`} onClick={selectionLength === 0 || isPendingEditCloneRows ? null : () => onDeleteRows(selection)}>
-          <Icon name='b4a-delete-icon' fill="#E85C3E" width={24} height={20} />
-        </a>
+      {onDeleteRows && (
+        <>
+          <a className={styles.deleteBtn + ` ${(selectionLength >= 1) && !isPendingEditCloneRows && styles.active}`} onClick={selectionLength === 0 || isPendingEditCloneRows ? null : () => onDeleteRows(selection)}>
+            <Icon name='b4a-delete-icon' fill="#E85C3E" width={24} height={20} />
+          </a>
+          <div className={styles.verticalSeparator}></div>
+        </>
       )}
-      <div className={styles.verticalSeparator}></div>
       <a className={styles.toolbarButton + ` ${isPendingEditCloneRows && styles.toolbarButtonDisabled}`} onClick={isPendingEditCloneRows ? null : onRefresh} title='Refresh'>
         <Icon name='b4a-refresh-icon' width={18} height={18} />
       </a>

@@ -142,7 +142,7 @@
 
   svg {
     vertical-align: middle;
-    fill: white;
+    fill: $white;
   }
 
   span {
@@ -164,4 +164,17 @@
     }
   }
 
+}
+
+.objectPickerContent {
+  .toolbarButton {
+    border-color: $light-grey;
+    margin-right: 0;
+    svg {
+      fill: $dark;
+    }
+    &:hover {
+      background-color: rgba($dark, 0.03);
+    }
+  }
 }

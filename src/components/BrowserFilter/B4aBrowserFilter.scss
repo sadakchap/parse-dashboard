@@ -33,6 +33,19 @@
   }
 }
 
+.objectPickerContent {
+  .wrap {
+    border-color: $light-grey;
+    > svg {
+      fill: $dark;
+    }
+
+    &:hover {
+      background-color: rgba($dark, 0.03);
+    }
+  }
+}
+
 .entry {
   svg {
     fill: $white;

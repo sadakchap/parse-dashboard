@@ -22,6 +22,17 @@
   padding-right: 0;
 }
 
+.objectPickerContent {
+  .bar {
+    background: $dark-grey;
+    height: 36px;
+  }
+  .check {
+    line-height: 36px;
+    height: 36px;
+  }
+}
+
 .wrap {
   display: inline-block;
   vertical-align: top;
