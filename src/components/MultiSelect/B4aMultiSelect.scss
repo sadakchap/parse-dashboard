@@ -46,7 +46,7 @@
   line-height: 50px;
   padding: 13px 16px;
   color: $old-blue;
-  border-bottom: 1px solid $light-grey;
+  border-bottom: 1px solid rgab($light-grey, 0.3);
   overflow: hidden;
   text-overflow: ellipsis;
 
