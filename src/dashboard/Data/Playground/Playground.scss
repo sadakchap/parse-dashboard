@@ -5,7 +5,7 @@ $consoleHeight: 322px;
 
 .playground-ctn {
   padding-top: $toolbar-height;
-  height: calc(100vh - $toolbar-height);
+  height: calc(100vh - $toolbar-height - 1rem);
   background: $dark;
   overflow: hidden;
 }

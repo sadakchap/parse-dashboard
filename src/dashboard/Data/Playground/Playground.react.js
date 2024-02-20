@@ -149,7 +149,7 @@ export default class Playground extends Component {
     const { results, running, saving, savingState } = this.state;
 
     return React.cloneElement(
-      <div className={styles['playground-ctn']}>
+      <>
         <Toolbar section={this.section} subsection={this.subsection}>
           <div className={styles['buttons-ctn']}>
             <Button
@@ -173,46 +173,48 @@ export default class Playground extends Component {
             )}
           </div>
         </Toolbar>
-        <div className={styles.playgroundEditor}>
-          <CodeEditor
-            placeHolder={placeholderCode}
-            ref={editor => (this.editor = editor)}
-          />
+        <div className={styles['playground-ctn']}>
+          <div className={styles.playgroundEditor}>
+            <CodeEditor
+              placeHolder={placeholderCode}
+              ref={editor => (this.editor = editor)}
+            />
+          </div>
+          <div className={styles.console}>
+            <div>Console</div>
+            <section>
+              {!results.length ? <span className={styles.null}>null</span> : (
+                results.map(({ log, name }, i) => (
+                  <ReactJson
+                    key={i + `${log}`}
+                    src={log}
+                    collapsed={1}
+                    theme={{
+                      base00: '#0A0B0C', // default background
+                      base01: '#111214',
+                      base02: '#f9f9f94d',
+                      base03: '#F9F9F9',
+                      base04: '#c1e2ff',
+                      base05: '#f9f9f9',
+                      base06: '#f9f9f9',
+                      base07: '#f9f9f999',
+                      base08: '#f9f9f9',
+                      base09: '#27AE60', // Integers, Boolean, Constants, XML Attributes, Markup Link Url
+                      base0A: '#f9f9f9',
+                      base0B: '#f9f9f9',
+                      base0C: '#f9f9f9',
+                      base0D: '#f9f9f9b3',
+                      base0E: '#f9f9f999',
+                      base0F: '#15A9FF'
+                    }}
+                    name={name}
+                  />
+                ))
+              )}
+            </section>
+          </div>
         </div>
-        <div className={styles.console}>
-          <div>Console</div>
-          <section>
-            {!results.length ? <span className={styles.null}>null</span> : (
-              results.map(({ log, name }, i) => (
-                <ReactJson
-                  key={i + `${log}`}
-                  src={log}
-                  collapsed={1}
-                  theme={{
-                    base00: '#0A0B0C', // default background
-                    base01: '#111214',
-                    base02: '#f9f9f94d',
-                    base03: '#F9F9F9',
-                    base04: '#c1e2ff',
-                    base05: '#f9f9f9',
-                    base06: '#f9f9f9',
-                    base07: '#f9f9f999',
-                    base08: '#f9f9f9',
-                    base09: '#27AE60', // Integers, Boolean, Constants, XML Attributes, Markup Link Url
-                    base0A: '#f9f9f9',
-                    base0B: '#f9f9f9',
-                    base0C: '#f9f9f9',
-                    base0D: '#f9f9f9b3',
-                    base0E: '#f9f9f999',
-                    base0F: '#15A9FF'
-                  }}
-                  name={name}
-                />
-              ))
-            )}
-          </section>
-        </div>
-      </div>
+      </>
     );
   }
 }
