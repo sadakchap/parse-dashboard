@@ -16,6 +16,7 @@
   background: $dark;
   height: 46px;
   white-space: nowrap;
+  box-shadow: 0px 1px 0px 0px #C1E2FF29;
 }
 
 body:global(.sidebarCollapsed) {
@@ -41,6 +42,28 @@ body:global(.sidebarCollapsed) {
   tr {
     // background: #fdfafb;
     border-bottom: 1px solid rgba(249, 249, 249, 0.06);
+    td:first-of-type {
+      padding-left: 1.5rem;
+    }
+    td:last-of-type {
+      padding-right: 1.5rem;
+    }
+
+    &.verticalBorderedCell {
+      td {
+        position: relative;
+        &::after {
+          content: ' ';
+          position: absolute;
+          height: 75%;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 1px;
+          background: #F9F9F90F;
+        }
+      }
+    }
   }
 
   // tr:nth-child(2n) {
@@ -55,10 +78,7 @@ body:global(.sidebarCollapsed) {
     white-space: nowrap;
     max-width: 0;
     color: $white;
-    border-right: 1px solid rgba(249, 249, 249, 0.06);
-    &:last-child {
-      border-right: 0;
-    }
+    font-size: 14px;
   }
 
   svg {
