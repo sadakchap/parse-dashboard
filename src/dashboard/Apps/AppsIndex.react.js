@@ -10,13 +10,12 @@ import FlowFooter from 'components/FlowFooter/FlowFooter.react';
 import html from 'lib/htmlString';
 import Icon from 'components/Icon/Icon.react';
 import joinWithFinal from 'lib/joinWithFinal';
-import EmptyState from '../../components/EmptyState/EmptyState.react';
+import EmptyGhostState from '../../components/EmptyGhostState/EmptyGhostState.react';
 import loadingImg from './loadingIcon.png';
 import LiveReload from 'components/LiveReload/LiveReload.react';
 import prettyNumber from 'lib/prettyNumber';
 import React from 'react';
 import styles from 'dashboard/Apps/AppsIndex.scss';
-import AppBadge from 'components/AppBadge/AppBadge.react';
 import { withRouter } from 'lib/withRouter';
 import { useNavigate } from 'react-router-dom';
 
@@ -87,7 +86,7 @@ const AppCard = ({ app, icon }) => {
   }
 
   if (app.serverInfo.status === 'ERROR') {
-    appStatusIcon = <Icon name='warn-triangle-outline' fill='#F2C94C' width={16} height={16} />
+    appStatusIcon = <Icon name='warn-triangle-outline' fill='#FBFF3B' width={16} height={16} />
     appNameStyles.push(styles.disabled);
     appIconStyle.push(styles.disabled);
   }
@@ -183,10 +182,7 @@ class AppsIndex extends React.Component {
     if (apps.length === 0) {
       return (
         <div className={styles.empty}>
-          <EmptyState
-            icon='cloud-surprise'
-            fill="#1e3b4d"
-            background="#364c61"
+          <EmptyGhostState
             title="You don't have any apps"
             description='Create a new app or clone a database from database hub'
             cta="Create a new app"
