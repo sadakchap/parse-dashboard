@@ -176,6 +176,7 @@ export default class Playground extends Component {
         <div className={styles['playground-ctn']}>
           <div className={styles.playgroundEditor}>
             <CodeEditor
+              fontSize={14}
               placeHolder={placeholderCode}
               ref={editor => (this.editor = editor)}
             />
