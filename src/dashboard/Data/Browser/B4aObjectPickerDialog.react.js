@@ -17,6 +17,7 @@ import stylesBrowserCell from 'components/BrowserCell/B4aBrowserCell.scss';
 import stylesB4aBrowserColumnsConfiguration from 'components/ColumnsConfiguration/B4aColumnsConfiguration.scss';
 import stylesB4aBrowserMenu from 'components/BrowserMenu/B4aBrowserMenu.scss';
 import stylesB4aBrowserFilter from 'components/BrowserFilter/B4aBrowserFilter.scss';
+import stylesB4aBrowserEmptyState from 'components/B4aBrowserEmptyState/B4aBrowserEmptyState.scss';
 import { CurrentApp } from 'context/currentApp';
 import Popover from 'components/Popover/Popover.react';
 import Position from 'lib/Position';
@@ -321,6 +322,7 @@ export default class B4aObjectPickerDialog extends React.Component {
               stylesB4aBrowserColumnsConfiguration.objectPickerContent,
               stylesB4aBrowserMenu.objectPickerContent,
               stylesB4aBrowserFilter.objectPickerContent,
+              stylesB4aBrowserEmptyState.objectPickerContent,
               column.type === 'Pointer' ? stylesDataBrowserHeaderBar.pickerPointer : '',
             ].join(' ')}
           >

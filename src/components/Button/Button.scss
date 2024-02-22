@@ -22,7 +22,7 @@
   transition: all ease-in-out 0.5s;
   color: $cta-green;
 
-  &:hover, &:focus {
+  &:hover {
     background-color: $cta-green;
     color: $white;
   }
@@ -33,7 +33,7 @@
   font-weight: 600;
   color: $white;
 
-  &:hover, &:focus {
+  &:hover {
     filter: drop-shadow(1px 1px 10px #92E1B4);
     background-color: #13A39A!important;
   }
@@ -44,7 +44,7 @@
   color: $white;
   border-color: $green;
 
-  &:hover, &:focus {
+  &:hover {
     background-color: #13A39A;
   }
 
@@ -52,7 +52,7 @@
     background-color: $cta-green;
     color: $white;
 
-    &:hover, &:focus {
+    &:hover {
       background-color: #13A39A;
     }
   }
@@ -62,7 +62,7 @@
   color: $error-red;
   border-color: $error-red;
 
-  &:hover, &:focus {
+  &:hover {
     background-color: $error-log-red !important;
     filter: drop-shadow(1px 1px 10px $error-log-red);
   }
@@ -71,7 +71,7 @@
     background-color: $error-log-red !important;
     color: $white;
 
-    &:hover, &:focus {
+    &:hover {
       background-color: $darkRed !important;
     }
   }
@@ -82,7 +82,7 @@
   border-color: $light-grey;
   line-height: 28px;
 
-  &:hover, &:focus{
+  &:hover{
     background-color: rgba($light-grey, 0.06);
     color: $white;
   }
@@ -91,7 +91,7 @@
     background-color: $light-grey;
     color: $blue;
 
-    &:hover, &:focus {
+    &:hover {
       background-color: rgba($light-grey, 0.06);
       color: $white;
     }
@@ -108,7 +108,7 @@
   color: $yellow;
   border-color: $yellow;
 
-  &:hover, &:focus {
+  &:hover {
     background-color: $lightYellow;
   }
 
@@ -116,7 +116,7 @@
     background-color: $yellow;
     color: $white;
 
-    &:hover, &:focus {
+    &:hover {
       background-color: $darkYellow;
     }
   }
