@@ -6,12 +6,22 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .title {
   @include SoraFont;
   font-size: 1.125rem;
   line-height: 140%;
   color: #f9f9f9;
+}
+
+.objectPickerContent {
+  .title {
+    color: $dark;
+  }
+  .description {
+    color: rgba($dark, 0.7);
+  }
 }
 
 .description {

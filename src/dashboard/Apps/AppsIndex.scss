@@ -5,12 +5,12 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-@import 'stylesheets/back4app.scss';
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .loadingError {
   font-size: 58px;
-  color: #ffffff;
+  color: $white;
 }
 
 .index {
@@ -20,11 +20,13 @@
 }
 
 .empty {
-  color: white;
+  color: $dark-grey;
   position: relative;
-  background: #1e3b4d;
+  background: $dark;
   min-height: $content-max-height;
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .cloud {
@@ -38,7 +40,7 @@
 
 .alert {
   font-size: 58px;
-  color: #ffffff;
+  color: $white;
   white-space: nowrap;
 }
 
@@ -47,7 +49,7 @@
   height: 32px;
   line-height: 32px;
   width: 128px;
-  background: #ffffff;
+  background: $white;
   border-radius: 5px;
   color: $blue;
   font-size: 12px;
@@ -102,7 +104,7 @@
   @include InterFont;
   background: transparent;
   border: none;
-  color: white;
+  color: $white;
   outline: none;
   font-size: 14px;
   vertical-align: top;
@@ -123,10 +125,10 @@
   padding: 0 14px;
   font-size: 14px;
   border-radius: 5px;
-  color: white;
+  color: $white;
   background: $blue;
   &:hover{
-    background: white;
+    background: $white;
     color: $blue;
   }
 }
@@ -170,11 +172,13 @@
   @include ellipsis();
   @include InterFont;
   width: 100%;
-  display: inline-block;
   color: $light-blue;
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 140%;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   &.loading {
     color: #788c97 !important;
   }
@@ -262,7 +266,7 @@
   border-radius: 3px;
   height: 17px;
   line-height: 18px;
-  color: white;
+  color: $white;
   font-size: 10px;
   padding: 0 8px;
 

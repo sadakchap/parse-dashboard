@@ -384,6 +384,7 @@ a.subitem {
   border: 1px solid $cta-green;
   cursor: pointer;
   overflow: hidden;
+  text-transform: capitalize;
 
   & svg {
     fill: $cta-green;

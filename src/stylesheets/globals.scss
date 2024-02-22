@@ -79,6 +79,10 @@ $sidebarCollapsedWidth: 54px;
   font-family: 'Courier Prime', monospace;
 }
 
+@mixin RobotoMonoFont {
+  font-family: 'Roboto Mono', monospace;
+}
+
 @mixin MaterialDesignFont {
   font-family: Material-Design-Iconic-Font;
 }

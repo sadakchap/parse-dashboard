@@ -269,21 +269,29 @@ class B4ACloudCode extends CloudCode {
       </B4aLoaderContainer>
     } else { // render cloud code page
 
-      title = <B4ACloudCodeToolbar><Button
-        onClick={this.onLogClick}
-        value="Logs"
-        width='20'
-        additionalStyles={{ minWidth: '70px', background: 'transparent', color: '#f9f9f9', marginRight: '20px', height: '40px', borderColor: 'rgba(249, 249, 249, 0.06)' }}
-      />
-      <Button
-        onClick={this.uploadCode.bind(this)}
-        value={
-          <div className={styles['b4a-cc-deploy-btn']}>Deploy</div>
+      title = <B4ACloudCodeToolbar>
+        {
+          this.state.updatedFiles.length > 0 &&
+          <div className={styles.ccStatusIcon}>
+            <Icon name="b4a-info-circle" width={16} height={16} fill="#FBFF3B" /> <small>Files pending deploy ({this.state.updatedFiles.length})</small>
+          </div>
         }
-        primary={true}
-        width='20'
-        additionalStyles={{ height: '40px' }}
-      /></B4ACloudCodeToolbar>
+        <Button
+          onClick={this.onLogClick}
+          value="Logs"
+          width='20'
+          additionalStyles={{ minWidth: '70px', background: 'transparent', color: '#f9f9f9', marginRight: '20px', height: '40px', borderColor: 'rgba(249, 249, 249, 0.06)' }}
+        />
+        <Button
+          onClick={this.uploadCode.bind(this)}
+          value={
+            <div className={styles['b4a-cc-deploy-btn']}>Deploy</div>
+          }
+          primary={true}
+          width='20'
+          additionalStyles={{ height: '40px' }}
+        />
+      </B4ACloudCodeToolbar>
 
       content = <B4ACodeTree
         setUpdatedFile={(updatedFiles) => this.setState({ updatedFiles })}
@@ -291,44 +299,12 @@ class B4ACloudCode extends CloudCode {
         parentState={this.setState.bind(this)}
         currentApp={this.context}
       />
-
-      footer = <div className={styles.footer}>
-        <div className={styles.footerContainer}>
-          {
-            this.state.updatedFiles.length > 0 &&
-            <div className={styles.ccStatusIcon}>
-              <span className={styles.undeployedCircle}></span> <small>Files pending deploy ({this.state.updatedFiles.length})</small>
-            </div>
-          }
-        </div>
-        <div className={styles.footerContainer}>
-          <Button
-            onClick={this.onLogClick}
-            value={
-              <div>
-                <span style={{ color: '#218BEC' }}>Logs</span>
-              </div>}
-            width='20'
-            additionalStyles={{ minWidth: '70px', background: 'transparent', color: 'dimgray!important', marginRight: '20px', height: '40px' }}
-          />
-          <Button
-            onClick={this.uploadCode.bind(this)}
-            value={
-              <div className={styles['b4a-cc-deploy-btn']}>Deploy</div>
-            }
-            primary={true}
-            width='20'
-            additionalStyles={{ height: '40px' }}
-          />
-        </div>
-      </div>
     }
 
     return (
       <div className={`${styles.source} ${styles['b4a-source']}`} >
         {title}
         {content}
-        {/* {footer} */}
         {this.state.modal}
       </div>
     );

@@ -230,9 +230,9 @@ export default class B4aProtectedFieldsDialog extends React.Component {
 
     if (noAvailableFields) {
       options.push(
-        <MultiSelectOption disabled={true} dense={true}>
+        <B4aMultiSelectOption disabled={true} dense={true}>
           {'This class has no fields to protect'}
-        </MultiSelectOption>
+        </B4aMultiSelectOption>
       );
     }
 
