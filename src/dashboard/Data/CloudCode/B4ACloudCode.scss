@@ -56,6 +56,16 @@
   }
 }
 
+.ccStatusIcon {
+  @include InterFont;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24px;
+  font-size: 14px;
+  gap: 4px;
+}
+
 .footer {
   // padding: 20px 0 20px 0;
   position: absolute;
@@ -79,13 +89,6 @@
     align-items: center;
   }
 
-  .ccStatusIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Noto Sans;
-    margin-left: 10px;
-  }
 
   .deployedCircle {
     height: 10px;
