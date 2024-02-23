@@ -8,6 +8,10 @@
 @import 'globals.scss';
 @import 'back4app.scss';
 
+html {
+  overflow-y: hidden;
+}
+
 html, body {
   min-height: $content-max-height;
   background-color: $dark;
