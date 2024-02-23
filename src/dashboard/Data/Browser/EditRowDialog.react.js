@@ -402,7 +402,8 @@ export default class EditRowDialog extends React.Component {
                   dark={false}
                 />
               )}
-              <Pill onClick={() => this.toggleObjectPicker(name, true)} value={`Select ${name}`} dark={false} />
+              <span className={styles.selectPill} onClick={() => this.toggleObjectPicker(name, true)}>{`Select ${name}`}</span>
+              {/* <Pill onClick={() => this.toggleObjectPicker(name, true)} value={`Select ${name}`} dark={false} /> */}
             </div>
           );
           break;
@@ -437,11 +438,12 @@ export default class EditRowDialog extends React.Component {
                   followClick={true}
                   dark={false}
                 />
-                <Pill
+                <span className={styles.selectPill} onClick={() => this.toggleObjectPicker(name, true)}>{`Select ${name}`}</span>
+                {/* <Pill
                   onClick={() => this.toggleObjectPicker(name, true)}
                   value={`Select ${name}`}
                   dark={false}
-                />
+                /> */}
               </div>
             )
           );
