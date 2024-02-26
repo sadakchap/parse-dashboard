@@ -97,6 +97,7 @@ class B4ACloudCode extends CloudCode {
         this.blocker(autoUnblockingTx);
       } else {
         this.unblock();
+        tx.retry();
       }
     });
   }
@@ -109,7 +110,7 @@ class B4ACloudCode extends CloudCode {
         }
       }
     } else {
-      window.onbeforeunload = undefined;
+      window.removeEventListener('beforeunload', this.onBeforeUnloadSaveCode);
     }
   }
 
@@ -118,7 +119,7 @@ class B4ACloudCode extends CloudCode {
       this.unblock();
     }
     if (this.onBeforeUnloadSaveCode) {
-      window.removeEventListener('onbeforeunload',this.onBeforeUnloadSaveCode);
+      window.removeEventListener('beforeunload',this.onBeforeUnloadSaveCode);
     }
   }
 
