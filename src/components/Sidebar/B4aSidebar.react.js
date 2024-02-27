@@ -19,8 +19,8 @@ import AppsMenu from 'components/Sidebar/AppsMenu.react';
 import AppName from 'components/Sidebar/AppName.react';
 import { CurrentApp } from 'context/currentApp';
 
-let isSidebarFixed = !isMobile();
-let isSidebarCollapsed = isMobile();
+// let isSidebarFixed = !isMobile();
+let isSidebarCollapsed = undefined;
 
 const B4aSidebar = ({
   showTour,
@@ -39,8 +39,10 @@ const B4aSidebar = ({
 }) => {
   const currentApp = useContext(CurrentApp);
   const [appsMenuOpen, setAppsMenuOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(() => isSidebarCollapsed);
-  const [fixed, setFixed] = useState(() => isSidebarFixed);
+  const [collapsed, setCollapsed] = useState(() => {
+    return isSidebarCollapsed !== undefined ? isSidebarCollapsed : isMobile();
+  });
+  // const [fixed, setFixed] = useState(() => isSidebarFixed);
   const [mobileFriendly, setMobileFriendly] = useState(() => isMobile());
   const prevShowTour = useRef(showTour);
 
@@ -51,12 +53,12 @@ const B4aSidebar = ({
       }
       setMobileFriendly(true);
       setCollapsed(true);
-      setFixed(false);
+      // setFixed(false);
     } else {
       document.body.className = document.body.className.replace(' sidebarCollapsed', '');
       setMobileFriendly(false);
       setCollapsed(false);
-      setFixed(true);
+      // setFixed(true);
     }
   }
 
@@ -72,31 +74,32 @@ const B4aSidebar = ({
   }
 
   useEffect(() => {
-    console.log('mounting the sidebar');
     window.addEventListener('resize', windowResizeHandler);
     document.body.addEventListener('click', checkExternalClick);
 
     return () => {
-      console.log('unmoutning the sidebar');
       window.removeEventListener('resize', windowResizeHandler);
       document.body.removeEventListener('click', checkExternalClick);
-      isSidebarFixed = fixed;
     }
   }, []);
+
+  useEffect(() => {
+    isSidebarCollapsed = collapsed;
+  }, [collapsed]);
 
   useEffect(() => {
     if (!!showTour && collapsed) {
       // if showing tour then open sidebar
       setMobileFriendly(false);
       setCollapsed(false);
-      setFixed(true);
+      // setFixed(true);
     }
 
     if (prevShowTour.current && !showTour && isMobile()) {
       // Tour is over and on mobile device
       setMobileFriendly(true);
       setCollapsed(true);
-      setFixed(false);
+      // setFixed(false);
     }
   }, [showTour]);
 
@@ -170,9 +173,7 @@ const B4aSidebar = ({
               active={active}
               primaryBackgroundColor={primaryBackgroundColor}
               isCollapsed={true}
-              onClick={active
-                ? (() => setCollapsed(false))
-                : (() => isSidebarCollapsed = false)}
+              onClick={() => {}}
             >
               {_subMenu(subsections)}
             </B4aSidebarSection>

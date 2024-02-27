@@ -16,17 +16,19 @@
 .index {
   padding: 1.88rem 3rem;
   background: $dark-blue;
-  min-height: $content-max-height;
+  height: $content-max-height;
+  overflow-y: auto;
 }
 
 .empty {
   color: $dark-grey;
   position: relative;
   background: $dark;
-  min-height: $content-max-height;
+  height: $content-max-height;
   text-align: center;
   display: flex;
   justify-content: center;
+  overflow-y: auto;
 }
 
 .cloud {

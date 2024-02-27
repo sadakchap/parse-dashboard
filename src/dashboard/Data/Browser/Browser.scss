@@ -550,6 +550,26 @@ body:global(.sidebarCollapsed) {
   }
 }
 
+.selectPill {
+  @include InterFont;
+  position: relative;
+  color: $old-blue;
+  font-size: 14px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  &::before {
+    content: ' ';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+  }
+}
+
 .editRowExpandCollapse {
   position: relative;
   cursor: pointer;

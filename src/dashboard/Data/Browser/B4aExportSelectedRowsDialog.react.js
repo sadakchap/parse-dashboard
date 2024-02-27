@@ -122,7 +122,7 @@ export default class B4aExportSelectedRowsDialog extends React.Component {
               <Label text="Confirm this action" description='Enter "export all" to continue.' />
             }
             input={
-              <div style={{ padding: '0 1rem' }}>
+              <div style={{ padding: '0 1rem', width: '100%' }}>
                 <TextInput
                   placeholder={'Enter ”export all” to continue'}
                   value={this.state.confirmation}
