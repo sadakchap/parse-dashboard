@@ -115,7 +115,6 @@ export default class Playground extends Component {
       this.setState({ saving: true, savingState: SaveButton.States.SAVING });
       window.localStorage.setItem(this.localKey, code);
       this.setState({
-        code,
         saving: false,
         savingState: SaveButton.States.SUCCEEDED,
       });
@@ -154,6 +153,7 @@ export default class Playground extends Component {
           <CodeEditor
             placeHolder={placeholderCode}
             ref={editor => (this.editor = editor)}
+            fileName={`${this.localKey}.js`}
           />
           <div className={styles['console-ctn']}>
             <header>

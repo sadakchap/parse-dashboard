@@ -17,7 +17,7 @@ export default class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { code: '', reset: false };
+    this.state = { code: '', reset: false, fileName: props.fileName };
   }
 
   get value() {
