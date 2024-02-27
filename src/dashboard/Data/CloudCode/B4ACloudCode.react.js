@@ -65,17 +65,17 @@ class B4ACloudCode extends CloudCode {
 
   blocker(tx) {
     const warningModal = <B4aModal
-      type={B4aModal.Types.WARNING}
-      icon='warn-triangle-solid'
+      type={B4aModal.Types.DANGER}
+      icon='b4a-warn-fill-icon'
+      iconFill="#cccccc"
       title="Undeployed changes!"
       buttonsInCenter={true}
-      textModal={true}
       confirmText='Continue anyway'
       onConfirm={() => {
         tx.retry();
       }}
       onCancel={() => { this.setState({ modal: null }); }}
-    >There are undeployed changes, if you leave the page you will lose it.</B4aModal>;
+    ><span style={{ fontSize: '14px', opacity: '0.7' }}>There are undeployed changes, if you leave the page you will lose it.</span></B4aModal>;
     this.setState({ modal: warningModal });
   }
 
@@ -150,7 +150,8 @@ class B4ACloudCode extends CloudCode {
     const missingFileModal = (
       <B4aModal
         type={B4aModal.Types.DANGER}
-        icon='warn-triangle-solid'
+        icon='b4a-warn-fill-icon'
+        iconFill="#cccccc"
         title='Missing required file'
         showCancel={false}
         textModal={true}
@@ -159,7 +160,7 @@ class B4ACloudCode extends CloudCode {
         onConfirm={() => {
           this.setState({ modal: null });
         }}>
-          The cloud folder must contain either main.js or app.js file, and must be placed on the root of the folder.
+        <span style={{ fontSize: '14px', opacity: '0.7' }}>The cloud folder must contain either main.js or app.js file, and must be placed on the root of the folder.</span>
       </B4aModal>
     );
 
@@ -178,15 +179,16 @@ class B4ACloudCode extends CloudCode {
 
     this.formatFiles(currentCode, tree);
     const loadingModal = <B4aModal
-      type={B4aModal.Types.INFO}
+      type={B4aModal.Types.DEFAULT}
       icon='files-outline'
+      iconFill="#15A9FF"
       title='Deploying...'
-      textModal={true}
+      showCancel={false}
       customFooter={<div style={{ padding: '10px 0 20px' }}></div>}>
-      <div>
+      <div style={{ textAlign: 'center', color: '#0F1C32' }}>
         <LoaderDots />
-        <div>
-            Please wait, deploying in progress...
+        <div style={{ fontSize: '14px', opacity: '0.7' }}>
+          Please wait, deploying in progress...
         </div>
       </div>
     </B4aModal>;
@@ -202,10 +204,11 @@ class B4ACloudCode extends CloudCode {
       back4AppNavigation && back4AppNavigation.deployCloudCodeEvent()
       await this.fetchSource()
       // force jstree component to upload
-      await updateTreeContent(this.state.files)
+      await updateTreeContent(this.state.files);
       const successModal = <B4aModal
         type={B4aModal.Types.VALID}
-        icon='check'
+        icon='b4a-success-check'
+        iconFill="#27AE60"
         title='Success on deploying your changes!'
         showCancel={false}
         buttonsInCenter={true}
@@ -218,7 +221,8 @@ class B4ACloudCode extends CloudCode {
     } catch (err) {
       const errorModal = <B4aModal
         type={B4aModal.Types.DANGER}
-        icon='warn-triangle-solid'
+        icon='b4a-warn-fill-icon'
+        iconFill="#cccccc"
         title='Something went wrong'
         showCancel={false}
         textModal={true}
@@ -227,7 +231,7 @@ class B4ACloudCode extends CloudCode {
         onConfirm={() => {
           this.setState({ modal: null });
         }}>
-          Please try to deploy your changes again.
+        <span style={{ opacity: '0.7' }}>Please try to deploy your changes again.</span>
       </B4aModal>;
       this.setState({
         modal: errorModal
@@ -261,7 +265,7 @@ class B4ACloudCode extends CloudCode {
   renderContent() {
     let content = null;
     let title = null;
-    let footer = null;
+    const footer = null;
 
     // Show loading page before fetch data
     if (this.state.loading) {
