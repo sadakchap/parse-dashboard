@@ -136,8 +136,10 @@
     align-items: center;
 
     p {
+      @include ellipsis();
       color: $white;
       padding: 0;
+      max-width: 40%;
     }
     .deleteBtn {
       text-align: center;
