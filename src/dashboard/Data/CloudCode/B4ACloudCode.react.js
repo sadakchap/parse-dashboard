@@ -75,7 +75,7 @@ class B4ACloudCode extends CloudCode {
         tx.retry();
       }}
       onCancel={() => { this.setState({ modal: null }); }}
-    ><span style={{ fontSize: '14px', opacity: '0.7' }}>There are undeployed changes, if you leave the page you will lose it.</span></B4aModal>;
+    ><span className={styles.subtitleModal}>There are undeployed changes, if you leave the page you will lose it.</span></B4aModal>;
     this.setState({ modal: warningModal });
   }
 
@@ -160,7 +160,7 @@ class B4ACloudCode extends CloudCode {
         onConfirm={() => {
           this.setState({ modal: null });
         }}>
-        <span style={{ fontSize: '14px', opacity: '0.7' }}>The cloud folder must contain either main.js or app.js file, and must be placed on the root of the folder.</span>
+        <span className={styles.subtitleModal}>The cloud folder must contain either main.js or app.js file, and must be placed on the root of the folder.</span>
       </B4aModal>
     );
 
@@ -187,7 +187,7 @@ class B4ACloudCode extends CloudCode {
       customFooter={<div style={{ padding: '10px 0 20px' }}></div>}>
       <div style={{ textAlign: 'center', color: '#0F1C32' }}>
         <LoaderDots />
-        <div style={{ fontSize: '14px', opacity: '0.7' }}>
+        <div className={styles.subtitleModal}>
           Please wait, deploying in progress...
         </div>
       </div>
