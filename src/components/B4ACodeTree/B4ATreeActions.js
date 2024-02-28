@@ -36,6 +36,7 @@ const overwriteFileModal = {
   showCancelButton: true,
   confirmButtonText: 'Yes, overwrite it!',
   showCloseButton: true,
+  allowOutsideClick: false,
 }
 
 const confirmRemoveFileModal = {
@@ -45,6 +46,7 @@ const confirmRemoveFileModal = {
   confirmButtonText: 'Yes, remove it!',
   reverseButtons: true,
   showCloseButton: true,
+  allowOutsideClick: false,
 };
 
 const preventRemoveFileModal = {
@@ -53,6 +55,7 @@ const preventRemoveFileModal = {
   confirmButtonText: 'Ok',
   reverseButtons: true,
   showCloseButton: true,
+  allowOutsideClick: false,
 };
 
 // Function used to force an update on jstree element. Useful to re-render tree
@@ -232,7 +235,10 @@ const getConfig = (files) => {
     plugins: ['contextmenu', 'dnd', 'sort', 'types', 'unique', 'changed'],
     core: {
       'check_callback': true,
-      'data': files
+      'data': files,
+      'theme': {
+        'name': 'default-dark',
+      }
     },
     contextmenu: {items: customMenu},
     types: {
