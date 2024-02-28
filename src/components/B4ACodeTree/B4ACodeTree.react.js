@@ -12,11 +12,14 @@ import Swal from 'sweetalert2';
 import B4ACloudCodeInfo from 'components/B4ACodeTree/B4ACloudCodeInfo.react';
 import addFileIcon from './icons/add-file.png';
 import uploadFileIcon from './icons/file-upload-outline.png';
-import removeFileIcon from './icons/trash-can-outline.png';
 import folderInfoIcon from './icons/folder-info.png';
 import CloudCodeChanges from 'lib/CloudCodeChanges';
 import PropTypes from 'lib/PropTypes';
 import Icon from 'components/Icon/Icon.react';
+
+import buttonStyles from 'components/Button/Button.scss';
+import baseStyles from 'stylesheets/base.scss';
+import modalStyles from 'components/B4aModal/B4aModal.scss';
 
 import 'jstree/dist/themes/default/style.css'
 import 'components/B4ACodeTree/B4AJsTree.css'
@@ -26,7 +29,22 @@ const getCloudFolderPlaceholder = () =>
 
 const publicFolderPlaceholder = 'Public folder can be used to deploy public static content as html, images, css, etc.\n'
 
-let cloudFolderPlaceholder
+let cloudFolderPlaceholder;
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    header: '',
+    title: `${modalStyles.title} ${styles.sweetalertTitle}`,
+    htmlContainer: `${styles.sweetalertContainer}`,
+    closeButton: styles.sweetalertCloseBtn,
+    icon: styles.sweetalertIcon,
+    input: styles.sweetalertInput,
+    actions: `${styles.sweetalertActions}`,
+    confirmButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.primary, buttonStyles.green].join(' '),
+    cancelButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.white].join(' '),
+  },
+  buttonsStyling: false,
+});
 
 export default class B4ACodeTree extends React.Component {
   constructor(props){
@@ -277,15 +295,20 @@ export default class B4ACodeTree extends React.Component {
                     if (this.state.selectedFile === '') {
                       this.selectCloudFolder();
                     }
-                    Swal.fire({
+                    swalWithBootstrapButtons.fire({
                       title: 'Create a new empty file',
                       text: 'Name your file',
+                      padding: '1rem 2rem',
                       input: 'text',
                       inputAttributes: {
-                        autocapitalize: 'off'
+                        autocapitalize: 'off',
+                        placeholder: 'File name',
                       },
                       showCancelButton: true,
+                      reverseButtons: true,
                       confirmButtonText: 'Create file',
+                      buttonsStyling: false,
+                      showCloseButton: true,
                       allowOutsideClick: () => !Swal.isLoading()
                     }).then(({value}) => {
                       if (value) {
