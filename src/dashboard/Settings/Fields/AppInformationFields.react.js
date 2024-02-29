@@ -20,11 +20,13 @@ export const AppInformationFields = ({
   description='Update general information about your app.'>
   <Field
     labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-    label={<Label text='App name' />}
+    label={<Label text='App name' dark={true} />}
     input={<TextInput
       value={appName}
       onChange={setAppName} />
-    } />
+    }
+    theme={Field.Theme.BLUE}
+  />
 </Fieldset>;
 
 AppInformationFields.propTypes = {

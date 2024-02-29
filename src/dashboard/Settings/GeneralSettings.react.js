@@ -105,7 +105,7 @@ export default class GeneralSettings extends DashboardView {
 
     const initialFields = this.getInitialFields();
 
-    return <div>
+    return <div style={{ maxWidth: '800px', margin: '2rem auto', marginTop: '5rem' }}>
       <FlowView
         initialFields={initialFields}
         validate={(changes) => GeneralSettingsValidataions.validate(changes)}
