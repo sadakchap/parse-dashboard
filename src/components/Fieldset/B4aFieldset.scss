@@ -31,6 +31,8 @@
  .fields {
    width: 100%;
    margin: 0 auto;
+   overflow: hidden;
+   border-radius: 5px;
  
    & > div:first-of-type {
      border-top-left-radius: 5px;
@@ -43,7 +45,7 @@
    }
  }
  
- .error {
-   color: #ff395e;
-   text-align: center;
- }
+.error {
+  color: $error-red;
+  text-align: center;
+}

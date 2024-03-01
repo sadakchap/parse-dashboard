@@ -11,7 +11,7 @@ import PropTypes from 'lib/PropTypes';
 import React from 'react';
 import SaveButton from 'components/SaveButton/SaveButton.react';
 import deepmerge  from 'deepmerge';
-import styles     from 'components/FlowView/FlowView.scss';
+import styles     from 'components/FlowView/B4aFlowView.scss';
 
 export default class FlowView extends React.Component {
   constructor(props) {

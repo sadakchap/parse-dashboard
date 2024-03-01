@@ -105,7 +105,7 @@ export default class GeneralSettings extends DashboardView {
 
     const initialFields = this.getInitialFields();
 
-    return <div style={{ maxWidth: '800px', margin: '2rem auto', marginTop: '5rem' }}>
+    return <div>
       <FlowView
         initialFields={initialFields}
         validate={(changes) => GeneralSettingsValidataions.validate(changes)}
@@ -122,7 +122,7 @@ export default class GeneralSettings extends DashboardView {
           renderModal(this.state.showDeleteAppModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, DeleteAppModal)
         ]}
         renderForm={({ fields, setField, setFieldJson, errors }) => {
-          return <div className={styles.settings_page}>
+          return <div className={styles.generalSettingsWrapper}>
             <AppInformationFields
               errors={errors}
               appName={fields.appName}

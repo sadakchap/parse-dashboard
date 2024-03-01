@@ -10,19 +10,19 @@ import React from 'react';
 import styles from 'components/FormTableCollab/FormTableCollab.scss';
 import Icon   from 'components/Icon/Icon.react';
 
-let Row = ({
-             title,
-             color = 'blue',
-             onDelete,
-             onEdit,
-           }) => {
+const Row = ({
+  title,
+  color = 'blue',
+  onDelete,
+  onEdit,
+}) => {
   return (
     <div className={styles.row}>
       <div className={styles.header}>
         <span className={[styles.indicator, styles[color]].join(' ')} />
         <span className={styles.title}>{title}</span>
-        {typeof onDelete === 'function' ? <a href='javascript:;' role='button' className={styles.icon} onClick={onDelete}><Icon name='trash-solid' fill='#59596e' width={18} height={18} role='button'/></a> : null}
-        {typeof onEdit === 'function' ? <a href='javascript:;' role='button' className={styles.firstIcon} onClick={onEdit}><Icon name='gear-solid' fill='#59596e' width={18} height={18} role='button'/></a> : null}
+        {typeof onDelete === 'function' ? <a href='javascript:;' role='button' className={styles.icon} onClick={onDelete}><Icon name='b4a-trash-icon' fill='#E85C3E' width={18} height={18} role='button'/></a> : null}
+        {typeof onEdit === 'function' ? <a href='javascript:;' role='button' className={styles.firstIcon} onClick={onEdit}><Icon name='b4a-app-settings-icon' fill='#15A9FF' width={18} height={18} role='button'/></a> : null}
       </div>
       <hr className={styles.hrTableDivisor}/>
     </div>
@@ -30,7 +30,7 @@ let Row = ({
   );
 };
 
-let FormTableCollab = ({ items, keyWidth = '75px' }) => (
+const FormTableCollab = ({ items, keyWidth = '75px' }) => (
   <div className={styles.table}>
     {items.map((item, index) => <Row key={index.toString()} keyWidth={keyWidth} {...item} />)}
   </div>

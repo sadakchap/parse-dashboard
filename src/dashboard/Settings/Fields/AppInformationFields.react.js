@@ -21,10 +21,11 @@ export const AppInformationFields = ({
   <Field
     labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
     label={<Label text='App name' dark={true} />}
-    input={<TextInput
-      value={appName}
-      onChange={setAppName} />
-    }
+    input={<div style={{ width: '100%', padding: '0 1rem' }}>
+      <TextInput
+        value={appName}
+        onChange={setAppName} />
+    </div>}
     theme={Field.Theme.BLUE}
   />
 </Fieldset>;

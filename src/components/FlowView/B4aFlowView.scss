@@ -5,16 +5,10 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-
 @import 'stylesheets/back4app.scss';
 
-.settings_page {
-  margin-top: $toolbar-height;
-  overflow: auto;
-}
-
-.generalSettingsWrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  margin-top: $toolbar-height;
+.flowViewWrapper {
+  height: calc(100vh - ($header-height + 1px));
+  display: flex;
+  flex-direction: column;
 }
