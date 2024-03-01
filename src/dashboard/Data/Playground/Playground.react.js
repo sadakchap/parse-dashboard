@@ -20,6 +20,7 @@ export default class Playground extends Component {
     this.subsection = 'JS Console';
     this.localKey = 'parse-dashboard-playground-code';
     this.state = {
+      code: '',
       results: [],
       running: false,
       saving: false,
@@ -115,6 +116,7 @@ export default class Playground extends Component {
       this.setState({ saving: true, savingState: SaveButton.States.SAVING });
       window.localStorage.setItem(this.localKey, code);
       this.setState({
+        code,
         saving: false,
         savingState: SaveButton.States.SUCCEEDED,
       });
@@ -137,9 +139,14 @@ export default class Playground extends Component {
   componentDidMount() {
     if (window.localStorage) {
       const initialCode = window.localStorage.getItem(this.localKey);
+      let code = '';
+      console.log(initialCode);
       if (initialCode) {
-        this.editor.value = initialCode;
+        code = initialCode;
+      } else {
+        code = placeholderCode;
       }
+      this.setState({ code });
     }
   }
 
@@ -151,9 +158,10 @@ export default class Playground extends Component {
         <Toolbar section={this.section} subsection={this.subsection} />
         <div style={{ height: 'calc(100vh - 156px)' }}>
           <CodeEditor
-            placeHolder={placeholderCode}
+            placeHolder={this.state.code}
             ref={editor => (this.editor = editor)}
             fileName={`${this.localKey}.js`}
+            onCodeChange={(code) => this.setState({ code })}
           />
           <div className={styles['console-ctn']}>
             <header>
