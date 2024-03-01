@@ -6,16 +6,21 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .text_input {
-  @include NotoSansFont;
-  border: 1px solid lightgrey;
+  position: relative;
+  @include InterFont;
+  border: 1px solid $light-blue;
   outline: 0;
   font-size: 16px;
   width: 100%;
   padding: 6px;
   vertical-align: top;
   resize: vertical;
+  background: transparent;
+  padding-right: 30px;
+  padding-left: 12px;
 
   &:focus {
     @include placeholder {
@@ -42,5 +47,19 @@ textarea.text_input:not(.monospace) {
 }
 
 .error {
-  border-color: #ff395e;
+  border-color: $error-red;
+}
+
+.actionIcons {
+  position: absolute;
+  right: 35px;
+  cursor: pointer;
+}
+
+.upIcon {
+  top: 10px;
+}
+
+.downIcon {
+  bottom: 10px;
 }

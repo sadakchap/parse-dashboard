@@ -6,22 +6,25 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .label {
-  font-size: 13px;
-  text-align: start;
+  @include InterFont;
+  font-size: 14px;
+  text-align: right;
 }
 
 .text {
   font-weight: 700;
-  display: flex;
-  align-items: center;
+  text-align: right;
+  color: $white;
 }
 
 .description {
   margin-top: 2px;
-  color: $secondaryTextColor;
-  line-height: 13px;
+  color: $light-grey;
+  line-height: 14px;
+  text-align: right;
 }
 
 .help {

@@ -58,13 +58,13 @@ export default class TextInputSettings extends React.Component {
       );
     }
     return (
-      <div style={{ background: '#f6fafb', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
         <input
           ref="input"
           type={this.props.hidden ? 'password' : 'text'}
           disabled={!!this.props.disabled}
           className={classes.join(' ')}
-          style={{height: this.props.height || 40, width: '90%', borderRadius: '10px'}}
+          style={{height: this.props.height || 40, width: '90%', borderRadius: '5px'}}
           onChange={this.changeValue.bind(this)}
           onBlur={this.updateValue.bind(this)} 
           {...this.props} />

@@ -4,10 +4,11 @@ import VisibilityField from 'components/VisibilityField/VisibilityField.react';
 import FieldSettings from 'components/FieldSettings/FieldSettings.react';
 import Fieldset from 'components/Fieldset/Fieldset.react';
 import FormButton from 'components/FormButton/FormButton.react';
+import B4aKeyField from 'components/KeyField/B4aKeyField.react';
 import Label from 'components/Label/Label.react';
 import LabelSettings from 'components/LabelSettings/LabelSettings.react';
 import NumericInputSettings from 'components/NumericInputSettings/NumericInputSettings.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import TextInputSettings from 'components/TextInputSettings/TextInputSettings.react';
 import {
   DEFAULT_SETTINGS_LABEL_WIDTH
@@ -36,21 +37,21 @@ export const ManageAppFields = ({
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy
-        label={<Label text='Parse API' description={'Parse API configurations'} />}
+        label={<Label text='Parse API' description={'Parse API configurations'} dark={true} />}
         input={
           <div style={{ flex: 1 }}>
             <FieldSettings
               containerStyles={{ borderTop: 'none' }}
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Parse API Address'
-                description={<p style={{ wordBreak: 'break-word', height: 'auto', padding: 0 }}>{dashboardAPI}</p>}
+                description={<p style={{ wordBreak: 'break-word', height: 'auto', padding: 0, textAlign: 'right' }}>{dashboardAPI}</p>}
               />}
             />
             <FieldSettings
               containerStyles={{ borderBottom: 'none' }}
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Parse Version'
@@ -59,36 +60,24 @@ export const ManageAppFields = ({
             />
           </div>
         }
+        theme={Field.Theme.BLUE}
       />
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy
-        label={<Label text='Database' description={'Database configurations'} />}
+        label={<Label text='Database' description={'Database configurations'} dark={true} />}
         input={
           <div style={{ flex: 1 }}>
             {
               (isGDPR !== true) &&
-              <VisibilityField
-                onVisibleComponent={
-                  () =>
-                    <FieldSettings
-                      containerStyles={{ borderTop: 'none' }}
-                      padding={'7px 0px'}
-                      labelWidth={'50%'}
-                      label={<LabelSettings
-                        text='Database URI'
-                        description={<p style={{ wordBreak: 'break-word', height: 'auto', padding: 0 }}>{databaseURL}</p>}
-                      />}
-                    />}
-                onHiddenComponent={
-                  (props) => <FormButton
-                    onClick={() => props.toggleVisibility(true)}
-                    value='Show Database URI' />
-                }
-              />}
+              <div style={{ padding: '11px 0' }}>
+                <B4aKeyField name="Show Database URI" hidden={true} showKeyName={true}>
+                  {databaseURL}
+                </B4aKeyField>
+              </div>}
             <FieldSettings
               containerStyles={{ borderBottom: 'none' }}
-              padding="7px 0px"
+              padding="16px 0px"
               labelWidth="50%"
               label={(
                 <LabelSettings
@@ -105,16 +94,17 @@ export const ManageAppFields = ({
             />
           </div>
         }
+        theme={Field.Theme.BLUE}
       />
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy
-        label={<Label text='Password policy' description={'Manage password policies for this app'} />}
+        label={<Label text='Password policy' description={'Manage password policies for this app'} dark={true} />}
         input={
           <div style={{ flex: 1 }}>
             <FieldSettings
               containerStyles={{ borderTop: 'none' }}
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               error={getError(errors, 'parseOptions.passwordPolicy.resetTokenValidityDuration')}
               label={<LabelSettings
@@ -123,6 +113,7 @@ export const ManageAppFields = ({
               />}
               input={
                 <NumericInputSettings
+                  placeholder={0}
                   min={0}
                   value={parseOptions?.passwordPolicy?.resetTokenValidityDuration}
                   error={getError(errors, 'parseOptions.passwordPolicy.resetTokenValidityDuration')}
@@ -132,15 +123,15 @@ export const ManageAppFields = ({
               }
             />
             <FieldSettings
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Reset Token Reuse If Valid'
                 description='If a password reset token should be reused in case another token is requested but there is a token that is still valid.'
               />}
               input={
-                <Toggle
-                  additionalStyles={{ display: 'block', textAlign: 'center', margin: '6px 0px 0 0' }}
+                <B4aToggle
+                  additionalStyles={{ margin: '6px 16px' }}
                   value={parseOptions?.passwordPolicy?.resetTokenReuseIfValid}
                   onChange={resetTokenReuseIfValid => {
                     setParseOptions({ passwordPolicy: { resetTokenReuseIfValid: resetTokenReuseIfValid } });
@@ -148,7 +139,7 @@ export const ManageAppFields = ({
               }
             />
             <FieldSettings
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               error={getError(errors, 'parseOptions.passwordPolicy.validatorPattern')}
               label={<LabelSettings
@@ -165,7 +156,7 @@ export const ManageAppFields = ({
               }
             />
             <FieldSettings
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               error={getError(errors, 'parseOptions.passwordPolicy.validationError')}
               label={<LabelSettings
@@ -182,15 +173,15 @@ export const ManageAppFields = ({
               }
             />
             <FieldSettings
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Do Not Allow Username'
                 description='Set to true to disallow the username as part of the password.'
               />}
               input={
-                <Toggle
-                  additionalStyles={{ display: 'block', textAlign: 'center', margin: '6px 0px 0 0' }}
+                <B4aToggle
+                  additionalStyles={{ margin: '6px 16px' }}
                   value={parseOptions?.passwordPolicy?.doNotAllowUsername}
                   onChange={doNotAllowUsername => {
                     setParseOptions({ passwordPolicy: { doNotAllowUsername } });
@@ -199,7 +190,7 @@ export const ManageAppFields = ({
             />
             <FieldSettings
               error={getError(errors, 'parseOptions.passwordPolicy.maxPasswordAge')}
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Max Password Age'
@@ -218,7 +209,7 @@ export const ManageAppFields = ({
             <FieldSettings
               error={getError(errors, 'parseOptions.passwordPolicy.maxPasswordHistory')}
               containerStyles={{ borderBottom: 'none' }}
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Max Password History'
@@ -235,17 +226,19 @@ export const ManageAppFields = ({
               }
             />
           </div>
-        } />
+        }
+        theme={Field.Theme.BLUE}
+      />
 
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO Account lockout
-        label={<Label text='Account lockout' description='Manage account lockout policies' />}
+        label={<Label text='Account lockout' description='Manage account lockout policies' dark={true} />}
         input={
           <div style={{ flex: 1 }}>
             <FieldSettings
               error={getError(errors, 'parseOptions.accountLockout.duration')}
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Duration'
@@ -264,7 +257,7 @@ export const ManageAppFields = ({
             <FieldSettings
               error={getError(errors, 'parseOptions.accountLockout.threshold')}
               containerStyles={{ borderBottom: 'none' }}
-              padding={'7px 0px'}
+              padding={'16px 0px'}
               labelWidth={'50%'}
               label={<LabelSettings
                 text='Threshold'
@@ -282,6 +275,7 @@ export const ManageAppFields = ({
             />
           </div>
         }
+        theme={Field.Theme.BLUE}
       />
     </Fieldset>
   );

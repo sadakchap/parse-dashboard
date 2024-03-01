@@ -33,6 +33,9 @@
      font-weight: 700;
    }
    .showKey {
+    > span {
+      word-break: break-all;
+    }
      &.hiddenText {
        color: $cta-green;
      }
