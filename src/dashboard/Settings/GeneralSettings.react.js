@@ -122,7 +122,7 @@ export default class GeneralSettings extends DashboardView {
           renderModal(this.state.showDeleteAppModal, { context: this.context, setParentState: (props) => this.setState({ ...this.state, ...props }) }, DeleteAppModal)
         ]}
         renderForm={({ fields, setField, setFieldJson, errors }) => {
-          return <div className={styles.settings_page}>
+          return <div className={styles.generalSettingsWrapper}>
             <AppInformationFields
               errors={errors}
               appName={fields.appName}

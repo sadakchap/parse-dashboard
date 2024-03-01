@@ -8,37 +8,54 @@ import folderIcon from './icons/folder.png';
 import file from './icons/file.png';
 import fileCheck from './icons/file-check.png';
 import undeployedFolder from './icons/folder-notdeployed.png';
+import styles from 'components/B4ACodeTree/B4ACodeTree.scss';
+import buttonStyles from 'components/Button/Button.scss';
+import baseStyles from 'stylesheets/base.scss';
+import modalStyles from 'components/B4aModal/B4aModal.scss';
 
 // Alert parameters
-const MySwal = withReactContent(Swal)
+const MySwal = withReactContent(Swal.mixin({
+  customClass: {
+    header: '',
+    title: `${modalStyles.title} ${styles.sweetalertTitle}`,
+    htmlContainer: `${styles.sweetalertContainer}`,
+    closeButton: styles.sweetalertCloseBtn,
+    icon: styles.sweetalertIcon,
+    input: styles.sweetalertInput,
+    actions: `${styles.sweetalertActions}`,
+    confirmButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.primary, buttonStyles.green].join(' '),
+    cancelButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.white].join(' '),
+  },
+  buttonsStyling: false,
+}));
+
+
 const overwriteFileModal = {
   title: 'Are you sure?',
-  text: "",
-  type: 'warning',
+  text: '',
   showCancelButton: true,
-  confirmButtonColor: '#169cee',
-  cancelButtonColor: '#ff395e',
-  confirmButtonText: 'Yes, overwrite it!'
+  confirmButtonText: 'Yes, overwrite it!',
+  showCloseButton: true,
+  allowOutsideClick: false,
 }
 
 const confirmRemoveFileModal = {
   title: 'Are you sure?',
   text: '',
-  type: 'warning',
   showCancelButton: true,
-  confirmButtonColor: '#169cee',
-  cancelButtonColor: '#ff395e',
   confirmButtonText: 'Yes, remove it!',
   reverseButtons: true,
+  showCloseButton: true,
+  allowOutsideClick: false,
 };
 
 const preventRemoveFileModal = {
   title: 'Can not remove file',
   text: '',
-  type: 'error',
-  confirmButtonColor: '#169cee',
   confirmButtonText: 'Ok',
   reverseButtons: true,
+  showCloseButton: true,
+  allowOutsideClick: false,
 };
 
 // Function used to force an update on jstree element. Useful to re-render tree
@@ -50,7 +67,7 @@ export const updateTreeContent = async (files) => {
 
 // Create a new-node on tree
 const create = (data, file) => {
-  let inst = $.jstree.reference(data),
+  const inst = $.jstree.reference(data),
     obj = inst.get_node(data);
   if (!file) {
     return inst.create_node(obj, {
@@ -68,20 +85,20 @@ const create = (data, file) => {
 }
 
 // Remove a node on tree
-const remove = (data, showAlert=false) => {
-  let inst = $.jstree.reference(data)
-  let obj = inst.get_node(data);
+const remove = (data, showAlert = false) => {
+  const inst = $.jstree.reference(data)
+  const obj = inst.get_node(data);
   if (showAlert) {
     confirmRemoveFileModal.text = `Are you sure you want to remove ${obj.text} file?`;
     MySwal.fire(confirmRemoveFileModal).then((alertResponse) => {
       if (alertResponse.value) {
-        if (inst.is_selected(obj)) return inst.delete_node(inst.get_selected());
-        else return inst.delete_node(obj);
+        if (inst.is_selected(obj)) {return inst.delete_node(inst.get_selected());}
+        else {return inst.delete_node(obj);}
       }
     })
   } else {
-    if (inst.is_selected(obj)) return inst.delete_node(inst.get_selected());
-    else return inst.delete_node(obj);
+    if (inst.is_selected(obj)) {return inst.delete_node(inst.get_selected());}
+    else {return inst.delete_node(obj);}
   }
 }
 
@@ -110,13 +127,13 @@ const verifyFileNames = async (data, newNode) => {
   let currentCode = getFiles(data)
   currentCode = currentCode && currentCode.children
   let overwrite = true;
-  if ( currentCode ) {
+  if (currentCode) {
     for (let i = 0; i < currentCode.length; i++) {
       if (newNode.text && currentCode[i].text === newNode.text.name) {
         overwriteFileModal.text = currentCode[i].text + ' file already exists. Do you want to overwrite?'
-        let currentId = currentCode[i].id
+        const currentId = currentCode[i].id
         // Show alert and wait for the user response
-        let alertResponse = await MySwal.fire(overwriteFileModal)
+        const alertResponse = await MySwal.fire(overwriteFileModal)
         if (alertResponse.value) {
           remove(`#${currentId}`)
         } else {
@@ -129,7 +146,7 @@ const verifyFileNames = async (data, newNode) => {
 }
 
 const getExtension = (fileName) => {
-  let re = /(?:\.([^.]+))?$/
+  const re = /(?:\.([^.]+))?$/
   return re.exec(fileName)[1] || '';
 }
 
@@ -141,21 +158,21 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
     newTreeNodes = readFile({ name: files.fileList[i], code: files.base64[i] }, newTreeNodes);
   }
   let newNodeId = '';
-  for (let j = 0; j < newTreeNodes.length; j++ ) {
+  for (let j = 0; j < newTreeNodes.length; j++) {
     if (currentCode === '#') {
-      let inst = $.jstree.reference(currentCode)
-      let obj = inst.get_node(currentCode);
+      const inst = $.jstree.reference(currentCode)
+      const obj = inst.get_node(currentCode);
       // Select the folder to insert based on file extension. If is a js file,
       // insert on "cloud" folder, else insert on "public" folder. This logic is
       // a legacy from the old Cloud Code page
       if (typeof selectedFolder === 'number') {
         folder = obj.children[selectedFolder]
       } else
-        folder = obj.children?.find(f => f === selectedFolder);
+      {folder = obj.children?.find(f => f === selectedFolder);}
     }
-    let selectedParent = getSelectedParent();
+    const selectedParent = getSelectedParent();
     overwrite = await verifyFileNames(folder, newTreeNodes[j]);
-    if ( overwrite === false ) continue;
+    if (overwrite === false) {continue;}
     newNodeId = addFileOnSelectedNode(newTreeNodes[j].text.name, selectedParent, newTreeNodes[j].data);
   }
   return { overwrite, newNodeId };
@@ -163,21 +180,21 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
 
 const getSelectedParent = () => {
   let parent = $('#tree').jstree('get_selected');
-  if ( ['default', 'file', 'new-file'].includes($('#tree').jstree().get_node(parent).type) ) {
+  if (['default', 'file', 'new-file'].includes($('#tree').jstree().get_node(parent).type)) {
     parent = $('#tree').jstree().get_node(parent).parent;
   }
   return parent;
 }
 
 const addFileOnSelectedNode = (name, parent, data = {code: 'data:plain/text;base64,IA=='}) => {
-  let newNodeId = $('#tree').jstree("create_node", parent, { data, type: 'new-file', text: name }, 'inside', false, false);
+  const newNodeId = $('#tree').jstree('create_node', parent, { data, type: 'new-file', text: name }, 'inside', false, false);
   return newNodeId;
 }
 
 
 // Configure the menu that is shown on right-click based on files type
 const customMenu = node => {
-  let items = $.jstree.defaults.contextmenu.items();
+  const items = $.jstree.defaults.contextmenu.items();
   if (node.type === 'folder' || node.type === 'new-folder') {
     items.create.label = 'Create Folder';
   }
@@ -185,12 +202,12 @@ const customMenu = node => {
     create(data.reference)
   };
   items.remove.action = function (data) {
-    const obj = $('#tree').jstree().get_node(data.reference); 
-    if ( obj?.text === 'main.js' || obj?.text === 'index.html' ) {
+    const obj = $('#tree').jstree().get_node(data.reference);
+    if (obj?.text === 'main.js' || obj?.text === 'index.html') {
       preventRemoveFileModal.text = `Can not remove ${obj.text} file as it is required by cloud code.`;
       MySwal.fire(preventRemoveFileModal);
     } else {
-     remove(data.reference, true)
+      remove(data.reference, true)
     }
   };
   delete items.ccp;
@@ -213,12 +230,15 @@ const customMenu = node => {
 
 // Return the jstree config
 const getConfig = (files) => {
-  if (files && files[0] && files[0].state) files[0].state.selected = true
+  if (files && files[0] && files[0].state) {files[0].state.selected = true}
   return {
     plugins: ['contextmenu', 'dnd', 'sort', 'types', 'unique', 'changed'],
     core: {
-      "check_callback": true,
-      'data': files
+      'check_callback': true,
+      'data': files,
+      'theme': {
+        'name': 'default-dark',
+      }
     },
     contextmenu: {items: customMenu},
     types: {
@@ -235,12 +255,12 @@ const getConfig = (files) => {
         max_depth: 10,
         max_children: 200,
       },
-      "new-folder": {
+      'new-folder': {
         icon: undeployedFolder,
         max_depth: 10,
         max_children: 200
       },
-      "new-file": {
+      'new-file': {
         icon: file,
         max_children: 0
       }
@@ -250,22 +270,22 @@ const getConfig = (files) => {
 
 // Get the current files on jstree element
 export const getFiles = (reference = '#') => {
-  return $("#tree").jstree(true).get_json(reference)
+  return $('#tree').jstree(true).get_json(reference)
 }
 
 // empty folder icons.
 export const refreshEmptyFolderIcons = () => {
   const leaves = $('.jstree-leaf');
 
-  for( let i = 0; i < leaves.length; i++ ){
+  for(let i = 0; i < leaves.length; i++){
     // folder or undeployed folder.
     if (
-      leaves[i].querySelector('.jstree-themeicon').style['background-image'] === "url(\""+require('./icons/folder.png')+"\")"
+      leaves[i].querySelector('.jstree-themeicon').style['background-image'] === 'url("' + require('./icons/folder.png') + '")'
     ) {
-      leaves[i].querySelector('.jstree-themeicon').style = "background-image: url(\""+require('./icons/folder-empty.png')+"\"); background-position: center center; background-size: auto;";
+      leaves[i].querySelector('.jstree-themeicon').style = 'background-image: url("' + require('./icons/folder-empty.png') + '"); background-position: center center; background-size: auto;';
     }
-    else if ( leaves[i].querySelector('.jstree-themeicon').style['background-image'] === "url(\""+require('./icons/folder-notdeployed.png')+"\")" ) {
-      leaves[i].querySelector('.jstree-themeicon').style = "background-image: url(\""+require('./icons/folder-empty-undeployed.png')+"\"); background-position: center center; background-size: auto;";
+    else if (leaves[i].querySelector('.jstree-themeicon').style['background-image'] === 'url("' + require('./icons/folder-notdeployed.png') + '")') {
+      leaves[i].querySelector('.jstree-themeicon').style = 'background-image: url("' + require('./icons/folder-empty-undeployed.png') + '"); background-position: center center; background-size: auto;';
     }
   }
 }
@@ -277,7 +297,7 @@ const selectFileOnTree = (nodeId) => {
 
 const sanitizeHTML = (str) => {
   return str.replace(/[^\w. ]/gi, function (c) {
-    return "&#" + c.charCodeAt(0) + ";";
+    return '&#' + c.charCodeAt(0) + ';';
   });
 };
 

@@ -43,17 +43,17 @@ export default class NumericInputSettings extends React.Component {
   }
 
   render() {
-    let classes = [styles.text_input];
+    const classes = [styles.text_input];
     if (this.props.monospace) {
       classes.push(styles.monospace);
     }
 
-    if ( this.props.error ) {
+    if (this.props.error) {
       classes.push(styles.error);
     }
 
     return (
-      <div style={{ background: '#f6fafb', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', position: 'relative', marginLeft: '7px' }}>
         <input
           ref={this.inputRef}
           id={this.props.id}
@@ -61,35 +61,35 @@ export default class NumericInputSettings extends React.Component {
           min={this.props.min}
           disabled={!!this.props.disabled}
           className={classes.join(' ')}
-          style={{ height: '40px', width: '85%', borderRadius: '7px' }}
+          style={{ height: '40px', width: '85%', borderRadius: '5px' }}
           placeholder={this.props.placeholder}
           value={this.props.value}
           defaultValue={this.props.defaultValue}
           onChange={this.changeValue.bind(this)}
           onBlur={this.updateValue.bind(this)} />
-          <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', right: '30px' }}>
-            <Icon onClick={() => {
-              if ( this.inputRef?.current ) {
-                let val = this.inputRef?.current.value;
-                if ( val === '' ) {
-                  val = 0;
-                }
-                this.inputRef.current.value = parseInt(val) + 1;
-                this.props.onChange(this.inputRef.current.value);
+        <>
+          <Icon onClick={() => {
+            if (this.inputRef?.current) {
+              let val = this.inputRef?.current.value;
+              if (val === '') {
+                val = 0;
               }
-            }} name='input-up-icon' width={20} height={18} fill='#218bec' />
-            <Icon onClick={() => {
-              if ( this.inputRef?.current ) {
-                let val = this.inputRef?.current.value;
-                if ( val === '' ) {
-                  val = 0;
-                }
-                this.inputRef.current.value = parseInt(val) - 1;
-                this.props.onChange(this.inputRef.current.value);
+              this.inputRef.current.value = parseInt(val) + 1;
+              this.props.onChange(this.inputRef.current.value);
+            }
+          }} name='b4a-input-up-icon' width={13} height={7} fill='#F9F9F9' className={`${styles.actionIcons} ${styles.upIcon}`} />
+          <Icon onClick={() => {
+            if (this.inputRef?.current) {
+              let val = this.inputRef?.current.value;
+              if (val === '') {
+                val = 0;
               }
-            }} name='input-down-icon' width={20} height={18} fill='#218bec' />
-          </div>
-        </div>
+              this.inputRef.current.value = parseInt(val) - 1;
+              this.props.onChange(this.inputRef.current.value);
+            }
+          }} name='b4a-input-down-icon' width={13} height={7} fill='#F9F9F9' className={`${styles.actionIcons} ${styles.downIcon}`} />
+        </>
+      </div>
     );
   }
 }

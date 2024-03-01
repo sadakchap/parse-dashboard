@@ -97,7 +97,9 @@
 
 .textModal {
   text-align: center;
-  padding: 17px 55px 0 55px;
+  padding: 17px 55px;
+  padding-top: 0;
+  color: $dark;
 }
 
 @include modalKeyframes();

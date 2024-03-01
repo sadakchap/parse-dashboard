@@ -12,7 +12,7 @@ import Fieldset from 'components/Fieldset/Fieldset.react';
 import FlowView from 'components/FlowView/FlowView.react';
 import FormButton from 'components/FormButton/FormButton.react';
 import FormModal from 'components/FormModal/FormModal.react';
-import KeyField from 'components/KeyField/KeyField.react';
+import B4aKeyField from 'components/KeyField/B4aKeyField.react';
 import Label from 'components/Label/Label.react';
 import Modal from 'components/Modal/Modal.react';
 import React from 'react';
@@ -107,141 +107,132 @@ export default class SecuritySettings extends DashboardView {
     ) : null;
     return (
       <div className={styles.settings_page}>
-        <Fieldset
-          legend="App Keys"
-          description="These are the unique identifiers used to access this app."
-        >
-          <Field
-            label={
-              <Label
-                text="Application ID"
-                description={
-                  <span>
-                    Main ID that uniquely specifies this app. <br />
-                    Used with one of the keys below.
-                  </span>
-                }
-              />
-            }
-            input={<KeyField>{currentApp.applicationId}</KeyField>}
-          />
-          <Field
-            label={
-              <Label
-                text="Client key"
-                description={
-                  <span>
-                    Use this in consumer clients, such as <br />
-                    the iOS or Android SDKs.
-                  </span>
-                }
-              />
-            }
-            input={<KeyField>{currentApp.clientKey}</KeyField>}
-          />
-          <Field
-            label={
-              <Label
-                text="JavaScript key"
-                description="Use this when making requests from JavaScript clients."
-              />
-            }
-            input={<KeyField>{currentApp.javascriptKey}</KeyField>}
-          />
-          <Field
-            label={
-              <Label
-                text=".NET key"
-                description={
-                  <span>
-                    Use this when making requests from <br />
-                    Windows, Xamarin, or Unity clients.
-                  </span>
-                }
-              />
-            }
-            input={<KeyField>{currentApp.windowsKey}</KeyField>}
-          />
-          <Field
-            label={
-              <Label
-                text="REST API key"
-                description="Use this when making requests from server-side REST applications. Keep it secret!"
-              />
-            }
-            input={
-              <KeyField name="REST" hidden={true}>
-                {currentApp.restKey}
-              </KeyField>
-            }
-          />
-          <Field
-            label={
-              <Label
-                text="Webhook key"
-                description="Use this when implementing a Cloud Code Webhook. Keep it secret!"
-              />
-            }
-            input={
-              <KeyField name="Webhook" hidden={true}>
-                {currentApp.webhookKey}
-              </KeyField>
-            }
-          />
-          <Field
-            label={
-              <Label
-                text="File key"
-                description="Use this key when migrating to your own Parse Server to ensure your new server has access to existing files."
-              />
-            }
-            input={
-              <KeyField name="File" hidden={true}>
-                {currentApp.fileKey}
-              </KeyField>
-            }
-          />
-          <Field
-            label={
-              <Label
-                text="Master key"
-                description="Using this key overrides all permissions. Not usable on client SDKs. Keep it secret!"
-              />
-            }
-            input={
-              <KeyField name="Master" hidden={true}>
-                {currentApp.masterKey}
-              </KeyField>
-            }
-          />
-        </Fieldset>
-        {/* <Fieldset
-          legend="Reset Master Key"
-          description="Use this when your key has been compromised."
-        >
-          <Field
-            label={
-              <Label
-                text="Reset master key"
-                description={
-                  <span>
-                    This will permanently reset the master <br />
-                    key to a newly generated key.
-                  </span>
-                }
-              />
-            }
-            input={
-              <FormButton
-                color="red"
-                value="Reset Master Key"
-                onClick={() => this.setState({ showResetDialog: true })}
-              />
-            }
-          />
-        </Fieldset> */}
-        {/* {permissions} */}
-        {/* {resetDialog} */}
+        <div style={{ maxWidth: '800px', margin: '2rem auto', marginTop: '5rem' }}>
+          <Fieldset
+            legend="App Keys"
+            description="These are the unique identifiers used to access this app."
+          >
+            <Field
+              label={
+                <Label
+                  text="Application ID"
+                  dark={true}
+                  description={
+                    <span>
+                      Main ID that uniquely specifies this app. <br />
+                      Used with one of the keys below.
+                    </span>
+                  }
+                />
+              }
+              input={<B4aKeyField>{currentApp.applicationId}</B4aKeyField>}
+              theme={Field.Theme.BLUE}
+            />
+            <Field
+              label={
+                <Label
+                  dark={true}
+                  text="Client key"
+                  description={
+                    <span>
+                      Use this in consumer clients, such as <br />
+                      the iOS or Android SDKs.
+                    </span>
+                  }
+                />
+              }
+              input={<B4aKeyField>{currentApp.clientKey}</B4aKeyField>}
+              theme={Field.Theme.BLUE}
+            />
+            <Field
+              label={
+                <Label
+                  text="JavaScript key"
+                  description="Use this when making requests from JavaScript clients."
+                  dark={true}
+                />
+              }
+              input={<B4aKeyField>{currentApp.javascriptKey}</B4aKeyField>}
+              theme={Field.Theme.BLUE}
+            />
+            <Field
+              label={
+                <Label
+                  text=".NET key"
+                  description={
+                    <span>
+                      Use this when making requests from <br />
+                      Windows, Xamarin, or Unity clients.
+                    </span>
+                  }
+                  dark={true}
+                />
+              }
+              input={<B4aKeyField>{currentApp.windowsKey}</B4aKeyField>}
+              theme={Field.Theme.BLUE}
+            />
+            <Field
+              label={
+                <Label
+                  text="REST API key"
+                  description="Use this when making requests from server-side REST applications. Keep it secret!"
+                  dark={true}
+                />
+              }
+              input={
+                <B4aKeyField name="REST" hidden={true} showKeyName={true}>
+                  {currentApp.restKey}
+                </B4aKeyField>
+              }
+              theme={Field.Theme.BLUE}
+            />
+            <Field
+              label={
+                <Label
+                  text="Webhook key"
+                  description="Use this when implementing a Cloud Code Webhook. Keep it secret!"
+                  dark={true}
+                />
+              }
+              input={
+                <B4aKeyField name="Webhook" hidden={true} showKeyName={true}>
+                  {currentApp.webhookKey}
+                </B4aKeyField>
+              }
+              theme={Field.Theme.BLUE}
+            />
+            <Field
+              label={
+                <Label
+                  text="File key"
+                  description="Use this key when migrating to your own Parse Server to ensure your new server has access to existing files."
+                  dark={true}
+                />
+              }
+              input={
+                <B4aKeyField name="File" hidden={true} showKeyName={true}>
+                  {currentApp.fileKey}
+                </B4aKeyField>
+              }
+              theme={Field.Theme.BLUE}
+            />
+            <Field
+              label={
+                <Label
+                  text="Master key"
+                  description="Using this key overrides all permissions. Not usable on client SDKs. Keep it secret!"
+                  dark={true}
+                />
+              }
+              input={
+                <B4aKeyField name="Master" hidden={true} showKeyName={true}>
+                  {currentApp.masterKey}
+                </B4aKeyField>
+              }
+              theme={Field.Theme.BLUE}
+            />
+          </Fieldset>
+        </div>
         <Toolbar section="App Settings" subsection="Security & Keys" />
       </div>
     );

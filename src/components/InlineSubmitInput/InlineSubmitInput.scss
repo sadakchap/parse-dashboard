@@ -6,10 +6,11 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .wrapper {
-  background: $inputBackgroundColor;
   padding: 0px 5px;
+  width: 100%;
 }
 
 .input_padded {
@@ -17,7 +18,7 @@
 }
 
 .button {
-  @include buttonReset($border: 1px solid #159cee, $padding: 0px 7px);
+  @include buttonReset($border: 1px solid $cta-green, $padding: 0px 7px);
   position: absolute;
   top: 30px;
   right: 15px;
@@ -29,5 +30,8 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 10px;
-  color: #159cee;
+  color: $cta-green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

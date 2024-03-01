@@ -6,24 +6,27 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .note {
-  color: white;
+  @include InterFont;
+  color: $white;
   font-size: 12px;
   text-align: center;
   line-height: 30px;
   min-height: 30px;
+  padding: 4px 0;
 }
 
 .blue {
-  background: $blue;
+  background: $old-blue;
 }
 .green {
-  background: $green;
+  background: $cta-green;
 }
 .orange {
-  background: $orange;
+  background: $regal-blue;
 }
 .red {
-  background: $red;
+  background: $error-red;
 }

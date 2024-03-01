@@ -6,17 +6,17 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .table {
   text-align: left;
   white-space: nowrap;
   min-height: 40px;
-  background: $formTableGrey;
   flex: 1;
+  color: $white;
 }
 
 .row {
-  background: $formTableGrey;
   font-size: 12px;
 }
 
@@ -30,7 +30,6 @@
 .header {
   position: relative;
   height: 40px;
-  background: #e3ebef;
   line-height: 14px;
   font-size: 12px;
   padding: 15px 32px 9px 6px;
@@ -43,7 +42,7 @@
 .hrTableDivisor {
   display: block;
   border: 0;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #f9f9f90f;
   margin: 0;
   padding: 0;
 }
@@ -57,16 +56,16 @@
   vertical-align: middle;
 
   &.blue {
-    background: $blue;
+    background: $old-blue;
   }
   &.green {
-    background: $green;
+    background: $cta-green;
   }
   &.orange {
     background: $orange;
   }
   &.red {
-    background: $red;
+    background: $error-red;
   }
 }
 

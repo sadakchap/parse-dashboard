@@ -78,13 +78,13 @@
 }
 
 .white {
-  // color: $light-grey !important;
+  color: $dark;
   border-color: $light-grey;
   line-height: 28px;
 
   &:hover{
     background-color: rgba($light-grey, 0.06);
-    color: $white;
+    color: $dark !important;
   }
 
   &.primary {

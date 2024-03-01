@@ -21,6 +21,7 @@ import React from 'react';
 import TextInput from 'components/TextInput/TextInput.react';
 import validateEmailFormat from 'lib/validateEmailFormat';
 import { CurrentApp } from 'context/currentApp';
+import styles from 'dashboard/Settings/GeneralSettings.scss';
 
 // Component for displaying and modifying an app's collaborator emails.
 // There is a single input field for new collaborator emails. As soon as the
@@ -113,7 +114,7 @@ export default class Collaborators extends React.Component {
           {message}
           {this.state.inviteCollab ?
             <span> -&nbsp;
-            <a onClick={() => {this.setState({showDialog: true})}} style={{ fontWeight: "bold" }}>Send Invite</a>
+              <a onClick={() => {this.setState({showDialog: true})}} className={styles.sendInviteBtn}>Send Invite</a>
             </span>
             : null}
         </div>
@@ -337,27 +338,30 @@ export default class Collaborators extends React.Component {
       <Field
         labelWidth={55}
         label={<Label
+          dark={true}
           text='Add new collaborator'
           description={<span>Collaborators will have read/write access but cannot <br /> delete the app or add more collaborators.</span>} />}
         input={<InlineSubmitInput
           render={() => {
-            return <TextInput
+            return <div style={{ width: '100%', padding: '0 1rem' }}><TextInput
               placeholder="What&#39;s their email?"
               value={this.state.currentEmail}
               onChange={(value)=> {
                 this.setState({currentEmail: value, showBtnCollaborator: this.validateEmail(value)});
               }}
-            />
+            /></div>
           }}
           showButton={this.state.showBtnCollaborator}
           validate={(email) => {
-            if ( this.state.showBtnCollaborator === true ) {
+            if (this.state.showBtnCollaborator === true) {
               return true;
             }
             return this.validateEmail(email);
           }}
           onSubmit={this.handleAdd.bind(this)}
-          submitButtonText='ADD' />} />
+          submitButtonText='ADD' />}
+        theme={Field.Theme.BLUE}
+      />
     )
   }
 
@@ -365,12 +369,15 @@ export default class Collaborators extends React.Component {
     return(
       <Field
         labelWidth={55}
-        label={<Label text='App Owner' />}
-        input={<TextInput
-          value={this.props.owner_email}
-          onChange={() => {}}
-          disabled={true}
-        />}
+        label={<Label text='App Owner' dark={true} />}
+        input={<div style={{ width: '100%', padding: '0 1rem' }}>
+          <TextInput
+            value={this.props.owner_email}
+            onChange={() => {}}
+            disabled={true}
+          />
+        </div>}
+        theme={Field.Theme.BLUE}
       />
     )
   }
@@ -378,7 +385,7 @@ export default class Collaborators extends React.Component {
   renderCollaborators() {
     return (
       <Field
-        label={<Label text='Existing collaborators' />}
+        label={<Label text='Existing collaborators' dark={true} />}
         minHeight={40}
         labelWidth={55}
         input={<FormTableCollab
@@ -394,7 +401,9 @@ export default class Collaborators extends React.Component {
                 onEdit: canEdit ? this.handleEdit.bind(this, collaborator) : undefined,
               });
             })
-          } />} />
+          } />}
+        theme={Field.Theme.BLUE}
+      />
     )
   }
 
