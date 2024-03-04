@@ -1,12 +1,12 @@
-import React, { useEffect, useState }                from 'react';
-import Modal                              from 'components/Modal/Modal.react';
-import Field                              from 'components/Field/Field.react';
-import Label                              from 'components/Label/Label.react';
-import TextInput                          from 'components/TextInput/TextInput.react';
-import FormNote                           from 'components/FormNote/FormNote.react';
-import Dropdown                           from 'components/Dropdown/Dropdown.react';
-import Option                             from 'components/Dropdown/Option.react';
-import PropTypes                          from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
+import Field from 'components/Field/Field.react';
+import Label from 'components/Label/Label.react';
+import TextInput from 'components/TextInput/TextInput.react';
+import FormNote from 'components/FormNote/FormNote.react';
+import Dropdown from 'components/Dropdown/Dropdown.react';
+import Option from 'components/Dropdown/Option.react';
+import PropTypes from 'prop-types';
 
 export const CloneAppModal = ({ context, setParentState }) => {
 
@@ -38,13 +38,13 @@ export const CloneAppModal = ({ context, setParentState }) => {
   },[]);
 
   useEffect(() => {cloneAppName.length <= 0 ? setCanSubmit(false) : setCanSubmit(true)},[cloneAppName]);
-  
+
   const cloneApp = async () => {
     let newApp;
     try {
       setProcessing(true)
-      
-      if ( cloneType === 'database' ) {
+
+      if (cloneType === 'database') {
         // check storage for the current app.
         setNote('Validating app storage...');
         setNoteColor('blue');
@@ -57,7 +57,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
 
       newApp = await context.createApp(cloneAppName, cloneParseVersion?.version, context.applicationId);
 
-      if ( !newApp || Object.keys(newApp).length <= 0 ) {
+      if (!newApp || Object.keys(newApp).length <= 0) {
         throw new Error();
       }
 
@@ -69,7 +69,7 @@ export const CloneAppModal = ({ context, setParentState }) => {
       setNote('Cloning app...');
       setNoteColor('blue');
 
-      await context.cloneApp( newApp.appId, cloneParseVersion?.version, cloneType, cloneCloudCode, cloneConfigs );
+      await context.cloneApp(newApp.appId, cloneParseVersion?.version, cloneType, cloneCloudCode, cloneConfigs);
 
       setNote('App cloned successfully! Redirecting in 1 second');
       setNoteColor('green');
@@ -81,13 +81,13 @@ export const CloneAppModal = ({ context, setParentState }) => {
     } catch(e){
       console.error(e);
       let error = 'An error occurred.';
-      if ( e.message ) {
+      if (e.message) {
         error = e.message;
       }
       setNote(error);
-      setNoteColor('red');  
-      if ( newApp && newApp._id ) {
-        await context.deleteApp( newApp._id );
+      setNoteColor('red');
+      if (newApp && newApp._id) {
+        await context.deleteApp(newApp._id);
       }
 
     } finally {
@@ -95,33 +95,33 @@ export const CloneAppModal = ({ context, setParentState }) => {
     }
   }
 
-  return <Modal
-  type={Modal.Types.INFO}
-  icon='gear-solid'
-  iconSize={40}
-  title='Clone app'
-  subtitle={'This allows you to create a clone from this app'}
-  confirmText={processing === false ? 'Clone' : 'Please wait...'}
-  cancelText='Cancel'
-  disableConfirm={ canSubmit === false || processing }
-  disableCancel={processing}
-  buttonsInCenter={true}
-  onCancel={() => setParentState({ showCloneAppModal: false })}
-  onConfirm={() => cloneApp()}>
-    <div>
+  return <B4aModal
+    type={B4aModal.Types.INFO}
+    title='Clone app'
+    subtitle={'This allows you to create a clone from this app'}
+    confirmText={processing === false ? 'Clone' : 'Please wait...'}
+    cancelText='Cancel'
+    disableConfirm={ canSubmit === false || processing }
+    disableCancel={processing}
+    buttonsInCenter={false}
+    onCancel={() => setParentState({ showCloneAppModal: false })}
+    onConfirm={() => cloneApp()}>
+    <div style={{ borderRadius: '5px', overflow: 'hidden' }}>
       <Field
         label={<Label
           text={'Name of the new app.'}
           description={<span>Enter a name for the clone app</span>} />
         }
         input={<TextInput
+          padding={'0 1rem'}
+          dark={false}
           height={100}
           placeholder='Clone App Name'
           value={cloneAppName}
           onChange={(value) => {
             setCloneAppName(value)
           }}
-          />}
+        />}
       />
 
       <Field
@@ -131,56 +131,42 @@ export const CloneAppModal = ({ context, setParentState }) => {
         }
         input={
           <Dropdown placeHolder={cloneParseVersion?.version} onChange={value => {
-              setCloneParseVersion(value);
-            }}>
+            setCloneParseVersion(value);
+          }}>
             {
-              parseVersions.map( ( parseVersion ) => <Option key={parseVersion.version} value={parseVersion}>{`${parseVersion.version} - ${parseVersion.description}`}</Option>)
+              parseVersions.map((parseVersion) => <Option key={parseVersion.version} value={parseVersion}>{`${parseVersion.version} - ${parseVersion.description}`}</Option>)
             }
           </Dropdown>
         }
       />
       <Field
-          labelWidth={100}
-          label={
-            <Label
-              text={<span><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="database" type={'radio'} checked={cloneType === 'database'}/> &nbsp; {'Clone Database'} </span>}
-            />
-          }
-        />
-      <Field
-          labelWidth={100}
-          label={
-            <Label
-              text={<span><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="schema" type={'radio'} checked={cloneType === 'schema'}/> &nbsp; {'Clone Schema'} </span>}
-            />
-          }
-        />
-      <Field
-          labelWidth={100}
-          label={
-            <Label
-              text={<span><input onChange={(e) => setCloneCloudCode(e.target.checked)} name="cloneCloudCode" type={'checkbox'} /> &nbsp; {'Clone Cloud Code'} </span>}
-            />
-          }
-        />
-      <Field
-          labelWidth={100}
-          label={
-            <Label
-              text={<span><input onChange={(e) => setCloneConfigs(e.target.checked)} name="cloneConfigs" type={'checkbox'} /> &nbsp; {'Clone Configurations'} </span>}
-            />
-          }
-        />
-      {note.length > 0 ? <FormNote
-            show={note.length > 0}
-            color={noteColor} >
-            {note}
-          </FormNote> : null}
+        labelWidth={50}
+        label={
+          <Label text="Clone options" />
+        }
+        input={
+          <div style={{ flex: 1 }}>
+            <div style={{ padding: '1rem', width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
+              <span style={{ fontSize: '14px', color: '#10203A' }}><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="database" type={'radio'} checked={cloneType === 'database'} style={{ fontSize: '14px', accentColor: '#10203A' }} /> &nbsp; {'Clone Database'} </span>
+              <span style={{ fontSize: '14px', color: '#10203A' }}><input onChange={(e) => setCloneType(e.target.value)} name="copyType" value="schema" type={'radio'} checked={cloneType === 'schema'} style={{ fontSize: '14px', accentColor: '#10203A' }} /> &nbsp; {'Clone Schema'} </span>
+            </div>
+            <div style={{ padding: '1rem', width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
+              <span style={{ fontSize: '14px', color: '#10203A' }}><input onChange={(e) => setCloneCloudCode(e.target.checked)} name="cloneCloudCode" type={'checkbox'} style={{ fontSize: '14px', accentColor: '#10203A' }} /> &nbsp; {'Clone Cloud Code'} </span>
+              <span style={{ fontSize: '14px', color: '#10203A' }}><input onChange={(e) => setCloneConfigs(e.target.checked)} name="cloneConfigs" type={'checkbox'} style={{ fontSize: '14px', accentColor: '#10203A' }} /> &nbsp; {'Clone Configurations'} </span>
+            </div>
+          </div>
+        }
+      />
+      {note !== '' ? <FormNote
+        show={!!note}
+        color={noteColor} >
+        {note}
+      </FormNote> : null}
     </div>
-</Modal>
+  </B4aModal>
 }
 
 CloneAppModal.propTypes = {
-  context: PropTypes.any.isRequired.describe( 'The application context.' ),
-  setParentState: PropTypes.func.isRequired.describe( 'Update parent state'),
+  context: PropTypes.any.isRequired.describe('The application context.'),
+  setParentState: PropTypes.func.isRequired.describe('Update parent state'),
 }
