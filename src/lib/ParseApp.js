@@ -399,12 +399,11 @@ export default class ParseApp {
 
   async fetchSettingsFields() {
     // Cache it for a minute
-    // if (new Date() - this.settings.lastFetched < 60000) {
-    //   return Promise.resolve(this.settings.fields);
-    // }
+    if (new Date() - this.settings.lastFetched < 60000) {
+      return Promise.resolve(this.settings.fields);
+    }
     const path = '/apps/' + this.slug + '/dashboard_ajax/settings';
     let fields = await axios.get(path);
-
     fields = fields.data;
     for (const f in fields) {
       this.settings.fields[f] = fields[f];

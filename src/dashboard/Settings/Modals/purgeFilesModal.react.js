@@ -1,10 +1,8 @@
 import React from 'react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 
-export const PurgeFilesModal = ({ context, setParentState }) => <Modal
-  type={Modal.Types.INFO}
-  icon='down-outline'
-  iconSize={40}
+export const PurgeFilesModal = ({ context, setParentState }) => <B4aModal
+  type={B4aModal.Types.INFO}
   title='Clean Orphan Files'
   subtitle={'The files without DB references will be removed!'}
   confirmText='Purge Files'

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Modal from 'components/Modal/Modal.react';
-import Field                              from 'components/Field/Field.react';
-import Label                              from 'components/Label/Label.react';
-import TextInput                          from 'components/TextInput/TextInput.react';
-import FormNote                           from 'components/FormNote/FormNote.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
+import Field from 'components/Field/Field.react';
+import Label from 'components/Label/Label.react';
+import TextInput from 'components/TextInput/TextInput.react';
+import FormNote from 'components/FormNote/FormNote.react';
 
 export const DeleteAppModal = ({ context, setParentState }) => {
 
@@ -14,66 +14,68 @@ export const DeleteAppModal = ({ context, setParentState }) => {
 
   useEffect(() => { setNote('') },[name])
 
-  return <Modal
-  type={Modal.Types.DANGER}
-  icon='gear-solid'
-  iconSize={40}
-  title='Delete app'
-  subtitle={'This will delete the app'}
-  confirmText={processing === false ? 'Delete' : 'Please wait...'}
-  cancelText='Cancel'
-  disableConfirm={!agreed || processing}
-  disableCancel={processing}
-  buttonsInCenter={true}
-  onCancel={() => setParentState({ showDeleteAppModal: false })}
-  onConfirm={() => {
-    if ( name !== context.name ) {
-      setNote('App name doesn\'t match');
-      return;
-    }
-    setProcessing(true);
-    context.deleteApp().then(() => {
-      setParentState({
-        cleanupFilesMessage: 'Your app has been deleted.',
-        cleanupNoteColor: 'orange',
-        showDeleteAppModal: false,
-      });
-      window.location = `${b4aSettings.DASHBOARD_PATH}/apps`;
-    }).catch((e) => {
-      setParentState({
-        cleanupFilesMessage: e.error,
-        cleanupNoteColor: 'red',
-        showDeleteAppModal: false,
-      });
-    }).finally(() => setProcessing(false))
-  }}>
-  <Field
-    label={<Label
-      text={'App Name.'}
-      description={<span>Please enter the name of the app ({context.name}) for confirmation</span>} />
-    }
-    input={<TextInput
-      height={100}
-      placeholder='App Name'
-      value={name}
-      onChange={(value) => {
-        setName(value)
-      }}
-      />}
+  return <B4aModal
+    type={B4aModal.Types.DANGER}
+    title='Delete app'
+    subtitle={'This will delete the app'}
+    confirmText={processing === false ? 'Delete' : 'Please wait...'}
+    cancelText='Cancel'
+    disableConfirm={!agreed || processing}
+    disableCancel={processing}
+    buttonsInCenter={false}
+    onCancel={() => setParentState({ showDeleteAppModal: false })}
+    onConfirm={() => {
+      if (name !== context.name) {
+        setNote('App name doesn\'t match');
+        return;
+      }
+      setProcessing(true);
+      context.deleteApp().then(() => {
+        setParentState({
+          cleanupFilesMessage: 'Your app has been deleted.',
+          cleanupNoteColor: 'orange',
+          showDeleteAppModal: false,
+        });
+        window.location = `${b4aSettings.DASHBOARD_PATH}/apps`;
+      }).catch((e) => {
+        setParentState({
+          cleanupFilesMessage: e.error,
+          cleanupNoteColor: 'red',
+          showDeleteAppModal: false,
+        });
+      }).finally(() => setProcessing(false))
+    }}>
+    <div style={{ borderRadius: '5px', overflow: 'hidden' }}>
+      <Field
+        label={<Label
+          text={'App Name.'}
+          description={<span>Please enter the name of the app ({context.name}) for confirmation</span>} />
+        }
+        input={<TextInput
+          padding={'0 1rem'}
+          dark={false}
+          height={100}
+          placeholder='App Name'
+          value={name}
+          onChange={(value) => {
+            setName(value)
+          }}
+        />}
 
-  />
-  <Field
-    labelWidth={100}
-    label={
-      <Label
-        text={<span><input onChange={(e) => setAgreed(e.target.checked)} type={'checkbox'} /> &nbsp; This action is irreversible. Are you sure you want to continue? </span>}
       />
-    }
-  />
-  {note.length > 0 ? <FormNote
+      <Field
+        labelWidth={100}
+        label={
+          <Label
+            description={<span style={{ display: 'inline-flex', alignItems: 'center'}}><input onChange={(e) => setAgreed(e.target.checked)} type={'checkbox'} style={{ accentColor: '#10203A'}} /> &nbsp; This action is irreversible. Are you sure you want to continue? </span>}
+          />
+        }
+      />
+      {note.length > 0 ? <FormNote
         show={note.length > 0}
         color='red' >
         {note}
       </FormNote> : null}
-</Modal>
+    </div>
+  </B4aModal>
 }

@@ -162,7 +162,7 @@ const B4ABrowserToolbar = ({
             <Separator />
           </>  : <noscript /> }
         <SubMenuItem title="Security" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
-          <MenuItem text="Class Level Permission" onClick={onClickSecurity} disabled={isPendingEditCloneRows} />
+          <MenuItem text="Class Level Permission" onClick={onClickSecurity} disabled={!readWritePermissions || isPendingEditCloneRows} />
           <MenuItem text="Protected Fields" onClick={showProtected} disabled={isPendingEditCloneRows} />
         </SubMenuItem>
         {onAddRow && (currentUser ? (

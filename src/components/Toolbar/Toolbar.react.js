@@ -39,8 +39,8 @@ const Toolbar = props => {
             {props.readWritePermissions && <div>
               {/* {props.helpsection} */}
               {/* Public read and write access */}
-              <div className={styles.publicAccess} onClick={() => props.onClickSecurity(true)}>
-                <div className={styles.publicAccessIcon}>
+              <div className={styles.publicAccess}>
+                <div className={styles.publicAccessIcon} onClick={() => props.onClickSecurity(true)}>
                   {props.lockIcon === true ?
                     <Icon name='b4a-lock-icon' fill='#FFFFFF' width={16} height={16}></Icon> :
                     <Icon name='b4a-unlock-icon' fill='#27AE60' width={16} height={16}></Icon>
