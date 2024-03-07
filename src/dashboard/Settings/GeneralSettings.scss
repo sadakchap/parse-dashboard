@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .cost {
 	font-size: 18px;
@@ -35,4 +36,35 @@
 	cursor: pointer;
 	border-radius: 5px;
 	line-height: 100%;
+}
+
+
+.sweetalertTitle {
+  font-size: 1rem !important;
+  margin-bottom: 0.5rem;
+}
+
+.sweetalertContainer {
+	font-size: 16px !important;
+	opacity: 1 !important;
+	max-width: 25rem !important;
+	margin: 1rem auto 0 auto !important;
+}
+
+.sweetalertCloseBtn {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 1.5rem;
+  color: $dark !important;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-weight: 400;
+}
+
+.sweetalertActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0 !important;
 }
