@@ -7,7 +7,7 @@
  */
 import Field from 'components/Field/Field.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import React from 'react';
 import TextInput from 'components/TextInput/TextInput.react';
 
@@ -38,14 +38,15 @@ export default class DeleteParameterDialog extends React.Component {
             placeholder="Parameter name"
             value={this.state.confirmation}
             onChange={confirmation => this.setState({ confirmation })}
+            padding="0 1rem"
+            dark={false}
           />
         }
       />
     );
     return (
-      <Modal
-        type={Modal.Types.DANGER}
-        icon="warn-outline"
+      <B4aModal
+        type={B4aModal.Types.DANGER}
         title="Delete parameter?"
         subtitle="This action cannot be undone!"
         disabled={!this.valid()}
@@ -55,7 +56,7 @@ export default class DeleteParameterDialog extends React.Component {
         onConfirm={this.props.onConfirm}
       >
         {content}
-      </Modal>
+      </B4aModal>
     );
   }
 }

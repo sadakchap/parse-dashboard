@@ -66,13 +66,16 @@ class Config extends TableView {
   renderToolbar() {
     return (
       <Toolbar section="Config" >
-        <a className={browserStyles.toolbarButton} onClick={this.onRefresh.bind(this)}>
-          <Icon name="refresh-solid" width={14} height={14} />
-          <span>Refresh</span>
+        <a className={browserStyles.toolbarButton} style={{ margin: 0, border: 'none' }} onClick={this.onRefresh.bind(this)}>
+          <Icon name="refresh" width={24} height={24} />
         </a>
         <Button
+          value={
+            <><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Add parameter</>
+          }
+          width="auto"
+          additionalStyles={{ marginLeft: '1rem', padding: '0 0.5rem', fontSize: '12px', borderColor: '#27AE60', color: '#27AE60' }}
           color="white"
-          value="Create a parameter"
           onClick={this.createParameter.bind(this)}
         />
       </Toolbar>
@@ -180,7 +183,7 @@ class Config extends TableView {
         </td>
         <td style={{ textAlign: 'center' }}>
           <a onClick={openDeleteParameterDialog}>
-            <Icon width={16} height={16} name="trash-solid" fill="#ff395e" />
+            <Icon width={16} height={16} name="b4a-delete-icon" fill="#E85C3E" />
           </a>
         </td>
       </tr>
@@ -198,7 +201,7 @@ class Config extends TableView {
       <TableHeader key="value" width={30}>
         Value
       </TableHeader>,
-      <TableHeader key="masterKeyOnly" width={15}>
+      <TableHeader key="masterKeyOnly" width={25}>
         Master key only
       </TableHeader>,
     ];
