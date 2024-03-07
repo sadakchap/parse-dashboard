@@ -8,12 +8,12 @@
 import Button from 'components/Button/Button.react';
 import Dropdown from 'components/Dropdown/Dropdown.react';
 import DropdownOption from 'components/Dropdown/Option.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 import Field from 'components/Field/Field.react';
 import FormModal from 'components/FormModal/FormModal.react';
 import Icon from 'components/Icon/Icon.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import React from 'react';
 import SidebarAction from 'components/Sidebar/SidebarAction';
 import subscribeTo from 'lib/subscribeTo';
@@ -77,7 +77,7 @@ class Webhooks extends TableView {
     return (
       <Toolbar section="Webhooks">
         <Button
-          color="white"
+          color="green"
           value="Create a Webhook"
           onClick={this.openNewWebhookModal.bind(this)}
         />
@@ -167,6 +167,8 @@ class Webhooks extends TableView {
             }
             input={
               <TextInput
+                padding="0 1rem"
+                dark={false}
                 placeholder="MyWebhook"
                 disabled={!this.state.showNewWebhookModal}
                 onChange={value => {
@@ -207,6 +209,8 @@ class Webhooks extends TableView {
                 this.setState({ hookURL: value });
               }}
               value={this.state.hookURL}
+              padding="0 1rem"
+              dark={false}
             />
           }
         />
@@ -278,7 +282,7 @@ class Webhooks extends TableView {
         title="Delete your Webhook"
         subtitle="Webhooks on external servers can be deleted here."
         open={this.state.showDeleteWebhookModal}
-        type={Modal.Types.DANGER}
+        type={B4aModal.Types.DANGER}
         onSubmit={() => {
           if (this.state.hookType === 'function') {
             return this.props.webhooks.dispatch(WebhookActionTypes.DELETE, {
@@ -396,21 +400,22 @@ class Webhooks extends TableView {
 
   renderEmpty() {
     return (
-      <EmptyState
+      <B4aEmptyState
         title="Webhooks"
         description={
-          <span>
+          <span style={{ color: '#C1E2FF' }}>
             Use webhooks to run Cloud Code or connect Parse to your own server.{' '}
             <a
               href="http://docs.parseplatform.org/cloudcode/guide/#cloud-code-webhooks"
               target="_blank"
+              className={styles.link}
             >
               Learn more
             </a>
             .
           </span>
         }
-        icon="gears"
+        icon="b4a-app-settings-icon"
         cta="Create a Webhook"
         action={this.openNewWebhookModal.bind(this)}
       />
