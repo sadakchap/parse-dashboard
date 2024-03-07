@@ -9,7 +9,7 @@
 @import 'stylesheets/back4app.scss';
 
 .header {
-  @include CourierFont;
+  @include InterFont;
   display: inline-block;
   color: $white;
   padding: 1rem;

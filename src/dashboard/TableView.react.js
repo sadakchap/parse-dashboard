@@ -58,7 +58,7 @@ export default class TableView extends DashboardView {
           <div className={styles.content}>{content}</div>
         </B4aLoaderContainer>
         {toolbar}
-        <div className={styles.headers}>{headers}</div>
+        <div className={[styles.headers, data && data.length ? styles.addBorder : ''].join(' ')}>{headers}</div>
         {extras}
       </div>
     );

@@ -54,9 +54,10 @@ class TextInput extends React.Component {
           disabled={!!this.props.disabled}
           className={classes.join(' ')}
           rows={this.props.rows && this.props.rows > 3 ? this.props.rows : null}
-          style={
-            this.props.rows && this.props.rows > 3 ? null : { height: this.props.height || 80 }
-          }
+          style={{
+            height: this.props.rows && this.props.rows > 3 ? 'auto' : (this.props.height || 80),
+            padding: this.props.padding,
+          }}
           placeholder={this.props.placeholder}
           value={this.props.value}
           onChange={this.changeValue.bind(this)}

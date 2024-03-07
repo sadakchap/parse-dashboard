@@ -11,12 +11,12 @@ import Field from 'components/Field/Field.react';
 import FileInput from 'components/FileInput/FileInput.react';
 import GeoPointInput from 'components/GeoPointInput/GeoPointInput.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
 import Option from 'components/Dropdown/Option.react';
 import Parse from 'parse';
 import React from 'react';
 import TextInput from 'components/TextInput/TextInput.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import validateNumeric from 'lib/validateNumeric';
 import styles from 'dashboard/Data/Browser/Browser.scss';
 import semver from 'semver/preload.js';
@@ -38,15 +38,15 @@ function saveFile(onChange, file) {
 
 const EDITORS = {
   Boolean: (value, onChange) => (
-    <Toggle type={Toggle.Types.TRUE_FALSE} value={!!value} onChange={onChange} />
+    <B4aToggle type={B4aToggle.Types.TRUE_FALSE} value={!!value} onChange={onChange} />
   ),
   String: (value, onChange) => (
-    <TextInput multiline={true} value={value || ''} onChange={onChange} />
+    <TextInput multiline={true} value={value || ''} onChange={onChange} padding="0 1rem" dark={false} />
   ),
   Number: (value, onChange) => (
-    <TextInput value={value || ''} onChange={numberValidator(onChange)} />
+    <TextInput value={value || ''} onChange={numberValidator(onChange)} padding="0 1rem" dark={false} />
   ),
-  Date: (value, onChange) => <DateTimeInput fixed={true} value={value} onChange={onChange} />,
+  Date: (value, onChange) => <DateTimeInput fixed={true} value={value} onChange={onChange} dark={false} />,
   Object: (value, onChange) => (
     <TextInput
       multiline={true}
@@ -54,6 +54,8 @@ const EDITORS = {
       placeholder={'{\n  ...\n}'}
       value={value || ''}
       onChange={onChange}
+      dark={false}
+      padding="0 1rem"
     />
   ),
   Array: (value, onChange) => (
@@ -63,6 +65,8 @@ const EDITORS = {
       placeholder={'[\n  ...\n]'}
       value={value}
       onChange={onChange}
+      dark={false}
+      padding="0 1rem"
     />
   ),
   GeoPoint: (value, onChange) => <GeoPointInput value={value} onChange={onChange} />,
@@ -191,11 +195,9 @@ export default class ConfigDialog extends React.Component {
       </Dropdown>
     );
     return (
-      <Modal
-        type={Modal.Types.INFO}
+      <B4aModal
+        type={B4aModal.Types.INFO}
         title={newParam ? 'New parameter' : 'Edit parameter'}
-        icon="gear-solid"
-        iconSize={30}
         subtitle={'Dynamically configure parts of your app'}
         disabled={!this.valid()}
         confirmText={newParam ? 'Create' : 'Save'}
@@ -208,6 +210,8 @@ export default class ConfigDialog extends React.Component {
           input={
             <TextInput
               placeholder={'New parameter'}
+              padding="0 1rem"
+              dark={false}
               value={this.state.name}
               disabled={this.props.param.length > 0}
               onChange={name => this.setState({ name })}
@@ -242,18 +246,20 @@ export default class ConfigDialog extends React.Component {
                   />
                 }
                 input={
-                  <Toggle
-                    type={Toggle.Types.YES_NO}
-                    value={this.state.masterKeyOnly}
-                    onChange={masterKeyOnly => this.setState({ masterKeyOnly })}
-                    additionalStyles={{ margin: '0px' }}
-                  />
+                  <div style={{ padding: '0 1rem', width: '100%'}}>
+                    <B4aToggle
+                      type={B4aToggle.Types.YES_NO}
+                      value={this.state.masterKeyOnly}
+                      onChange={masterKeyOnly => this.setState({ masterKeyOnly })}
+                      additionalStyles={{ margin: '0px' }}
+                    />
+                  </div>
                 }
-                className={styles.addColumnToggleWrapper}
+                className={styles.addColumnB4aToggleWrapper}
               />
             ) : null
         }
-      </Modal>
+      </B4aModal>
     );
   }
 }

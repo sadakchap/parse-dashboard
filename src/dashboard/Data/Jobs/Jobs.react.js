@@ -168,7 +168,7 @@ class Jobs extends TableView {
     if (this.props.params.section === 'all') {
       return (
         <tr key={data.jobName} className={tableStyles.verticalBorderedCell}>
-          <td style={{ width: '50%', fontFamily: '"Courier Prime", monospace', fontSize: '14px' }}>{data.jobName}</td>
+          <td style={{ width: '50%', fontSize: '14px' }}>{data.jobName}</td>
           <td className={styles.buttonCell + ' ' + styles.right}>
             <RunNowButton job={data} />
           </td>
@@ -240,19 +240,19 @@ class Jobs extends TableView {
       ];
     } else {
       return [
-        <TableHeader key="func" width={20} fontFamily='"Inter", sans-serif'>
+        <TableHeader key="func" width={20}>
           Function
         </TableHeader>,
-        <TableHeader key="started" width={20} fontFamily='"Inter", sans-serif'>
+        <TableHeader key="started" width={20}>
           Started At (UTC)
         </TableHeader>,
-        <TableHeader key="finished" width={20} fontFamily='"Inter", sans-serif'>
+        <TableHeader key="finished" width={20}>
           Finished At (UTC)
         </TableHeader>,
-        <TableHeader key="message" width={20} fontFamily='"Inter", sans-serif'>
+        <TableHeader key="message" width={20}>
           Message
         </TableHeader>,
-        <TableHeader key="status" width={20} fontFamily='"Inter", sans-serif'>
+        <TableHeader key="status" width={20}>
           Status
         </TableHeader>,
       ];
@@ -368,9 +368,8 @@ class Jobs extends TableView {
           subsection={`Jobs > ${subsections[this.props.params.section]}`}
           details={ReleaseInfo({ release: this.props.release })}
         >
-          <a className={browserStyles.toolbarButton} style={{ color: 'white' }} onClick={this.onRefresh.bind(this)}>
+          <a className={browserStyles.toolbarButton} style={{ color: 'white', border: 'none', margin: 0, padding: 0 }} onClick={this.onRefresh.bind(this)}>
             <Icon name="refresh" width={24} height={24} />
-            {/* <span>Refresh</span> */}
           </a>
           {this.props.availableJobs && this.props.availableJobs.length > 0 ? (
             <Button color="white" value="Schedule a job" onClick={this.navigateToNew.bind(this)} />

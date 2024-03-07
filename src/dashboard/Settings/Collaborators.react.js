@@ -23,6 +23,10 @@ import validateEmailFormat from 'lib/validateEmailFormat';
 import { CurrentApp } from 'context/currentApp';
 import styles from 'dashboard/Settings/GeneralSettings.scss';
 
+import buttonStyles from 'components/Button/Button.scss';
+import baseStyles from 'stylesheets/base.scss';
+import modalStyles from 'components/B4aModal/B4aModal.scss';
+
 // Component for displaying and modifying an app's collaborator emails.
 // There is a single input field for new collaborator emails. As soon as the
 // user types a valid email format (and not already existing collaborator), we
@@ -33,23 +37,39 @@ import styles from 'dashboard/Settings/GeneralSettings.scss';
 // the parent component is responsible for doing that when onAdd is invoked.
 // The parent also is responsible for passing onRemove, which is called when the
 // users removes a collaborator.
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    header: '',
+    title: `${modalStyles.title} ${styles.sweetalertTitle}`,
+    htmlContainer: `${styles.sweetalertContainer}`,
+    closeButton: styles.sweetalertCloseBtn,
+    icon: styles.sweetalertIcon,
+    input: styles.sweetalertInput,
+    actions: `${styles.sweetalertActions}`,
+    confirmButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.primary, buttonStyles.red].join(' '),
+    cancelButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.white].join(' '),
+  },
+  buttonsStyling: false,
+});
+
 export default class Collaborators extends React.Component {
   static contextType = CurrentApp;
   constructor() {
     super();
 
     const defaultFeaturesPermissions = {
-      "coreSettings" : "Read",
-      "manageParseServer" : "Read",
-      "logs" : "Read",
-      "cloudCode" : "Write",
-      "jobs" : "Write",
-      "webHostLiveQuery" : "Write",
-      "verificationEmails" : "Write",
-      "oauth" : "Write",
-      "twitterOauth" : "Write",
-      "pushAndroidSettings" : "Write",
-      "pushIOSSettings" : "Write"
+      'coreSettings' : 'Read',
+      'manageParseServer' : 'Read',
+      'logs' : 'Read',
+      'cloudCode' : 'Write',
+      'jobs' : 'Write',
+      'webHostLiveQuery' : 'Write',
+      'verificationEmails' : 'Write',
+      'oauth' : 'Write',
+      'twitterOauth' : 'Write',
+      'pushAndroidSettings' : 'Write',
+      'pushIOSSettings' : 'Write'
     }
 
     this.defaultFeaturesPermissions = defaultFeaturesPermissions
@@ -183,21 +203,25 @@ export default class Collaborators extends React.Component {
   }
 
   handleDelete(collaborator) {
-    let newCollaborators = this.props.collaborators.filter(oldCollaborator => oldCollaborator.userEmail !== collaborator.userEmail);
-    Swal.mixin().queue([
+    const newCollaborators = this.props.collaborators.filter(oldCollaborator => oldCollaborator.userEmail !== collaborator.userEmail);
+    swalWithBootstrapButtons.fire(
       {
-        html: `<p style="text-align: center; margin-bottom: 16px;">Are you sure you want to remove <span style="font-weight: bold; color: #169cee">${collaborator.userEmail}</span> as a collaborator.</p>`,
-        type: "warning",
-        confirmButtonText: "Delete",
-        confirmButtonColor: "#ff395e",
+        html: `<p style="text-align: center; margin-bottom: 16px; color: #0F1C32">Are you sure you want to remove <span style="font-weight: bold; color: #15A9FF">${collaborator.userEmail}</span> as a collaborator.</p>`,
+        confirmButtonText: 'Remove',
         showCancelButton: true,
         reverseButtons: true,
+        buttonsStyling: false,
+        showCloseButton: true,
         preConfirm: () => {
           this.props.onRemove(collaborator, newCollaborators);
           Swal.close();
         }
       }
-    ]);
+    ).then((alertResponse) => {
+      if (alertResponse.value) {
+        this.props.onRemove(collaborator, newCollaborators);
+      }
+    });
   }
 
   handleEdit(collaborator) {
@@ -290,7 +314,7 @@ export default class Collaborators extends React.Component {
         }}
         onConfirm={(featuresPermission, classesPermission) => {
           if (this.state.toAdd) {
-            let newCollaborators = this.props.collaborators.concat(
+            const newCollaborators = this.props.collaborators.concat(
               { userEmail: this.state.currentEmail || this.state.currentEmailInput, featuresPermission, classesPermission })
             this.props.onAdd(this.state.currentEmail || this.state.currentEmailInput, newCollaborators);
             this.setState(
@@ -303,14 +327,14 @@ export default class Collaborators extends React.Component {
             );
           }
           else if (this.state.toEdit) {
-            let editedCollab = Object.assign({}, this.state.currentCollab);
-            let newCollabs = []
+            const editedCollab = Object.assign({}, this.state.currentCollab);
+            const newCollabs = []
 
             editedCollab.featuresPermission = featuresPermission;
             editedCollab.classesPermission = classesPermission;
             editedCollab.isEdited = true;
             this.props.collaborators.forEach(c => {
-              if (c.userEmail === editedCollab.userEmail) c = editedCollab
+              if (c.userEmail === editedCollab.userEmail) {c = editedCollab}
               newCollabs.push(c)
             })
             this.props.onEdit(editedCollab, newCollabs);
@@ -391,8 +415,8 @@ export default class Collaborators extends React.Component {
         input={<FormTableCollab
           items={
             this.props.collaborators.map(collaborator => {
-              let canDelete = this.props.viewer_email === this.props.owner_email || collaborator.userEmail === this.props.viewer_email;
-              let canEdit = this.props.viewer_email === this.props.owner_email;
+              const canDelete = this.props.viewer_email === this.props.owner_email || collaborator.userEmail === this.props.viewer_email;
+              const canEdit = this.props.viewer_email === this.props.owner_email;
               //TODO(drewgross): add a warning modal for when you are removing yourself as a collaborator, as that is irreversable
               return ({
                 title: collaborator.userName || collaborator.userEmail,
@@ -416,8 +440,8 @@ export default class Collaborators extends React.Component {
         input={<FormTableCollab
           items={
             this.state.waiting_collaborators.map(collaborator => {
-              let canEdit = this.props.viewer_email === this.props.owner_email;
-              let canDelete = this.props.viewer_email === this.props.owner_email || collaborator.userEmail === this.props.viewer_email;
+              const canEdit = this.props.viewer_email === this.props.owner_email;
+              const canDelete = this.props.viewer_email === this.props.owner_email || collaborator.userEmail === this.props.viewer_email;
               return ({
                 title: collaborator.userEmail,
                 color: 'orange',
