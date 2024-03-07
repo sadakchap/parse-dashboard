@@ -16,7 +16,10 @@
   background: $dark;
   height: 46px;
   white-space: nowrap;
-  box-shadow: 0px 1px 0px 0px #C1E2FF29;
+
+  &.addBorder {
+    box-shadow: 0px 1px 0px 0px #C1E2FF29;
+  }
 }
 
 body:global(.sidebarCollapsed) {
