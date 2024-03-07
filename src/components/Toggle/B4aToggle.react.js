@@ -105,10 +105,10 @@ export default class B4aToggle extends React.Component {
     return (
       <div className={styles.toggle} style={this.props.additionalStyles || {}}>
         {this.props.invertLabels ? (<>
-          <div onClick={this.toRight.bind(this)} className={styles.option + ` ${styles.optionLeft} ${!left ? styles.active : ''}`}>{labelRight}</div>
-          <div onClick={this.toLeft.bind(this)} className={styles.option + ` ${styles.optionRight} ${left ? styles.active : ''}`}>{labelLeft}</div>
-        </>) : (<><div onClick={this.toLeft.bind(this)} className={styles.option + ` ${styles.optionLeft} ${left ? styles.active : ''}`}>{labelLeft}</div>
-          <div onClick={this.toRight.bind(this)} className={styles.option + ` ${styles.optionRight} ${!left ? styles.active : ''}`}>{labelRight}</div></>)}
+          <div onClick={this.toRight.bind(this)} className={[styles.option, styles.optionLeft, !left ? styles.active : ''].join(' ')}>{labelRight}</div>
+          <div onClick={this.toLeft.bind(this)} className={[styles.option, styles.optionRight, left ? styles.active : '', left && colored ? styles.colored : ''].join(' ')}>{labelLeft}</div>
+        </>) : (<><div onClick={this.toLeft.bind(this)} className={[styles.option, styles.optionLeft, left ? styles.active : '', left && colored ? styles.colored : ''].join(' ')}>{labelLeft}</div>
+          <div onClick={this.toRight.bind(this)} className={[styles.option, styles.optionRight, !left ? styles.active : ''].join(' ')}>{labelRight}</div></>)}
       </div>
     );
   }

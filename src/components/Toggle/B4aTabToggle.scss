@@ -33,6 +33,11 @@
   z-index: -1;
 }
 
+.colored::before {
+  background: $error-red !important;
+  transition-duration: 0.1s;
+}
+
 .optionLeft::before {
   transform: translateX(100%);
 }
