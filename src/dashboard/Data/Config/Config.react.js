@@ -9,7 +9,7 @@ import { ActionTypes } from 'lib/stores/ConfigStore';
 import Button from 'components/Button/Button.react';
 import ConfigDialog from 'dashboard/Data/Config/ConfigDialog.react';
 import DeleteParameterDialog from 'dashboard/Data/Config/DeleteParameterDialog.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 import Icon from 'components/Icon/Icon.react';
 import { isDate } from 'lib/DateUtils';
 import Parse from 'parse';
@@ -209,10 +209,10 @@ class Config extends TableView {
 
   renderEmpty() {
     return (
-      <EmptyState
+      <B4aEmptyState
         title="Dynamically configure your app"
         description="Set up parameters that let you control the appearance or behavior of your app."
-        icon="gears"
+        icon="b4a-app-settings-icon"
         cta="Create your first parameter"
         action={this.createParameter.bind(this)}
       />
