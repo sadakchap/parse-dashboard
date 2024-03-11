@@ -5,44 +5,45 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import Button     from 'components/Button/Button.react';
-import RadioButton   from 'components/RadioButton/RadioButton.react';
-import Popover    from 'components/Popover/Popover.react';
-import Position   from 'lib/Position';
-import React      from 'react';
-import styles     from 'components/PermissionsCollaboratorDialog/PermissionsCollaboratorDialog.scss';
-import { unselectable }                 from 'stylesheets/base.scss';
-import Label     from 'components/Label/Label.react';
+import Button from 'components/Button/Button.react';
+import RadioButton from 'components/RadioButton/RadioButton.react';
+import Popover from 'components/Popover/Popover.react';
+import Position from 'lib/Position';
+import React from 'react';
+import styles from 'components/PermissionsCollaboratorDialog/PermissionsCollaboratorDialog.scss';
+import { unselectable } from 'stylesheets/base.scss';
+import Label from 'components/Label/Label.react';
 import Field from '../Field/Field.react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'components/PermissionsCollaboratorDialog/Tabs.css'
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import lodash from 'lodash'
 
 
-let origin = new Position(0, 0);
+const origin = new Position(0, 0);
 
 function renderSimpleCheckboxes(feature, permissions, collaboratorsCanWrite, onChange) {
   return [
     <label key={feature + 'None' + 'label'} htmlFor={feature + 'None'}>
       <div key={feature + 'None' + 'div'} className={[styles.check, styles.second].join(' ')}>
-          <RadioButton
-            id={feature + 'None'}
-            name={feature}
-            className={styles.input}
-            defaultChecked={permissions && feature in permissions && permissions[feature] === 'None'}
-            onChange={() => onChange(feature, 'None', permissions)}
-          />None
+        <RadioButton
+          id={feature + 'None'}
+          name={feature}
+          className={styles.input}
+          defaultChecked={permissions && feature in permissions && permissions[feature] === 'None'}
+          onChange={() => onChange(feature, 'None', permissions)}
+        />None
       </div>
     </label>,
     <label key={feature + 'Read' + 'label'} htmlFor={feature + 'Read'}>
       <div key={feature + 'Read' + 'div'} className={[styles.check, styles.third].join(' ')}>
-          <RadioButton
-            id={feature + 'Read'}
-            name={feature}
-            className={styles.input}
-            defaultChecked={permissions && feature in permissions && permissions[feature] === 'Read'}
-            onChange={() => onChange(feature, 'Read', permissions)}
-          />Read
+        <RadioButton
+          id={feature + 'Read'}
+          name={feature}
+          className={styles.input}
+          defaultChecked={permissions && feature in permissions && permissions[feature] === 'Read'}
+          onChange={() => onChange(feature, 'Read', permissions)}
+        />Read
       </div>
     </label>,
     <label key={feature + 'Write' + 'label'} htmlFor={feature + 'Write'} style={(!collaboratorsCanWrite ? {opacity: 0.3} : {opacity: 1})}>
@@ -73,19 +74,19 @@ function renderSimpleCheckboxes(feature, permissions, collaboratorsCanWrite, onC
 }
 
 function renderSimpleLabels(permission) {
-  if (permission === 'Write') return (<span>Write</span>)
-  else if (permission === 'Read') return (<span>Read</span>)
-  else return (<span>None</span>)
+  if (permission === 'Write') {return (<span>Write</span>)}
+  else if (permission === 'Read') {return (<span>Read</span>)}
+  else {return (<span>None</span>)}
 }
 
 export default class PermissionsCollaboratorDialog extends React.Component {
   constructor({
-                customFeaturesPermissions,
-                defaultFeaturesPermissions,
-                features,
-                classesPermissions,
-                isGDPR
-              }) {
+    customFeaturesPermissions,
+    defaultFeaturesPermissions,
+    features,
+    classesPermissions,
+    isGDPR
+  }) {
     super();
 
     const isDefaultFeatures = lodash.isEqual(customFeaturesPermissions, defaultFeaturesPermissions);
@@ -118,32 +119,32 @@ export default class PermissionsCollaboratorDialog extends React.Component {
   }
 
   renderFeaturesRows(isDefaultFeatures) {
-    let rows = [];
+    const rows = [];
     let index = 0;
-    for (let feature in this.props.defaultFeaturesPermissions) {
-      let text = this.state.features.label[index]
-      let description = this.state.features.description[index]
-      let collaboratorsCanWrite = this.state.features.collaboratorsCanWrite[index]
-      let label = <Label key={text  + (isDefaultFeatures ? 'Label' : 'Input')} text={text} description={description}/>
+    for (const feature in this.props.defaultFeaturesPermissions) {
+      const text = this.state.features.label[index]
+      const description = this.state.features.description[index]
+      const collaboratorsCanWrite = this.state.features.collaboratorsCanWrite[index]
+      const label = <Label key={text  + (isDefaultFeatures ? 'Label' : 'Input')} text={text} description={description}/>
       let content = null;
-      if (isDefaultFeatures) content = renderSimpleLabels(this.props.defaultFeaturesPermissions[feature]);
-      else content = renderSimpleCheckboxes(feature, this.state.customFeaturesPermissions, collaboratorsCanWrite, this.setPermissions.bind(this));
+      if (isDefaultFeatures) {content = renderSimpleLabels(this.props.defaultFeaturesPermissions[feature]);}
+      else {content = renderSimpleCheckboxes(feature, this.state.customFeaturesPermissions, collaboratorsCanWrite, this.setPermissions.bind(this));}
       rows.push((<div key={feature + (isDefaultFeatures ? 'Label' : 'Input')} className={styles.row}>
-          <Field labelWidth={100} className={styles.label} label={label} />
-          <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} />
-        </div>))
+        <Field labelWidth={100} className={styles.label} label={label} />
+        <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} />
+      </div>))
       index++
     }
     return rows;
   }
 
   renderClassesRows(permissionType) {
-    let rows = [];
-    for (let appClassName in this.props.classesPermissions) {
-      let label = <Label key={appClassName  + (permissionType === 'Custom' ? 'Label' : 'Input')} text={appClassName}/>
+    const rows = [];
+    for (const appClassName in this.props.classesPermissions) {
+      const label = <Label key={appClassName  + (permissionType === 'Custom' ? 'Label' : 'Input')} text={appClassName}/>
       let content = null;
-      if (permissionType !== 'CustomClasses') content = renderSimpleLabels(permissionType)
-      else content = renderSimpleCheckboxes(appClassName, this.state.classesPermissions, true, this.setRowPermissions.bind(this));
+      if (permissionType !== 'CustomClasses') {content = renderSimpleLabels(permissionType)}
+      else {content = renderSimpleCheckboxes(appClassName, this.state.classesPermissions, true, this.setRowPermissions.bind(this));}
       rows.push((<div key={appClassName + (permissionType === 'Custom' ? 'Label' : 'Input')} className={styles.row}>
         <Field labelWidth={100} className={[styles.label, styles.centralizedText].join(' ')} label={label} />
         <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} />
@@ -153,7 +154,7 @@ export default class PermissionsCollaboratorDialog extends React.Component {
   }
 
   renderRows (isFeaturesSelected) {
-    let selectedTab = isFeaturesSelected ? this.state.selectedFeaturesTab : this.state.selectedClassesTab
+    const selectedTab = isFeaturesSelected ? this.state.selectedFeaturesTab : this.state.selectedClassesTab
     switch (selectedTab) {
       case 'Default':
         return this.renderFeaturesRows(true)
@@ -173,13 +174,13 @@ export default class PermissionsCollaboratorDialog extends React.Component {
   }
 
   render() {
-    let classes = [styles.dialog, unselectable];
+    const classes = [styles.dialog, unselectable];
 
     return (
       <Popover fadeIn={true} fixed={true} position={origin} modal={true} color='rgba(17,13,17,0.8)'>
         <div className={classes.join(' ')}>
           <div className={styles.header}>
-            <p className={styles.role}>{this.props.role}</p>
+            {/* <p className={styles.role}>{this.props.role}</p> */}
             <p className={styles.email}>{this.props.email}</p>
             <p className={styles.description}>{this.props.description}</p>
           </div>
@@ -195,28 +196,22 @@ export default class PermissionsCollaboratorDialog extends React.Component {
               </TabList>
             </div>
             <TabPanel>
-              <div className={ [styles.label, styles.labelSubHeader].join(' ') }>
-                <label className={ styles.labelTab }>
-                  <RadioButton
-                    id='tab1'
-                    name='Tab'
-                    className={styles.radiobutton}
-                    defaultChecked={this.state.isDefaultFeatures}
-                    disabled={false}
-                    onClick={() => this.setState({ selectedFeaturesTab: 'Default', isDefaultFeatures: true, isFeaturesSelected: true })}
-                  />
-                  Default
-                </label>
-                <label className={ styles.labelTab } htmlFor='tab2'>
-                  <RadioButton
-                    id='tab2'
-                    name='Tab'
-                    defaultChecked={!this.state.isDefaultFeatures}
-                    disabled={false}
-                    onClick={() => this.setState({ selectedFeaturesTab: 'CustomFeatures', isDefaultFeatures: false, isFeaturesSelected: true })}
-                  />
-                  Custom
-                </label>
+              <div className={styles.labelSubHeader}>
+                <B4aToggle
+                  type={B4aToggle.Types.CUSTOM}
+                  value={this.state.selectedFeaturesTab}
+                  optionLeft="Default"
+                  optionRight="Custom"
+                  labelLeft="Default"
+                  labelRight="Custom"
+                  onChange={level => {
+                    this.setState({
+                      selectedFeaturesTab: level === 'Default' ? 'Default' : 'CustomFeatures',
+                      isDefaultFeatures: level === 'Default' ? true : false,
+                      isFeaturesSelected: true,
+                    })
+                  }}
+                />
               </div>
             </TabPanel>
             <TabPanel>
@@ -271,7 +266,7 @@ export default class PermissionsCollaboratorDialog extends React.Component {
                   {this.renderRows(this.state.isFeaturesSelected)}
                 </div>
                 {/*<TabPanel>*/}
-                  {/*{this.renderFeaturesRows()}*/}
+                {/*{this.renderFeaturesRows()}*/}
                 {/*</TabPanel>*/}
               </div>
             </div>
@@ -307,7 +302,7 @@ export default class PermissionsCollaboratorDialog extends React.Component {
                   this.props.onConfirm(featuresPermissions, classesPermissions)
                 }}
               />
-              </div>
+            </div>
           </div>
         </div>
       </Popover>
