@@ -20,7 +20,6 @@ import TableHeader from 'components/Table/TableHeader.react';
 import TableView from 'dashboard/TableView.react';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import browserStyles from 'dashboard/Data/Browser/Browser.scss';
-import sidebarStyles from 'components/Sidebar/B4aSidebar.scss';
 
 @subscribeTo('Config', 'config')
 class Config extends TableView {
