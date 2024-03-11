@@ -20,6 +20,8 @@ import TableHeader from 'components/Table/TableHeader.react';
 import TableView from 'dashboard/TableView.react';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import browserStyles from 'dashboard/Data/Browser/Browser.scss';
+import sidebarStyles from 'components/Sidebar/B4aSidebar.scss';
+
 @subscribeTo('Config', 'config')
 class Config extends TableView {
   constructor() {
@@ -70,12 +72,13 @@ class Config extends TableView {
           <Icon name="refresh" width={24} height={24} />
         </a>
         <Button
+          secondary={true}
           value={
-            <><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Add parameter</>
+            <span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Add parameter</span>
           }
+          color="green"
           width="auto"
-          additionalStyles={{ marginLeft: '1rem', padding: '0 0.5rem', fontSize: '12px', borderColor: '#27AE60', color: '#27AE60' }}
-          color="white"
+          additionalStyles={{ marginLeft: '1rem', padding: '0 0.5rem', fontSize: '12px', position: 'relative' }}
           onClick={this.createParameter.bind(this)}
         />
       </Toolbar>
