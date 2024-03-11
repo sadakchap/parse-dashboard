@@ -10,8 +10,6 @@ import B4ACloudCodeView from 'components/B4ACloudCodeView/B4ACloudCodeView.react
 import B4ATreeActions from 'components/B4ACodeTree/B4ATreeActions';
 import Swal from 'sweetalert2';
 import B4ACloudCodeInfo from 'components/B4ACodeTree/B4ACloudCodeInfo.react';
-import addFileIcon from './icons/add-file.png';
-import uploadFileIcon from './icons/file-upload-outline.png';
 import folderInfoIcon from './icons/folder-info.png';
 import CloudCodeChanges from 'lib/CloudCodeChanges';
 import PropTypes from 'lib/PropTypes';
@@ -324,7 +322,7 @@ export default class B4ACodeTree extends React.Component {
                   disabled={false}
                   value={
                     <div style={{ display: 'flex', alignItems: 'center', borderRadius: '0.3125rem', border: '1px solid rgba(249, 249, 249, 0.06)', background: '#303338', padding: '0.3125rem 0.875rem' }}>
-                      <img src={addFileIcon} height='18px' width='18px' />
+                      <Icon name="b4a-add-outline-circle" fill="#27AE60" width={18} height={18} />
                       <span style={{ color: '#f9f9f9', marginLeft:'0.25rem' }}>New File</span>
                     </div>}
                   width='20'
@@ -338,7 +336,7 @@ export default class B4ACodeTree extends React.Component {
                   <Button
                     value={
                       <div style={{ display: 'flex', alignItems: 'center', borderRadius: '0.3125rem', border: '1px solid rgba(249, 249, 249, 0.06)', background: '#303338', padding: '0.3125rem 0.875rem' }}>
-                        <img src={uploadFileIcon} height='18px' width='18px' />
+                        <Icon name="B4a-upload-file-icon" fill="#27AE60" width={18} height={18} />
                         <span style={{ color: '#f9f9f9', marginLeft: '0.25rem' }}>Upload File</span>
                       </div>}
                     width='20'
