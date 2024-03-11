@@ -10,7 +10,7 @@ import Dropdown from 'components/Dropdown/Dropdown.react';
 import DropdownOption from 'components/Dropdown/Option.react';
 import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 import Field from 'components/Field/Field.react';
-import FormModal from 'components/FormModal/FormModal.react';
+import B4aFormModal from 'components/FormModal/B4aFormModal.react';
 import Icon from 'components/Icon/Icon.react';
 import Label from 'components/Label/Label.react';
 import B4aModal from 'components/B4aModal/B4aModal.react';
@@ -77,8 +77,9 @@ class Webhooks extends TableView {
     return (
       <Toolbar section="Webhooks">
         <Button
+          secondary={true}
           color="green"
-          value="Create a Webhook"
+          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Create a webhook</span>}
           onClick={this.openNewWebhookModal.bind(this)}
         />
       </Toolbar>
@@ -229,15 +230,16 @@ class Webhooks extends TableView {
     };
 
     const newHookModal = (
-      <FormModal
+      <B4aFormModal
         key="new"
         title="Create a Webhook"
         icon="collaborate-outline"
         iconSize={30}
+        iconFill="#ccc"
         open={this.state.showNewWebhookModal}
         onSubmit={() => {
           // Send track event
-          back4AppNavigation && back4AppNavigation.createWebhookEvent()
+          // back4AppNavigation && back4AppNavigation.createWebhookEvent()
           return this.props.webhooks.dispatch(
             WebhookActionTypes.CREATE,
             hookRequestData(this.state)
@@ -252,11 +254,11 @@ class Webhooks extends TableView {
         enabled={true /* TODO: do some validation here */}
       >
         {webhookModalFields}
-      </FormModal>
+      </B4aFormModal>
     );
 
     const editHookModal = (
-      <FormModal
+      <B4aFormModal
         key="edit"
         title="Change your Webhook"
         subtitle="Webhooks on external servers can be edited here."
@@ -273,11 +275,11 @@ class Webhooks extends TableView {
         enabled={true /* TODO: do some validation here */}
       >
         {webhookModalFields}
-      </FormModal>
+      </B4aFormModal>
     );
 
     const deleteHookModal = (
-      <FormModal
+      <B4aFormModal
         key="delete"
         title="Delete your Webhook"
         subtitle="Webhooks on external servers can be deleted here."
@@ -311,7 +313,7 @@ class Webhooks extends TableView {
         enabled={true /* TODO: do some validation here */}
       >
         {webhookModalFields}
-      </FormModal>
+      </B4aFormModal>
     );
     return [newHookModal, editHookModal, deleteHookModal];
   }
@@ -345,7 +347,7 @@ class Webhooks extends TableView {
     if (hook.url) {
       deleteColumnContents = (
         <button type="button" onClick={showDelete} className={styles.deleteButton}>
-          <Icon name="trash-outline" fill="#343445" width={20} height={20} />
+          <Icon name="b4a-delete-icon" fill="#E85C3E" width={16} height={16} />
         </button>
       );
     } else {
