@@ -216,6 +216,7 @@ export default class B4ACodeTree extends React.Component {
     } else if (type === 'new-file') {
       // incase of new-file, other file or folder is selected
       // so, directly add that file name in cloudCodeChanges
+      console.log('updateCodeOnNewFile::: - ', text);
       text && this.cloudCodeChanges.addFile(text);
     } else {
       // set updated files.
@@ -260,7 +261,7 @@ export default class B4ACodeTree extends React.Component {
     else if (this.state.selectedFile) {
       content = <div className={`${styles.filesPreviewWrapper}`}>
         <div className={styles.filesPreviewHeader} >
-          <p>{ typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
+          <p>{typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}</p>
           <button
             className={styles.deleteBtn}
             primary={true}

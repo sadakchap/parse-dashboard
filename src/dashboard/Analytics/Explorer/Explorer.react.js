@@ -204,7 +204,7 @@ class Explorer extends DashboardView {
     this.setState({ loading: true });
     this.state.activeQueries.forEach((query, i) => {
       // eslint-disable-next-line no-undef
-      back4AppNavigation && back4AppNavigation.runExplorerQueryEvent(query);
+      // back4AppNavigation && back4AppNavigation.runExplorerQueryEvent(query);
       let promise = null;
       let xhr = null;
       if (query.preset && query.nonComposable) {

@@ -261,7 +261,7 @@ class Config extends TableView {
         () => {
           // Send track event
           // eslint-disable-next-line no-undef
-          back4AppNavigation && back4AppNavigation.createConfigParameterEvent()
+          // back4AppNavigation && back4AppNavigation.createConfigParameterEvent()
           this.setState({ modalOpen: false });
         },
         () => {
