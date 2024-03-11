@@ -71,7 +71,7 @@ export const ManageAppFields = ({
             {
               (isGDPR !== true) &&
               <div style={{ padding: '11px 0' }}>
-                <B4aKeyField name="Show Database URI" hidden={true} showKeyName={true}>
+                <B4aKeyField name="Show Database" hidden={true} showKeyName={true} keyText="URI">
                   {databaseURL}
                 </B4aKeyField>
               </div>}
