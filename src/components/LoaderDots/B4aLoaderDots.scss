@@ -32,6 +32,11 @@
        @include animation-delay(0.4s);
      }
    }
+   &.dark {
+    span {
+      background-color: $dark !important;
+    }
+   }
  }
  
  @include keyframes(blink) {

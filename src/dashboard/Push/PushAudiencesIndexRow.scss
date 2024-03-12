@@ -35,7 +35,7 @@
 .shortInfo {
   @include ellipsis();
   margin-right: 5px;
-  max-width: 300px;
+  max-width: calc(100% - 70px);
   float: left;
 }
 

@@ -15,7 +15,7 @@ export default class LoaderDots extends React.Component {
 
   render() {
     return (
-      <div className={styles.loaderDots}>
+      <div className={`${styles.loaderDots} ${this.props.dark ? styles.dark : ''}`}>
         <span></span>
         <span></span>
         <span></span>

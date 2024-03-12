@@ -168,7 +168,8 @@ class PushAudiencesIndex extends DashboardView {
     return (
       <Toolbar section="Push" subsection="Audiences">
         <Button
-          color="white"
+          color="green"
+          secondary={true}
           value="Create an audience"
           onClick={this.handleCreateAudienceClick.bind(this)}
         />

@@ -37,14 +37,14 @@
 .current {
   white-space: normal;
   padding: 1rem;
-  line-height: 40px;
+  line-height: 48px;
 }
 
 .option {
   position: relative;
   height: 46px;
   line-height: 46px;
-  padding: 13px 16px;
+  padding: 0 16px;
   color: $old-blue;
   border-bottom: 1px solid rgba($light-grey, 0.3);
   overflow: hidden;

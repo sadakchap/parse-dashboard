@@ -61,8 +61,8 @@
     letter-spacing: .01rem;
 
     & a {
-      border-left: none;
-      color: white;
+      // border-left: none;
+      color: $white;
     }
   }
 
@@ -119,18 +119,36 @@
 .category-action {
   @include SoraFont;
   position: absolute;
-  font-size: 12px;
+  font-size: 12px !important;
   font-weight: 400;
   padding: 0 8px;
   line-height: 20px;
   top: 0px;
   right: 0px;
-  background: #0c5987;
-  color: $white;
+  background: transparent;
+  border: 1px solid $cta-green;
+  color: $cta-green !important;
   border-radius: 3px;
+  border-left-color: $cta-green !important;
+  cursor: pointer;
+  padding-left: 8px !important;
+  
+  span {
+    display: inline-block;
+    min-width: 80px;
+    margin-right: 0 !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  svg {
+    fill: $cta-green;
+  }
 
   &:hover {
-    background: #094162;
+    background: rgba($cta-green, 0.1);
   }
 }
 
