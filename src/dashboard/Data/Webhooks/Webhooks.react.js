@@ -233,9 +233,6 @@ class Webhooks extends TableView {
       <B4aFormModal
         key="new"
         title="Create a Webhook"
-        icon="collaborate-outline"
-        iconSize={30}
-        iconFill="#ccc"
         open={this.state.showNewWebhookModal}
         onSubmit={() => {
           // Send track event
