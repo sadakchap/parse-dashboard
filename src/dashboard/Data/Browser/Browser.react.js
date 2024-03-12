@@ -713,7 +713,7 @@ class Browser extends DashboardView {
       shouldContinue && this.showAddColumn();
     }).then(() => {
       // Send track event
-      back4AppNavigation && back4AppNavigation.createClassClickEvent()
+      // back4AppNavigation && back4AppNavigation.createClassClickEvent()
     }).catch(error => {
       let errorDeletingNote = 'Internal server error'
       if (error.code === 403) {errorDeletingNote = error.message;}

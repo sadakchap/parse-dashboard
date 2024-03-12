@@ -10,7 +10,7 @@ import PropTypes from 'lib/PropTypes';
 import B4aModal from 'components/B4aModal/B4aModal.react';
 import FormNote from 'components/FormNote/FormNote.react';
 
-export default class FormModal extends React.Component {
+export default class B4aFormModal extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -43,8 +43,8 @@ export default class FormModal extends React.Component {
     // }
     return showModal ? (
       <B4aModal
-        {...modalProps}
         type={B4aModal.Types.DEFAULT}
+        {...modalProps}
         confirmText={this.state.inProgress ? inProgressText : submitText}
         onConfirm={() => {
           this.setState({
@@ -88,7 +88,7 @@ export default class FormModal extends React.Component {
 }
 
 const { ...forwardedModalProps } = B4aModal.propTypes;
-FormModal.propTypes = {
+B4aFormModal.propTypes = {
   ...forwardedModalProps,
   children: PropTypes.node.describe('The form elements to be rendered in the modal.'),
   open: PropTypes.bool.isRequired.describe('Whether or not to show the modal.'),

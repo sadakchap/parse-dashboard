@@ -82,3 +82,9 @@
     padding: 0;
   }
 }
+
+@media only screen and (max-width: 1200px) {
+  .connect-page {
+    padding: 0 2rem;
+  }
+}

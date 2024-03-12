@@ -23,6 +23,7 @@ export const AppInformationFields = ({
     label={<Label text='App name' dark={true} />}
     input={<div style={{ width: '100%', padding: '0 1rem' }}>
       <TextInput
+        textAlign="right"
         value={appName}
         onChange={setAppName} />
     </div>}

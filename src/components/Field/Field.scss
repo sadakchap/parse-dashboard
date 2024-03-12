@@ -31,6 +31,7 @@
 .left {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   // background: #f9f9f9;
 }
 
@@ -45,6 +46,7 @@
   align-items: center;
   flex: 1;
   background: rgba(51, 51, 51, 0.03);
+  overflow-x: auto;
   // padding: 0 1rem;
 }
 
@@ -61,6 +63,7 @@
 
 .blue {
   &.field {
+    border-bottom: 1px solid rgba($dark, 0.03);
     background: #1d293d;
     color: $white;
   }

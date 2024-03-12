@@ -204,6 +204,7 @@ export default class AddColumnDialog extends React.Component {
             }
             onChange={async defaultValue => await this.handleDefaultValueChange(defaultValue)}
             dark={false}
+            negativeXPadding={16}
             width={240}
           />
         );

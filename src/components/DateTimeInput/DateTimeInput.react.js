@@ -42,6 +42,9 @@ export default class DateTimeInput extends React.Component {
           pos.y = document.body.clientHeight - height - 60;
         }
       }
+      if (this.props.negativeXPadding) {
+        pos.x -= this.props.negativeXPadding;
+      }
       return {
         open: true,
         position: pos,
