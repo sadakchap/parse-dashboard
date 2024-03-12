@@ -11,7 +11,7 @@
  */
 
 import * as PushConstants from 'dashboard/Push/PushConstants';
-import B4aLoader from 'components/B4aLoader/B4aLoader.react';
+import LoaderDots from 'components/LoaderDots/LoaderDots.react';
 import prettyNumber from 'lib/prettyNumber';
 import React from 'react';
 import stringList from 'lib/stringList';
@@ -358,7 +358,7 @@ export function tableInfoBuilder(query, schema, styles = {}) {
 
 export function formatCountDetails(count, approximate) {
   if (count === undefined) {
-    return <B4aLoader />;
+    return <LoaderDots />;
   } else if (count === 0 && approximate) {
     return 'very small';
   } else {

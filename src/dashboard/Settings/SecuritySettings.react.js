@@ -107,7 +107,7 @@ export default class SecuritySettings extends DashboardView {
     ) : null;
     return (
       <div className={styles.settings_page}>
-        <div style={{ maxWidth: '800px', margin: '2rem auto', marginTop: '5rem' }}>
+        <div className={styles.generalSettingsWrapper}>
           <Fieldset
             legend="App Keys"
             description="These are the unique identifiers used to access this app."

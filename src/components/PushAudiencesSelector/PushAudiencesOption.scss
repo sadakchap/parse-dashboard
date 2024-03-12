@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 //select width values are hardcoded
 //current usecase is fixed width container
 .row {
@@ -18,18 +19,12 @@
     float: left;
     margin-right: 10px;
   }
-  &:nth-child(even) {
-    background: #f2f6f8;
-  }
-  &:nth-child(odd) {
-    background: #fbfbfc;
-  }
   &:hover {
-    background: #EAEAEA;
+    background: rgba($dark-grey, 0.1);
   }
   &.everyone {
     .audienceInfo {
-      margin-top: 7px;
+      // margin-top: 7px;
     }
   }
   .cell {
@@ -40,10 +35,19 @@
     width: 50%;
     float: left;
     margin-top: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
   .col2 {
-    width: 20%;
+    width: 10%;
     margin-top: 7px;
+    text-align: right;
+    margin-left: -4px;
+  }
+  .col3 {
+    width: 40%;
+    text-align: right;
   }
   .input {
     margin-right: 12px;
@@ -52,7 +56,7 @@
   }
 
   .audienceInfo {
-    margin-left: 30px;
+    // margin-left: 30px;
 
     .headline {
       font-size: 14px;
@@ -60,6 +64,7 @@
 
     .subline {
       font-size: 12px;
+      text-align: left
     }
 
     .shortInfo {
@@ -89,10 +94,20 @@
 
     .moreDetails {
       @include buttonReset;
-      color: $blue;
+      position: relative;
+      color: $old-blue;
 
       &.hideMoreDetails {
         display: none;
+      }
+      &::after {
+        content: ' ';
+        position: absolute;
+        background: currentColor;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 1px;
       }
     }
   }

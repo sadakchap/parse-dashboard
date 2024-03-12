@@ -11,18 +11,19 @@
 .row {
   display: inline-block;
   height: 24px;
+  border: 1px solid $light-grey;
+  border-radius: 5px;
 
   a {
     @include InterFont;
     display: inline-block;
-    height: 24px;
+    height: 100%;
     line-height: 24px;
     padding: 0 12px;
-    font-size: 12px;
-    border-style: solid;
-    border-color: $cta-green;
-    border-width: 1px 0 1px 1px;
-    color: $cta-green;
+    font-size: 14px;
+    color: $white;
+    font-weight: 600;
+    cursor: pointer;
 
     &:first-child {
       border-radius: 5px 0 0 5px;
@@ -34,7 +35,7 @@
 
     &.current {
       background: $cta-green;
-      color: white;
+      color: $white;
     }
   }
 }

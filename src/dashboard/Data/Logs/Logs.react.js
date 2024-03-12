@@ -117,7 +117,7 @@ class Logs extends DashboardView {
 
   renderContent() {
     // Send track event
-    back4AppNavigation && back4AppNavigation.atParseLogsEvent()
+    // back4AppNavigation && back4AppNavigation.atParseLogsEvent()
 
     let type = this.props.params.type;
     let refreshIconStyles = styles.toolbarButton;

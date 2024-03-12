@@ -38,9 +38,9 @@ export default class B4aKeyField extends React.Component {
     if (this.props.showKeyName) {
       return (
         <div className={styles.hiddenKey}>
-          <div className={styles.title}>{this.props.name} Key</div>
+          <div className={styles.title}>{this.props.name} {this.props.keyText}</div>
           <div className={styles.showKey + ' ' + (this.state.hidden ? styles.hiddenText : '')}>
-            <span>{this.state.hidden ? 'Show Key' : this.props.children}</span>
+            <span>{this.state.hidden ? `Show ${this.props.keyText}` : this.props.children}</span>
             <Icon onClick={this.toggle.bind(this)} name={this.state.hidden ? 'b4a-visibility-icon' : 'b4a-visibility-off-icon'} width={16} height={16} fill="#27AE60" />
           </div>
         </div>
@@ -61,4 +61,8 @@ B4aKeyField.propTypes = {
   whenHiddenText: PropTypes.string.describe(
     'Use this instead of "name" if you aren\'t showing a key.'
   ),
+};
+
+B4aKeyField.defaultProps = {
+  keyText: 'key'
 };

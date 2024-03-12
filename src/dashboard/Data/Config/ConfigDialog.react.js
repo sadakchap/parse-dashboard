@@ -41,12 +41,12 @@ const EDITORS = {
     <B4aToggle type={B4aToggle.Types.TRUE_FALSE} value={!!value} onChange={onChange} />
   ),
   String: (value, onChange) => (
-    <TextInput multiline={true} value={value || ''} onChange={onChange} padding="0 1rem" dark={false} />
+    <TextInput multiline={true} value={value || ''} onChange={onChange} dark={false} />
   ),
   Number: (value, onChange) => (
-    <TextInput value={value || ''} onChange={numberValidator(onChange)} padding="0 1rem" dark={false} />
+    <TextInput value={value || ''} onChange={numberValidator(onChange)} dark={false} />
   ),
-  Date: (value, onChange) => <DateTimeInput fixed={true} value={value} onChange={onChange} dark={false} />,
+  Date: (value, onChange) => <DateTimeInput fixed={true} value={value} onChange={onChange} dark={false} width={240} negativeXPadding={16} />,
   Object: (value, onChange) => (
     <TextInput
       multiline={true}
@@ -55,7 +55,6 @@ const EDITORS = {
       value={value || ''}
       onChange={onChange}
       dark={false}
-      padding="0 1rem"
     />
   ),
   Array: (value, onChange) => (
@@ -66,7 +65,6 @@ const EDITORS = {
       value={value}
       onChange={onChange}
       dark={false}
-      padding="0 1rem"
     />
   ),
   GeoPoint: (value, onChange) => <GeoPointInput value={value} onChange={onChange} />,
@@ -226,9 +224,10 @@ export default class ConfigDialog extends React.Component {
               description="Use this to configure your app. You can change it at any time."
             />
           }
-          input={EDITORS[this.state.type](this.state.value, value => {
+          input={<div style={{ padding: '0 1rem', width: '100%' }}>{EDITORS[this.state.type](this.state.value, value => {
             this.setState({ value });
           })}
+          </div>}
         />
 
         {

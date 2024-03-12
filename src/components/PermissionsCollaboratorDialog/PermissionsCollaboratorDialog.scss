@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .dialog {
   @include modalAnimation();
@@ -13,10 +14,12 @@
   top: 50%;
   left: 50%;
   width: 725px;
-  background: white;
+  background: $white;
+  color: $dark;
   border-radius: 5px;
   overflow: hidden;
   transition: width 0.3s 0.15s ease-out;
+  padding: 1rem 2rem;
   /* width */
   ::-webkit-scrollbar {
     width: 20px;
@@ -29,7 +32,7 @@
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #169cee;
+    background: $old-dark-blue;
     border-radius: 10px;
     background-clip: padding-box;
     border: 6px solid rgba(0, 0, 0, 0);
@@ -38,7 +41,7 @@
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #0076ae
+    background-color: $light-grey
   }
 
   ::-webkit-scrollbar-corner {
@@ -47,14 +50,14 @@
 }
 
 .header {
-  height: 100px;
-  background: $blue;
   position: relative;
-  color: #ffffff;
-  line-height: 50px;
+  color: $dark;
   font-size: 16px;
   text-align: center;
-  padding-left: 20px;
+  
+  p {
+    padding: 0;
+  }
 
   .settings {
     position: absolute;
@@ -108,7 +111,6 @@
   height: calc(100vh - 330px);
   overflow-y: auto;
   overflow-x: hidden;
-  background: #f6fafb;
 }
 
 .second {
@@ -204,24 +206,22 @@
 
 p {
   text-align: left;
-  padding: 0 20px;
   margin: 0;
-  height: 25px;
 }
 
 p.role {
   font-size: 10px;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
 }
 
 p.email {
-  font-size: 18px;
-  margin-bottom: 0.4rem;
+  font-size: 16px;
+  margin-bottom: 0.5rem;
 }
 
 p.description {
-  font-size: 12px;
-  margin-bottom: 0.4rem;
+  font-size: 14px;
+  margin-bottom: 0.5rem;
 }
 
 .readHeader {
@@ -250,8 +250,8 @@ p.description {
 }
 
 .row {
-  height: 100px;
-  line-height: 100px;
+  height: 80px;
+  line-height: 80px;
   font-size: 15px;
   white-space: nowrap;
 }
@@ -268,15 +268,15 @@ p.description {
   display: inline-block;
   width: 50%;
   padding: 0 20px;
-  line-height: 25px;
   white-space: initial;
   min-height: 100%;
+  height: 100%;
 }
 
 .permission {
-  line-height: 100px;
+  line-height: 80px;
   text-align: center;
-  background-color: #f6fafb;
+  background-color: #3333330F;
 }
 .check {
   display: inline-block;
@@ -430,8 +430,8 @@ p.description {
 
 .labelSubHeader {
   width: 100%;
-  background-color: white;
-  padding: 0 30%;
+  text-align: right;
+  margin: 1.5rem 0 0.5rem 0;
 }
 
 .classesSubHeader {

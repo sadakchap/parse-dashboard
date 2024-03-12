@@ -201,7 +201,7 @@ class B4ACloudCode extends CloudCode {
         withCredentials: true
       })
       // eslint-disable-next-line no-undef
-      back4AppNavigation && back4AppNavigation.deployCloudCodeEvent()
+      // back4AppNavigation && back4AppNavigation.deployCloudCodeEvent()
       await this.fetchSource()
       // force jstree component to upload
       await updateTreeContent(this.state.files);

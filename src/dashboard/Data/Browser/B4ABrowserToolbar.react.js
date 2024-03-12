@@ -226,7 +226,7 @@ const B4ABrowserToolbar = ({
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Index Manager' onClick={onClickIndexManager} />
         <MenuItem disabled={isPendingEditCloneRows} text="API Reference" onClick={() => {
-          back4AppNavigation && back4AppNavigation.atApiReferenceClassesEvent()
+          // back4AppNavigation && back4AppNavigation.atApiReferenceClassesEvent()
           window.open(`${b4aSettings.DASHBOARD_PATH}/apidocs/${applicationId}${classApiId}`, '_blank')
         }} />
       </BrowserMenu>
@@ -283,7 +283,7 @@ const B4ABrowserToolbar = ({
       width={'90px'}
       additionalStyles={apiDocsButtonStyle}
       onClick={() => {
-        back4AppNavigation && back4AppNavigation.atApiReferenceClassesEvent()
+        // back4AppNavigation && back4AppNavigation.atApiReferenceClassesEvent()
         window.open(`${b4aSettings.DASHBOARD_PATH}/apidocs/${applicationId}${classApiId}`, '_blank')
       }}
     />

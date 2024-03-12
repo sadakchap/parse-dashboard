@@ -26,6 +26,9 @@ const Button = forwardRef(function Button(props, ref) {
     if (props.primary) {
       classes.push(styles.primary);
     }
+    if (props.secondary) {
+      classes.push(styles.secondary);
+    }
     if (props.color) {
       classes.push(styles[props.color]);
     }

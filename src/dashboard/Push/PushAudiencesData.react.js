@@ -13,6 +13,7 @@ import PushAudienceDialog from 'components/PushAudienceDialog/PushAudienceDialog
 import PushAudiencesSelector from 'components/PushAudiencesSelector/PushAudiencesSelector.react';
 import queryFromFilters from 'lib/queryFromFilters';
 import React from 'react';
+import Icon from 'components/Icon/Icon.react';
 import styles from './PushAudiencesData.scss';
 import { List } from 'immutable';
 import { CurrentApp } from 'context/currentApp';
@@ -51,7 +52,7 @@ export default class PushAudiencesData extends React.Component {
         name: 'Everyone',
         count: 0,
         objectId: 'everyone',
-        icon: 'users-solid',
+        // icon: 'users-solid',
       },
     });
 
@@ -206,14 +207,15 @@ export default class PushAudiencesData extends React.Component {
     const createAudienceButton = (
       <div className={styles.pushAudienceDialog}>
         <Button
-          value="Create an audience"
-          primary={true}
+          secondary={true}
+          color="green"
+          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Create an audience</span>}
           onClick={() => {
             this.setState({
               showCreateModal: true,
             });
           }}
-        ></Button>
+        />
         {this.state.showCreateModal ? (
           <PushAudienceDialog
             availableDevices={this.state.availableDevices}

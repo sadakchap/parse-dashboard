@@ -153,3 +153,13 @@
   }
 }
 
+
+.secondary {
+  background: transparent !important;
+  &.green {
+    color: $cta-green;
+    &:hover {
+      background-color: rgba($cta-green, 0.3) !important;
+    }
+  }
+}
