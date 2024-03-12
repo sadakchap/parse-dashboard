@@ -14,9 +14,9 @@ import Filter from 'components/Filter/Filter.react';
 import FormNote from 'components/FormNote/FormNote.react';
 import InstallationCondition from 'components/PushAudienceDialog/InstallationCondition.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
-import MultiSelect from 'components/MultiSelect/MultiSelect.react';
-import MultiSelectOption from 'components/MultiSelect/MultiSelectOption.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
+import B4aMultiSelect from 'components/MultiSelect/B4aMultiSelect.react';
+import B4aMultiSelectOption from 'components/MultiSelect/B4aMultiSelectOption.react';
 import PropTypes from 'lib/PropTypes';
 import queryFromFilters from 'lib/queryFromFilters';
 import React from 'react';
@@ -172,13 +172,13 @@ export default class PushAudienceDialog extends React.Component {
     // TODO: handle misconfigured device link
     for (const index in availableDevices) {
       options.push(
-        <MultiSelectOption key={`device${index}`} value={availableDevices[index]}>
+        <B4aMultiSelectOption key={`device${index}`} value={availableDevices[index]}>
           {PushConstants.DEVICE_MAP[availableDevices[index]]}
-        </MultiSelectOption>
+        </B4aMultiSelectOption>
       );
     }
     const platformSelect = (
-      <MultiSelect
+      <B4aMultiSelect
         endDelineator="or"
         fixed={true}
         value={this.state.platforms}
@@ -186,7 +186,7 @@ export default class PushAudienceDialog extends React.Component {
         placeHolder="Choose some platforms..."
       >
         {options}
-      </MultiSelect>
+      </B4aMultiSelect>
     );
     const nonEmptyConditions = this.state.filters.size !== 0 ? true : false;
     const audienceSize = PushUtils.formatCountDetails(
@@ -270,10 +270,9 @@ export default class PushAudienceDialog extends React.Component {
     }
 
     return (
-      <Modal
+      <B4aModal
         title={this.props.editMode ? 'Edit audience' : 'Create a new audience'}
-        type={Modal.Types.INFO}
-        icon="plus-outline"
+        type={B4aModal.Types.INFO}
         width={900}
         customFooter={customFooter}
       >
@@ -313,7 +312,7 @@ export default class PushAudienceDialog extends React.Component {
         >
           {this.props.errorMessage || this.state.errorMessage}
         </FormNote>
-      </Modal>
+      </B4aModal>
     );
   }
 }
