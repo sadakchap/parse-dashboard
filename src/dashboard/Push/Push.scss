@@ -6,15 +6,18 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .pushFlow {
+  @include InterFont;
   padding: 120px 0 70px 0;
-  overflow: auto;
+  max-width: $content-page-max-width;
+  margin: 0 auto;
 }
 
 .warning {
-  background: $orange;
-  color: white;
+  background: $alert-yellow;
+  color: $dark;
   font-size: 12px;
   text-align: center;
   line-height: 30px;
@@ -22,8 +25,8 @@
 }
 
 .info {
-  background: $blue;
-  color: white;
+  background: $light-blue;
+  color: $dark;
   font-size: 14px;
   text-align: center;
   line-height: 20px;
@@ -76,6 +79,7 @@
   right: 15px;
   font-size: 12px;
   top: 3px;
+  color: $error-red;
   &:hover, &:focus {
     text-decoration: underline;
   }
@@ -84,9 +88,17 @@
 .localizationSegment {
   text-align: center;
   padding: 20px 10px;
+  flex-direction: column !important;
 }
 
 .localedeviceCount {
   margin-top: 5px;
   color: $secondaryTextColor;
+}
+
+@media only screen and (max-width: 1200px) {
+  .pushFlow {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }

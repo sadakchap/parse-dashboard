@@ -32,7 +32,7 @@ import SliderWrap from 'components/SliderWrap/SliderWrap.react';
 import styles from 'dashboard/Push/Push.scss';
 import subscribeTo from 'lib/subscribeTo';
 import TextInput from 'components/TextInput/TextInput.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import { Directions } from 'lib/Constants';
 import { extractExpiration, extractPushTime } from 'lib/extractTime';
@@ -95,17 +95,20 @@ const LocalizedMessageField = ({
       <Field
         key={`message1_${id}`}
         className={monospace ? styles.monospace : ''}
-        label={<Label text={'What would you like to say?'} />}
+        label={<Label text={'What would you like to say?'} dark={true} />}
         input={
-          <TextInput
-            multiline={true}
-            height={200}
-            monospace={monospace}
-            placeholder={monospace ? '{\n  \u2026\n}' : 'Type your localized message\u2026'}
-            value={data}
-            onChange={onChangeValue.bind(undefined, id, currentLocaleOption)}
-          />
+          <div style={{ padding: '0 1rem', width: '100%' }}>
+            <TextInput
+              multiline={true}
+              height={200}
+              monospace={monospace}
+              placeholder={monospace ? '{\n  \u2026\n}' : 'Type your localized message\u2026'}
+              value={data}
+              onChange={onChangeValue.bind(undefined, id, currentLocaleOption)}
+            />
+          </div>
         }
+        theme={Field.Theme.BLUE}
       />
       <Field
         key={`message2_${id}`}
@@ -120,10 +123,12 @@ const LocalizedMessageField = ({
                 ) : null}
               </div>
             }
+            dark={true}
           />
         }
         input={
           <Dropdown
+            dark={true}
             value={currentLocaleOption}
             onChange={nextLocaleOption =>
               onChangeLocale.call(undefined, id, nextLocaleOption, data, currentLocaleOption)
@@ -136,6 +141,7 @@ const LocalizedMessageField = ({
               : null}
           </Dropdown>
         }
+        theme={Field.Theme.BLUE}
       />
     </div>
   );
@@ -307,8 +313,8 @@ class PushNew extends DashboardView {
           />
         }
         input={
-          <Toggle
-            type={Toggle.Types.TWO_WAY}
+          <B4aToggle
+            type={B4aToggle.Types.TWO_WAY}
             optionLeft="message"
             optionRight="time"
             value={fields.exp_type}
@@ -406,6 +412,7 @@ class PushNew extends DashboardView {
             <Label
               text="When should we deliver Message A?"
               description={PushHelper.setTimeFieldDescription(fields.local_time)}
+              dark={true}
             />
           }
           input={
@@ -418,6 +425,7 @@ class PushNew extends DashboardView {
               }}
             />
           }
+          theme={Field.Theme.BLUE}
         />
       );
       deliveryContent.push(
@@ -446,11 +454,11 @@ class PushNew extends DashboardView {
       deliveryContent.push(
         <Field
           key="push_time_type"
-          className={FieldStyles.header}
+          // className={FieldStyles.header}
           label={<Label text="Send immediately?" />}
           input={
-            <Toggle
-              type={Toggle.Types.CUSTOM}
+            <B4aToggle
+              type={B4aToggle.Types.CUSTOM}
               value={fields.push_time_type}
               labelLeft="No"
               labelRight="Yes"
@@ -502,35 +510,39 @@ class PushNew extends DashboardView {
             <Label
               text="Use user time zone?"
               description="This will send the message to users in their local timezones."
+              dark={true}
             />
           }
           input={
-            <Toggle
-              value={fields.local_time}
-              onChange={value => {
-                PushHelper.localTimeFormater(setField, 'push_time', fields.push_time_iso, value);
-                PushHelper.localTimeFormater(
-                  setField,
-                  'push_time_1',
-                  fields.push_time_1_iso,
-                  value
-                );
-                PushHelper.localTimeFormater(
-                  setField,
-                  'push_time_2',
-                  fields.push_time_2_iso,
-                  value
-                );
-                PushHelper.localTimeFormater(
-                  setField,
-                  'expiration_time',
-                  fields.expiration_time_iso,
-                  value
-                );
-                setField('local_time', value);
-              }}
-            />
+            <div style={{ padding: '0 1rem', width: '100%' }}>
+              <B4aToggle
+                value={fields.local_time}
+                onChange={value => {
+                  PushHelper.localTimeFormater(setField, 'push_time', fields.push_time_iso, value);
+                  PushHelper.localTimeFormater(
+                    setField,
+                    'push_time_1',
+                    fields.push_time_1_iso,
+                    value
+                  );
+                  PushHelper.localTimeFormater(
+                    setField,
+                    'push_time_2',
+                    fields.push_time_2_iso,
+                    value
+                  );
+                  PushHelper.localTimeFormater(
+                    setField,
+                    'expiration_time',
+                    fields.expiration_time_iso,
+                    value
+                  );
+                  setField('local_time', value);
+                }}
+              />
+            </div>
           }
+          theme={Field.Theme.BLUE}
         />,
         <SliderWrap
           key="slider"
@@ -556,27 +568,30 @@ class PushNew extends DashboardView {
       return [
         <Field
           key="messageTypeA"
-          className={FieldStyles.header}
-          label={<Label text="What type of Message A are you sending?" />}
+          // className={FieldStyles.header}
+          label={<Label text="What type of Message A are you sending?" dark={true} />}
           input={
-            <Toggle
-              type={Toggle.Types.CUSTOM}
-              labelLeft="Text"
-              labelRight="JSON"
-              optionLeft="text"
-              optionRight="json"
-              direction="left"
-              value={fields.data_type_1}
-              onChange={setField.bind(null, 'data_type_1')}
-            />
+            <div style={{ padding: '0 1rem', width: '100%' }}>
+              <B4aToggle
+                type={B4aToggle.Types.CUSTOM}
+                labelLeft="Text"
+                labelRight="JSON"
+                optionLeft="text"
+                optionRight="json"
+                direction="left"
+                value={fields.data_type_1}
+                onChange={setField.bind(null, 'data_type_1')}
+              />
+            </div>
           }
         />,
         <Field
           key="messageA"
           className={monospaceA ? styles.monospace : ''}
-          label={<Label text="Message A" />}
+          label={<Label text="Message A" dark={true} />}
           input={
             <TextInput
+              padding="0 1rem"
               multiline={true}
               height={200}
               monospace={monospaceA}
@@ -585,30 +600,35 @@ class PushNew extends DashboardView {
               onChange={setField.bind(null, 'data1')}
             />
           }
+          theme={Field.Theme.BLUE}
         />,
         <Field
           key="messageTypeB"
-          className={FieldStyles.header}
-          label={<Label text="What type of Message B are you sending?" />}
+          // className={FieldStyles.header}
+          label={<Label text="What type of Message B are you sending?" dark={true} />}
           input={
-            <Toggle
-              type={Toggle.Types.CUSTOM}
-              labelLeft="Text"
-              labelRight="JSON"
-              optionLeft="text"
-              optionRight="json"
-              direction="left"
-              value={fields.data_type_2}
-              onChange={setField.bind(null, 'data_type_2')}
-            />
+            <div style={{ padding: '0 1rem', width: '100%' }}>
+              <B4aToggle
+                type={B4aToggle.Types.CUSTOM}
+                labelLeft="Text"
+                labelRight="JSON"
+                optionLeft="text"
+                optionRight="json"
+                direction="left"
+                value={fields.data_type_2}
+                onChange={setField.bind(null, 'data_type_2')}
+              />
+            </div>
           }
+          theme={Field.Theme.BLUE}
         />,
         <Field
           key="messageB"
           className={monospaceB ? styles.monospace : ''}
-          label={<Label text="Message B" />}
+          label={<Label text="Message B" dark={true} />}
           input={
             <TextInput
+              padding="0 1rem"
               multiline={true}
               height={200}
               monospace={monospaceB}
@@ -617,41 +637,48 @@ class PushNew extends DashboardView {
               onChange={setField.bind(null, 'data2')}
             />
           }
+          theme={Field.Theme.BLUE}
         />,
       ];
     }
     return [
       <Field
         key="messageType"
-        className={FieldStyles.header}
-        label={<Label text="What type of message are you sending?" />}
+        // className={FieldStyles.header}
+        label={<Label text="What type of message are you sending?" dark={true} />}
         input={
-          <Toggle
-            type={Toggle.Types.CUSTOM}
-            labelLeft="Text"
-            labelRight="JSON"
-            optionLeft="text"
-            optionRight="json"
-            direction="left"
-            value={fields.data_type}
-            onChange={setField.bind(null, 'data_type')}
-          />
+          <div style={{ padding: '0 1rem', width: '100%' }}>
+            <B4aToggle
+              type={B4aToggle.Types.CUSTOM}
+              labelLeft="Text"
+              labelRight="JSON"
+              optionLeft="text"
+              optionRight="json"
+              direction="left"
+              value={fields.data_type}
+              onChange={setField.bind(null, 'data_type')}
+            />
+          </div>
         }
+        theme={Field.Theme.BLUE}
       />,
       <Field
         key="message"
         className={monospace ? styles.monospace : ''}
-        label={<Label text="What would you like to say?" />}
+        label={<Label text="What would you like to say?" dark={true} />}
         input={
-          <TextInput
-            multiline={true}
-            height={200}
-            monospace={monospace}
-            placeholder={monospace ? '{\n  \u2026\n}' : 'Type your message\u2026'}
-            value={fields.data}
-            onChange={setField.bind(null, 'data')}
-          />
+          <div style={{ padding: '0 1rem', width: '100%' }}>
+            <TextInput
+              multiline={true}
+              height={200}
+              monospace={monospace}
+              placeholder={monospace ? '{\n  \u2026\n}' : 'Type your message\u2026'}
+              value={fields.data}
+              onChange={setField.bind(null, 'data')}
+            />
+          </div>
         }
+        theme={Field.Theme.BLUE}
       />,
     ];
   }
@@ -676,15 +703,18 @@ class PushNew extends DashboardView {
       translationSegment.push(
         <Field
           key="slider"
-          label={<Label text="Localize your message?" />}
+          label={<Label text="Localize your message?" dark={true} />}
           input={
-            <Toggle
-              value={fields.translation_enable}
-              onChange={value => {
-                setField('translation_enable', value || null);
-              }}
-            />
+            <div style={{ padding: '0 1rem', width: '100%' }}>
+              <B4aToggle
+                value={fields.translation_enable}
+                onChange={value => {
+                  setField('translation_enable', value || null);
+                }}
+              />
+            </div>
           }
+          theme={Field.Theme.BLUE}
         />
       );
       if (fields.translation_enable) {
@@ -768,6 +798,7 @@ class PushNew extends DashboardView {
               </a>
             ) : !this.state.loadingLocale && this.state.availableLocales.length === 0 ? null : (
               <Button
+                width="30%"
                 progress={this.state.loadingLocale}
                 disabled={this.state.availableLocales.length === 0}
                 value={this.state.loadingLocale ? 'Loading locales...' : 'Add a Localization'}
@@ -835,10 +866,10 @@ class PushNew extends DashboardView {
         description="Experiment with different messages or send times to discover the optimal campaign variables."
       >
         <Field
-          className={FieldStyles.header}
+          // className={FieldStyles.header}
           label={<Label text="Use A/B Testing" />}
           input={
-            <Toggle
+            <B4aToggle
               value={fields.exp_enable}
               onChange={value => {
                 if (!this.state.audienceSizeSuggestion) {
@@ -880,7 +911,7 @@ class PushNew extends DashboardView {
         <Field
           label={<Label text="Should this notification expire?" />}
           input={
-            <Toggle value={fields.push_expires} onChange={setField.bind(null, 'push_expires')} />
+            <B4aToggle value={fields.push_expires} onChange={setField.bind(null, 'push_expires')} />
           }
         />
         {PushHelper.renderExpirationContent(fields, setField)}
@@ -896,15 +927,18 @@ class PushNew extends DashboardView {
           {this.renderMessageContent(fields, setField)}
         </div>
         <Field
-          label={<Label text="Increment the app badge?" />}
+          label={<Label text="Increment the app badge?" dark={true} />}
           input={
-            <Toggle
-              value={fields.increment_badge}
-              onChange={value => {
-                setField('increment_badge', value || null);
-              }}
-            />
+            <div style={{ padding: '0 1rem', width: '100%' }}>
+              <B4aToggle
+                value={fields.increment_badge}
+                onChange={value => {
+                  setField('increment_badge', value || null);
+                }}
+              />
+            </div>
           }
+          theme={Field.Theme.BLUE}
         />
         {translationSegment}
       </Fieldset>

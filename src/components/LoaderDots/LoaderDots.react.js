@@ -6,7 +6,7 @@
  * the root directory of this source tree.
  */
 import React from 'react';
-import styles from 'components/LoaderDots/LoaderDots.scss';
+import styles from 'components/LoaderDots/B4aLoaderDots.scss';
 
 export default class LoaderDots extends React.Component {
   constructor() {
