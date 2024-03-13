@@ -90,7 +90,7 @@
   @include buttonReset;
   &:hover, &:focus {
     svg {
-      fill: $blue;
+      fill: $error-log-red;
     }
   }
 }

@@ -13,7 +13,7 @@ import CategoryList from 'components/CategoryList/CategoryList.react';
 import CategoryItemAction from 'components/CategoryList/CategoryItemAction.js';
 import DashboardView from 'dashboard/DashboardView.react';
 import EmptyState from 'components/EmptyState/EmptyState.react';
-import FormModal from 'components/FormModal/FormModal.react';
+import B4aFormModal from 'components/FormModal/B4aFormModal.react';
 import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import Modal from 'components/Modal/Modal.react';
 import PushAudienceDialog from 'components/PushAudienceDialog/PushAudienceDialog.react';
@@ -237,7 +237,7 @@ class PushAudiencesIndex extends DashboardView {
     }
 
     query.deviceType = { $in: platforms };
-    //TODO: handle fail case - need to modify/extend <FormModal> to handle custom footer
+    //TODO: handle fail case - need to modify/extend <B4aFormModal> to handle custom footer
     this.props.pushaudiences
       .dispatch(PushAudiencesStore.ActionTypes.CREATE, {
         query: JSON.stringify(query),
@@ -287,8 +287,7 @@ class PushAudiencesIndex extends DashboardView {
     );
 
     const deleteAudienceModal = (
-      <FormModal
-        icon="warn-outline"
+      <B4aFormModal
         title="Delete Audience"
         subtitle={deleteSubtitle}
         type={Modal.Types.DANGER}
@@ -308,7 +307,7 @@ class PushAudiencesIndex extends DashboardView {
         onClose={() => {
           this.setState({ showDeleteAudienceModal: false });
         }}
-      ></FormModal>
+      ></B4aFormModal>
     );
 
     if (typeof data !== 'undefined') {

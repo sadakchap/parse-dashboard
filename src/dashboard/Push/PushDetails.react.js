@@ -216,11 +216,11 @@ const formatAnalyticsData = data => {
 };
 
 const COLOR_MAP = {
-  green: '#00db7c',
-  red: '#ff395e',
-  darkPurple: '#8D11BA',
+  green: '#27AE60',
+  red: '#E85C3E',
+  darkPurple: '#114370',
   blueGreen: '#11A4BA',
-  blue: '#169cee',
+  blue: '#15A9FF',
 };
 
 const DROPDOWN_KEY_GROUP_A = 'Group A';

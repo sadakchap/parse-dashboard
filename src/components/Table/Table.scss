@@ -34,6 +34,7 @@
   // background: #fdfafb;
   width: 100%;
   text-align: left;
+  background: $regal-blue;
 }
 
 .head {
@@ -41,13 +42,13 @@
   font-size: 14px;
   line-height: 30px;
   padding: 0 16px;
-  background: $white;
+  background: #1d2a3e;
   height: 30px;
 }
 
 .tr {
   // background: #fdfafb;
-  border-bottom: 1px solid $borderGrey;
+  // border-bottom: 1px solid $borderGrey;
 
   &:nth-child(2n) {
     // background: #f4f5f7;

@@ -6,9 +6,9 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .detailsWrapper {
-  background: $white;
   padding-bottom: 100px;
 }
 
@@ -20,7 +20,6 @@
 .groupHeader {
   text-align: center;
   padding: 150px 0 50px 0;
-  background: $pushDetailsHeaderBackground;
 }
 
 .headerTitle {
@@ -31,12 +30,13 @@
 }
 
 .headline {
-  font-size: 26px;
+  @include CourierFont;
+  font-size: 16px;
   margin: 10px;
 }
 
 .subline {
-  color: $secondaryTextColor;
+  color: $light-grey;
   font-size: 14px;
 }
 
@@ -62,7 +62,7 @@
 
 .tableWrap {
   border-radius: $borderRadiusConst;
-  border: 1px solid $borderGrey;
+  // border: 1px solid $borderGrey;
   border-top: 0;
   overflow: hidden;
 }

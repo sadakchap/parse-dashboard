@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .wrapper {
   width: 320px;
@@ -25,7 +26,7 @@
     margin: 10px auto;
 
     .rate {
-      @include DosisFont;
+      @include SoraFont;
       font-size: 40px;
       font-weight: 100;
       padding: 38px 0 0 0;
@@ -34,41 +35,44 @@
   }
 
   .count_wrap {
-    color: $mainTextColor;
+    color: $light-grey;
 
     .count {
-      font-size: 30px;
-      @include DosisFont;
+      font-size: 24px;
+      @include InterFont;
+    }
+    .count_label {
+      font-size: 14px;
     }
   }
 }
 
 .blue {
-  color: $blue;
-  background: white;
+  color: $old-blue;
+  background: $white;
 }
 
 .blue_inv {
-  color: white;
-  background: $blue;
+  color: $white;
+  background: $old-blue;
 }
 
 .pink {
-  color: $pink;
-  background: white;
+  color: $error-red;
+  background: $white;
 }
 
 .pink_inv {
-  color: white;
-  background: $pink;
+  color: $white;
+  background: $error-red;
 }
 
 .yellow {
-  color: $yellow;
-  background: white;
+  color: $alert-yellow;
+  background: $dark;
 }
 
 .yellow_inv {
-  color: white;
-  background: $yellow;
+  color: $white;
+  background: $alert-yellow;
 }
