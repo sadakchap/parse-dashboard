@@ -11,7 +11,7 @@ import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
 import CategoryItemAction from 'components/CategoryList/CategoryItemAction.js';
 import DashboardView from 'dashboard/DashboardView.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import LoaderDots from 'components/LoaderDots/LoaderDots.react';
 import React from 'react';
@@ -430,10 +430,10 @@ class PushIndex extends DashboardView {
   renderEmpty() {
     const type = this.props.params.category || PUSH_TYPE_ALL;
     return (
-      <EmptyState
+      <B4aEmptyState
         title={emptyStateContent[type].title}
         description={emptyStateContent[type].description}
-        icon="push-solid"
+        icon="b4a-app-settings-icon"
         cta={emptyStateContent[type].cta}
         action={'http://docs.parseplatform.org/ios/guide/#push-notifications'}
       />

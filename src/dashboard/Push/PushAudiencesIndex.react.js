@@ -12,7 +12,7 @@ import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
 import CategoryItemAction from 'components/CategoryList/CategoryItemAction.js';
 import DashboardView from 'dashboard/DashboardView.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 import B4aFormModal from 'components/FormModal/B4aFormModal.react';
 import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import Modal from 'components/Modal/Modal.react';
@@ -203,7 +203,7 @@ class PushAudiencesIndex extends DashboardView {
   renderEmpty() {
     if (this.state.availableDevices.length === 0) {
       return (
-        <EmptyState
+        <B4aEmptyState
           title="No registered devices"
           description="You have no registered installations of your app. You can get started with our Quick Start guide."
           icon="devices-solid"
@@ -213,9 +213,9 @@ class PushAudiencesIndex extends DashboardView {
       );
     } else {
       return (
-        <EmptyState
+        <B4aEmptyState
           title="No push audiences to display yet."
-          icon="users-solid"
+          icon="b4a-app-settings-icon"
           cta="Create your first audience"
           action={() => {
             this.setState({

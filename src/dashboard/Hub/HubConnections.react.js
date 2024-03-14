@@ -101,7 +101,7 @@ class HubConnections extends DashboardView {
           ? <div className={styles.empty}>
             <B4aEmptyState
               cta='Go to Database Hub'
-              action={() => window.location.href = b4aSettings.HUB_URL}
+              action={b4aSettings.HUB_URL}
               description='Check the Database Hub and connect to public databases'
               icon='b4a-app-settings-icon'
               title='No connections were found'
