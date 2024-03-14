@@ -32,7 +32,7 @@
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: $old-dark-blue;
+    background: $dark-grey;
     border-radius: 10px;
     background-clip: padding-box;
     border: 6px solid rgba(0, 0, 0, 0);
@@ -41,7 +41,7 @@
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background-color: $light-grey
+    background-color: $light-grey;
   }
 
   ::-webkit-scrollbar-corner {
@@ -165,6 +165,11 @@
   position: relative;
   height: 51px;
   border-top: 1px solid #e3e3ea;
+  padding: 10px 15px;
+  padding-right: 0;
+  display: flex;
+  justify-content: flex-end;
+
 
   .details {
     font-size: 12px;
@@ -176,11 +181,11 @@
   }
 
   .actions {
-    float: right;
+    // float: right;
     padding: 10px 15px;
 
-    a {
-      margin-left: 10px;
+    button:first-of-type {
+      margin-right: 10px;
     }
   }
 }
@@ -265,12 +270,14 @@ p.description {
 }
 
 .label {
-  display: inline-block;
-  width: 50%;
-  padding: 0 20px;
+  display: flex;
+  padding-left: 20px;
   white-space: initial;
   min-height: 100%;
   height: 100%;
+  > div:last-child {
+    padding-left: 20px;
+  }
 }
 
 .permission {
@@ -411,19 +418,28 @@ p.description {
 .customTabList {
   height: 100%;
   margin-bottom: 0;
-  padding: 0 10px;
+  // padding: 0 10px;
 }
 
 .subHeader {
   min-width: 100%;
   height: 35px;
-  background-color: #0076ae
+  // background-color: #0076ae
 }
 
 
 .labelTab {
-  padding: 6px 20px;
+  padding: 6px 17px;
   margin-bottom: 0;
+  color: #ccc;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-block;
+  &.activeLabel {
+    color: $white;
+    background: $cta-green;
+  }
 }
 
 @include modalKeyframes();
@@ -431,13 +447,22 @@ p.description {
 .labelSubHeader {
   width: 100%;
   text-align: right;
-  margin: 1.5rem 0 0.5rem 0;
+  padding: 0.5rem 10px 0.5rem 0;
+  background: #33333308;
 }
 
 .classesSubHeader {
-  padding: 0 10%;
+  // padding: 0 10%;
+  justify-content: flex-end;
 }
 
 .centralizedText {
   text-align: center
+}
+
+.labelWrap {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 0 !important;
+  overflow: hidden;
 }

@@ -50,6 +50,15 @@
        transition: all 0.2s cubic-bezier(0, 0, 0.74, 2.2);
      }
    }
+
+   &.dark {
+    span {
+      border-color: $dark !important;
+    }
+    span::after {
+      background: $dark !important;
+    }
+   }
  
    input:checked + span {
      background: transparent;

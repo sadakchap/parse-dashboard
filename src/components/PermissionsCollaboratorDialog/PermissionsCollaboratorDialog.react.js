@@ -27,6 +27,7 @@ function renderSimpleCheckboxes(feature, permissions, collaboratorsCanWrite, onC
     <label key={feature + 'None' + 'label'} htmlFor={feature + 'None'}>
       <div key={feature + 'None' + 'div'} className={[styles.check, styles.second].join(' ')}>
         <RadioButton
+          dark={true}
           id={feature + 'None'}
           name={feature}
           className={styles.input}
@@ -38,6 +39,7 @@ function renderSimpleCheckboxes(feature, permissions, collaboratorsCanWrite, onC
     <label key={feature + 'Read' + 'label'} htmlFor={feature + 'Read'}>
       <div key={feature + 'Read' + 'div'} className={[styles.check, styles.third].join(' ')}>
         <RadioButton
+          dark={true}
           id={feature + 'Read'}
           name={feature}
           className={styles.input}
@@ -49,6 +51,7 @@ function renderSimpleCheckboxes(feature, permissions, collaboratorsCanWrite, onC
     <label key={feature + 'Write' + 'label'} htmlFor={feature + 'Write'} style={(!collaboratorsCanWrite ? {opacity: 0.3} : {opacity: 1})}>
       <div key={feature + 'Write' + 'div'} className={[styles.check, styles.third].join(' ')}>
         <RadioButton
+          dark={true}
           id={feature + 'Write'}
           name={feature}
           className={styles.input}
@@ -61,6 +64,7 @@ function renderSimpleCheckboxes(feature, permissions, collaboratorsCanWrite, onC
     (feature === 'classes' ?  <label key={feature + 'Custom' + 'label'} htmlFor={feature + 'Custom'} style={(!collaboratorsCanWrite ? {opacity: 0.3} : {opacity: 1})}>
       <div key={feature + 'Custom' + 'div'} className={[styles.check, styles.third].join(' ')}>
         <RadioButton
+          dark={true}
           id={feature + 'Custom'}
           name={feature}
           className={styles.input}
@@ -90,7 +94,6 @@ export default class PermissionsCollaboratorDialog extends React.Component {
     super();
 
     const isDefaultFeatures = lodash.isEqual(customFeaturesPermissions, defaultFeaturesPermissions);
-    console.log(customFeaturesPermissions);
     const selectedClassesTab = customFeaturesPermissions === undefined || !customFeaturesPermissions['classes'] ? 'Write' : (customFeaturesPermissions['classes'] === 'Custom' ? 'CustomClasses' :  customFeaturesPermissions['classes'])
 
     this.state = {
@@ -125,13 +128,13 @@ export default class PermissionsCollaboratorDialog extends React.Component {
       const text = this.state.features.label[index]
       const description = this.state.features.description[index]
       const collaboratorsCanWrite = this.state.features.collaboratorsCanWrite[index]
-      const label = <Label key={text  + (isDefaultFeatures ? 'Label' : 'Input')} text={text} description={description}/>
+      const label = <Label key={text  + (isDefaultFeatures ? 'Label' : 'Input')} text={text} description={description} />
       let content = null;
       if (isDefaultFeatures) {content = renderSimpleLabels(this.props.defaultFeaturesPermissions[feature]);}
       else {content = renderSimpleCheckboxes(feature, this.state.customFeaturesPermissions, collaboratorsCanWrite, this.setPermissions.bind(this));}
-      rows.push((<div key={feature + (isDefaultFeatures ? 'Label' : 'Input')} className={styles.row}>
-        <Field labelWidth={100} className={styles.label} label={label} />
-        <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} />
+      rows.push((<div key={feature + (isDefaultFeatures ? 'Label' : 'Input')}>
+        <Field labelWidth={50} className={styles.label} label={label} input={content} />
+        {/* <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} /> */}
       </div>))
       index++
     }
@@ -146,8 +149,8 @@ export default class PermissionsCollaboratorDialog extends React.Component {
       if (permissionType !== 'CustomClasses') {content = renderSimpleLabels(permissionType)}
       else {content = renderSimpleCheckboxes(appClassName, this.state.classesPermissions, true, this.setRowPermissions.bind(this));}
       rows.push((<div key={appClassName + (permissionType === 'Custom' ? 'Label' : 'Input')} className={styles.row}>
-        <Field labelWidth={100} className={[styles.label, styles.centralizedText].join(' ')} label={label} />
-        <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} />
+        <Field labelWidth={50} className={[styles.label, styles.centralizedText].join(' ')} label={label} input={content} />
+        {/* <Field labelWidth={100} className={[styles.label, styles.permission].join(' ')} label={content} /> */}
       </div>))
     }
     return rows;
@@ -216,48 +219,54 @@ export default class PermissionsCollaboratorDialog extends React.Component {
             </TabPanel>
             <TabPanel>
               <div className={ [styles.label, styles.labelSubHeader, styles.classesSubHeader].join(' ') }>
-                <label className={ styles.labelTab } htmlFor='tab3'>
-                  <RadioButton
-                    id='tab3'
-                    name='Tab'
-                    className={styles.radiobutton}
-                    defaultChecked={this.state.selectedClassesTab === 'Write'}
-                    disabled={false}
-                    onClick={() => this.setState({ selectedClassesTab: 'Write', isFeaturesSelected: false })}
-                  />
-                  Write
-                </label>
-                <label className={ styles.labelTab } htmlFor='tab4'>
-                  <RadioButton
-                    id='tab4'
-                    name='Tab'
-                    defaultChecked={this.state.selectedClassesTab === 'Read'}
-                    disabled={false}
-                    onClick={() => this.setState({ selectedClassesTab: 'Read', isFeaturesSelected: false })}
-                  />
-                  Read
-                </label>
-                <label className={ styles.labelTab } htmlFor='tab5'>
-                  <RadioButton
-                    id='tab5'
-                    name='Tab'
-                    className={styles.radiobutton}
-                    defaultChecked={this.state.selectedClassesTab === 'None'}
-                    disabled={false}
-                    onClick={() => this.setState({ selectedClassesTab: 'None', isFeaturesSelected: false })}
-                  />
-                  None
-                </label>
-                <label className={ styles.labelTab } htmlFor='tab6'>
-                  <RadioButton
-                    id='tab6'
-                    name='Tab'
-                    defaultChecked={this.state.selectedClassesTab === 'CustomClasses'}
-                    disabled={false}
-                    onClick={() => this.setState({ selectedClassesTab: 'CustomClasses', isFeaturesSelected: false })}
-                  />
-                  Custom
-                </label>
+                <div className={styles.labelWrap}>
+                  <label className={styles.labelTab + ` ${this.state.selectedClassesTab === 'Write' ? styles.activeLabel : ''}`} htmlFor='tab3' onClick={() => this.setState({ selectedClassesTab: 'Write', isFeaturesSelected: false })}>
+                    {/* <RadioButton
+                      dark={true}
+                      id='tab3'
+                      name='Tab'
+                      className={styles.radiobutton}
+                      defaultChecked={this.state.selectedClassesTab === 'Write'}
+                      disabled={false}
+                      onClick={() => this.setState({ selectedClassesTab: 'Write', isFeaturesSelected: false })}
+                    /> */}
+                    Write
+                  </label>
+                  <label className={styles.labelTab  + ` ${this.state.selectedClassesTab === 'Read' ? styles.activeLabel : ''}`} htmlFor='tab4' onClick={() => this.setState({ selectedClassesTab: 'Read', isFeaturesSelected: false })}>
+                    {/* <RadioButton
+                      dark={true}
+                      id='tab4'
+                      name='Tab'
+                      defaultChecked={this.state.selectedClassesTab === 'Read'}
+                      disabled={false}
+                      onClick={() => this.setState({ selectedClassesTab: 'Read', isFeaturesSelected: false })}
+                    /> */}
+                    Read
+                  </label>
+                  <label className={ styles.labelTab + ` ${this.state.selectedClassesTab === 'None' ? styles.activeLabel : ''}` } htmlFor='tab5'  onClick={() => this.setState({ selectedClassesTab: 'None', isFeaturesSelected: false })}>
+                    {/* <RadioButton
+                      dark={true}
+                      id='tab5'
+                      name='Tab'
+                      className={styles.radiobutton}
+                      defaultChecked={this.state.selectedClassesTab === 'None'}
+                      disabled={false}
+                      onClick={() => this.setState({ selectedClassesTab: 'None', isFeaturesSelected: false })}
+                    /> */}
+                    None
+                  </label>
+                  <label className={ styles.labelTab + ` ${this.state.selectedClassesTab === 'CustomClasses' ? styles.activeLabel : ''}` } htmlFor='tab6'  onClick={() => this.setState({ selectedClassesTab: 'CustomClasses', isFeaturesSelected: false })}>
+                    {/* <RadioButton
+                      dark={true}
+                      id='tab6'
+                      name='Tab'
+                      defaultChecked={this.state.selectedClassesTab === 'CustomClasses'}
+                      disabled={false}
+                      onClick={() => this.setState({ selectedClassesTab: 'CustomClasses', isFeaturesSelected: false })}
+                    /> */}
+                    Custom
+                  </label>
+                </div>
               </div>
             </TabPanel>
             <div className={styles.tableWrap}>
@@ -276,6 +285,9 @@ export default class PermissionsCollaboratorDialog extends React.Component {
             <div className={styles.actions}>
               <Button
                 value='Cancel'
+                color="white"
+                width="auto"
+                additionalStyles={{ border: '1px sold #ccc', color: '#0F1C32' }}
                 onClick={this.props.onCancel} />
               <Button
                 primary={true}

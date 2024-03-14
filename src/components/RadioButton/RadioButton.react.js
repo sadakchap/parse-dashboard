@@ -13,7 +13,7 @@ const RadioButton = props => {
   props = Object.assign({}, props);
   delete props.parentClassName;
   return (
-    <div className={[styles.radiobutton, parentClassName].join(' ')}>
+    <div className={[styles.radiobutton, parentClassName, props.dark ? styles.dark : ''].join(' ')}>
       <input {...props} type="radio" />
       <span></span>
     </div>
