@@ -286,6 +286,7 @@ export default class PushAudienceDialog extends React.Component {
         type={B4aModal.Types.INFO}
         width={900}
         customFooter={customFooter}
+        onCancel={this.props.secondaryAction}
       >
         <Field
           labelWidth={51}
