@@ -3,7 +3,7 @@ import React from 'react'
 import Swal from 'sweetalert2'
 import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
-import EmptyState from 'components/EmptyState/EmptyState.react'
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react'
 import Icon from 'components/Icon/Icon.react'
 import DashboardView from 'dashboard/DashboardView.react'
 import HubDisconnectionDialog from 'dashboard/Hub/HubDisconnectionDialog.react'
@@ -98,13 +98,15 @@ class HubConnections extends DashboardView {
           </section>
         </div>
         {!this.state.data || this.state.data.length === 0
-          ? <EmptyState
-            cta='Go to Database Hub'
-            action={b4aSettings.HUB_URL}
-            description='Check the Database Hub and connect to public databases'
-            icon='devices-solid'
-            title='No connections were found'
-          />
+          ? <div className={styles.empty}>
+            <B4aEmptyState
+              cta='Go to Database Hub'
+              action={() => window.location.href = b4aSettings.HUB_URL}
+              description='Check the Database Hub and connect to public databases'
+              icon='b4a-app-settings-icon'
+              title='No connections were found'
+            />
+          </div>
           : <>
             <div className={styles.connectionsTableContainer}>
               <table className={styles.connectionsTable}>
