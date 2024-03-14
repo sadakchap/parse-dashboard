@@ -1,11 +1,11 @@
 import React from 'react';
-import Icon from 'components/Icon/Icon.react';
+import ghostImg from './ghost.png';
 import styles from 'components/EmptyGhostState/EmptyGhostState.scss';
 
 const EmptyGhostState = ({ title, description, cta = '', action = () => {}, secondaryCta = '', secondaryAction = () => {}, fill = '#C1E2FF'}) => {
   return (
     <div className={styles.content}>
-      <Icon className={styles.icon} name="ghost-icon" width={32} height={40} fill={fill} />
+      <img src={ghostImg} alt="empty state" />
       <div className={styles.title}>{title}</div>
       <div className={styles.description}>{description}</div>
       <div className={styles.actionBtns}>

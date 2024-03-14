@@ -77,9 +77,9 @@ class Webhooks extends TableView {
     return (
       <Toolbar section="Webhooks">
         <Button
-          secondary={true}
+          primary={true}
           color="green"
-          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Create a webhook</span>}
+          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#f9f9f9" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Create a webhook</span>}
           onClick={this.openNewWebhookModal.bind(this)}
         />
       </Toolbar>

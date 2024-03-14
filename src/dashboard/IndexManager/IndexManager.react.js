@@ -428,7 +428,7 @@ class IndexManager extends DashboardView {
               </a>
             )}
             <a className={styles.toolbarButton} onClick={this.refresh} title='Refresh'>
-              <Icon name='refresh-icon' width={18} height={18} />
+              <Icon name='b4a-refresh-icon' width={18} height={18} />
             </a>
             {this.state.canDelete && (
               <a

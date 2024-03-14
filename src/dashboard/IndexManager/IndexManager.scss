@@ -66,18 +66,19 @@
         font-size: 14px;
         gap: 5px;
         color: $white;
-        background: transparent;
+        background: $cta-green;
         border: 1px solid $cta-green;
-        color: $cta-green;
         margin: 0 4px;
+        transition: 0.5s;
 
         &:hover {
-          background-color: rgba($cta-green, $alpha: 0.03);
+          filter: drop-shadow(1px 1px 10px #92E1B4);
+          background-color: #13A39A!important;
         }
 
         svg {
           vertical-align: middle;
-          fill: $cta-green;
+          fill: $white;
         }
 
         span {

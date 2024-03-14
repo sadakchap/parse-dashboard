@@ -375,7 +375,7 @@ class PushIndex extends DashboardView {
         subsection={PUSH_CATEGORIES[this.props.params.category]}
         details={'push'}
       >
-        <Button color="green" secondary={true} value="Send a push" onClick={this.navigateToNew.bind(this)} />
+        <Button color="green" primary={true} value="Send a push" onClick={this.navigateToNew.bind(this)} />
       </Toolbar>
     );
   }

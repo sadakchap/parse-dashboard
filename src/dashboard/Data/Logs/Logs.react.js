@@ -133,7 +133,7 @@ class Logs extends DashboardView {
           details={ReleaseInfo({ release: this.state.release })}
         >
         <a className={refreshIconStyles} onClick={this.refreshLogs} title='Refresh'>
-          <Icon name='refresh' width={30} height={26} />
+          <Icon name='b4a-refresh-icon' width={18} height={18} />
         </a>
         </Toolbar>
       );

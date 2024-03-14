@@ -207,9 +207,9 @@ export default class PushAudiencesData extends React.Component {
     const createAudienceButton = (
       <div className={styles.pushAudienceDialog}>
         <Button
-          secondary={true}
+          primary={true}
           color="green"
-          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Create an audience</span>}
+          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#f9f9f9" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Create an audience</span>}
           onClick={() => {
             this.setState({
               showCreateModal: true,

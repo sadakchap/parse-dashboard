@@ -1,5 +1,6 @@
 import React from 'react';
-import Icon from 'components/Icon/Icon.react';
+// import Icon from 'components/Icon/Icon.react';
+import ghostImg from './ghost.png';
 import styles from 'components/B4aEmptyState/B4aEmptyState.scss';
 import stylesButton from 'components/Button/Button.scss';
 
@@ -28,7 +29,8 @@ const ctaButton = (cta, action, primary = true) => {
 const B4aEmptyState = ({ icon = 'ghost-icon', title, description, cta = '', action = () => {}, secondaryCta = '', secondaryAction = () => {}, fill = '#C1E2FF'}) => {
   return (
     <div className={styles.content}>
-      <Icon className={styles.icon} name={icon} width={32} height={40} fill={fill} />
+      <img src={ghostImg} alt="empty state" />
+      {/* <Icon className={styles.icon} name={icon} width={32} height={40} fill={fill} /> */}
       <div className={styles.title}>{title}</div>
       <div className={styles.description}>{description}</div>
       <div className={styles.actionBtns}>
