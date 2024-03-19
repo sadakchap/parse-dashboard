@@ -15,6 +15,7 @@ import {
 } from 'dashboard/Settings/Fields/Constants';
 import PropTypes from 'lib/PropTypes';
 import getError from 'dashboard/Settings/Util/getError';
+import styles from 'dashboard/Settings/GeneralSettings.scss';
 
 export const ManageAppFields = ({
   parseOptions,
@@ -62,6 +63,7 @@ export const ManageAppFields = ({
         }
         theme={Field.Theme.BLUE}
       />
+      <hr className={styles.fieldHr} />
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy
@@ -96,6 +98,7 @@ export const ManageAppFields = ({
         }
         theme={Field.Theme.BLUE}
       />
+      <hr className={styles.fieldHr} />
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy
@@ -229,7 +232,7 @@ export const ManageAppFields = ({
         }
         theme={Field.Theme.BLUE}
       />
-
+      <hr className={styles.fieldHr} />
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO Account lockout
