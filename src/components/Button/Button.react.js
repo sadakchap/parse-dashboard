@@ -38,6 +38,9 @@ const Button = forwardRef(function Button(props, ref) {
     if (props.className) {
       classes.push(props.className)
     }
+    if (props.dark) {
+      classes.push(styles.dark);
+    }
   }
   const clickHandler = hasOnClick ? props.onClick : noop;
   let styleOverride = null;

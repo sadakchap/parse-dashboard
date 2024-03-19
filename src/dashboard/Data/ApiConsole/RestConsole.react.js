@@ -311,7 +311,7 @@ export default class RestConsole extends Component {
               />
             }
             secondary={
-              <Button disabled={hasError} value="Export to cURL" onClick={this.showCurl.bind(this)} />
+              <Button disabled={hasError} color="white" value="Export to cURL" width="auto" dark={true} onClick={this.showCurl.bind(this)} />
             }
           />
         </Toolbar>

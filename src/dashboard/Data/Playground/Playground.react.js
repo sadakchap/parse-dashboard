@@ -161,6 +161,7 @@ export default class Playground extends Component {
               onClick={() => this.runCode()}
               progress={running}
               color="white"
+              dark={true}
             />
             {window.localStorage && (
               <SaveButton
