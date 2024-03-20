@@ -323,7 +323,7 @@ export default class B4ACodeTree extends React.Component {
                   value={
                     <div style={{ display: 'flex', alignItems: 'center', borderRadius: '0.3125rem', border: '1px solid rgba(249, 249, 249, 0.06)', background: '#303338', padding: '0.3125rem 0.875rem' }}>
                       <Icon name="b4a-add-outline-circle" fill="#27AE60" width={18} height={18} />
-                      <span style={{ color: '#f9f9f9', marginLeft:'0.25rem' }}>New File</span>
+                      <span style={{ color: '#f9f9f9', marginLeft:'0.25rem', fontSize: '14px' }}>New File</span>
                     </div>}
                   width='20'
                   additionalStyles={{ minWidth: '40px', background: 'transparent', border: 'none', padding: '0' }}
@@ -337,7 +337,7 @@ export default class B4ACodeTree extends React.Component {
                     value={
                       <div style={{ display: 'flex', alignItems: 'center', borderRadius: '0.3125rem', border: '1px solid rgba(249, 249, 249, 0.06)', background: '#303338', padding: '0.3125rem 0.875rem' }}>
                         <Icon name="B4a-upload-file-icon" fill="#27AE60" width={18} height={18} />
-                        <span style={{ color: '#f9f9f9', marginLeft: '0.25rem' }}>Upload File</span>
+                        <span style={{ color: '#f9f9f9', marginLeft: '0.25rem', fontSize: '14px' }}>Upload</span>
                       </div>}
                     width='20'
                     additionalStyles={{ minWidth: '60px', background: 'transparent', border: 'none', padding: '0' }}

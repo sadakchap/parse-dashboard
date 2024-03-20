@@ -3,11 +3,11 @@ import React from 'react'
 import Swal from 'sweetalert2'
 import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
-import EmptyState from 'components/EmptyState/EmptyState.react'
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react'
 import Icon from 'components/Icon/Icon.react'
 import DashboardView from 'dashboard/DashboardView.react'
 import HubDisconnectionDialog from 'dashboard/Hub/HubDisconnectionDialog.react'
-import styles from './HubConnections.scss'
+import styles from 'dashboard/Hub/HubConnections.scss'
 import { CurrentApp } from 'context/currentApp';
 import { withRouter } from 'lib/withRouter';
 
@@ -64,9 +64,9 @@ class HubConnections extends DashboardView {
             </a>
           </td>
           <td>
-            {!isCollab && <a onClick={() => this.setState({ namespaceBeingDisconnected: namespace, showDisconnectDialog: true })}>
-              <Icon name='trash-solid' fill='red' width={18} height={18} role='button'/>
-            </a>}
+            {!isCollab && <div onClick={() => this.setState({ namespaceBeingDisconnected: namespace, showDisconnectDialog: true })}>
+              <Icon name='b4a-delete-icon' fill='#E85C3E' width={18} height={18} role='button'/>
+            </div>}
           </td>
         </tr>
       )
@@ -80,30 +80,33 @@ class HubConnections extends DashboardView {
           <div className={styles.headerDescriptionContainer}>
             <section className={styles.header}>
               {/* <span className={styles.subtitle}>{(this.state.data && this.state.data.length) || 0} public databases connected</span> */}
-              <span className={styles.subtitle}>Database Hub</span>
+              <span className={styles.title}>Database Hub</span>
               <div>
-                <span className={styles.title}>Connections</span>
+                <span className={styles.subtitle}>Connections</span>
               </div>
             </section>
           </div>
 
           <section className={styles.toolbar}>
-            <Button
-              color='white'
+            {/* <Button
+              color='green'
+              secondary={true}
               value='Database Hub'
               onClick={() => {
                 window.open(b4aSettings.HUB_URL, '_blank');
-              }}/>
+              }}/> */}
           </section>
         </div>
         {!this.state.data || this.state.data.length === 0
-          ? <EmptyState
-            cta='Go to Database Hub'
-            action={b4aSettings.HUB_URL}
-            description='Check the Database Hub and connect to public databases'
-            icon='devices-solid'
-            title='No connections were found'
-          />
+          ? <div className={styles.empty}>
+            <B4aEmptyState
+              cta='Go to Database Hub'
+              action={b4aSettings.HUB_URL}
+              description='Check the Database Hub and connect to public databases'
+              icon='b4a-app-settings-icon'
+              title='No connections were found'
+            />
+          </div>
           : <>
             <div className={styles.connectionsTableContainer}>
               <table className={styles.connectionsTable}>

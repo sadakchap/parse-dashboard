@@ -68,12 +68,12 @@ class Config extends TableView {
     return (
       <Toolbar section="Config" >
         <a className={browserStyles.toolbarButton} style={{ margin: 0, border: 'none' }} onClick={this.onRefresh.bind(this)}>
-          <Icon name="refresh" width={24} height={24} />
+          <Icon name="b4a-refresh-icon" width={18} height={18} />
         </a>
         <Button
-          secondary={true}
+          primary={true}
           value={
-            <span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Add parameter</span>
+            <span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#f9f9f9" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Add parameter</span>
           }
           color="green"
           width="auto"

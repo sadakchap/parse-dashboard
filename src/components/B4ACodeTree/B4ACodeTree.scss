@@ -21,7 +21,7 @@
 
 @media (min-width: 1440px) {
   .fileSelector {
-    width: 20rem;
+    max-width: 20rem;
     overflow: auto;
   }
 

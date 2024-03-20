@@ -6,6 +6,7 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .colType {
   width: 10%;
@@ -42,13 +43,13 @@
 
   //TODO: add focus styles once tab index is added
   &:hover {
-    background-color: $lightBlue;
+    background-color: rgba($white, 0.03);
   }
 
   //NOTE: would like to get rid of alternating styles - hard to see for users
   &:nth-child(2n) {
     &:hover {
-      background-color: $lightBlue;
+      background-color: rgba($white, 0.03);
     }
   }
 }

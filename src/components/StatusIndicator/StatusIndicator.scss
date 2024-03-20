@@ -6,9 +6,10 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .status {
-  @include DosisFont;
+  @include InterFont;
   display: inline-block;
   font-size: 14px;
   letter-spacing: 0.1em;
@@ -25,25 +26,25 @@
 }
 
 .blue {
-  color: $blue;
+  color: $old-blue;
 
   &:before {
-    background: $blue;
+    background: $old-blue;
   }
 }
 
 .red {
-  color: $red;
+  color: $error-red;
 
   &:before {
-    background: $red;
+    background: $error-red;
   }
 }
 
 .green {
-  color: $green;
+  color: $cta-green;
 
   &:before {
-    background: $green;
+    background: $cta-green;
   }
 }

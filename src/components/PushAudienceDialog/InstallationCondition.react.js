@@ -37,6 +37,8 @@ function compareValue(info, value, onChangeCompareTo) {
     case 'String':
       return (
         <TextInput
+          dark={false}
+          padding="0 1rem"
           placeholder="value"
           value={value}
           onChange={_value => onChangeCompareTo(_value)}
@@ -46,6 +48,8 @@ function compareValue(info, value, onChangeCompareTo) {
     case 'Pointer':
       return (
         <TextInput
+          dark={false}
+          padding="0 1rem"
           placeholder="value"
           value={value.objectId || ''}
           onChange={_value => {
@@ -72,6 +76,8 @@ function compareValue(info, value, onChangeCompareTo) {
     case 'Number':
       return (
         <TextInput
+          dark={false}
+          padding="0 1rem"
           placeholder="value"
           className={styles.conditionValue}
           value={value}
@@ -115,7 +121,6 @@ export default class InstallationCondition extends React.Component {
         <div className={styles.conditionInput}>
           <Dropdown
             fixed={true}
-            hideArrow={true}
             value={this.props.currentField}
             onChange={this.props.onChangeField}
             placeHolder="field"
@@ -133,7 +138,6 @@ export default class InstallationCondition extends React.Component {
         <div className={styles.conditionInput}>
           <Dropdown
             fixed={true}
-            hideArrow={true}
             value={Constraints[this.props.currentConstraint].name}
             onChange={c => this.props.onChangeConstraint(constraintLookup[c])}
             placeHolder="is"
@@ -162,7 +166,7 @@ export default class InstallationCondition extends React.Component {
 
     return (
       <Field
-        labelWidth={30}
+        labelWidth={26}
         label={<Label text="Installation Condition" description={labelDescription} />}
         input={input}
       />

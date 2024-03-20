@@ -14,15 +14,16 @@ import Filter from 'components/Filter/Filter.react';
 import FormNote from 'components/FormNote/FormNote.react';
 import InstallationCondition from 'components/PushAudienceDialog/InstallationCondition.react';
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react';
-import MultiSelect from 'components/MultiSelect/MultiSelect.react';
-import MultiSelectOption from 'components/MultiSelect/MultiSelectOption.react';
+import B4aModal from 'components/B4aModal/B4aModal.react';
+import B4aMultiSelect from 'components/MultiSelect/B4aMultiSelect.react';
+import B4aMultiSelectOption from 'components/MultiSelect/B4aMultiSelectOption.react';
 import PropTypes from 'lib/PropTypes';
 import queryFromFilters from 'lib/queryFromFilters';
 import React from 'react';
+import Icon from 'components/Icon/Icon.react';
 import styles from 'components/PushAudienceDialog/PushAudienceDialog.scss';
 import TextInput from 'components/TextInput/TextInput.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import { List, Map } from 'immutable';
 import { CurrentApp } from 'context/currentApp';
 
@@ -172,13 +173,13 @@ export default class PushAudienceDialog extends React.Component {
     // TODO: handle misconfigured device link
     for (const index in availableDevices) {
       options.push(
-        <MultiSelectOption key={`device${index}`} value={availableDevices[index]}>
+        <B4aMultiSelectOption key={`device${index}`} value={availableDevices[index]}>
           {PushConstants.DEVICE_MAP[availableDevices[index]]}
-        </MultiSelectOption>
+        </B4aMultiSelectOption>
       );
     }
     const platformSelect = (
-      <MultiSelect
+      <B4aMultiSelect
         endDelineator="or"
         fixed={true}
         value={this.state.platforms}
@@ -186,36 +187,39 @@ export default class PushAudienceDialog extends React.Component {
         placeHolder="Choose some platforms..."
       >
         {options}
-      </MultiSelect>
+      </B4aMultiSelect>
     );
     const nonEmptyConditions = this.state.filters.size !== 0 ? true : false;
     const audienceSize = PushUtils.formatCountDetails(
       this.state.audienceSize,
-      this.state.approximate
+      this.state.approximate,
+      true
     );
     const customFooter = (
       <div className={styles.footer}>
         {AUDIENCE_SIZE_FETCHING_ENABLED ? (
           <div className={styles.audienceSize}>
-            <div className={styles.audienceSizeText}>AUDIENCE SIZE</div>
+            <div className={styles.audienceSizeText}>Audience size: </div>
             <div className={styles.audienceSizeDescription}>{audienceSize}</div>
           </div>
         ) : null}
-        <Button value="Cancel" onClick={this.props.secondaryAction} />
-        <Button
-          primary={true}
-          progress={this.props.progress}
-          value={this.props.progress ? 'Creating audience...' : 'Use this audience'}
-          color="blue"
-          disabled={!this.valid()}
-          onClick={this.props.primaryAction.bind(undefined, {
-            platforms: this.state.platforms,
-            name: this.state.audienceName,
-            filters: this.state.filters,
-            formattedFilters: filterFormatter(this.state.filters, this.props.schema),
-            saveForFuture: this.state.saveForFuture,
-          })}
-        />
+        <div>
+          <Button value="Cancel" color="white" onClick={this.props.secondaryAction} width="auto" additionalStyles={{ marginRight: '0.5rem' }} />
+          <Button
+            primary={true}
+            progress={this.props.progress}
+            value={this.props.progress ? 'Creating audience...' : 'Use this audience'}
+            color="blue"
+            disabled={!this.valid()}
+            onClick={this.props.primaryAction.bind(undefined, {
+              platforms: this.state.platforms,
+              name: this.state.audienceName,
+              filters: this.state.filters,
+              formattedFilters: filterFormatter(this.state.filters, this.props.schema),
+              saveForFuture: this.state.saveForFuture,
+            })}
+          />
+        </div>
       </div>
     );
 
@@ -226,13 +230,16 @@ export default class PushAudienceDialog extends React.Component {
         futureUseSegment.push(
           <Field
             key={'saveForFuture'}
+            labelWidth={51}
             label={<Label text="Save this audience for future use?" />}
             input={
-              <Toggle
-                value={this.state.saveForFuture}
-                type={Toggle.Types.YES_NO}
-                onChange={this.handleSaveForFuture.bind(this)}
-              />
+              <div style={{ padding: '0 1rem', width: '100%' }}>
+                <B4aToggle
+                  value={this.state.saveForFuture}
+                  type={B4aToggle.Types.YES_NO}
+                  onChange={this.handleSaveForFuture.bind(this)}
+                />
+              </div>
             }
           />
         );
@@ -242,10 +249,12 @@ export default class PushAudienceDialog extends React.Component {
         futureUseSegment.push(
           <Field
             key={'audienceName'}
-            labelWidth={55}
+            labelWidth={51}
             label={<Label text="Audience name" />}
             input={
               <TextInput
+                dark={false}
+                padding="0 1rem"
                 placeholder="Choose a name..."
                 onChange={this.handleAudienceName.bind(this)}
               />
@@ -257,10 +266,12 @@ export default class PushAudienceDialog extends React.Component {
       futureUseSegment.push(
         <Field
           key={'audienceName'}
-          labelWidth={55}
+          labelWidth={51}
           label={<Label text="Audience name" />}
           input={
             <TextInput
+              dark={false}
+              padding="0 1rem"
               placeholder="Choose a name..."
               onChange={this.handleAudienceName.bind(this)}
             />
@@ -270,18 +281,19 @@ export default class PushAudienceDialog extends React.Component {
     }
 
     return (
-      <Modal
+      <B4aModal
         title={this.props.editMode ? 'Edit audience' : 'Create a new audience'}
-        type={Modal.Types.INFO}
-        icon="plus-outline"
+        type={B4aModal.Types.INFO}
         width={900}
         customFooter={customFooter}
+        onCancel={this.props.secondaryAction}
       >
         <Field
-          labelWidth={55}
+          labelWidth={51}
           label={<Label text="Which platforms should be included?" />}
           input={platformSelect}
         />
+        {futureUseSegment}
         <div className={styles.filter}>
           <Filter
             schema={this.props.schema}
@@ -299,11 +311,16 @@ export default class PushAudienceDialog extends React.Component {
           ].join(' ')}
         >
           <Button
-            value={nonEmptyConditions ? 'Add another condition' : 'Add a condition'}
+            value={<span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <Icon name="b4a-add-outline-circle" width="16" height="16" fill="#10203A" />
+              {nonEmptyConditions ? 'Add another condition' : 'Add a condition'}
+            </span>}
+            color="white"
+            width="auto"
+            additionalStyles={{ border: 'none' }}
             onClick={this.handleAddCondition.bind(this)}
           />
         </div>
-        {futureUseSegment}
         <FormNote
           show={Boolean(
             (this.props.errorMessage && this.props.errorMessage.length > 0) ||
@@ -313,7 +330,7 @@ export default class PushAudienceDialog extends React.Component {
         >
           {this.props.errorMessage || this.state.errorMessage}
         </FormNote>
-      </Modal>
+      </B4aModal>
     );
   }
 }

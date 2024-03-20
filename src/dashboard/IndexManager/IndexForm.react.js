@@ -3,11 +3,11 @@ import Dropdown from 'components/Dropdown/Dropdown.react';
 import Field from 'components/Field/Field.react';
 import Icon from 'components/Icon/Icon.react'
 import Label from 'components/Label/Label.react';
-import Modal from 'components/Modal/Modal.react'
+import B4aModal from 'components/B4aModal/B4aModal.react'
 import Option from 'components/Dropdown/Option.react';
 import PropTypes from 'lib/PropTypes'
 import TextInput from 'components/TextInput/TextInput.react';
-import Toggle from 'components/Toggle/Toggle.react';
+import B4aToggle from 'components/Toggle/B4aToggle.react';
 import styles from 'dashboard/IndexManager/IndexForm.scss';
 import Swal from 'sweetalert2';
 
@@ -270,13 +270,13 @@ class IndexForm extends Component {
         {type === 'text'
           ? (
             <td>
-              <TextInput value={this.state.weights[name]} onChange={weight => this.updateIndexWeight(name, weight)} onBlur={e => this.onBlurIndexWeight(name, e.target.value)} />
+              <TextInput dark={false} padding="0 1rem" value={this.state.weights[name]} onChange={weight => this.updateIndexWeight(name, weight)} onBlur={e => this.onBlurIndexWeight(name, e.target.value)} />
             </td>
           )
           : <td className={styles.disabled}>-</td>
         }
         <td>
-          <Icon className={styles.deleteIndexBtn} name='trash-solid' width={18} height={28} fill='red' onClick={() => this.removeIndex(name)} />
+          <Icon className={styles.deleteIndexBtn} name='b4a-delete-icon' width={18} height={18} fill='#E85C3E' onClick={() => this.removeIndex(name)} />
         </td>
       </tr>
     )
@@ -317,7 +317,7 @@ class IndexForm extends Component {
       </table>
     )
     return (
-      <div>
+      <>
         <Field
           labelWidth={35}
           label={<Label text='Fields' description='Choose the fields and the rule to fetch within it' />}
@@ -325,15 +325,15 @@ class IndexForm extends Component {
         <Field
           labelWidth={35}
           label={<Label text='Name' description='Give an easy name to identify your index' />}
-          input={<TextInput placeholder='Input the index name' value={this.state.indexName} onChange={this.onChangeIndexName} />} />
-      </div>
+          input={<TextInput placeholder='Input the index name' padding="0 1rem" dark={false} value={this.state.indexName} onChange={this.onChangeIndexName} />} />
+      </>
     )
   }
 
   render() {
     const classes = Object.keys(this.props.classes)
     const classDropdown = classes.length === 1
-      ? <TextInput value={classes[0]} disabled={true} onChange={() => {}} />
+      ? <TextInput value={classes[0]} disabled={true} onChange={() => {}} dark={false} padding="0 1rem" />
       : (
         <Dropdown value={this.state.selectedClass} onChange={c => this.setState({ selectedClass: c })}>
           {Object.keys(this.props.classes).map(c => <Option key={c} value={c}>{c}</Option>)}
@@ -341,7 +341,7 @@ class IndexForm extends Component {
       )
 
     return (
-      <Modal width={700} type={Modal.Types.INFO} title='New Index' subtitle='Optimize your queries performance' confirmText='Create Index' onConfirm={this.createIndex} onCancel={this.props.onCancel}>
+      <B4aModal width={700} type={B4aModal.Types.INFO} title='New Index' subtitle='Optimize your queries performance' confirmText='Create Index' onConfirm={this.createIndex} onCancel={this.props.onCancel}>
         <div className={styles.indexFormContainer}>
           <Field
             labelWidth={35}
@@ -350,14 +350,18 @@ class IndexForm extends Component {
           {this.renderClassContent()}
           <Field
             labelWidth={35}
-            textAlign='center'
             label={<Label text='Unique' description='' help={<Icon className={styles.helpButton} name='info-outline' width={16} height={16} fill='#169CEE' onClick={() => window.open('https://docs.mongodb.com/manual/core/index-unique/', '_blank')} />} />}
-            input={<Toggle type={Toggle.Types.TRUE_FALSE} value={this.state.unique} onChange={unique => this.setState({ unique })} />} />
+            input={<div style={{ width: '100%', padding: '0 1rem' }}>
+              <B4aToggle type={B4aToggle.Types.TRUE_FALSE} value={this.state.unique} onChange={unique => this.setState({ unique })} />
+            </div>} />
           <Field
             labelWidth={35}
-            textAlign='center'
             label={<Label text='Sparse' description='' help={<Icon className={styles.helpButton} name='info-outline' width={16} height={16} fill='#169CEE' onClick={() => window.open('https://docs.mongodb.com/manual/core/index-sparse/', '_blank')} />} />}
-            input={<Toggle type={Toggle.Types.TRUE_FALSE} value={this.state.sparse} onChange={sparse => this.setState({ sparse })} />} />
+            input={
+              <div style={{ width: '100%', padding: '0 1rem' }}>
+                <B4aToggle type={B4aToggle.Types.TRUE_FALSE} value={this.state.sparse} onChange={sparse => this.setState({ sparse })} />
+              </div>
+            } />
           {/* <Field
             labelWidth={35}
             label={<Label text='TTL' description='' help={<Icon className={styles.helpButton} name='info-outline' width={16} height={16} fill='#169CEE' onClick={() => window.open('https://docs.mongodb.com/manual/core/index-ttl/', '_blank')} />} />}
@@ -368,7 +372,7 @@ class IndexForm extends Component {
                 onChange={expireAfterSeconds => this.onChangeTTL(expireAfterSeconds)} />
             } /> */}
         </div>
-      </Modal>
+      </B4aModal>
     )
   }
 }

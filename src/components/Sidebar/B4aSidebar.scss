@@ -11,7 +11,7 @@
 .sidebar {
   @include SoraFont;
   position: fixed;
-  width: 360px;
+  width: 325px;
   top: $header-height;
   left: 0;
   bottom: 0;
@@ -206,7 +206,7 @@
 .appsMenu {
   overflow: auto;
   background: #094162;
-  width: 360px;
+  width: 325px;
 
   .menuRow:hover {
     background: #0c5582;
@@ -343,7 +343,7 @@
   }
   &.popover {
     padding: 24px;
-    min-width: 320px;
+    min-width: 325px;
     max-height: 80vh;
     overflow-y: auto;
   }

@@ -102,6 +102,13 @@
     border-color: $white;
     opacity: 0.2;
   }
+  &.dark {
+    color: $white;
+    border: 1px solid #F9F9F90F;
+    &:hover {
+      color: $white !important;
+    }
+  }
 }
 
 .yellow {

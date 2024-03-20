@@ -40,7 +40,7 @@ class Webhooks extends TableView {
     super();
     this.section = 'More';
     this.subsection = 'Webhooks';
-    this.action = new SidebarAction(<span><Icon width={16} height={16} name="b4a-add-outline-circle" />Create a webhook</span>, this.openNewWebhookModal.bind(this));
+    this.action = new SidebarAction(<span><Icon width={16} height={16} name="b4a-add-outline-circle" />Add webHook</span>, this.openNewWebhookModal.bind(this));
     this.state = {
       showNewWebhookModal: false,
       showEditWebhookModal: false,
@@ -77,9 +77,9 @@ class Webhooks extends TableView {
     return (
       <Toolbar section="Webhooks">
         <Button
-          secondary={true}
+          primary={true}
           color="green"
-          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#27AE60" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Create a webhook</span>}
+          value={<span style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}><Icon width={16} height={16} name="b4a-add-outline-circle" fill="#f9f9f9" style={{ display: 'inline-block', marginRight: '0.5rem' }} />Add webHook</span>}
           onClick={this.openNewWebhookModal.bind(this)}
         />
       </Toolbar>
@@ -232,7 +232,7 @@ class Webhooks extends TableView {
     const newHookModal = (
       <B4aFormModal
         key="new"
-        title="Create a Webhook"
+        title="Add WebHook"
         open={this.state.showNewWebhookModal}
         onSubmit={() => {
           // Send track event
@@ -415,7 +415,7 @@ class Webhooks extends TableView {
           </span>
         }
         icon="b4a-app-settings-icon"
-        cta="Create a Webhook"
+        cta="Add WebHook"
         action={this.openNewWebhookModal.bind(this)}
       />
     );

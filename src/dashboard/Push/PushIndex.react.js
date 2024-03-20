@@ -11,10 +11,11 @@ import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
 import CategoryItemAction from 'components/CategoryList/CategoryItemAction.js';
 import DashboardView from 'dashboard/DashboardView.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import LoaderDots from 'components/LoaderDots/LoaderDots.react';
 import React from 'react';
+import Icon from 'components/Icon/Icon.react';
 // import SidebarAction from 'components/Sidebar/SidebarAction';
 import StatusIndicator from 'components/StatusIndicator/StatusIndicator.react';
 import styles from './PushIndex.scss';
@@ -341,7 +342,7 @@ class PushIndex extends DashboardView {
             id: 'activity',
             subCategories: subCategory,
             currentActive: current === 'all',
-            action: new CategoryItemAction('Send a push', this.navigateToNew.bind(this))
+            action: new CategoryItemAction(<span><Icon width={14} height={14} name="b4a-add-outline-circle" /> Send a push</span>, this.navigateToNew.bind(this))
           },
           { name: 'Audiences', id: 'audiences' }
         ]}
@@ -374,7 +375,7 @@ class PushIndex extends DashboardView {
         subsection={PUSH_CATEGORIES[this.props.params.category]}
         details={'push'}
       >
-        <Button color="white" value="Send a push" onClick={this.navigateToNew.bind(this)} />
+        <Button color="green" primary={true} value="Send a push" onClick={this.navigateToNew.bind(this)} />
       </Toolbar>
     );
   }
@@ -429,10 +430,10 @@ class PushIndex extends DashboardView {
   renderEmpty() {
     const type = this.props.params.category || PUSH_TYPE_ALL;
     return (
-      <EmptyState
+      <B4aEmptyState
         title={emptyStateContent[type].title}
         description={emptyStateContent[type].description}
-        icon="push-solid"
+        icon="b4a-app-settings-icon"
         cta={emptyStateContent[type].cta}
         action={'http://docs.parseplatform.org/ios/guide/#push-notifications'}
       />

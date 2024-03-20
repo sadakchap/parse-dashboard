@@ -50,11 +50,11 @@ const PushOpenRate = ({
   if (customColor) {
     customStyles.standard = {
       color: customColor,
-      background: 'white',
+      // background: 'white',
     };
 
     customStyles.inverse = {
-      color: 'white',
+      // color: 'white',
       background: customColor,
     };
   }

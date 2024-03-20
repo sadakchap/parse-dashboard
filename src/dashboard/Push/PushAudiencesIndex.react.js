@@ -12,8 +12,8 @@ import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
 import CategoryItemAction from 'components/CategoryList/CategoryItemAction.js';
 import DashboardView from 'dashboard/DashboardView.react';
-import EmptyState from 'components/EmptyState/EmptyState.react';
-import FormModal from 'components/FormModal/FormModal.react';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
+import B4aFormModal from 'components/FormModal/B4aFormModal.react';
 import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
 import Modal from 'components/Modal/Modal.react';
 import PushAudienceDialog from 'components/PushAudienceDialog/PushAudienceDialog.react';
@@ -168,7 +168,8 @@ class PushAudiencesIndex extends DashboardView {
     return (
       <Toolbar section="Push" subsection="Audiences">
         <Button
-          color="white"
+          color="green"
+          primary={true}
           value="Create an audience"
           onClick={this.handleCreateAudienceClick.bind(this)}
         />
@@ -202,7 +203,7 @@ class PushAudiencesIndex extends DashboardView {
   renderEmpty() {
     if (this.state.availableDevices.length === 0) {
       return (
-        <EmptyState
+        <B4aEmptyState
           title="No registered devices"
           description="You have no registered installations of your app. You can get started with our Quick Start guide."
           icon="devices-solid"
@@ -212,9 +213,9 @@ class PushAudiencesIndex extends DashboardView {
       );
     } else {
       return (
-        <EmptyState
+        <B4aEmptyState
           title="No push audiences to display yet."
-          icon="users-solid"
+          icon="b4a-app-settings-icon"
           cta="Create your first audience"
           action={() => {
             this.setState({
@@ -236,7 +237,7 @@ class PushAudiencesIndex extends DashboardView {
     }
 
     query.deviceType = { $in: platforms };
-    //TODO: handle fail case - need to modify/extend <FormModal> to handle custom footer
+    //TODO: handle fail case - need to modify/extend <B4aFormModal> to handle custom footer
     this.props.pushaudiences
       .dispatch(PushAudiencesStore.ActionTypes.CREATE, {
         query: JSON.stringify(query),
@@ -286,8 +287,7 @@ class PushAudiencesIndex extends DashboardView {
     );
 
     const deleteAudienceModal = (
-      <FormModal
-        icon="warn-outline"
+      <B4aFormModal
         title="Delete Audience"
         subtitle={deleteSubtitle}
         type={Modal.Types.DANGER}
@@ -307,7 +307,7 @@ class PushAudiencesIndex extends DashboardView {
         onClose={() => {
           this.setState({ showDeleteAudienceModal: false });
         }}
-      ></FormModal>
+      ></B4aFormModal>
     );
 
     if (typeof data !== 'undefined') {

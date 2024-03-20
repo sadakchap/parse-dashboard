@@ -369,7 +369,7 @@ class Jobs extends TableView {
           details={ReleaseInfo({ release: this.props.release })}
         >
           <a className={browserStyles.toolbarButton} style={{ color: 'white', border: 'none', margin: 0, padding: 0 }} onClick={this.onRefresh.bind(this)}>
-            <Icon name="refresh" width={24} height={24} />
+            <Icon name="b4a-refresh-icon" width={18} height={18} />
           </a>
           {this.props.availableJobs && this.props.availableJobs.length > 0 ? (
             <Button color="white" value="Schedule a job" onClick={this.navigateToNew.bind(this)} />

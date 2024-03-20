@@ -1,18 +1,38 @@
 import { ActionTypes }  from 'lib/stores/SchemaStore'
 import CategoryList from 'components/CategoryList/CategoryList.react'
 import DashboardView from 'dashboard/DashboardView.react'
-import EmptyState from 'components/EmptyState/EmptyState.react'
+import EmptyGhostState from 'components/EmptyGhostState/EmptyGhostState.react'
 import Icon from 'components/Icon/Icon.react'
 import IndexForm from './IndexForm.react'
 import React from 'react'
 import { SpecialClasses } from 'lib/Constants'
 import stringCompare from 'lib/stringCompare'
-import styles from './IndexManager.scss'
+import styles from 'dashboard/IndexManager/IndexManager.scss'
 import subscribeTo from 'lib/subscribeTo'
 import Swal from 'sweetalert2'
 import AccountManager from 'lib/AccountManager';
 import generatePath from 'lib/generatePath';
 import { withRouter } from 'lib/withRouter';
+
+import buttonStyles from 'components/Button/Button.scss';
+import baseStyles from 'stylesheets/base.scss';
+import modalStyles from 'components/B4aModal/B4aModal.scss';
+
+const customSwl = Swal.mixin({
+  customClass: {
+    header: '',
+    title: `${modalStyles.title} ${styles.sweetalertTitle}`,
+    htmlContainer: `${styles.sweetalertContainer}`,
+    closeButton: styles.sweetalertCloseBtn,
+    icon: styles.sweetalertIcon,
+    input: styles.sweetalertInput,
+    actions: `${styles.sweetalertActions}`,
+    confirmButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.primary, buttonStyles.red].join(' '),
+    cancelButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.white].join(' '),
+    loader: styles.sweetalertLoader,
+  },
+  buttonsStyling: false,
+});
 
 @subscribeTo('Schema', 'schema')
 @withRouter
@@ -266,22 +286,36 @@ class IndexManager extends DashboardView {
       })
       return
     }
-    Swal.mixin().queue([
+    customSwl.fire(
       {
         title: 'Are you sure you want to delete the following indexes?',
         html: `<p style="text-align: center">${indexesToDrop.join('</p><p style="text-align: center">')}</p>`,
-        type: 'warning',
         confirmButtonText: 'Delete',
         showCancelButton: true,
         showLoaderOnConfirm: true,
+        reverseButtons: true,
+        showCloseButton: true,
         preConfirm: () => {
+          const closeButtonElm = Swal.getCloseButton();
+          closeButtonElm.style.pointerEvents = 'none';
+          closeButtonElm.style.cursor = 'not-allowed';
           return this.context.dropIndexes(className, indexesToDrop)
             .then(() => {
-              Swal.close()
-              this.refresh()
+              Swal.close();
+              this.refresh();
+              closeButtonElm.style.pointerEvents = 'allow-all';
+              closeButtonElm.style.cursor = 'cursor';
             })
             .catch(e => {
-              console.trace(e)
+              Swal.close();
+              customSwl.fire({
+                title: 'Sorry, something went wrong while deleting indexes!',
+                html: `<p style="text-align: center">${indexesToDrop.join('</p><p style="text-align: center">')}</p>`,
+                timer: 2000,
+              });
+              console.trace(e);
+              closeButtonElm.style.pointerEvents = 'allow-all';
+              closeButtonElm.style.cursor = 'cursor';
             })
         }
       },
@@ -290,7 +324,7 @@ class IndexManager extends DashboardView {
         text: 'Error while dropping the indexes. Please try again later.',
         type: 'error'
       }
-    ])
+    )
   }
 
   renderIndexForm() {
@@ -375,13 +409,13 @@ class IndexManager extends DashboardView {
           <div className={styles.headerDescriptionContainer}>
             {showBackButton ? (
               <a className={styles.iconButton} onClick={() => this.props.navigate(-1)} title='Back to Database Browser'>
-                <Icon width={32} height={32} fill="#ffffff" name="left-outline" />
+                <Icon width={24} height={24} fill="#ffffff" name="b4a-up-arrow" />
               </a>
             ) : null}
             <section className={styles.header}>
-              <span className={styles.subtitle}>Index Manager</span>
+              <span className={styles.title}>Index Manager</span>
               <div>
-                <span className={styles.title}>{className} Indexes</span>
+                <span className={styles.subtitle}>{className} Indexes</span>
               </div>
             </section>
           </div>
@@ -394,7 +428,7 @@ class IndexManager extends DashboardView {
               </a>
             )}
             <a className={styles.toolbarButton} onClick={this.refresh} title='Refresh'>
-              <Icon name='refresh-icon' width={30} height={26} />
+              <Icon name='b4a-refresh-icon' width={18} height={18} />
             </a>
             {this.state.canDelete && (
               <a
@@ -407,7 +441,7 @@ class IndexManager extends DashboardView {
           </section>
         </div>
         {this.state.data && this.state.data.length === 0
-          ? <EmptyState icon='index-manager' title='No indexes were found' description='Create an index using the button located on the top right side' />
+          ? <EmptyGhostState icon='index-manager' title='No indexes were found' description='Create an index using the button located on the top right side' />
           : (
             <div className={styles.indexTableContainer}>
               <table className={styles.indexTable}>

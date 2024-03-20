@@ -6,16 +6,14 @@
  * the root directory of this source tree.
  */
 @import 'stylesheets/globals.scss';
+@import 'stylesheets/back4app.scss';
 
 .addConditions {
-  text-align: center;
-  padding: 25px 20px;
-  border-style: solid;
-  border-color: $borderGrey;
-  border-width: 1px 1px 0 1px;
+  padding: 25px 0;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.3);
+  background: rgba(51, 51, 51, 0.03);
 
   &.nonEmptyConditions {
-    padding: 4px;
     a {
      border: none;
     }
@@ -23,36 +21,30 @@
 }
 
 .footer {
-  padding: 17px 28px;
-  text-align: right;
+  padding: 17px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &:nth-child(2) {
     text-align: center;
   }
-
-  > * {
-    margin: 0 12px 0 0;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
 }
 
 .audienceSize {
-  float: left;
-  text-align: left;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  color: $light-grey;
 
   .audienceSizeText {
-    font-weight: 700;
-    font-size: 10px;
-    letter-spacing: 1.6px;
-    color: $secondaryTextColor;
+    font-size: 14px;
   }
 
   .audienceSizeDescription {
-    margin-top: 2px;
-    color: $blue;
+    margin-left: 6px;
+    font-size: 16px;
+    font-weight: 700;
   }
 }
 

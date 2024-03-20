@@ -356,9 +356,9 @@ export function tableInfoBuilder(query, schema, styles = {}) {
   return tableInfoRows;
 }
 
-export function formatCountDetails(count, approximate) {
+export function formatCountDetails(count, approximate, dark = false) {
   if (count === undefined) {
-    return <LoaderDots />;
+    return <LoaderDots dark={dark} />;
   } else if (count === 0 && approximate) {
     return 'very small';
   } else {
