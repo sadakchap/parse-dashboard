@@ -1,7 +1,7 @@
 import { ActionTypes }  from 'lib/stores/SchemaStore'
 import CategoryList from 'components/CategoryList/CategoryList.react'
 import DashboardView from 'dashboard/DashboardView.react'
-import EmptyState from 'components/EmptyState/EmptyState.react'
+import EmptyGhostState from 'components/EmptyGhostState/EmptyGhostState.react'
 import Icon from 'components/Icon/Icon.react'
 import IndexForm from './IndexForm.react'
 import React from 'react'
@@ -441,7 +441,7 @@ class IndexManager extends DashboardView {
           </section>
         </div>
         {this.state.data && this.state.data.length === 0
-          ? <EmptyState icon='index-manager' title='No indexes were found' description='Create an index using the button located on the top right side' />
+          ? <EmptyGhostState icon='index-manager' title='No indexes were found' description='Create an index using the button located on the top right side' />
           : (
             <div className={styles.indexTableContainer}>
               <table className={styles.indexTable}>

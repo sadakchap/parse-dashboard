@@ -89,8 +89,22 @@ const remove = (data, showAlert = false) => {
   const inst = $.jstree.reference(data)
   const obj = inst.get_node(data);
   if (showAlert) {
+    const RemoveSwal = withReactContent(Swal.mixin({
+      customClass: {
+        header: '',
+        title: `${modalStyles.title} ${styles.sweetalertTitle}`,
+        htmlContainer: `${styles.sweetalertContainer}`,
+        closeButton: styles.sweetalertCloseBtn,
+        icon: styles.sweetalertIcon,
+        input: styles.sweetalertInput,
+        actions: `${styles.sweetalertActions}`,
+        confirmButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.primary, buttonStyles.red].join(' '),
+        cancelButton: [buttonStyles.button, baseStyles.unselectable, buttonStyles.white].join(' '),
+      },
+      buttonsStyling: false,
+    }));
     confirmRemoveFileModal.text = `Are you sure you want to remove ${obj.text} file?`;
-    MySwal.fire(confirmRemoveFileModal).then((alertResponse) => {
+    RemoveSwal.fire(confirmRemoveFileModal).then((alertResponse) => {
       if (alertResponse.value) {
         if (inst.is_selected(obj)) {return inst.delete_node(inst.get_selected());}
         else {return inst.delete_node(obj);}

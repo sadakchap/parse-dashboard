@@ -88,13 +88,13 @@ class HubConnections extends DashboardView {
           </div>
 
           <section className={styles.toolbar}>
-            <Button
+            {/* <Button
               color='green'
               secondary={true}
               value='Database Hub'
               onClick={() => {
                 window.open(b4aSettings.HUB_URL, '_blank');
-              }}/>
+              }}/> */}
           </section>
         </div>
         {!this.state.data || this.state.data.length === 0
