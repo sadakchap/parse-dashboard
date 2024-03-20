@@ -10,7 +10,7 @@
 
 .wrap {
   width: 650px;
-  height: 404px;
+  height: 380px;
   border-radius: 5px;
   background: #F9F9F90F;
 }
@@ -18,7 +18,7 @@
 .left {
   float: left;
   width: 325px;
-  max-height: 404px;
+  max-height: 380px;
   overflow-y: auto;
 }
 
@@ -63,14 +63,14 @@
 
 .preview {
   width: 323px;
-  height: 402px;
+  height: 380px;
   border-radius: 0 5px 5px 0;
   background-color: #1c293e;
 }
 
 .noPreview {
   width: 325px;
-  height: 404px;
+  height: 380px;
   background-color: #1c293e;
   text-align: center;
   font-size: 18px;
@@ -94,10 +94,11 @@
 }
 
 .ios {
-  background-image: url(iphone.jpg);
+  background-image: url(iphone.png);
   background-size: 325px auto;
   font-family: '.SFNSDisplay-Regular', 'Helvetica Neue', 'Lucida Grande', sans-serif;
-  color: white;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 
   .time {
     position: absolute;
@@ -160,15 +161,17 @@
 }
 
 .android {
-  background-image: url(android.jpg);
+  background-image: url(android.png);
   background-size: 325px auto;
   font-family: 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 
   .time {
     position: absolute;
     top: 180px;
     width: 100%;
-    color: white;
+    color: $white;
     font-size: 60px;
     text-align: center;
   }
@@ -180,7 +183,7 @@
     font-size: 8px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: white;
+    color: $white;
     text-align: center;
   }
 
@@ -189,7 +192,7 @@
     top: 285px;
     width: 208px;
     left: 56px;
-    background: white;
+    background: $white;
     box-shadow: 0px 1px 1px rgba(0,0,0,0.24);
     padding: 20px 10px 0 40px;
     min-height: 38px;
@@ -230,10 +233,12 @@
 }
 
 .osx {
-  background-image: url(laptop.jpg);
+  background-image: url(laptop.png);
   background-size: 325px auto;
   font-family: '.SFNSDisplay-Regular', 'Helvetica Neue', 'Lucida Grande', sans-serif;
   color: #555252;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 
   .time, .date {
     display: none;
@@ -242,7 +247,7 @@
   .messageBox {
     position: absolute;
     left: 24px;
-    top: 114px;
+    top: 130px;
     width: 240px;
     height: 47px;
     background: #f0f0f0;
@@ -273,10 +278,12 @@
 }
 
 .windows {
-  background-image: url(windowsphone.jpg);
+  background-image: url(windowsphone.png);
   background-size: 325px auto;
   font-family: 'Arial', sans-serif;
-  color: white;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  color: $white;
 
   .date, .appName {
     display: none;
@@ -285,13 +292,13 @@
   .time {
     font-size: 10px;
     position: absolute;
-    top: 120px;
+    top: 140px;
     right: 50px;
   }
 
   .message {
     position: absolute;
-    top: 134px;
+    top: 145px;
     left: 50px;
     right: 50px;
     font-size: 11px;
