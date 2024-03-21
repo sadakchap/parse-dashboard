@@ -106,7 +106,7 @@ export const ManageAppFields = ({
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={<Label
           text='Dashboard'
-          description={<span>Use latest backend dashboard version.</span>} dark={true} />}
+          description={<span>Use latest backend dashboard version</span>} dark={true} />}
         input={
           <span style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
             <B4aToggle
