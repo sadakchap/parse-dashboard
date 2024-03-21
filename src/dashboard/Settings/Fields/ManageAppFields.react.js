@@ -112,7 +112,7 @@ export const ManageAppFields = ({
       {(backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA) && (
         <>
           <Field
-            labelWidth={'50%'}
+            labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
             label={
               <Label
                 text="Dashboard"
