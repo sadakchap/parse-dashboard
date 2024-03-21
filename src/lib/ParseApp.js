@@ -56,7 +56,8 @@ export default class ParseApp {
     databaseURL,
     scripts,
     classPreference,
-    enableSecurityChecks
+    enableSecurityChecks,
+    useLatestDashboardVersion
   }) {
     this.name = appName;
     this.parseOptions = parseOptions;
