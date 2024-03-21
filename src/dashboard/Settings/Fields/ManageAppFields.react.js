@@ -117,7 +117,7 @@ export const ManageAppFields = ({
               <Label
                 text="Dashboard"
                 description={
-                  'Use latest version'
+                  'Use latest backend dashboard version'
                 }
               />
             }

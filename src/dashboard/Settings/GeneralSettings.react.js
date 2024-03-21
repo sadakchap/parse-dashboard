@@ -75,7 +75,8 @@ export default class GeneralSettings extends DashboardView {
       mongoVersion: this.context.settings.fields.fields.mongoVersion,
       databaseVersion: this.context.settings.fields.fields.databaseVersion,
       clientPush: this.context.settings.fields.fields.clientPush,
-      clientClassCreation: this.context.settings.fields.fields.clientClassCreation
+      clientClassCreation: this.context.settings.fields.fields.clientClassCreation,
+      useLatestDashboardVersion: this.context.useLatestDashboardVersion
     };
   }
 

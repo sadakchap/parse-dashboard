@@ -89,6 +89,7 @@ export default class ParseApp {
     this.databaseURL = databaseURL;
     this.scripts = scripts;
     this.enableSecurityChecks = !!enableSecurityChecks;
+    this.useLatestDashboardVersion = useLatestDashboardVersion !== false;
 
     if (!supportedPushLocales) {
       console.warn('Missing push locales for \'' + appName + '\', see this link for details on setting localizations up. https://github.com/parse-community/parse-dashboard#configuring-localized-push-notifications');
@@ -789,6 +790,7 @@ export default class ParseApp {
     if (name) {config['appName'] = name;}
     if (parseOptions) {config['parseOptions'] = parseOptions;}
     if (appSettings) {config = { ...config, ...appSettings }}
+    if (useLatestDashboardVersion !== undefined) {config['useLatestDashboardVersion'] = useLatestDashboardVersion;}
     // eslint-disable-next-line no-undef
     const path = `${b4aSettings.BACK4APP_API_PATH}/parse-app/${this.slug}`;
     const promise = axios.patch(path, config, { withCredentials: true });
