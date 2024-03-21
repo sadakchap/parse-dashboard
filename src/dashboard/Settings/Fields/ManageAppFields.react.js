@@ -109,7 +109,7 @@ export const ManageAppFields = ({
           </div>
         }
       />
-      {backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA && (
+      {(backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA) && (
         <>
           <Field
             labelWidth={60}
