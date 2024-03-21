@@ -8,7 +8,7 @@ export const getPromiseList = ({ changes, setDifference, initialFields, app, pro
   if (changes.requestLimit !== undefined) {
     promiseList.push(app.setRequestLimit(changes.requestLimit));
   }
-  if (changes.appName !== undefined || changes.parseOptions !== undefined || changes.clientPush !== undefined || changes.clientClassCreation !== undefined ) {
+  if (changes.appName !== undefined || changes.useLatestDashboardVersion !== undefined || changes.parseOptions !== undefined || changes.clientPush !== undefined || changes.clientClassCreation !== undefined ) {
     let settings = {};
     if ( changes.clientPush !== undefined ) {
       settings.clientPush = changes.clientPush
@@ -19,7 +19,8 @@ export const getPromiseList = ({ changes, setDifference, initialFields, app, pro
     promiseList.push(app.setAppConfig(
       changes.appName,
       changes.parseOptions || {},
-      settings
+      settings,
+      changes.useLatestDashboardVersion
     ));
   }
   if (changes.inProduction !== undefined) {

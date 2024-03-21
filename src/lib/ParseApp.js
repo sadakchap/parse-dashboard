@@ -786,7 +786,7 @@ export default class ParseApp {
     return promise;
   }
 
-  setAppConfig(name, parseOptions, appSettings) {
+  setAppConfig(name, parseOptions, appSettings, useLatestDashboardVersion) {
     let config = {};
     if (name) {config['appName'] = name;}
     if (parseOptions) {config['parseOptions'] = parseOptions;}
