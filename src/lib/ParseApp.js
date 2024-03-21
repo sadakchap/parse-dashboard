@@ -803,6 +803,12 @@ export default class ParseApp {
       if(parseOptions) {
         this.settings.fields.fields.parseOptions = deepmerge(this.settings.fields.fields.parseOptions, parseOptions);
       }
+      if (useLatestDashboardVersion !== undefined) {
+        this.useLatestDashboardVersion = useLatestDashboardVersion;
+      }
+      if (useLatestDashboardVersion === false) {
+        window.location.replace(`${b4aSettings.PARSE_DASHBOARD_PATH}/apps/${this.slug}`);
+      }
     });
     return promise;
   }
