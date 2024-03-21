@@ -169,7 +169,8 @@ export default class GeneralSettings extends DashboardView {
               cleanUpSystemLogMessage={this.state.cleanupSystemLogMessage}
               isGDPR={this.context.custom && this.context.custom.isGDPR}
               useLatestDashboardVersion={fields.useLatestDashboardVersion}
-              setUseLatestDashboardVersion={setField.bind(this, 'useLatestDashboardVersion')}/>
+              setUseLatestDashboardVersion={setField.bind(this, 'useLatestDashboardVersion')}
+              backendBetaUser={AccountManager.currentUser().backendBetaUser}/>
             <DangerzoneFields
               errors={errors}
               mongoURL={fields.mongoURL}
