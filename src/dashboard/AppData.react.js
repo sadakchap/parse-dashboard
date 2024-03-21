@@ -5,6 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
+import AccountManager from 'lib/AccountManager';
 import React from 'react';
 import AppSelector from 'dashboard/AppSelector.react';
 import AppsManager from 'lib/AppsManager';
@@ -27,7 +28,7 @@ function AppData() {
   const current = AppsManager.findAppBySlugOrName(params.appId);
 
   if (current) {
-    if (current.useLatestDashboardVersion !== false && (current.user.backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA)) {
+    if (current.useLatestDashboardVersion !== false && (AccountManager.currentUser().backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA)) {
       navigate(`${b4aSettings.BACKEND_DASHBOARD_PATH}/apps/${params.appId}`, { replace: true });
     }
 
