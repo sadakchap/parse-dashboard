@@ -27,6 +27,9 @@ export const ManageAppFields = ({
   errors,
   isGDPR,
   databaseVersion,
+  useLatestDashboardVersion,
+  setUseLatestDashboardVersion,
+  backendBetaUser
 }) => {
 
   const checkDB = databaseURL?.split('://')[0];
@@ -97,6 +100,24 @@ export const ManageAppFields = ({
           </div>
         }
         theme={Field.Theme.BLUE}
+      />
+      <hr className={styles.fieldHr} />
+      <Field
+        labelWidth={60}
+        label={
+          <Label
+            text="Dashboard"
+            description={
+              'Use latest version'
+            }
+          />
+        }
+        input={
+          <Toggle
+            value={useLatestDashboardVersion}
+            onChange={value => setUseLatestDashboardVersion(value)}
+          />
+        }
       />
       <hr className={styles.fieldHr} />
       <Field
