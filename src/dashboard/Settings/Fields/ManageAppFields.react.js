@@ -25,6 +25,9 @@ export const ManageAppFields = ({
   errors,
   isGDPR,
   databaseVersion,
+  useLatestDashboardVersion,
+  setUseLatestDashboardVersion,
+  backendBetaUser
 }) => {
 
   const checkDB = databaseURL?.split('://')[0];
@@ -106,6 +109,27 @@ export const ManageAppFields = ({
           </div>
         }
       />
+      {backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA && (
+        <>
+          <Field
+            labelWidth={60}
+            label={
+              <Label
+                text="Dashboard"
+                description={
+                  'Use latest version'
+                }
+              />
+            }
+            input={
+              <Toggle
+                value={useLatestDashboardVersion}
+                onChange={value => setUseLatestDashboardVersion(value)}
+              />
+            }
+          />
+        </>
+      )}
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         // TODO replace with password policy

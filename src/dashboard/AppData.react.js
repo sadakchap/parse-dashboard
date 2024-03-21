@@ -27,6 +27,10 @@ function AppData() {
   const current = AppsManager.findAppBySlugOrName(params.appId);
 
   if (current) {
+    if (current.useLatestDashboardVersion !== false && (current.user.backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA)) {
+      navigate(`${b4aSettings.BACKEND_DASHBOARD_PATH}/apps/${params.appId}`, { replace: true });
+    }
+
     current.setParseKeys();
     if (current.serverInfo.status === 'LOADING') {
       return (
