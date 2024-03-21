@@ -90,7 +90,7 @@ export default class ParseApp {
     this.databaseURL = databaseURL;
     this.scripts = scripts;
     this.enableSecurityChecks = !!enableSecurityChecks;
-    this.useLatestDashboardVersion = !!useLatestDashboardVersion;
+    this.useLatestDashboardVersion = useLatestDashboardVersion !== false;
 
     if (!supportedPushLocales) {
       console.warn('Missing push locales for \'' + appName + '\', see this link for details on setting localizations up. https://github.com/parse-community/parse-dashboard#configuring-localized-push-notifications');
