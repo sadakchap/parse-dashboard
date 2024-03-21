@@ -29,7 +29,7 @@ function AppData() {
 
   if (current) {
     if (current.useLatestDashboardVersion !== false && (AccountManager.currentUser().backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA)) {
-      navigate(`${b4aSettings.BACKEND_DASHBOARD_PATH}/apps/${params.appId}`, { replace: true });
+      window.location.replace(`${b4aSettings.BACKEND_DASHBOARD_PATH}/apps/${params.appId}`);
     }
 
     current.setParseKeys();
