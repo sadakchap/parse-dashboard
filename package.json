@@ -167,6 +167,8 @@
     "generate": "node scripts/generate.js",
     "deploy-homolog": "sh deploy-homolog.sh",
     "deploy-prod": "sh deploy-prod.sh",
+    "deploy-homolog2": "sh deploy-homolog2.sh",
+    "deploy-prod2": "sh deploy-prod2.sh",
     "start": "node ./Parse-Dashboard/index.js",
     "madge:circular": "node_modules/.bin/madge ./src --circular",
     "semantic-release": "semantic-release"
