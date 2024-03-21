@@ -788,7 +788,7 @@ export default class ParseApp {
     if (name) {config['appName'] = name;}
     if (parseOptions) {config['parseOptions'] = parseOptions;}
     if (appSettings) {config = { ...config, ...appSettings }}
-    if (useLatestDashboardVersion) {config['useLatestDashboardVersion'] = useLatestDashboardVersion;}
+    if (useLatestDashboardVersion !== undefined) {config['useLatestDashboardVersion'] = useLatestDashboardVersion;}
     // eslint-disable-next-line no-undef
     const path = `${b4aSettings.BACK4APP_API_PATH}/parse-app/${this.slug}`;
     const promise = axios.patch(path, config, { withCredentials: true });
