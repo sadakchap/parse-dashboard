@@ -5,6 +5,7 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
+import AccountManager from './AccountManager';
 import * as AJAX from 'lib/AJAX';
 import encodeFormData from 'lib/encodeFormData';
 import Parse from 'parse';
@@ -803,6 +804,12 @@ export default class ParseApp {
       }
       if(parseOptions) {
         this.settings.fields.fields.parseOptions = deepmerge(this.settings.fields.fields.parseOptions, parseOptions);
+      }
+      if (useLatestDashboardVersion !== undefined) {
+        this.useLatestDashboardVersion = useLatestDashboardVersion;
+      }
+      if (useLatestDashboardVersion !== false && (AccountManager.currentUser().backendBetaUser || !b4aSettings.BACKEND_DASHBOARD_IS_BETA)) {
+        window.location.replace(`${b4aSettings.BACKEND_DASHBOARD_PATH}/apps/${this.slug}`);
       }
     });
     return promise;
