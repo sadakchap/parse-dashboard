@@ -113,7 +113,8 @@ export const ManageAppFields = ({
           />
         }
         input={
-          <Toggle
+          <B4aToggle
+            additionalStyles={{ margin: '6px 16px' }}
             value={useLatestDashboardVersion}
             onChange={value => setUseLatestDashboardVersion(value)}
           />
