@@ -28,7 +28,7 @@ function AppData() {
 
   if (current) {
     if (current.useLatestDashboardVersion === false) {
-      navigate(`${b4aSettings.BACKEND_DASHBOARD_PATH}/apps/${params.appId}`, { replace: true });
+      navigate(`${b4aSettings.PARSE_DASHBOARD_PATH}/apps/${params.appId}`, { replace: true });
     }
 
     current.setParseKeys();

@@ -103,21 +103,24 @@ export const ManageAppFields = ({
       />
       <hr className={styles.fieldHr} />
       <Field
-        labelWidth={60}
+        labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
         label={
           <Label
             text="Dashboard"
             description={
               'Use latest version'
             }
+            dark={true}
           />
         }
         input={
-          <B4aToggle
-            additionalStyles={{ margin: '6px 16px' }}
-            value={useLatestDashboardVersion}
-            onChange={value => setUseLatestDashboardVersion(value)}
-          />
+          <div style={{ flex: 1 }}>
+            <B4aToggle
+              additionalStyles={{ margin: '6px 16px' }}
+              value={useLatestDashboardVersion}
+              onChange={value => setUseLatestDashboardVersion(value)}
+            />
+          </div>
         }
       />
       <hr className={styles.fieldHr} />

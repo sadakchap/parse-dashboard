@@ -166,7 +166,7 @@ class Dashboard extends React.Component {
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('password');
   }
-
+  
   componentDidMount() {
     get('/parse-dashboard-config.json').then(({ apps, newFeaturesInLatestVersion = [], user }) => {
       fetchHubUser().then(userDetail => {
@@ -220,6 +220,10 @@ class Dashboard extends React.Component {
 
       AccountManager.setCurrentUser({ user });
       this.setState({ newFeaturesInLatestVersion, apps: stateApps, configLoadingState: AsyncStatus.SUCCESS });
+
+      if (!user.backendBetaUser && b4aSettings.BACKEND_DASHBOARD_IS_BETA) {
+        window.location.replace(b4aSettings.PARSE_DASHBOARD_PATH);
+      }
 
       // fetch serverInfo request for each app
       apps.forEach(async (app) => {
