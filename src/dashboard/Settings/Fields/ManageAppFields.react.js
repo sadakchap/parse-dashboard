@@ -101,27 +101,21 @@ export const ManageAppFields = ({
         }
         theme={Field.Theme.BLUE}
       />
-      <hr className={styles.fieldHr} />
+      <hr className={styles.fieldHr} />      
       <Field
         labelWidth={DEFAULT_SETTINGS_LABEL_WIDTH}
-        label={
-          <Label
-            text="Dashboard"
-            description={
-              'Use latest version'
-            }
-            dark={true}
-          />
-        }
+        label={<Label
+          text='Dashboard'
+          description={<span>Use latest backend dashboard version.</span>} dark={true} />}
         input={
-          <div style={{ flex: 1 }}>
+          <span style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
             <B4aToggle
-              additionalStyles={{ margin: '6px 16px' }}
-              value={useLatestDashboardVersion}
-              onChange={value => setUseLatestDashboardVersion(value)}
-            />
-          </div>
+              additionalStyles={{ margin: '6px 16px 0 0' }}
+              value={ useLatestDashboardVersion !== false }
+              onChange={ value => setUseLatestDashboardVersion(value) } />
+          </span>
         }
+        theme={Field.Theme.BLUE}
       />
       <hr className={styles.fieldHr} />
       <Field
