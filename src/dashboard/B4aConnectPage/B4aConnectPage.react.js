@@ -39,8 +39,7 @@ class B4aConnectPage extends DashboardView {
           <Toolbar section="API" subsection="Connect" />
           <div className={styles.content}>
             <div className={styles.header}>
-              <div className={styles.title}>Add Back4App to your app</div>
-              <div className={styles.subtitle}>Save your App’s data on the Blockchain Network of your choice.NOTE: This feature is on the alpha version.</div>
+              <div className={styles.title}>Get started by adding Back4App to your app</div>
             </div>
             <div className={styles['frameworkList-container']}>
               <a
