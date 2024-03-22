@@ -18,6 +18,9 @@
   &.active {
     color: $white;
   }
+  &.colored.optionLeft {
+    color: $dark-grey;
+  }
 }
 
 .optionLeft::before, .optionRight::before {
@@ -34,7 +37,7 @@
 }
 
 .colored::before {
-  background: $error-red !important;
+  background: $light-grey !important;
   transition-duration: 0.1s;
 }
 
