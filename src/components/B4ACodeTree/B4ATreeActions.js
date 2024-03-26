@@ -195,7 +195,7 @@ const addFilesOnTree = async (files, currentCode, selectedFolder) => {
 const getSelectedParent = () => {
   let parent = $('#tree').jstree('get_selected');
   if (['default', 'file', 'new-file'].includes($('#tree').jstree().get_node(parent).type)) {
-    parent = $('#tree').jstree().get_node(parent).parent;
+    parent = [$('#tree').jstree().get_node(parent).parent];
   }
   return parent;
 }
