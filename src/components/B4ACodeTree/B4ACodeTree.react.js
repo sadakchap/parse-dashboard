@@ -193,7 +193,7 @@ export default class B4ACodeTree extends React.Component {
     $('#tree').jstree().redraw(true);
 
     // set updated files.
-    this.cloudCodeChanges.addFile($('#tree').jstree('get_selected', true).pop().text);
+    this.cloudCodeChanges.addFile($('#tree').jstree('get_selected', true).pop().id);
     this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
   }
 
@@ -204,23 +204,27 @@ export default class B4ACodeTree extends React.Component {
     }
   }
 
-  updateCodeOnNewFile(type, text){
+  updateCodeOnNewFile(type, text, id){
     if (type === 'delete-file') {
-      this.cloudCodeChanges.removeFile(text);
+      // this.cloudCodeChanges.removeFile(text);
+      this.cloudCodeChanges.removeFile(id);
       if ($('#tree').jstree().get_json().length > 0) {
         const cloudFolder = $('#tree').jstree().get_json()[0].id;
         $('#tree').jstree('select_node', cloudFolder);
       }
-    } else if (type === 'new-file') {
+    } else if (type === 'new-file' || type === 'new-folder') {
       // incase of new-file, other file or folder is selected
       // so, directly add that file name in cloudCodeChanges
-      console.log('updateCodeOnNewFile::: - ', text);
-      text && this.cloudCodeChanges.addFile(text);
+      text && this.cloudCodeChanges.addFile(id);
+    } else if (type === 'delete-folder') {
+      const toBeDeletedFolder = $('#tree').jstree(true).get_node(id);
+      const toBeDeletedIds = [toBeDeletedFolder.id, ...toBeDeletedFolder.children_d];
+      this.cloudCodeChanges.removeMultiple(toBeDeletedIds);
     } else {
       // set updated files.
       const selectedFiles = $('#tree').jstree('get_selected', true)
       if (selectedFiles.length) {
-        this.cloudCodeChanges.addFile(selectedFiles.pop().text);
+        this.cloudCodeChanges.addFile(selectedFiles.pop().id);
       }
     }
 
@@ -235,8 +239,16 @@ export default class B4ACodeTree extends React.Component {
     const config = B4ATreeActions.getConfig(this.state.files);
     $('#tree').jstree(config);
     this.watchSelectedNode();
-    $('#tree').on('create_node.jstree', (node, parent) => this.updateCodeOnNewFile(parent?.node?.type, parent?.node?.text));
-    $('#tree').on('delete_node.jstree', (node, parent) => this.updateCodeOnNewFile('delete-file', parent?.node?.text));
+    $('#tree').on('create_node.jstree', (node, parent) => {
+      this.updateCodeOnNewFile(parent?.node?.type, parent?.node?.text, parent?.node?.id);
+    });
+    $('#tree').on('delete_node.jstree', (parent, node) => {
+      if (node?.node?.type === 'new-folder') {
+        this.updateCodeOnNewFile('delete-folder', node?.node?.text, node?.node?.id);
+      } else {
+        this.updateCodeOnNewFile('delete-file', node?.node?.text, node?.node?.id);
+      }
+    });
   }
 
   componentDidUpdate() {
