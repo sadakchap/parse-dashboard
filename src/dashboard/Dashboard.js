@@ -533,11 +533,11 @@ const NavbarWrapper = () => {
     overLimitAppsPlansCount={(appsPlans && appsPlans.filter(appPlan => appPlan.status === 'OVER_LIMITS').length) || undefined}
     router={router}
     Link={LinkImpl}
-    parseDashboardURL={b4aSettings.PARSE_DASHBOARD_URL}
-    containersDashboardURL={b4aSettings.CONTAINERS_DASHBOARD_URL}
-    back4appDotComSiteURL={b4aSettings.BACK4APP_DOT_COM_SITE_URL}
-    back4appDotComOldSiteURL={b4aSettings.BACK4APP_DOT_COM_OLD_SITE_URL}
-    back4appDotComDashboardURL={b4aSettings.BACK4APP_DOT_COM_DASHBOARD_URL}
+    parseDashboardURL={b4aSettings.PARSE_DASHBOARD_PATH}
+    containersDashboardURL={b4aSettings.CONTAINERS_DASHBOARD_PATH}
+    back4appDotComSiteURL={b4aSettings.BACK4APP_SITE_PATH}
+    back4appDotComOldSiteURL={b4aSettings.BACK4APP_SITE_PATH}
+    back4appDotComDashboardURL={b4aSettings.DASHBOARD_PATH}
   />
 }
 
