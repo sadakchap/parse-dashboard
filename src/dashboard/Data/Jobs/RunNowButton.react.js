@@ -72,6 +72,7 @@ export default class RunNowButton extends React.Component {
         color={this.state.result === 'error' ? 'red' : 'blue'}
         value={value}
         {...other}
+        eventName="Jobs - run a job"
       />
     );
   }

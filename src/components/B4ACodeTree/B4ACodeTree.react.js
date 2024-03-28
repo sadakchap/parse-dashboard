@@ -322,6 +322,8 @@ export default class B4ACodeTree extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: () => !Swal.isLoading()
                     }).then(({value}) => {
+                      // eslint-disable-next-line no-undef
+                      amplitude.track('Cloud code - create a file');
                       if (value) {
                         value = B4ATreeActions.sanitizeHTML(value);
                         const parent = B4ATreeActions.getSelectedParent();

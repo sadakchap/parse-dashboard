@@ -51,6 +51,7 @@ const SaveButton = ({
         value={value}
         disabled={(state === SaveButton.States.WAITING ? disabled : false) || state === SaveButton.States.SUCCEEDED}
         {...buttonProps}
+        eventName="JS Console - save button"
       />
     </span>
   );

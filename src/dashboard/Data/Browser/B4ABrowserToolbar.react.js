@@ -16,6 +16,7 @@ import VideoTutorialButton  from 'components/VideoTutorialButton/VideoTutorialBu
 import B4aColumnsConfiguration
   from 'components/ColumnsConfiguration/B4aColumnsConfiguration.react';
 import SubMenuItem from '../../../components/BrowserMenu/SubMenuItem.react';
+import { AmplitudeEvent } from 'lib/amplitudeEvents';
 
 const apiDocsButtonStyle = {
   display: 'inline-block',
@@ -218,9 +219,9 @@ const B4ABrowserToolbar = ({
           : <noscript />}
         {enableExportClass ?
           <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
-            <MenuItem text={'Export all rows'} onClick={() => onExportSelectedRows({ '*': true })} />
+            <MenuItem text={'Export all rows'} onClick={() => { amplitude.track(`${AmplitudeEvent.EXPORT_DATA} - all rows`); onExportSelectedRows({ '*': true })}} />
             <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`Export ${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
-            <MenuItem text={'Export schema'} onClick={() => onExportSchema()} />
+            <MenuItem text={'Export schema'} onClick={() => { amplitude.track(`${AmplitudeEvent.EXPORT_DATA} - schema`);onExportSchema()}} />
           </SubMenuItem>
           : <noscript />}
         <Separator />

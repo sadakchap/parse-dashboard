@@ -22,6 +22,7 @@ import { Map, fromJS } from 'immutable';
 import TrackVisibility from 'components/TrackVisibility/TrackVisibility.react';
 import { CurrentApp } from '../../context/currentApp';
 import generatePath from '../../lib/generatePath';
+import { AmplitudeEvent } from 'lib/amplitudeEvents';
 
 const origin = new Position(0, 0);
 
@@ -1353,6 +1354,7 @@ export default class B4aPermissionsDialog extends React.Component {
                 primary={true}
                 value={this.props.confirmText}
                 onClick={() => this.props.onConfirm(this.outputPerms())}
+                eventName={AmplitudeEvent.SAVE_CLP}
               />
             </div>
             <div className={[styles.details, baseStyles.verticalCenter].join(' ')}>

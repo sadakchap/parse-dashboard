@@ -225,6 +225,11 @@ class Dashboard extends React.Component {
         window.location.replace(b4aSettings.PARSE_DASHBOARD_PATH);
       }
 
+      // eslint-disable-next-line no-undef
+      amplitude.setUserId(user.email);
+      // eslint-disable-next-line no-undef
+      amplitude.track('Page Viewed');
+
       // fetch serverInfo request for each app
       apps.forEach(async (app) => {
         // Set master key as a default string to avoid undefined value access issues

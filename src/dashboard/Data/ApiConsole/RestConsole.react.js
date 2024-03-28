@@ -308,10 +308,11 @@ export default class RestConsole extends Component {
                 value="Send Query"
                 progress={this.state.inProgress}
                 onClick={this.makeRequest.bind(this)}
+                eventName="REST Console - send query"
               />
             }
             secondary={
-              <Button disabled={hasError} color="white" value="Export to cURL" width="auto" dark={true} onClick={this.showCurl.bind(this)} />
+              <Button disabled={hasError} color="white" value="Export to cURL" width="auto" dark={true} onClick={this.showCurl.bind(this)} eventName="REST Console - export cURL" />
             }
           />
         </Toolbar>

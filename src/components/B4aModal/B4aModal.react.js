@@ -48,6 +48,8 @@ const B4aModal = ({
   onContinue,
   showContinue,
   buttonsInCenter = false,
+  confirmButtonTrackEventName,
+  continueButtonTrackEventName,
 }) => {
   if (children) {
     children = React.Children.map(children, c => {
@@ -69,6 +71,7 @@ const B4aModal = ({
           disabled={!!disabled}
           onClick={onContinue}
           progress={progress}
+          eventName={continueButtonTrackEventName}
         />
       )}
       <Button
@@ -78,6 +81,7 @@ const B4aModal = ({
         disabled={!!disabled}
         onClick={onConfirm}
         progress={progress}
+        eventName={confirmButtonTrackEventName}
       />
     </div>
   );
@@ -145,6 +149,8 @@ B4aModal.propTypes = {
   buttonsInCenter: PropTypes.bool.describe(
     'If true, the buttons will appear in the center of the modal, instead of to the right. By default, the buttons appear on the right unless the modal contains no children, in which case they appear in the center.'
   ),
+  confirmButtonTrackEventName: PropTypes.string.describe('track name to be used on confirm button click'),
+  continueButtonTrackEventName: PropTypes.string.describe('track name to be used on continue button click')
 };
 
 export default B4aModal;
