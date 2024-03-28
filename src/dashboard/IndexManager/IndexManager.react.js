@@ -242,12 +242,12 @@ class IndexManager extends DashboardView {
       errorMessages.push('Only one text index is allowed per class')
     }
     if (errorMessages.length) {
-      Swal.insertQueueStep({
+      customSwl.fire({
         title: 'We found some errors',
         html: `<p style="text-align: center">${errorMessages.join('</p><p style="text-align: center">')}</p>`,
-        type: 'error',
         confirmButtonText: 'OK'
       })
+      return false;
     } else {
       const { className } = this.props.params
       return this.context.createIndex(className, indexConfiguration)
@@ -264,10 +264,9 @@ class IndexManager extends DashboardView {
           });
           this.setState({ data });
         }).catch(e => {
-          Swal.insertQueueStep({
+          customSwl.fire({
             title: 'Index creation failure',
             text: 'Error while creating the indexes. Please try again later.',
-            type: 'error'
           });
           console.trace(e);
         }).finally(() => {
