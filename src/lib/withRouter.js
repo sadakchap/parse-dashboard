@@ -12,11 +12,11 @@ export function withRouter(Component) {
 
     useEffect(() => {
       const { pathname } = location;
-      const dashboardPage = pathname.split('/')[3][0].toUpperCase() + pathname.split('/')[3].slice(1);
-      const subPage = pathname.split('/')[4] ? pathname.split('/')[4][0].toUpperCase() + pathname.split('/')[4].slice(1) : '';
-      const pageName = getPageViewName(dashboardPage, subPage);
-      // eslint-disable-next-line no-undef
-      amplitude.track(`Page View: ${pageName}`);
+      const pageName = getPageViewName(pathname);
+      if (pageName) {
+        // eslint-disable-next-line no-undef
+        amplitude.track(`Page View: ${pageName}`);
+      }
     }, [location])
 
     return (

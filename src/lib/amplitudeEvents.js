@@ -18,7 +18,14 @@ export const AmplitudeEvent = {
   JS_CONSOLE_RUN: 'JS Console - run button',
 };
 
-export const getPageViewName = (dashboardPage, subPage) => {
+export const getPageViewName = (pathname) => {
+  const parts = pathname.split('/').filter(part => part);
+  // pattern: /apps/{appId}/{pageName}/subPage
+  if (parts.length < 3) {
+    return '';
+  }
+  const dashboardPage = capitalizeFirstLetter(parts[3]);
+  const subPage = parts[4] ? capitalizeFirstLetter(parts[4]) : '';
   let pageName = '';
   switch (dashboardPage) {
     case 'Browser':
@@ -81,4 +88,9 @@ export const getPageViewName = (dashboardPage, subPage) => {
       break;
   }
   return pageName;
+}
+
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
