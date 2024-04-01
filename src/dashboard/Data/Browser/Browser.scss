@@ -11,7 +11,7 @@
 .browser {
   position: fixed;
   top: $toolbar-height;
-  left: 325px;
+  left: $b4aSidebarWidth;
   right: 0;
   bottom: 0;
   overflow: auto;
@@ -586,7 +586,7 @@ body:global(.sidebarCollapsed) {
 }
 
 .b4aLoadingWrapper {
-  width: calc(100vw - 325px);
+  width: calc(100vw - $b4aSidebarWidth);
   height: calc(100% - 54px);
   display: flex;
   justify-content: center;

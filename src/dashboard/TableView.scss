@@ -11,7 +11,7 @@
 .headers {
   position: fixed;
   top: calc($header-height + $toolbar-height);
-  left: 325px;
+  left: $b4aSidebarWidth;
   right: 0;
   background: $dark;
   height: 46px;
