@@ -21,14 +21,19 @@ export const AmplitudeEvent = {
 export const getPageViewName = (pathname) => {
   const parts = pathname.split('/').filter(part => part);
   // pattern: /apps/{appId}/{pageName}/subPage
-  if (parts.length < 3) {
+  if (parts.length < 2) {
     return '';
   }
-  const dashboardPage = capitalizeFirstLetter(parts[3]);
-  const subPage = parts[4] ? capitalizeFirstLetter(parts[4]) : '';
+  const dashboardPage = capitalizeFirstLetter(parts[2]);
+  const subPage = parts[3] ? capitalizeFirstLetter(parts[3]) : '';
   let pageName = '';
   switch (dashboardPage) {
-    case 'Browser':
+    case 'Browser': {
+      if (!subPage) {
+        pageName = ''; // as browser redirects to first class it will log twice, so avoiding logging when classname is not present
+      }
+      break;
+    }
     case 'Index':
     case 'Config':
     case 'Webhooks':
