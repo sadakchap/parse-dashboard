@@ -468,6 +468,7 @@ a.subitem {
   background: white;
   width: 200px;
   border-radius: 5px;
+  cursor: pointer;
 
   &:after {
     @include arrow('down', 12px, 6px, #ffffff);
