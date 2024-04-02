@@ -5,10 +5,12 @@
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
-import PropTypes    from 'lib/PropTypes';
-import React        from 'react';
-import ReactDOM     from 'react-dom';
-import styles       from 'components/BrowserMenu/B4aBrowserMenu.scss';
+import PropTypes from 'lib/PropTypes';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import styles from 'components/BrowserMenu/B4aBrowserMenu.scss';
+import Popover from 'components/Popover/Popover.react';
+import Position from 'lib/Position';
 
 export default class SubMenuItem extends React.Component {
   constructor() {
@@ -29,7 +31,7 @@ export default class SubMenuItem extends React.Component {
     }
   }
 
-  render() {    
+  render() {
     const classes = [styles.item, styles.rightArrowIcon];
     if (this.state.open && this.props.disabled) {
       classes.push(styles.open);
@@ -41,36 +43,52 @@ export default class SubMenuItem extends React.Component {
       classes.push(styles.disabled);
     }
 
+    let popover = null;
+    if (this.state.open) {
+      const position = Position.inDocument(this.node);
+      position.x -= this.node ? (this.node.clientWidth + 1) : 196;
+      position.x += 14; // padding
+      popover = (
+        <Popover
+          fixed={true}
+          position={position}
+          parentContentId={this.props.parentContentId}
+        >
+          <div
+            className={styles.subMenuBody}
+            style={{
+              minWidth: this.node ? this.node.clientWidth : '0'
+            }}
+          >
+            {React.Children.map(this.props.children, (child) =>
+              React.cloneElement(child, {
+                ...child.props,
+                onClick: (e) => {
+                  e.stopPropagation();
+                  this.setState({ open: false }); // close submenu
+                  this.props.onClose(); // close top menu
+                  child.props.onClick();
+                },
+              })
+            )}
+          </div>
+        </Popover>
+      )
+    } else {
+      popover = null;
+    }
+
     return (
       <div>
         <div
-          className={classes.join(" ")}
+          className={classes.join(' ')}
           onMouseEnter={() => this.setState({ open: true })}
           onMouseLeave={() => this.setState({ open: false })}
           // onClick={this.toggle}
           title={this.props.title}
         >
           {this.props.title}
-          <div style={{ display: this.state.open ? 'block' : 'none' }} onClick={(e) => e.stopPropagation()}>
-            <div
-              className={styles.subMenuBody}
-              style={{
-                minWidth: this.node ? this.node.clientWidth : "0",
-                left: this.node ? `-${this.node.clientWidth + 1}px` : "-196px",
-              }}
-            >
-              {React.Children.map(this.props.children, (child) =>
-                React.cloneElement(child, {
-                  ...child.props,
-                  onClick: () => {
-                    this.setState({ open: false }); // close submenu
-                    this.props.onClose(); // close top menu
-                    child.props.onClick();
-                  },
-                })
-              )}
-            </div>
-          </div>
+          {popover}
         </div>
       </div>
     );

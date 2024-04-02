@@ -19,6 +19,7 @@ import B4aMultiSelect from 'components/MultiSelect/B4aMultiSelect.react';
 import B4aMultiSelectOption from 'components/MultiSelect/B4aMultiSelectOption.react';
 import TrackVisibility from 'components/TrackVisibility/TrackVisibility.react';
 import baseStyles from 'stylesheets/base.scss';
+import { AmplitudeEvent } from 'lib/amplitudeEvents';
 
 const origin = new Position(0, 0);
 const intersectionMargin = '10px 0px 0px 20px';
@@ -502,6 +503,7 @@ export default class B4aProtectedFieldsDialog extends React.Component {
                 primary={true}
                 value={this.props.confirmText}
                 onClick={() => this.props.onConfirm(this.outputPerms())}
+                eventName={AmplitudeEvent.SAVE_PROTECTED_FIELDS}
               />
             </div>
             <div className={[styles.details, baseStyles.verticalCenter].join(' ')}>

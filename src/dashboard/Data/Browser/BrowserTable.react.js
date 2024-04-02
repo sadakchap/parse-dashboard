@@ -431,6 +431,7 @@ export default class BrowserTable extends React.Component {
                 onClick={this.props.onAddRow}
                 primary
                 value={`Create a ${this.props.relation.targetClassName} and attach`}
+                eventName="Add row"
               />{' '}
               <Button
                 onClick={this.props.onAttachRows}

@@ -1,21 +1,21 @@
-import B4aBrowserFilter        from 'components/BrowserFilter/B4aBrowserFilter.react';
-import BrowserMenu          from 'components/BrowserMenu/BrowserMenu.react';
-import Icon                 from 'components/Icon/Icon.react';
-import LoginDialog          from 'dashboard/Data/Browser/LoginDialog.react';
-import MenuItem             from 'components/BrowserMenu/MenuItem.react';
-import prettyNumber         from 'lib/prettyNumber';
-import React, { useRef }    from 'react';
-import SecurityDialog       from 'dashboard/Data/Browser/SecurityDialog.react';
-import SecureFieldsDialog   from 'dashboard/Data/Browser/SecureFieldsDialog.react';
-import Separator            from 'components/BrowserMenu/Separator.react';
-import styles               from 'dashboard/Data/Browser/Browser.scss';
-import Toolbar              from 'components/Toolbar/Toolbar.react';
-import Toggle               from 'components/Toggle/Toggle.react';
-import Button               from 'components/Button/Button.react'
-import VideoTutorialButton  from 'components/VideoTutorialButton/VideoTutorialButton.react';
-import B4aColumnsConfiguration
-  from 'components/ColumnsConfiguration/B4aColumnsConfiguration.react';
-import SubMenuItem from '../../../components/BrowserMenu/SubMenuItem.react';
+import B4aBrowserFilter from 'components/BrowserFilter/B4aBrowserFilter.react';
+import BrowserMenu from 'components/BrowserMenu/BrowserMenu.react';
+import Icon from 'components/Icon/Icon.react';
+import LoginDialog from 'dashboard/Data/Browser/LoginDialog.react';
+import MenuItem from 'components/BrowserMenu/MenuItem.react';
+import prettyNumber from 'lib/prettyNumber';
+import React, { useRef } from 'react';
+import SecurityDialog from 'dashboard/Data/Browser/SecurityDialog.react';
+import SecureFieldsDialog from 'dashboard/Data/Browser/SecureFieldsDialog.react';
+import Separator from 'components/BrowserMenu/Separator.react';
+import styles from 'dashboard/Data/Browser/Browser.scss';
+import Toolbar from 'components/Toolbar/Toolbar.react';
+import Toggle from 'components/Toggle/Toggle.react';
+import Button from 'components/Button/Button.react'
+import VideoTutorialButton from 'components/VideoTutorialButton/VideoTutorialButton.react';
+import B4aColumnsConfiguration from 'components/ColumnsConfiguration/B4aColumnsConfiguration.react';
+import SubMenuItem from 'components/BrowserMenu/SubMenuItem.react';
+import { AmplitudeEvent } from 'lib/amplitudeEvents';
 
 const apiDocsButtonStyle = {
   display: 'inline-block',
@@ -218,9 +218,9 @@ const B4ABrowserToolbar = ({
           : <noscript />}
         {enableExportClass ?
           <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
-            <MenuItem text={'Export all rows'} onClick={() => onExportSelectedRows({ '*': true })} />
+            <MenuItem text={'Export all rows'} onClick={() => { amplitude.track(`${AmplitudeEvent.EXPORT_DATA} - all rows`); onExportSelectedRows({ '*': true })}} />
             <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`Export ${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
-            <MenuItem text={'Export schema'} onClick={() => onExportSchema()} />
+            <MenuItem text={'Export schema'} onClick={() => { amplitude.track(`${AmplitudeEvent.EXPORT_DATA} - schema`);onExportSchema()}} />
           </SubMenuItem>
           : <noscript />}
         <Separator />

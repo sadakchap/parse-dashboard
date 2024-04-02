@@ -3,7 +3,7 @@
 
 .hubConnections {
   position: relative;
-  height: calc(100vh - 51px);
+  height: calc(100vh - $header-height);
   overflow: auto;
   
   .headerContainer {
@@ -111,5 +111,17 @@
 }
 
 .empty {
-  margin-top: 5rem;
+  margin-top: 46px;
+}
+
+.loadingState {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -100%);
+  &:last-child {
+    text-align: center;
+  }
 }

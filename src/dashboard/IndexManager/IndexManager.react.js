@@ -440,7 +440,9 @@ class IndexManager extends DashboardView {
           </section>
         </div>
         {this.state.data && this.state.data.length === 0
-          ? <EmptyGhostState icon='index-manager' title='No indexes were found' description='Create an index using the button located on the top right side' />
+          ? <div className={styles.emptyState}>
+            <EmptyGhostState icon='index-manager' title='No indexes were found' description='Create an index using the button located on the top right side' />
+          </div>
           : (
             <div className={styles.indexTableContainer}>
               <table className={styles.indexTable}>

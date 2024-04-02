@@ -162,6 +162,7 @@ export default class Playground extends Component {
               progress={running}
               color="white"
               dark={true}
+              eventName="JS Console - run button"
             />
             {window.localStorage && (
               <SaveButton

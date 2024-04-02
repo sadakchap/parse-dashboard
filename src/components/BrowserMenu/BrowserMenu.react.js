@@ -12,6 +12,8 @@ import PropTypes from 'lib/PropTypes';
 import React from 'react';
 import styles from 'components/BrowserMenu/B4aBrowserMenu.scss';
 
+const POPOVER_CONTENT_ID = 'B4aBrowserMenu';
+
 export default class BrowserMenu extends React.Component {
   constructor() {
     super();
@@ -32,9 +34,10 @@ export default class BrowserMenu extends React.Component {
         <Popover
           fixed={true}
           position={position}
+          contentId={POPOVER_CONTENT_ID}
           onExternalClick={() => this.setState({ open: false })}
         >
-          <div className={styles.menu}>
+          <div className={styles.menu} id={POPOVER_CONTENT_ID}>
             <div className={titleStyle.join(' ')} onClick={() => this.setState({ open: false })}>
               <Icon name={this.props.icon} width={18} height={18} />
               {/* <span>{this.props.title}</span> */}
@@ -43,11 +46,12 @@ export default class BrowserMenu extends React.Component {
               {React.Children.map(this.props.children, child =>
                 React.cloneElement(child, {
                   ...child.props,
+                  'parentContentId': POPOVER_CONTENT_ID,
                   onClick: () => {
                     this.setState({ open: false });
                     child.props.onClick();
                   },
-                  onClose: () => this.setState({ open: false }), 
+                  onClose: () => this.setState({ open: false }),
                 })
               )}
             </div>
