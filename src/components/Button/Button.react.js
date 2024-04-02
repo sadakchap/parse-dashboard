@@ -42,7 +42,12 @@ const Button = forwardRef(function Button(props, ref) {
       classes.push(styles.dark);
     }
   }
-  const clickHandler = hasOnClick ? props.onClick : noop;
+  const clickHandler = hasOnClick ? props.trackClick ? () => {
+    // eslint-disable-next-line no-undef
+    amplitude.track(props.eventName || `${typeof props.value === 'string' ? props.value : ''}`);
+    // console.log(props.eventName);
+    props.onClick();
+  } : props.onClick : noop;
   let styleOverride = null;
   if (props.width) {
     styleOverride = {
@@ -95,5 +100,12 @@ Button.propTypes = {
   additionalStyles: PropTypes.object.describe('Additional styles for <a> tag.'),
   className: PropTypes.string.describe(
     'Custom class name'
-  )
+  ),
+  trackClick: PropTypes.object.describe('boolean to specify whether track click or not'),
+  eventName: PropTypes.string.describe('event to send on trackClick'),
 };
+
+Button.defaultProps = {
+  trackClick: true,
+  eventName: '',
+}

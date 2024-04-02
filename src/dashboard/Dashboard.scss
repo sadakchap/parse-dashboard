@@ -9,7 +9,7 @@
 @import 'stylesheets/globals.scss';
 
 .content {
-  margin-left: 325px;
+  margin-left: $b4aSidebarWidth;
   max-height: $content-max-height;
   overflow: auto;
 }

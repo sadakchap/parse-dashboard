@@ -100,7 +100,7 @@ export default class DeleteRowsDialog extends React.Component {
         cancelText="Cancel"
         onCancel={this.props.onCancel}
         onConfirm={this.props.onConfirm}
-        buttonsInCenter={true}
+        buttonsInCenter={false}
       >
         {content}
       </B4aModal>

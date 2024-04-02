@@ -23,4 +23,8 @@ export default class CloudCodeChanges {
   removeMultiple(ids = []) {
     ids.forEach(id => this.removeFile(id))
   }
+
+  clearChanges() {
+    this.files = [];
+  }
 }

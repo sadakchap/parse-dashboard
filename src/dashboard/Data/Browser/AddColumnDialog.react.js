@@ -22,6 +22,7 @@ import FileInput from 'components/FileInput/FileInput.react';
 import styles from 'dashboard/Data/Browser/Browser.scss';
 import validateNumeric from 'lib/validateNumeric';
 import { DataTypes } from 'lib/Constants';
+import { AmplitudeEvent } from 'lib/amplitudeEvents';
 
 function validColumnName(name) {
   return !!name.match(/^[a-zA-Z][_a-zA-Z0-9]*$/);
@@ -286,6 +287,7 @@ export default class AddColumnDialog extends React.Component {
         onConfirm={() => {
           this.props.onConfirm(this.state);
         }}
+        confirmButtonTrackEventName={AmplitudeEvent.ADD_COLUMN}
       >
         <div style={{ borderRadius: '4px', overflow: 'hidden' }}>
           <Field

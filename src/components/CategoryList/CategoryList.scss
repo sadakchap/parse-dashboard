@@ -10,6 +10,7 @@
 
 .class_list {
   position: relative;
+  margin-top: 10px;
   // margin-bottom: 5px;
   // border-left: 1px solid #3e87b2;
 
@@ -19,7 +20,7 @@
     height: 20px;
     line-height: 20px;
     color: $light-blue;
-    font-size: 1rem;
+    font-size: 14px;
 
     &.active {
       color: $white;
@@ -132,7 +133,7 @@
   border-radius: 3px;
   border-left-color: $cta-green !important;
   cursor: pointer;
-  padding-left: 8px !important;
+  padding-left: 4px !important;
   
   span {
     display: inline-block;
@@ -179,7 +180,7 @@
 }
 .link {
   display: flex;
-  margin: 0.75rem 0;
+  margin: 8px 0;
   a {
     &:first-of-type {
       flex-grow: 1;
@@ -190,7 +191,7 @@
 
 .childLink {
   display: flex;
-  margin: 0.75rem 0;
+  margin: 8px 0;
   a {
     &:first-of-type {
       flex-grow: 1;

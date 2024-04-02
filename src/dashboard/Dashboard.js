@@ -166,7 +166,7 @@ class Dashboard extends React.Component {
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('password');
   }
-  
+
   componentDidMount() {
     get('/parse-dashboard-config.json').then(({ apps, newFeaturesInLatestVersion = [], user }) => {
       fetchHubUser().then(userDetail => {
@@ -224,6 +224,9 @@ class Dashboard extends React.Component {
       if (!user.backendBetaUser && b4aSettings.BACKEND_DASHBOARD_IS_BETA) {
         window.location.replace(b4aSettings.PARSE_DASHBOARD_PATH);
       }
+
+      // eslint-disable-next-line no-undef
+      amplitude.setUserId(user.email);
 
       // fetch serverInfo request for each app
       apps.forEach(async (app) => {
@@ -453,7 +456,7 @@ const parseHref = (href) => {
 
 const LinkImpl = ({ href, className, children }) => {
   href = parseHref(href);
-  
+
   if (href.startsWith('http')) {
     return <a href={href} className={className}>
       {children}

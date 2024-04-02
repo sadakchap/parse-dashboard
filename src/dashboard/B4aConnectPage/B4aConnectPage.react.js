@@ -23,8 +23,8 @@ class B4aConnectPage extends DashboardView {
   }
 
   onClickTechnology(tech) {
-    if (back4AppNavigation && back4AppNavigation.onClickTechnology)
-    {back4AppNavigation.onClickTechnology(tech);}
+    // eslint-disable-next-line no-undef
+    amplitude.track(`API Connect page - ${tech}`)
   }
 
   renderContent() {

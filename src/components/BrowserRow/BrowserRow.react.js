@@ -42,9 +42,9 @@ export default class BrowserRow extends Component {
       setContextMenu,
       onFilterChange,
       markRequiredFieldRow,
-      onAddRow, 
-      onAddColumn, 
-      onDeleteRows, 
+      onAddRow,
+      onAddColumn,
+      onDeleteRows,
       onDeleteSelectedColumn
     } = this.props;
     const attributes = obj.attributes;
@@ -112,14 +112,14 @@ export default class BrowserRow extends Component {
           if(name === 'expiresAt' && className === '_Session'){
             readOnly = true;
           }
-          if(name === "sessionToken"){
-            if (className === "_User" || className === "_Session") {
+          if(name === 'sessionToken'){
+            if (className === '_User' || className === '_Session') {
               readOnly = true;
             }
           }
           const isRequired = requiredCols.includes(name);
           return (
-            <>
+            <div key={name} style={{ display: 'inline-block' }}>
               <BrowserCell
                 appId={this.props.appId}
                 key={name}
@@ -157,7 +157,7 @@ export default class BrowserRow extends Component {
                 scripts={this.props.scripts}
               />
               <div className={styles.cellSeparator}></div>
-            </>
+            </div>
           );
         })}
       </div>

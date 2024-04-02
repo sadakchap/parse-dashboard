@@ -16,6 +16,7 @@ import React from 'react';
 import { SpecialClasses } from 'lib/Constants';
 import TextInput from 'components/TextInput/TextInput.react';
 import { withRouter } from 'lib/withRouter';
+import { AmplitudeEvent } from 'lib/amplitudeEvents';
 
 function validClassName(name) {
   return !!name.match(/^[a-zA-Z][_a-zA-Z0-9]*$/);
@@ -88,6 +89,7 @@ class CreateClassDialog extends React.Component {
           this.props.onConfirm(className, this.state.isProtected);
         }}
         width='580px'
+        confirmButtonTrackEventName={AmplitudeEvent.ADD_CLASS}
       >
         {availableClasses.length > 1 ? (
           <Field label={<Label text="What type of class do you need?" />} input={typeDropdown} />

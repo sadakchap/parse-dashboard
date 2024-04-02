@@ -65,7 +65,7 @@ class PushAudiencesIndex extends DashboardView {
             id: 'audiences',
             currentActive: current === 'audiences',
             action: new CategoryItemAction(
-              'Create an audience',
+              'Add audience',
               this.handleCreateAudienceClick.bind(this)
             )
           }

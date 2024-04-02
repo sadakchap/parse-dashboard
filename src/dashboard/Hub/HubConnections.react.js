@@ -1,15 +1,15 @@
 import AccountManager from 'lib/AccountManager';
 import React from 'react'
-import Swal from 'sweetalert2'
-import Button from 'components/Button/Button.react';
 import CategoryList from 'components/CategoryList/CategoryList.react';
-import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react'
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
+import B4aLoader from 'components/B4aLoader/B4aLoader.react';
 import Icon from 'components/Icon/Icon.react'
 import DashboardView from 'dashboard/DashboardView.react'
 import HubDisconnectionDialog from 'dashboard/Hub/HubDisconnectionDialog.react'
 import styles from 'dashboard/Hub/HubConnections.scss'
 import { CurrentApp } from 'context/currentApp';
 import { withRouter } from 'lib/withRouter';
+import { customDangerSwl } from 'lib/b4aCustomSweetalert';
 
 @withRouter
 class HubConnections extends DashboardView {
@@ -24,7 +24,8 @@ class HubConnections extends DashboardView {
       data: null,
       namespaceBeingDisconnected: '',
       showDisconnectDialog: false,
-      isDisconnecting: false
+      isDisconnecting: false,
+      isloading: true,
     };
 
     this.user = AccountManager.currentUser();
@@ -32,7 +33,7 @@ class HubConnections extends DashboardView {
 
   async componentDidMount() {
     const data = await this.context.fetchHubConnections();
-    this.setState({ data });
+    this.setState({ data, isloading: false });
   }
 
   renderSidebar() {
@@ -97,8 +98,8 @@ class HubConnections extends DashboardView {
               }}/> */}
           </section>
         </div>
-        {!this.state.data || this.state.data.length === 0
-          ? <div className={styles.empty}>
+        {this.state.isloading ? <div className={styles.loadingState}><B4aLoader /></div> : (
+          !this.state.data || this.state.data.length === 0 ? (<div className={styles.empty}>
             <B4aEmptyState
               cta='Go to Database Hub'
               action={b4aSettings.HUB_URL}
@@ -106,8 +107,7 @@ class HubConnections extends DashboardView {
               icon='b4a-app-settings-icon'
               title='No connections were found'
             />
-          </div>
-          : <>
+          </div>) : (<>
             <div className={styles.connectionsTableContainer}>
               <table className={styles.connectionsTable}>
                 <thead>
@@ -124,27 +124,26 @@ class HubConnections extends DashboardView {
               </table>
             </div>
             {this.state.showDisconnectDialog &&
-                <HubDisconnectionDialog
-                  namespace={this.state.namespaceBeingDisconnected}
-                  onConfirm={async () => {
-                    await this.setState({ isDisconnecting: true });
-                    try {
-                      await this.context.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
-                      window.location.reload(false);
-                    } catch (err) {
-                      this.setState({ isDisconnecting: false });
-                      Swal.fire({
-                        type: 'error',
-                        title: 'Disconnection failed',
-                        text: 'Please contact our support or try again later'
-                      });
-                    }
-                  }}
-                  onCancel={() => this.setState({ isDisconnecting: false, showDisconnectDialog: false })}
-                  isDisconnecting={this.state.isDisconnecting} />
+              <HubDisconnectionDialog
+                namespace={this.state.namespaceBeingDisconnected}
+                onConfirm={async () => {
+                  await this.setState({ isDisconnecting: true });
+                  try {
+                    await this.context.disconnectHubDatabase(this.state.namespaceBeingDisconnected);
+                    window.location.reload(false);
+                  } catch (err) {
+                    this.setState({ isDisconnecting: false });
+                    customDangerSwl.fire({
+                      title: 'Disconnection failed',
+                      text: 'Please contact our support or try again later'
+                    });
+                  }
+                }}
+                onCancel={() => this.setState({ isDisconnecting: false, showDisconnectDialog: false })}
+                isDisconnecting={this.state.isDisconnecting} />
             }
-          </>
-        }
+          </>)
+        )}
       </div>
     )
   }

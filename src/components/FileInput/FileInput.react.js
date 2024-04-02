@@ -60,9 +60,9 @@ export default class FileInput extends React.Component {
           {this.props.uploading ? (
             <div className={styles.spinner}></div>
           ) : label ? (
-            <div className={styles.defaultLabel}><span>Change file</span><Icon name="B4a-upload-file-icon" width="24px" height="24px" fill="#10203A" /> </div>
+            <div className={styles.defaultLabel}><span>Change file</span><Icon name="B4a-upload-file-icon" width={24} height={24} fill="#10203A" /> </div>
           ) : (
-            <div className={styles.defaultLabel}><span>Upload file</span><Icon name="B4a-upload-file-icon" width="24px" height="24px" fill="#10203A" /> </div>
+            <div className={styles.defaultLabel}><span>Upload file</span><Icon name="B4a-upload-file-icon" width={24} height={24} fill="#10203A" /> </div>
           )}
           <input {...inputProps} />
         </div>
