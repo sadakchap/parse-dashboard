@@ -19,6 +19,7 @@ import styles from 'dashboard/Data/CloudCode/CloudCode.scss';
 import Icon from 'components/Icon/Icon.react';
 import B4aModal from 'components/B4aModal/B4aModal.react';
 import { withRouter } from 'lib/withRouter';
+import CloudCodeChanges from 'lib/CloudCodeChanges';
 
 @withRouter
 class B4ACloudCode extends CloudCode {
@@ -47,6 +48,7 @@ class B4ACloudCode extends CloudCode {
     };
 
     this.onLogClick = this.onLogClick.bind(this);
+    this.cloudCodeChanges = new CloudCodeChanges();
   }
 
   // Method used to handler the B4AAlerts closed (that divs with some tips) and
@@ -194,7 +196,7 @@ class B4ACloudCode extends CloudCode {
     </B4aModal>;
     // show 'loading' modal
     this.setState({ modal: loadingModal });
-    try{
+    try {
       await axios(this.getPath(), {
         method: 'post',
         data: { tree },
@@ -202,7 +204,7 @@ class B4ACloudCode extends CloudCode {
       })
       // eslint-disable-next-line no-undef
       // back4AppNavigation && back4AppNavigation.deployCloudCodeEvent()
-      await this.fetchSource()
+      await this.fetchSource();
       // force jstree component to upload
       await updateTreeContent(this.state.files);
       const successModal = <B4aModal
@@ -216,9 +218,11 @@ class B4ACloudCode extends CloudCode {
         onConfirm={() => this.setState({ modal: null })}
       />;
       this.setState({updatedFiles: [], unsavedChanges: false, modal: successModal });
+      this.cloudCodeChanges.clearChanges();
       $('#tree').jstree(true).redraw(true);
       this.fetchSource();
     } catch (err) {
+      console.log(err);
       const errorModal = <B4aModal
         type={B4aModal.Types.DANGER}
         icon='b4a-warn-fill-icon'
@@ -304,6 +308,7 @@ class B4ACloudCode extends CloudCode {
         files={this.state.files}
         parentState={this.setState.bind(this)}
         currentApp={this.context}
+        cloudCodeChanges={this.cloudCodeChanges}
       />
     }
 

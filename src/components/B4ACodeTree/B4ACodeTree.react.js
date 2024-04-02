@@ -11,7 +11,7 @@ import B4ATreeActions from 'components/B4ACodeTree/B4ATreeActions';
 import Swal from 'sweetalert2';
 import B4ACloudCodeInfo from 'components/B4ACodeTree/B4ACloudCodeInfo.react';
 import folderInfoIcon from './icons/folder-info.png';
-import CloudCodeChanges from 'lib/CloudCodeChanges';
+// import CloudCodeChanges from 'lib/CloudCodeChanges';
 import PropTypes from 'lib/PropTypes';
 import Icon from 'components/Icon/Icon.react';
 
@@ -63,7 +63,7 @@ export default class B4ACodeTree extends React.Component {
       selectedNodeData: null
     }
 
-    this.cloudCodeChanges = new CloudCodeChanges();
+    // this.cloudCodeChanges = new CloudCodeChanges();
   }
 
   getFileType(file) {
@@ -193,8 +193,8 @@ export default class B4ACodeTree extends React.Component {
     $('#tree').jstree().redraw(true);
 
     // set updated files.
-    this.cloudCodeChanges.addFile($('#tree').jstree('get_selected', true).pop().id);
-    this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
+    this.props.cloudCodeChanges.addFile($('#tree').jstree('get_selected', true).pop().id);
+    this.props.setUpdatedFile(this.props.cloudCodeChanges.getFiles());
   }
 
   selectCloudFolder() {
@@ -206,8 +206,8 @@ export default class B4ACodeTree extends React.Component {
 
   updateCodeOnNewFile(type, text, id){
     if (type === 'delete-file') {
-      // this.cloudCodeChanges.removeFile(text);
-      this.cloudCodeChanges.removeFile(id);
+      // this.props.cloudCodeChanges.removeFile(text);
+      this.props.cloudCodeChanges.removeFile(id);
       if ($('#tree').jstree().get_json().length > 0) {
         const cloudFolder = $('#tree').jstree().get_json()[0].id;
         $('#tree').jstree('select_node', cloudFolder);
@@ -215,20 +215,20 @@ export default class B4ACodeTree extends React.Component {
     } else if (type === 'new-file' || type === 'new-folder') {
       // incase of new-file, other file or folder is selected
       // so, directly add that file name in cloudCodeChanges
-      text && this.cloudCodeChanges.addFile(id);
+      text && this.props.cloudCodeChanges.addFile(id);
     } else if (type === 'delete-folder') {
       const toBeDeletedFolder = $('#tree').jstree(true).get_node(id);
       const toBeDeletedIds = [toBeDeletedFolder.id, ...toBeDeletedFolder.children_d];
-      this.cloudCodeChanges.removeMultiple(toBeDeletedIds);
+      this.props.cloudCodeChanges.removeMultiple(toBeDeletedIds);
     } else {
       // set updated files.
       const selectedFiles = $('#tree').jstree('get_selected', true)
       if (selectedFiles.length) {
-        this.cloudCodeChanges.addFile(selectedFiles.pop().id);
+        this.props.cloudCodeChanges.addFile(selectedFiles.pop().id);
       }
     }
 
-    this.props.setUpdatedFile(this.cloudCodeChanges.getFiles());
+    this.props.setUpdatedFile(this.props.cloudCodeChanges.getFiles());
 
     this.selectCloudFolder();
 
