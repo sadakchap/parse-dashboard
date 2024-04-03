@@ -17,7 +17,7 @@ export default class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { code: '', reset: false };
+    this.state = { code: '', reset: false, fileName: props.fileName };
   }
 
   get value() {
@@ -38,7 +38,7 @@ export default class CodeEditor extends React.Component {
     }
     if (props.mode === 'javascript') {
       // eslint-disable-next-line no-undef
-      ace.config.setModuleUrl('ace/mode/javascript_worker', `${window.PARSE_DASHBOARD_PATH}/worker-javascript.js`);
+      ace.config.setModuleUrl('ace/mode/javascript_worker', `${b4aSettings.PARSE_DASHBOARD_PATH}/worker-javascript.js`);
     }
   }
 
@@ -55,6 +55,12 @@ export default class CodeEditor extends React.Component {
           typeof this.props.onCodeChange === 'function' && this.props.onCodeChange(value);
         }}
         onLoad={editor => {
+          if (editor.session.$worker && editor.session.getMode().$id === 'ace/mode/javascript') {
+            editor.session.$worker.send('setOptions', [{
+              'esversion': 11,
+              'esnext': false,
+            }]);
+          }
           editor.once('change', () => {
             editor.session.getUndoManager().reset();
           });
@@ -66,7 +72,7 @@ export default class CodeEditor extends React.Component {
           });
         }}
         fontSize={fontSize}
-        showPrintMargin={false}
+        showPrintMargin={true}
         showGutter={true}
         highlightActiveLine={true}
         width="100%"
