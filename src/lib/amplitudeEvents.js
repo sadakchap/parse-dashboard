@@ -20,80 +20,87 @@ export const AmplitudeEvent = {
 };
 
 export const getPageViewName = (pathname) => {
-  const parts = pathname.split('/').filter(part => part);
-  // pattern: /apps/{appId}/{pageName}/subPage
-  if (parts.length < 2) {
-    return '';
+  console.log('calling getPageViewName');
+  try {
+    const parts = pathname.split('/').filter(part => part);
+    // pattern: /apps/{appId}/{pageName}/subPage
+    if (parts.length < 2) {
+      return '';
+    }
+    const dashboardPage = capitalizeFirstLetter(parts[2]);
+    const subPage = parts[3] ? capitalizeFirstLetter(parts[3]) : '';
+    let pageName = '';
+    switch (dashboardPage) {
+      case 'Browser': {
+        if (!subPage) {
+          pageName = ''; // as browser redirects to first class it will log twice, so avoiding logging when classname is not present
+        }
+        break;
+      }
+      case 'Index':
+      case 'Config':
+      case 'Webhooks':
+        break;
+      case 'Cloud_code':
+        pageName = 'Cloud Code'
+        break;
+      case 'Jobs': {
+        if (subPage === 'Status') {
+          pageName = 'Jobs Status'
+        } pageName = 'All Jobs'
+        break;
+      }
+      case 'Logs':
+        pageName = `${dashboardPage} ${subPage}`;
+        break;
+      case 'Api_console':{
+        pageName = `${subPage} Console`;
+        if (subPage === 'Js_console') {
+          pageName = 'JS Console'
+        }
+        break;
+      }
+      case 'Settings': {
+        if (subPage === 'General') {
+          pageName = 'General Settings'
+        } else if (subPage === 'Keys') {
+          pageName = 'Security & keys'
+        } else {
+          pageName = 'Server Settings'
+        }
+        break;
+      }
+      case 'Push': {
+        if (subPage === 'New') {
+          pageName = 'Send New Push'
+        } else if (subPage === 'Activity') {
+          pageName = 'Push Pushes all';
+        } else {
+          pageName = 'Push Audiences'
+        }
+        break;
+      }
+      case 'Analytics': {
+        if (subPage === 'Slow_requests') {
+          pageName = 'Analytics Slow requests'
+        }
+        break;
+      }
+      case 'Connections':
+        pageName = 'Database hub';
+        break;
+      case 'connect':
+        pageName = 'API Connect';
+        break;
+      default:
+        break;
+    }
+    return pageName;
+  } catch (error) {
+    console.log('error from getPageViewName');
+    console.log(error);
+    return ''
   }
-  const dashboardPage = capitalizeFirstLetter(parts[2]);
-  const subPage = parts[3] ? capitalizeFirstLetter(parts[3]) : '';
-  let pageName = '';
-  switch (dashboardPage) {
-    case 'Browser': {
-      if (!subPage) {
-        pageName = ''; // as browser redirects to first class it will log twice, so avoiding logging when classname is not present
-      }
-      break;
-    }
-    case 'Index':
-    case 'Config':
-    case 'Webhooks':
-      break;
-    case 'Cloud_code':
-      pageName = 'Cloud Code'
-      break;
-    case 'Jobs': {
-      if (subPage === 'Status') {
-        pageName = 'Jobs Status'
-      } pageName = 'All Jobs'
-      break;
-    }
-    case 'Logs':
-      pageName = `${dashboardPage} ${subPage}`;
-      break;
-    case 'Api_console':{
-      pageName = `${subPage} Console`;
-      if (subPage === 'Js_console') {
-        pageName = 'JS Console'
-      }
-      break;
-    }
-    case 'Settings': {
-      if (subPage === 'General') {
-        pageName = 'General Settings'
-      } else if (subPage === 'Keys') {
-        pageName = 'Security & keys'
-      } else {
-        pageName = 'Server Settings'
-      }
-      break;
-    }
-    case 'Push': {
-      if (subPage === 'New') {
-        pageName = 'Send New Push'
-      } else if (subPage === 'Activity') {
-        pageName = 'Push Pushes all';
-      } else {
-        pageName = 'Push Audiences'
-      }
-      break;
-    }
-    case 'Analytics': {
-      if (subPage === 'Slow_requests') {
-        pageName = 'Analytics Slow requests'
-      }
-      break;
-    }
-    case 'Connections':
-      pageName = 'Database hub';
-      break;
-    case 'connect':
-      pageName = 'API Connect';
-      break;
-    default:
-      break;
-  }
-  return pageName;
 }
 
 function capitalizeFirstLetter(string) {
@@ -114,6 +121,7 @@ export const initializeAmplitude = (userId) => {
 
 
 export const amplitudeLogEvent = (name, data) => {
+  console.log('logging amp,itude event');
   // eslint-disable-next-line no-undef
   if (!b4aSettings.BACK4APP_AMPLITUDE_KEY) {
     return;
