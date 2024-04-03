@@ -101,6 +101,8 @@ function capitalizeFirstLetter(string) {
 }
 
 export const initializeAmplitude = (userId) => {
+  console.log('initialse amplitude');
+  console.log(b4aSettings.BACK4APP_AMPLITUDE_KEY);
   // eslint-disable-next-line no-undef
   if (!b4aSettings.BACK4APP_AMPLITUDE_KEY || !userId) {
     return;
