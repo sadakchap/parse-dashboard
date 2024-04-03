@@ -241,10 +241,12 @@ export default class B4ACodeTree extends React.Component {
     $('#tree').jstree(config);
     this.watchSelectedNode();
     $('#tree').on('create_node.jstree', (node, parent) => {
+      amplitudeLogEvent(`CloudCode create ${parent?.node?.type}`);
       this.updateCodeOnNewFile(parent?.node?.type, parent?.node?.text, parent?.node?.id);
     });
     $('#tree').on('delete_node.jstree', (parent, node) => {
       if (node?.node?.type === 'new-folder') {
+        amplitudeLogEvent(`CloudCode delete ${parent?.node?.type}`);
         this.updateCodeOnNewFile('delete-folder', node?.node?.text, node?.node?.id);
       } else {
         this.updateCodeOnNewFile('delete-file', node?.node?.text, node?.node?.id);
@@ -323,8 +325,6 @@ export default class B4ACodeTree extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: () => !Swal.isLoading()
                     }).then(({value}) => {
-                      // eslint-disable-next-line no-undef
-                      amplitudeLogEvent('Cloud code - create a file');
                       if (value) {
                         value = B4ATreeActions.sanitizeHTML(value);
                         const parent = B4ATreeActions.getSelectedParent();

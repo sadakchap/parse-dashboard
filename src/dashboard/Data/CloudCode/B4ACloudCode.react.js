@@ -299,7 +299,7 @@ class B4ACloudCode extends CloudCode {
           primary={true}
           width='20'
           additionalStyles={{ height: '40px' }}
-          eventName='Cloud code - deploy'
+          eventName='CloudCode Deploy'
         />
       </B4ACloudCodeToolbar>
 

@@ -257,6 +257,7 @@ export default class BrowserTable extends React.Component {
                   marginRight: '0px',
                   padding: '0',
                 }}
+                eventName="Add row"
               />
               <Button
                 value="Cancel"
