@@ -11,10 +11,10 @@ export function withRouter(Component) {
     const location = useLocation();
 
     useEffect(() => {
+      console.log('coming in the withrouter');
       const { pathname } = location;
       const pageName = getPageViewName(pathname);
       if (pageName) {
-        // eslint-disable-next-line no-undef
         amplitudeLogEvent(`Page View: ${pageName}`);
       }
     }, [location])
