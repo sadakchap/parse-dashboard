@@ -73,6 +73,7 @@ import DashboardSettings from './Settings/DashboardSettings/DashboardSettings.re
 import Security from './Settings/Security/Security.react';
 import { Navbar } from '@back4app2/react-components';
 import back4app2 from '../lib/back4app2';
+import { initializeAmplitude } from 'lib/amplitudeEvents';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -225,8 +226,7 @@ class Dashboard extends React.Component {
         window.location.replace(b4aSettings.PARSE_DASHBOARD_PATH);
       }
 
-      // eslint-disable-next-line no-undef
-      amplitude.setUserId(user.email);
+      initializeAmplitude(user.email);
 
       // fetch serverInfo request for each app
       apps.forEach(async (app) => {

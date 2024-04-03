@@ -9,6 +9,7 @@ import baseStyles from 'stylesheets/base.scss';
 import PropTypes from 'lib/PropTypes';
 import React, { forwardRef } from 'react';
 import styles from 'components/Button/Button.scss';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const noop = () => {};
 
@@ -44,7 +45,7 @@ const Button = forwardRef(function Button(props, ref) {
   }
   const clickHandler = hasOnClick ? props.trackClick ? () => {
     // eslint-disable-next-line no-undef
-    amplitude.track(props.eventName || `${typeof props.value === 'string' ? props.value : ''}`);
+    amplitudeLogEvent(props.eventName || `${typeof props.value === 'string' ? props.value : ''}`);
     // console.log(props.eventName);
     props.onClick();
   } : props.onClick : noop;

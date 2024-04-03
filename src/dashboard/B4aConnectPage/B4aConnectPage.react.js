@@ -4,6 +4,7 @@ import Toolbar from 'components/Toolbar/Toolbar.react';
 import Fieldset from 'components/Fieldset/Fieldset.react';
 import styles from 'dashboard/B4aConnectPage/B4aConnectPage.scss';
 import B4aLoaderContainer from 'components/B4aLoaderContainer/B4aLoaderContainer.react';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 import reactImg from './react.png';
 import flutterImg from './flutter.png';
 import androidImg from './android-robot.png'
@@ -24,7 +25,7 @@ class B4aConnectPage extends DashboardView {
 
   onClickTechnology(tech) {
     // eslint-disable-next-line no-undef
-    amplitude.track(`API Connect page - ${tech}`)
+    amplitudeLogEvent(`API Connect page - ${tech}`)
   }
 
   renderContent() {

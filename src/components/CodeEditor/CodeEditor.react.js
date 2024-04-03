@@ -50,14 +50,14 @@ export default class CodeEditor extends React.Component {
       <Editor
         mode={mode}
         theme="solarized_dark"
-        onChange={value => {
+        onChange={(value, event) => {
           this.setState({ code: value });
           typeof this.props.onCodeChange === 'function' && this.props.onCodeChange(value);
         }}
         onLoad={editor => {
           if (editor.session.$worker && editor.session.getMode().$id === 'ace/mode/javascript') {
             editor.session.$worker.send('setOptions', [{
-              'esversion': 11,
+              'esversion': 13,
               'esnext': false,
             }]);
           }
@@ -72,7 +72,7 @@ export default class CodeEditor extends React.Component {
           });
         }}
         fontSize={fontSize}
-        showPrintMargin={true}
+        showPrintMargin={false}
         showGutter={true}
         highlightActiveLine={true}
         width="100%"

@@ -35,6 +35,7 @@
     "LICENSE"
   ],
   "dependencies": {
+    "@amplitude/analytics-browser": "2.6.1",
     "@babel/runtime": "7.20.13",
     "@babel/runtime-corejs3": "7.20.13",
     "@back4app/back4app-settings": "^1.5.6",

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useParams, useNavigate, useOutletContext, useLocation, UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
-import { getPageViewName } from 'lib/amplitudeEvents'
+import { getPageViewName, amplitudeLogEvent } from 'lib/amplitudeEvents'
 
 export function withRouter(Component) {
   function render(props) {
@@ -15,7 +15,7 @@ export function withRouter(Component) {
       const pageName = getPageViewName(pathname);
       if (pageName) {
         // eslint-disable-next-line no-undef
-        amplitude.track(`Page View: ${pageName}`);
+        amplitudeLogEvent(`Page View: ${pageName}`);
       }
     }, [location])
 

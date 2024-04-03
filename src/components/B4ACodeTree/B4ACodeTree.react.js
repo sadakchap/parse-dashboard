@@ -14,6 +14,7 @@ import folderInfoIcon from './icons/folder-info.png';
 // import CloudCodeChanges from 'lib/CloudCodeChanges';
 import PropTypes from 'lib/PropTypes';
 import Icon from 'components/Icon/Icon.react';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 import buttonStyles from 'components/Button/Button.scss';
 import baseStyles from 'stylesheets/base.scss';
@@ -323,7 +324,7 @@ export default class B4ACodeTree extends React.Component {
                       allowOutsideClick: () => !Swal.isLoading()
                     }).then(({value}) => {
                       // eslint-disable-next-line no-undef
-                      amplitude.track('Cloud code - create a file');
+                      amplitudeLogEvent('Cloud code - create a file');
                       if (value) {
                         value = B4ATreeActions.sanitizeHTML(value);
                         const parent = B4ATreeActions.getSelectedParent();
