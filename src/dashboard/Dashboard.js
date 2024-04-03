@@ -272,9 +272,11 @@ class Dashboard extends React.Component {
           }
         }
       });
-    }).catch(({ error }) => {
+    }).catch((error) => {
+      console.log('coming in the error block');
+      console.log(error);
       this.setState({
-        configLoadingError: error,
+        configLoadingError: error.message,
         configLoadingState: AsyncStatus.FAILED
       });
     });
