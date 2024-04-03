@@ -21,6 +21,7 @@ export default class Playground extends Component {
     this.subsection = 'JS Console';
     this.localKey = 'parse-dashboard-playground-code';
     this.state = {
+      code: '',
       results: [],
       running: false,
       saving: false,
@@ -139,9 +140,13 @@ export default class Playground extends Component {
   componentDidMount() {
     if (window.localStorage) {
       const initialCode = window.localStorage.getItem(this.localKey);
+      let code = '';
       if (initialCode) {
-        this.editor.value = initialCode;
+        code = initialCode;
+      } else {
+        code = placeholderCode;
       }
+      this.setState({ code });
     }
   }
 
@@ -179,8 +184,10 @@ export default class Playground extends Component {
           <div className={styles.playgroundEditor}>
             <CodeEditor
               fontSize={14}
-              placeHolder={placeholderCode}
+              placeHolder={this.state.code}
               ref={editor => (this.editor = editor)}
+              fileName={`${this.localKey}.js`}
+              onCodeChange={(code) => this.setState({ code })}
             />
           </div>
           <div className={styles.console}>

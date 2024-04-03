@@ -1,3 +1,4 @@
+import * as amplitude from '@amplitude/analytics-browser';
 
 export const AmplitudeEvent = {
   ADD_CLASS: 'Add a class',
@@ -95,7 +96,25 @@ export const getPageViewName = (pathname) => {
   return pageName;
 }
 
-
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export const initializeAmplitude = (userId) => {
+  // eslint-disable-next-line no-undef
+  if (!b4aSettings.BACK4APP_AMPLITUDE_KEY || !userId) {
+    return;
+  }
+  // eslint-disable-next-line no-undef
+  amplitude.init(b4aSettings.BACK4APP_AMPLITUDE_KEY);
+  amplitude.setUserId(userId);
+};
+
+
+export const amplitudeLogEvent = (name, data) => {
+  // eslint-disable-next-line no-undef
+  if (!b4aSettings.BACK4APP_AMPLITUDE_KEY) {
+    return;
+  }
+  amplitude.track(name, data);
+};

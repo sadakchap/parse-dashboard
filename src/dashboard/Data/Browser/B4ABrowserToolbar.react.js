@@ -15,7 +15,7 @@ import Button from 'components/Button/Button.react'
 import VideoTutorialButton from 'components/VideoTutorialButton/VideoTutorialButton.react';
 import B4aColumnsConfiguration from 'components/ColumnsConfiguration/B4aColumnsConfiguration.react';
 import SubMenuItem from 'components/BrowserMenu/SubMenuItem.react';
-import { AmplitudeEvent } from 'lib/amplitudeEvents';
+import { AmplitudeEvent, amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const apiDocsButtonStyle = {
   display: 'inline-block',
@@ -218,15 +218,16 @@ const B4ABrowserToolbar = ({
           : <noscript />}
         {enableExportClass ?
           <SubMenuItem title="Export" setCurrent={setCurrent} onClick={null} disabled={isPendingEditCloneRows} >
-            <MenuItem text={'Export all rows'} onClick={() => { amplitude.track(`${AmplitudeEvent.EXPORT_DATA} - all rows`); onExportSelectedRows({ '*': true })}} />
+            <MenuItem text={'Export all rows'} onClick={() => { amplitudeLogEvent(`${AmplitudeEvent.EXPORT_DATA} - all rows`); onExportSelectedRows({ '*': true })}} />
             <MenuItem disabled={!selectionLength || isPendingEditCloneRows} text={`Export ${selectionLength} selected ${selectionLength <= 1 ? 'row' : 'rows'}`} onClick={() => onExportSelectedRows(selection)} />
-            <MenuItem text={'Export schema'} onClick={() => { amplitude.track(`${AmplitudeEvent.EXPORT_DATA} - schema`);onExportSchema()}} />
+            <MenuItem text={'Export schema'} onClick={() => { amplitudeLogEvent(`${AmplitudeEvent.EXPORT_DATA} - schema`);onExportSchema()}} />
           </SubMenuItem>
           : <noscript />}
         <Separator />
         <MenuItem disabled={isPendingEditCloneRows} text='Index Manager' onClick={onClickIndexManager} />
         <MenuItem disabled={isPendingEditCloneRows} text="API Reference" onClick={() => {
           // back4AppNavigation && back4AppNavigation.atApiReferenceClassesEvent()
+          amplitudeLogEvent('at API Reference Classes');
           window.open(`${b4aSettings.DASHBOARD_PATH}/apidocs/${applicationId}${classApiId}`, '_blank')
         }} />
       </BrowserMenu>
@@ -284,6 +285,7 @@ const B4ABrowserToolbar = ({
       additionalStyles={apiDocsButtonStyle}
       onClick={() => {
         // back4AppNavigation && back4AppNavigation.atApiReferenceClassesEvent()
+        amplitudeLogEvent('at API Reference Classes');
         window.open(`${b4aSettings.DASHBOARD_PATH}/apidocs/${applicationId}${classApiId}`, '_blank')
       }}
     />
