@@ -20,7 +20,6 @@ export const AmplitudeEvent = {
 };
 
 export const getPageViewName = (pathname) => {
-  console.log('calling getPageViewName');
   try {
     const parts = pathname.split('/').filter(part => part);
     // pattern: /apps/{appId}/{pageName}/subPage
@@ -108,8 +107,6 @@ function capitalizeFirstLetter(string) {
 }
 
 export const initializeAmplitude = (userId) => {
-  console.log('initialse amplitude');
-  console.log(b4aSettings.BACK4APP_AMPLITUDE_KEY);
   // eslint-disable-next-line no-undef
   if (!b4aSettings.BACK4APP_AMPLITUDE_KEY || !userId) {
     return;
@@ -121,7 +118,6 @@ export const initializeAmplitude = (userId) => {
 
 
 export const amplitudeLogEvent = (name, data) => {
-  console.log('logging amp,itude event');
   // eslint-disable-next-line no-undef
   if (!b4aSettings.BACK4APP_AMPLITUDE_KEY) {
     return;
