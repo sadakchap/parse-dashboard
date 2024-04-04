@@ -18,6 +18,7 @@ import stylesB4aBrowserColumnsConfiguration from 'components/ColumnsConfiguratio
 import stylesB4aBrowserMenu from 'components/BrowserMenu/B4aBrowserMenu.scss';
 import stylesB4aBrowserFilter from 'components/BrowserFilter/B4aBrowserFilter.scss';
 import stylesB4aBrowserEmptyState from 'components/B4aBrowserEmptyState/B4aBrowserEmptyState.scss';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 import { CurrentApp } from 'context/currentApp';
 import Popover from 'components/Popover/Popover.react';
 import Position from 'lib/Position';
@@ -69,13 +70,13 @@ export default class B4aObjectPickerDialog extends React.Component {
     }
     document
       .getElementById(SELECTION_INPUT_ID)
-      .addEventListener('focus', this.disableDataBrowserKeyControls);
+      ?.addEventListener('focus', this.disableDataBrowserKeyControls);
   }
 
   componentWillUnmount() {
     document
       .getElementById(SELECTION_INPUT_ID)
-      .addEventListener('focus', this.disableDataBrowserKeyControls);
+      ?.addEventListener('focus', this.disableDataBrowserKeyControls);
   }
 
   disableDataBrowserKeyControls() {
@@ -289,6 +290,23 @@ export default class B4aObjectPickerDialog extends React.Component {
 
     const columns = { objectId: { type: 'String' } };
     const classes = schema.data.get('classes');
+    if (!classes.get(className)) {
+      return <Popover fadeIn={true} fixed={true} position={origin} modal={true} color="rgba(17,13,17,0.8)">
+        <div className={styles.objectPickerDialogWrapperEmpty}>
+          {<Icon onClick={onCancel} width={10} height={10} className={styles.closeIcon} name="close" fill="#10203A" />}
+          <div style={{ marginTop: '46px' }}>
+            <B4aEmptyState
+              title="Unable to find the specified class"
+              description={`Please make sure that class "${className}" exists`}
+              dark={false}
+            />
+          </div>
+          <div className={styles.footer} style={{ justifyContent: 'flex-end' }}>
+            <Button value="Go Back" color="white" width="auto" onClick={onCancel} additionalStyles={{ border: '1px solid #ccc', color: '#303338' }} />
+          </div>
+        </div>
+      </Popover>
+    }
     classes.get(className).forEach(({ type, targetClass }, name) => {
       if (name === 'objectId') {
         return;
