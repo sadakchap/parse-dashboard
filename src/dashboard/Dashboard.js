@@ -73,7 +73,7 @@ import DashboardSettings from './Settings/DashboardSettings/DashboardSettings.re
 import Security from './Settings/Security/Security.react';
 import { Navbar } from '@back4app2/react-components';
 import back4app2 from '../lib/back4app2';
-import { initializeAmplitude } from 'lib/amplitudeEvents';
+import { initializeAmplitude, initializeLogRocketSession } from 'lib/amplitudeEvents';
 
 const ShowSchemaOverview = false; //In progress features. Change false to true to work on this feature.
 
@@ -227,6 +227,10 @@ class Dashboard extends React.Component {
       }
 
       initializeAmplitude(user.email);
+      waitForScriptToLoad(() => typeof window.LogRocket !== 'undefined').then(() => {
+        // eslint-disable-next-line no-undef
+        initializeLogRocketSession(user.email);
+      }).catch(err => console.log(err));
 
       // fetch serverInfo request for each app
       apps.forEach(async (app) => {
