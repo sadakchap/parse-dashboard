@@ -20,6 +20,15 @@
   &.dark {
     background: $regal-blue;
     color: $white;
+
+    & .current {
+      &:not(.hideArrow){
+        &:after { 
+          border-right: 1px solid $white;
+          border-bottom: 1px solid $white;
+        }
+      }
+    }
   }
 }
 
@@ -86,10 +95,11 @@
       border-right: 1px solid $dark-blue;
       border-bottom: 1px solid $dark-blue;
       transform: rotate(45deg);
+      transition: 0.3s;
     }
 
     &.arrowUp::after {
-      transform: rotate(226deg);
+      transform: rotate(226deg) translate(-2px, -5px);
     }
   }
 
