@@ -11,7 +11,6 @@ export function withRouter(Component) {
     const location = useLocation();
 
     useEffect(() => {
-      console.log('coming in the withrouter');
       const { pathname } = location;
       const pageName = getPageViewName(pathname);
       if (pageName) {
