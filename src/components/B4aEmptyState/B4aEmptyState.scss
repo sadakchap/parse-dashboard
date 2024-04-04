@@ -63,4 +63,13 @@
     }
   }
 
+  &.light {
+    .title {
+      color: $dark;
+    }
+    .description {
+      color: $regal-blue;
+    }
+  }
+
 }
