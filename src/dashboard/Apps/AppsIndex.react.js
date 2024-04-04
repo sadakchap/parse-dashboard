@@ -144,6 +144,7 @@ class AppsIndex extends React.Component {
       if (nextApp.serverInfo.status !== prevApp.serverInfo.status && nextApp.serverInfo.status === 'SUCCESS') {
         // app's status changed
         this.getAppsIndexStats(nextApp);
+        this.forceUpdate();
       }
     }
 

@@ -1,5 +1,15 @@
 import * as amplitude from '@amplitude/analytics-browser';
 
+export const initializeLogRocketSession = (userId) => {
+  // eslint-disable-next-line no-undef
+  if (!b4aSettings.LOGROCKET_URL) {
+    return;
+  }
+  // eslint-disable-next-line no-undef
+  window.LogRocket.init(b4aSettings.LOGROCKET_URL);
+  window.LogRocket.identify(userId);
+}
+
 export const AmplitudeEvent = {
   ADD_CLASS: 'Add a class',
   ADD_ROW: 'Add row',

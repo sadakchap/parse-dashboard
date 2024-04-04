@@ -11,6 +11,7 @@ import B4ATreeActions from 'components/B4ACodeTree/B4ATreeActions';
 import Swal from 'sweetalert2';
 import B4ACloudCodeInfo from 'components/B4ACodeTree/B4ACloudCodeInfo.react';
 import folderInfoIcon from './icons/folder-info.png';
+import B4aEmptyState from 'components/B4aEmptyState/B4aEmptyState.react';
 // import CloudCodeChanges from 'lib/CloudCodeChanges';
 import PropTypes from 'lib/PropTypes';
 import Icon from 'components/Icon/Icon.react';
@@ -266,9 +267,9 @@ export default class B4ACodeTree extends React.Component {
       content = <img style={{ width: '100%', height: '100%', objectFit: 'scale-down' }} src={this.state.source} />;
     }
     else if (this.state.isFolderSelected === true) {
-      content = this.state.source && this.state.source !== '' ? <B4ACloudCodeInfo
+      content = this.state.source && this.state.source !== '' ? <B4aEmptyState
+        margin="46px 0 0 0"
         imgSrc={folderInfoIcon}
-        title={typeof this.state.selectedFile === 'string' ? this.state.selectedFile : this.state.selectedFile.name}
         description={this.state.source} /> : <div></div>;
     }
     else if (this.state.selectedFile) {
@@ -293,7 +294,7 @@ export default class B4ACodeTree extends React.Component {
       </div>;
     } else {
       content = (
-        <B4ACloudCodeInfo imgSrc={folderInfoIcon} description="Select a file to edit" />
+        <B4aEmptyState imgSrc={folderInfoIcon} description="Select a file to edit" margin="46px 0 0 0" />
       );
     }
 

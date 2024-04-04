@@ -452,6 +452,7 @@ a.subitem {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   svg {
     fill: $white;
     transform: rotate(90deg);

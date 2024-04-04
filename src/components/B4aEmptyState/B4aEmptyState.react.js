@@ -26,11 +26,10 @@ const ctaButton = (cta, action, primary = true) => {
 };
 
 
-const B4aEmptyState = ({ icon = 'ghost-icon', title, description, cta = '', action = () => {}, secondaryCta = '', secondaryAction = () => {}, fill = '#C1E2FF'}) => {
+const B4aEmptyState = ({ imgSrc = ghostImg, title, description, cta = '', action = () => {}, secondaryCta = '', secondaryAction = () => {}, dark = true, margin }) => {
   return (
-    <div className={styles.content}>
-      <img src={ghostImg} alt="empty state" />
-      {/* <Icon className={styles.icon} name={icon} width={32} height={40} fill={fill} /> */}
+    <div className={styles.content + ` ${!dark ? styles.light : ''}`} style={{ margin }}>
+      <img src={imgSrc} alt="empty state" />
       <div className={styles.title}>{title}</div>
       <div className={styles.description}>{description}</div>
       <div className={styles.actionBtns}>
