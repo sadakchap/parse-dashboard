@@ -23,6 +23,7 @@ import { CurrentApp } from 'context/currentApp';
 import Popover from 'components/Popover/Popover.react';
 import Position from 'lib/Position';
 import Icon from 'components/Icon/Icon.react';
+import errorImgPNG from './error-icon.png';
 
 // The initial and max amount of rows fetched by lazy loading
 const MAX_ROWS_FETCHED = 200;
@@ -294,15 +295,14 @@ export default class B4aObjectPickerDialog extends React.Component {
       return <Popover fadeIn={true} fixed={true} position={origin} modal={true} color="rgba(17,13,17,0.8)">
         <div className={styles.objectPickerDialogWrapperEmpty}>
           {<Icon onClick={onCancel} width={10} height={10} className={styles.closeIcon} name="close" fill="#10203A" />}
-          <div style={{ marginTop: '46px' }}>
-            <B4aEmptyState
-              title="Unable to find the specified class"
-              description={`Please make sure that class "${className}" exists`}
-              dark={false}
-            />
-          </div>
-          <div className={styles.footer} style={{ justifyContent: 'flex-end' }}>
-            <Button value="Go Back" color="white" width="auto" onClick={onCancel} additionalStyles={{ border: '1px solid #ccc', color: '#303338' }} />
+          <B4aEmptyState
+            title="Unable to find the specified class"
+            description={`Please make sure that class "${className}" exists`}
+            dark={false}
+            imgSrc={errorImgPNG}
+          />
+          <div className={styles.footer} style={{ justifyContent: 'center' }}>
+            <Button value="Close" color="white" width="auto" onClick={onCancel} additionalStyles={{ border: '1px solid #ccc', color: '#303338' }} />
           </div>
         </div>
       </Popover>
