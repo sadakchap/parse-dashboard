@@ -299,22 +299,17 @@ export default class RestConsole extends Component {
           </div>
         </div>
         <Toolbar section="API" subsection="Console > REST">
-          <FlowFooter
-            borderTop="none"
-            primary={
-              <Button
-                primary={true}
-                disabled={hasError}
-                value="Send Query"
-                progress={this.state.inProgress}
-                onClick={this.makeRequest.bind(this)}
-                eventName="REST Console - send query"
-              />
-            }
-            secondary={
-              <Button disabled={hasError} color="white" value="Export to cURL" width="auto" dark={true} onClick={this.showCurl.bind(this)} eventName="REST Console - export cURL" />
-            }
-          />
+          <>
+            <Button disabled={hasError} color="white" value="Export to cURL" width="auto" dark={true} onClick={this.showCurl.bind(this)} eventName="REST Console - export cURL" additionalStyles={{ marginRight: '0.6875rem' }} />
+            <Button
+              primary={true}
+              disabled={hasError}
+              value="Send Query"
+              progress={this.state.inProgress}
+              onClick={this.makeRequest.bind(this)}
+              eventName="REST Console - send query"
+            />
+          </>
         </Toolbar>
         {modal}
       </div>
