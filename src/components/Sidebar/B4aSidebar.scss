@@ -455,6 +455,7 @@ a.subitem {
   }
 
   &:hover {
+    cursor: pointer;
     svg {
       fill: $white;
     }
