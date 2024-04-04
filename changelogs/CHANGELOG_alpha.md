@@ -1,3 +1,79 @@
+# [6.0.0-alpha.1](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.8...6.0.0-alpha.1) (2024-03-05)
+
+
+### Features
+
+* Add Node 20 support; remove Node 14, 16 support ([#2532](https://github.com/ParsePlatform/parse-dashboard/issues/2532)) ([578a339](https://github.com/ParsePlatform/parse-dashboard/commit/578a339c04990b5ecb3f80d34c690c6d34218bfa))
+* Add Node 20 support; remove Node 14, 16 support ([#2535](https://github.com/ParsePlatform/parse-dashboard/issues/2535)) ([5c90f2d](https://github.com/ParsePlatform/parse-dashboard/commit/5c90f2de1b98a2099453c8f8c0d6817330f7133d))
+
+
+### BREAKING CHANGES
+
+* Removes support for Node 14 and 16 ([5c90f2d](5c90f2d))
+
+# [5.4.0-alpha.8](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.7...5.4.0-alpha.8) (2024-02-29)
+
+
+### Bug Fixes
+
+* Config page fails to load ([#2531](https://github.com/ParsePlatform/parse-dashboard/issues/2531)) ([d721b7c](https://github.com/ParsePlatform/parse-dashboard/commit/d721b7c4f3b98df96a229e60529604b038857d53))
+
+# [5.4.0-alpha.7](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.6...5.4.0-alpha.7) (2024-02-26)
+
+
+### Features
+
+* Add descriptive statistics for number cells in data browser ([#2529](https://github.com/ParsePlatform/parse-dashboard/issues/2529)) ([ead9ec4](https://github.com/ParsePlatform/parse-dashboard/commit/ead9ec4d39abc211540bc76616498533b31001a6))
+
+# [5.4.0-alpha.6](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.5...5.4.0-alpha.6) (2024-02-26)
+
+
+### Bug Fixes
+
+* App metrics for user and installation counts show dash ([#2528](https://github.com/ParsePlatform/parse-dashboard/issues/2528)) ([850d7b3](https://github.com/ParsePlatform/parse-dashboard/commit/850d7b3f20160761a21f68ec398d7207b8226770))
+
+# [5.4.0-alpha.5](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.4...5.4.0-alpha.5) (2024-02-18)
+
+
+### Bug Fixes
+
+* Open pointer in new tab in data browser not working when mount path is not root ([#2527](https://github.com/ParsePlatform/parse-dashboard/issues/2527)) ([2f4081f](https://github.com/ParsePlatform/parse-dashboard/commit/2f4081f217e1c5d906ed8789e09a3377ddc15121))
+
+# [5.4.0-alpha.4](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.3...5.4.0-alpha.4) (2024-02-15)
+
+
+### Bug Fixes
+
+* Data browser redirects to wrong class when changing app ([#2526](https://github.com/ParsePlatform/parse-dashboard/issues/2526)) ([7713f54](https://github.com/ParsePlatform/parse-dashboard/commit/7713f542ef9ef97cbf784fa267f7ea2a51c9472a))
+
+# [5.4.0-alpha.3](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.2...5.4.0-alpha.3) (2023-12-16)
+
+
+### Bug Fixes
+
+* Dashboard crashes if Parse Server Cloud Function script returns object ([#2516](https://github.com/ParsePlatform/parse-dashboard/issues/2516)) ([5de08f8](https://github.com/ParsePlatform/parse-dashboard/commit/5de08f8f4d67f287a589c70d8b8d36f9f76897cf))
+
+# [5.4.0-alpha.2](https://github.com/ParsePlatform/parse-dashboard/compare/5.4.0-alpha.1...5.4.0-alpha.2) (2023-12-16)
+
+
+### Features
+
+* Execute script for selected rows ([#2508](https://github.com/ParsePlatform/parse-dashboard/issues/2508)) ([5d9901e](https://github.com/ParsePlatform/parse-dashboard/commit/5d9901e27b14517f22993ac094bdd7d8fbac401f))
+
+# [5.4.0-alpha.1](https://github.com/ParsePlatform/parse-dashboard/compare/5.3.0...5.4.0-alpha.1) (2023-12-02)
+
+
+### Features
+
+* Add refresh indicator to Cloud Config page ([#2505](https://github.com/ParsePlatform/parse-dashboard/issues/2505)) ([a10d1f0](https://github.com/ParsePlatform/parse-dashboard/commit/a10d1f0825688d403206ce7cbacada191dbf5c3b))
+
+# [5.3.0-alpha.2](https://github.com/ParsePlatform/parse-dashboard/compare/5.3.0-alpha.1...5.3.0-alpha.2) (2023-10-18)
+
+
+### Features
+
+* Add refresh indicator to Cloud Config page ([#2505](https://github.com/ParsePlatform/parse-dashboard/issues/2505)) ([a10d1f0](https://github.com/ParsePlatform/parse-dashboard/commit/a10d1f0825688d403206ce7cbacada191dbf5c3b))
+
 # [5.3.0-alpha.1](https://github.com/ParsePlatform/parse-dashboard/compare/5.2.0...5.3.0-alpha.1) (2023-09-20)
 
 

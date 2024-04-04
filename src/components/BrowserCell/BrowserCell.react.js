@@ -539,6 +539,8 @@ class BrowserCell extends Component {
       isRequired,
       markRequiredFieldRow,
       readonly,
+      handleCellClick,
+      selectedCells,
     } = this.props;
 
     const classes = [...this.state.classes];
@@ -576,6 +578,22 @@ class BrowserCell extends Component {
       );
     }
 
+    if (selectedCells?.list.has(`${row}-${col}`)) {
+      if (selectedCells.rowStart === row) {
+        classes.push(styles.topBorder);
+      }
+      if (selectedCells.rowEnd === row) {
+        classes.push(styles.bottomBorder);
+      }
+      if (selectedCells.colStart === col) {
+        classes.push(styles.leftBorder);
+      }
+      if (selectedCells.colEnd === col) {
+        classes.push(styles.rightBorder);
+      }
+      classes.push(styles.selected);
+    }
+
     const content = <span
       ref={this.cellRef}
       className={classes.join(' ')}
@@ -586,6 +604,7 @@ class BrowserCell extends Component {
         } else {
           onSelect({ row, col });
           setCopyableValue(hidden ? undefined : this.copyableValue);
+          handleCellClick(e, row, col);
         }
       }}
       onDoubleClick={() => {

@@ -169,6 +169,8 @@ export default class BrowserTable extends React.Component {
                     showNote={this.props.showNote}
                     onRefresh={this.props.onRefresh}
                     scripts={this.context.scripts}
+                    selectedCells={this.props.selectedCells}
+                    handleCellClick={this.props.handleCellClick}
                   />
                   <div style={{ position: 'fixed', height: `${ROW_HEIGHT}px`}}>
                     <Button
@@ -239,6 +241,8 @@ export default class BrowserTable extends React.Component {
               showNote={this.props.showNote}
               onRefresh={this.props.onRefresh}
               scripts={this.context.scripts}
+              selectedCells={this.props.selectedCells}
+              handleCellClick={this.props.handleCellClick}
             />
             <div style={{ position: 'fixed', height: `${ROW_HEIGHT}px`}}>
               <Button
@@ -322,6 +326,8 @@ export default class BrowserTable extends React.Component {
             onAddColumn={this.props.onAddColumn}
             onDeleteRows={this.props.onDeleteRows}
             onDeleteSelectedColumn={this.props.onDeleteSelectedColumn}
+            selectedCells={this.props.selectedCells}
+            handleCellClick={this.props.handleCellClick}
           />
         );
       }

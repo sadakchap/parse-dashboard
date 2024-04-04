@@ -47,6 +47,7 @@ const BrowserToolbar = ({
   onExport,
   onRemoveColumn,
   onDeleteRows,
+  onExecuteScriptRows,
   onDropClass,
   onChangeCLP,
   onRefresh,
@@ -74,6 +75,8 @@ const BrowserToolbar = ({
   login,
   logout,
   toggleMasterKeyUsage,
+
+  selectedData,
 }) => {
   const selectionLength = Object.keys(selection).length;
   const isPendingEditCloneRows = editCloneRows && editCloneRows.length > 0;
@@ -164,6 +167,7 @@ const BrowserToolbar = ({
           text={selectionLength === 1 && !selection['*'] ? 'Delete this row' : 'Delete these rows'}
           onClick={() => onDeleteRows(selection)}
         />
+        <Separator />
         {enableColumnManipulation ? (
           <MenuItem text="Delete a column" onClick={onRemoveColumn} />
         ) : (
@@ -242,6 +246,7 @@ const BrowserToolbar = ({
       section={relation ? `Relation <${relation.targetClassName}>` : 'Class'}
       subsection={subsection}
       details={details.join(' \u2022 ')}
+      selectedData={selectedData}
     >
       {onAddRow && (
         <a className={classes.join(' ')} onClick={onClick}>
@@ -384,6 +389,18 @@ const BrowserToolbar = ({
         <noscript />
       )}
       {enableSecurityDialog ? <div className={styles.toolbarSeparator} /> : <noscript />}
+      <BrowserMenu
+        setCurrent={setCurrent}
+        title="Script"
+        icon="gear-solid"
+      >
+        <MenuItem
+          disabled={selectionLength === 0}
+          text={selectionLength === 1 && !selection['*'] ? 'Run script on selected row...' : `Run script on ${selectionLength} selected rows...`}
+          onClick={() => onExecuteScriptRows(selection)}
+        />
+      </BrowserMenu>
+      <div className={styles.toolbarSeparator} />
       {menu}
       {editCloneRows && editCloneRows.length > 0 && <div className={styles.toolbarSeparator} />}
       {editCloneRows && editCloneRows.length > 0 && (
