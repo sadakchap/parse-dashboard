@@ -43,7 +43,7 @@ const B4aSidebarSection = ({ active, children, name, link, icon, style, primaryB
   const iconContent = icon && <Icon width={20} height={20} name={icon} fill='#ffffff' />;
   const textContent = !isCollapsed && <span>{name}</span>;
   const sectionContent = active
-    ? <div className={styles.section_header} style={{ ...style, background: primaryBackgroundColor}} onClick={onClick}>{<img src={require(`./icons/${icon}.png`)} style={{ marginRight: '14px', width: '20px', height: '20px', objectFit: 'contain' }} />}{textContent}{badge}</div>
+    ? <div className={styles.section_header} style={{ ...style, background: primaryBackgroundColor, justifyContent: isCollapsed ? 'center' : '' }} onClick={onClick}>{<img src={require(`./icons/${icon}.png`)} style={{ marginRight: isCollapsed ? '0' : '14px', width: '20px', height: '20px', objectFit: 'contain' }} />}{textContent}{badge}</div>
     : link.startsWith('/')
       ? <Link style={style} className={styles.section_header} to={{ pathname: link || '' }} onClick={onClick}>{iconContent}{textContent}{badge}</Link>
       : <a style={style} className={styles.section_header} href={link} target="_blank" onClick={() => sendEvent()}>{iconContent}{textContent}{badge}</a>;
