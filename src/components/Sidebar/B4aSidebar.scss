@@ -44,6 +44,10 @@ $footerHeight: 57px;
       bottom: 48px;
     }
 
+    .section_header {
+      text-align: center;
+    }
+
     .section_header > svg {
       margin: 0;
     }
@@ -317,7 +321,6 @@ $footerHeight: 57px;
 
 .section_header {
   display: block;
-  text-align: center;
   // align-items: center;
   // height: 65px;
   font-size: 14px;
