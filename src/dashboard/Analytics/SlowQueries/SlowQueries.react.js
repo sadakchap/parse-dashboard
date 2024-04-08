@@ -234,8 +234,9 @@ class SlowQueries extends TableView {
             type='button'
             onClick={this.handleDownload.bind(this)}
             className={styles.toolbarAction}
+            style={{ display: 'flex' }}
           >
-            <Icon name="download" width={18} height={18} />
+            <Icon name="b4a-download" width={18} height={18} />
           </button>
         </>
       );
