@@ -228,7 +228,6 @@ class Dashboard extends React.Component {
 
       initializeAmplitude(user.email);
       waitForScriptToLoad(() => typeof window.LogRocket !== 'undefined').then(() => {
-        console.log('amplitude script loaded');
         // eslint-disable-next-line no-undef
         initializeLogRocketSession(user.email);
       }).catch(err => console.log(err));
