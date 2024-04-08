@@ -41,7 +41,7 @@ const EDITORS = {
     <B4aToggle type={B4aToggle.Types.TRUE_FALSE} value={!!value} onChange={onChange} />
   ),
   String: (value, onChange) => (
-    <TextInput multiline={true} value={value || ''} onChange={onChange} dark={false} />
+    <TextInput padding="1rem 0" multiline={true} value={value || ''} onChange={onChange} dark={false} />
   ),
   Number: (value, onChange) => (
     <TextInput value={value || ''} onChange={numberValidator(onChange)} dark={false} />
