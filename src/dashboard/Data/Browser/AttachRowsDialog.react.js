@@ -1,5 +1,5 @@
 import React from 'react';
-import FormModal from 'components/FormModal/FormModal.react';
+import B4aFormModal from 'components/FormModal/B4aFormModal.react';
 import Field from 'components/Field/Field.react';
 import Label from 'components/Label/Label.react';
 import TextInput from 'components/TextInput/TextInput.react';
@@ -34,9 +34,8 @@ export default class AttachRowsDialog extends React.Component {
   render() {
     const { relation } = this.props;
     return (
-      <FormModal
+      <B4aFormModal
         open
-        icon="plus"
         iconSize={40}
         title="Attach Rows To Relation"
         subtitle={`Attach existing rows from ${relation.targetClassName}`}
@@ -55,12 +54,14 @@ export default class AttachRowsDialog extends React.Component {
           input={
             <TextInput
               placeholder="ox0QZFl7eg, qs81Q72lTL, etc..."
+              padding="0 1rem"
               value={this.state.objectIds}
               onChange={this.handleObjectIdsChange}
+              dark={false}
             />
           }
         />
-      </FormModal>
+      </B4aFormModal>
     );
   }
 }

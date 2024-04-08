@@ -138,7 +138,7 @@ class SlowQueries extends TableView {
       const statusResult = app.getAnalyticsSlowQueries({distinct: 'statusCode', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
       const methodsResult = app.getAnalyticsSlowQueries({distinct: 'method', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
       promise.then(
-        (result) => this.setState({ slowQueries: result && result.concat([[],[]]) || [] }),
+        (result) => this.setState({ slowQueries: result && result.concat([]) || [] }),
         () => this.setState({ slowQueries: [] })
       );
       pathsResult.promise.then(
@@ -234,8 +234,9 @@ class SlowQueries extends TableView {
             type='button'
             onClick={this.handleDownload.bind(this)}
             className={styles.toolbarAction}
+            style={{ display: 'flex' }}
           >
-            <Icon name="download" width={18} height={18} />
+            <Icon name="b4a-download" width={18} height={18} />
           </button>
         </>
       );
