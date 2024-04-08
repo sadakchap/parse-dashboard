@@ -138,7 +138,7 @@ class SlowQueries extends TableView {
       const statusResult = app.getAnalyticsSlowQueries({distinct: 'statusCode', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
       const methodsResult = app.getAnalyticsSlowQueries({distinct: 'method', path, method, respStatus, respTime, from: dateRange.start, to: dateRange.end});
       promise.then(
-        (result) => this.setState({ slowQueries: result && result.concat([[],[]]) || [] }),
+        (result) => this.setState({ slowQueries: result && result.concat([]) || [] }),
         () => this.setState({ slowQueries: [] })
       );
       pathsResult.promise.then(
