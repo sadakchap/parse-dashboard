@@ -46,7 +46,7 @@ export default class SubMenuItem extends React.Component {
     let popover = null;
     if (this.state.open) {
       const position = Position.inDocument(this.node);
-      position.x -= this.node ? (this.node.clientWidth + 1) : 196;
+      position.x -= this.node ? (this.node.clientWidth - 1) : 196;
       position.x += 14; // padding
       popover = (
         <Popover
