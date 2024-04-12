@@ -20,6 +20,7 @@ import styles from 'dashboard/Analytics/Performance/Performance.scss';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import baseStyles from 'stylesheets/base.scss';
 import { withRouter } from 'lib/withRouter';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const PERFORMANCE_QUERIES = [
   {
@@ -102,8 +103,9 @@ export default class Performance extends DashboardView {
 
   componentWillMount() {
     // Send track event
-    if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAnalyticsPerformanceEvent === 'function')
-      back4AppNavigation.atAnalyticsPerformanceEvent()
+    // if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAnalyticsPerformanceEvent === 'function')
+    //   back4AppNavigation.atAnalyticsPerformanceEvent()
+    amplitudeLogEvent('At Analytics Performance')
     this.handleRunQuery(this.context);
   }
 

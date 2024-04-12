@@ -1,6 +1,7 @@
 import React from 'react';
 import introJs from 'intro.js'
 import introStyle from 'stylesheets/introjs.css';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const getComponentReadyPromise = async conditionFn => {
   for (let i = 1; i <= 20; i++) {
@@ -51,7 +52,8 @@ export default class Tour extends React.Component {
       intro.onexit(function () {
         // Fires analytics event when tour finishes
         // eslint-disable-next-line no-undef
-        typeof back4AppNavigation === 'object' && back4AppNavigation.onFinishDatabaseBrowserTour && back4AppNavigation.onFinishDatabaseBrowserTour();
+        // typeof back4AppNavigation === 'object' && back4AppNavigation.onFinishDatabaseBrowserTour && back4AppNavigation.onFinishDatabaseBrowserTour();
+        amplitudeLogEvent('Finish Database Browser Tour');
 
         sidebar.style.position = 'fixed';
         toolbar.style.position = 'fixed';
@@ -70,7 +72,8 @@ export default class Tour extends React.Component {
 
       // Fires analytics event when tour begins
       // eslint-disable-next-line no-undef
-      typeof back4AppNavigation === 'object' && back4AppNavigation.onStartDatabaseBrowserTour && back4AppNavigation.onStartDatabaseBrowserTour();
+      // typeof back4AppNavigation === 'object' && back4AppNavigation.onStartDatabaseBrowserTour && back4AppNavigation.onStartDatabaseBrowserTour();
+      amplitudeLogEvent('Begin Database Browser Tour')
     });
   }
 

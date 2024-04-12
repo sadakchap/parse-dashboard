@@ -8,6 +8,7 @@ import B4AFieldTemplate from 'components/B4AFieldTemplate/B4AFieldTemplate.react
 import Fieldset         from 'components/Fieldset/Fieldset.react';
 import styles           from 'dashboard/B4aAppTemplates/B4aAppTemplates.scss'
 import Toolbar          from 'components/Toolbar/Toolbar.react';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const APP_TEMPLATES_URL = `${b4aSettings.BACK4APP_API_PATH}/app-templates`
 const LEGEND = 'App Templates'
@@ -44,8 +45,9 @@ class B4aAppTemplates extends DashboardView {
 
   async componentDidMount() {
     await this.fetchTemplates()
-    if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onOpenAppTemplatePage === 'function')
-      back4AppNavigation.onOpenAppTemplatePage()
+    // if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onOpenAppTemplatePage === 'function')
+    //   back4AppNavigation.onOpenAppTemplatePage()
+    amplitudeLogEvent('Open App Template Page')
   }
 
   getScrollParent() {

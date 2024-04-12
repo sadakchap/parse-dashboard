@@ -10,11 +10,13 @@ import React     from 'react';
 import styles    from 'components/B4AFieldTemplate/B4AFieldTemplate.scss';
 import B4ALabelTemplate    from 'components/B4ALabelTemplate/B4ALabelTemplate.react';
 import B4ADescriptionTemplate    from 'components/B4ADescriptionTemplate/B4ADescriptionTemplate.react';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const openLink = (link, title, author, technologies) => {
   window.open(link, "_blank")
-  if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onClickAppTemplate === 'function')
-    back4AppNavigation.onClickAppTemplate({ title, link, author, technologies })
+  // if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onClickAppTemplate === 'function')
+  //   back4AppNavigation.onClickAppTemplate({ title, link, author, technologies })
+  amplitudeLogEvent('Click App Template', { title, link, author, technologies })
 }
 
 let B4AFieldTemplate = ({imageSource, title, subtitle, author, description, link, technologies}) => {

@@ -29,6 +29,7 @@ import subscribeTo from 'lib/subscribeTo';
 import Toolbar from 'components/Toolbar/Toolbar.react';
 import baseStyles from 'stylesheets/base.scss';
 import { withRouter } from 'lib/withRouter';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 let currentCustomQueryIndex = 1;
 
@@ -82,10 +83,11 @@ class Explorer extends DashboardView {
   }
 
   componentDidMount() {
-    if (typeof back4AppNavigation !== 'undefined') {
-      // eslint-disable-next-line no-undef
-      back4AppNavigation && back4AppNavigation.atExplorerReportEvent();
-    }
+    // if (typeof back4AppNavigation !== 'undefined') {
+    //   // eslint-disable-next-line no-undef
+    //   back4AppNavigation && back4AppNavigation.atExplorerReportEvent();
+    // }
+    amplitudeLogEvent('At Explorer Chart');
     const display = this.displayRef.current;
     this.displaySize = {
       width: display.offsetWidth,
@@ -205,6 +207,7 @@ class Explorer extends DashboardView {
     this.state.activeQueries.forEach((query, i) => {
       // eslint-disable-next-line no-undef
       // back4AppNavigation && back4AppNavigation.runExplorerQueryEvent(query);
+      amplitudeLogEvent('Run Explorer Query', { explorerQuerySource: query.query && query.name || query.source });
       let promise = null;
       let xhr = null;
       if (query.preset && query.nonComposable) {

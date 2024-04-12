@@ -16,6 +16,7 @@ import B4aAdminParams   from 'dashboard/B4aAdminPage/B4aAdminParams'
 import Toolbar          from 'components/Toolbar/Toolbar.react';
 import Icon             from 'components/Icon/Icon.react';
 import ReactPlayer      from 'react-player';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 // const EMAIL_VERIFICATION_URL = `${b4aSettings.BACK4APP_API_PATH}/email-verification`;
 
@@ -51,9 +52,10 @@ class B4aAdminPage extends DashboardView {
     const isRoleCreated = await this.checkRole()
     this.setState({ isRoleCreated, adminHost, adminURL, loading: false })
 
-    if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAdminPageEvent === 'function') {
-      back4AppNavigation.atAdminPageEvent()
-    }
+    // if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.atAdminPageEvent === 'function') {
+    //   back4AppNavigation.atAdminPageEvent()
+    // }
+    amplitudeLogEvent('at Admin Page')
   }
 
   displayMessage(colorNotification, message) {
@@ -111,8 +113,9 @@ class B4aAdminPage extends DashboardView {
       ...this.state
     })
 
-    if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onShowAdminModalEvent === 'function')
-    {back4AppNavigation.onShowAdminModalEvent()}
+    // if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onShowAdminModalEvent === 'function')
+    // {back4AppNavigation.onShowAdminModalEvent()}
+    amplitudeLogEvent('Show Admin Modal')
   }
 
   renderButtonToEnable(){

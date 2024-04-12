@@ -1,7 +1,8 @@
 import Swal                 from 'sweetalert2'
 import React                from 'react'
 import ReactDOMServer       from 'react-dom/server';
-import styles               from 'dashboard/B4aAdminPage/B4aAdminPage.scss'
+import styles               from 'dashboard/B4aAdminPage/B4aAdminPage.scss';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 // Modal parameters
 const modalOptions = {
@@ -104,8 +105,9 @@ const show = async ({domain, setState, createAdmin, createAdminHost, isRoleCreat
       onBeforeOpen: () => {
         const a = Swal.getContent().querySelector('a')
         if (a) a.href = a.text = adminURL
-        if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onCreateAdminHostEvent === 'function')
-          back4AppNavigation.onCreateAdminHostEvent()
+        // if (typeof back4AppNavigation !== 'undefined' && typeof back4AppNavigation.onCreateAdminHostEvent === 'function')
+        //   back4AppNavigation.onCreateAdminHostEvent()
+        amplitudeLogEvent('Create Admin Host')
 
         // Dispatches the request to the back-end in order to create the text indexes
         // and enable the full-text search
