@@ -31,7 +31,7 @@
 }
 
 .current {
-  position: relative;
+  // position: relative;
 
   &:after {
     position: absolute;
@@ -52,10 +52,20 @@
 
 .hasMore{
   height: auto;
-  max-height: 25px;
+  max-height: 36px;
   overflow-y: scroll;
   padding-right: 2px;
+  padding: 0;
+  & > ul {
+    padding: 0.5rem 1rem;
+    padding-right: 0.5rem;
+    & > li {
+      height: 24px;
+      margin-bottom: 2px;
+    }
+  }
   & > li {
+    height: 24px;
     margin-bottom: 2px;
   }
 }
