@@ -29,7 +29,6 @@ export default class B4aNotification extends React.Component {
   componentDidMount() {
     const node = this.notificationRef.current;
     const { width, height } = node.getBoundingClientRect();
-    console.log(width, height, height + 28);
     this.setState({
       pos: new Position((window.innerWidth / 2) + width, height + 32)
     })
