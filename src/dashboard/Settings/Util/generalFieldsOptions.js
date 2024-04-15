@@ -51,4 +51,9 @@ export const generalFieldsOptions = {
   otherURL: {
     friendlyName: 'other URL',
   },
+  useLatestDashboardVersion: {
+    friendlyName: 'useLatestDashboardVersion',
+    type: 'boolean',
+    showTo: true,
+  }
 };
