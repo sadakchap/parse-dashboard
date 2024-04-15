@@ -103,7 +103,10 @@
 .ace-solarized-dark .ace_gutter-active-line {
   background-color: rgba(17, 67, 112, 0.5);
 }
-
+.ace-solarized-dark .ace_cursor,
+.ace-solarized-dark .ace_string.ace_regexp {
+  color: #f9f9f9;
+}
 .vakata-context .vakata-context-separator > a, .vakata-context .vakata-context-separator > a:hover {
   background: #f9f9f90f;
   border: 0;
