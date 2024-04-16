@@ -60,6 +60,7 @@ import { Helmet } from 'react-helmet';
 import generatePath from 'lib/generatePath';
 import { withRouter } from 'lib/withRouter';
 import Icon from 'components/Icon/Icon.react';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const BROWSER_LAST_LOCATION = 'b4a_brower_last_location';
 // The initial and max amount of rows fetched by lazy loading
@@ -433,8 +434,9 @@ class Browser extends DashboardView {
         const introItems = this._introItems;
 
         // Fires event if it's not a forced transition
-        if (!this._forcedStep && typeof back4AppNavigation === 'object' && typeof back4AppNavigation.onDatabaseBrowserTourStep === 'function') {
-          back4AppNavigation.onDatabaseBrowserTourStep(introItems[this._currentStep].eventId);
+        if (!this._forcedStep) {
+          amplitudeLogEvent(`On Database Browser Tour Step ${introItems[this._currentStep].eventId}`)
+          // back4AppNavigation.onDatabaseBrowserTourStep(introItems[this._currentStep].eventId);
         } else {
           this._forcedStep = false;
         }

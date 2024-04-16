@@ -11,10 +11,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import Popover from 'components/Popover/Popover.react';
 import Position from 'lib/Position';
 import styles from 'components/Sidebar/B4aSidebar.scss';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const sendEvent = () => {
   // eslint-disable-next-line no-undef
-  back4AppNavigation && back4AppNavigation.atApiReferenceIntroEvent && back4AppNavigation.atApiReferenceIntroEvent()
+  // back4AppNavigation && back4AppNavigation.atApiReferenceIntroEvent && back4AppNavigation.atApiReferenceIntroEvent()
+  amplitudeLogEvent('at API Reference Introduction');
 }
 
 const B4aSidebarSection = ({ active, children, name, link, icon, style, primaryBackgroundColor, secondaryBackgroundColor, isCollapsed, onClick, badge }) => {

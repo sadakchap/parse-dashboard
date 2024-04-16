@@ -116,11 +116,12 @@ class BrowserCell extends Component {
         this.props.value[0] &&
         typeof this.props.value[0] === 'object' &&
         this.props.value[0].__type === 'Pointer' &&
-        typeof this.props.onPointerClick === 'function'
+        typeof this.props.onPointerClick === 'function' &&
+        this.props.value.findIndex(v => typeof v.objectId !== 'string') === -1
       ) {
         const array = [];
         this.props.value.map((v, i) => {
-          if (typeof v !== 'object' || v.__type !== 'Pointer') {
+          if (typeof v !== 'object' || v.__type !== 'Pointer' || typeof v.objectId !== 'string') {
             throw new Error('Invalid type found in pointer array');
           }
           const object = new Parse.Object(v.className);

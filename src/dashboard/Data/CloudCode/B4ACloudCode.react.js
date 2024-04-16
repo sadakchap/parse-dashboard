@@ -83,7 +83,7 @@ class B4ACloudCode extends CloudCode {
 
   async componentWillMount() {
     // eslint-disable-next-line no-undef
-    typeof back4AppNavigation === 'object' && back4AppNavigation.atCloudCodePageEvent()
+    // typeof back4AppNavigation === 'object' && back4AppNavigation.atCloudCodePageEvent()
     await this.fetchSource();
     // define the parameters to show unsaved changes warning modal
     this.unblock = this.props.navigator.block(tx => {

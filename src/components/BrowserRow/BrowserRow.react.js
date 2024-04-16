@@ -119,7 +119,7 @@ export default class BrowserRow extends Component {
           }
           const isRequired = requiredCols.includes(name);
           return (
-            <div key={name} style={{ display: 'inline-block' }}>
+            <div key={name} style={{ display: 'inline-block', position: 'relative', height: '36px' }}>
               <BrowserCell
                 appId={this.props.appId}
                 key={name}
