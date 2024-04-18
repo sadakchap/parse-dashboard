@@ -248,11 +248,43 @@ const getConfig = (files) => {
   return {
     plugins: ['contextmenu', 'dnd', 'sort', 'types', 'unique', 'changed'],
     core: {
-      'check_callback': true,
+      'check_callback': async function (operation, node, node_parent) {
+        if (operation === 'create_node' && node.type === 'new-folder') {
+          const originalInputName = node.text;
+          const folderList = [];
+          node_parent.children.forEach(child => {
+            const childNode = $('#tree').jstree('get_node', child);
+            if ((childNode.type === 'new-folder' || childNode.type === 'folder') && childNode.text === node.text) {
+              folderList.push(childNode);
+              node.text = folderList.length ? `${originalInputName} (${folderList.length})` : `${originalInputName}`;
+            }
+          });
+        }
+        if (operation === 'create_node' && node.type === 'new-file') {
+          const duplicate = node_parent.children.find(child => {
+            const childNode = $('#tree').jstree('get_node', child);
+            if ((childNode.type === 'new-file' || childNode.type === 'default') && childNode.text === node.text) {return true;}
+            return false;
+          });
+          if (duplicate) {
+            overwriteFileModal.text = node.text + ' file already exists. Do you want to overwrite?'
+            // Show alert and wait for the user response
+            const alertResponse = await MySwal.fire(overwriteFileModal);
+            if (alertResponse.value) {
+              $('#tree').jstree('delete_node', duplicate);
+              const newNodeId = $('#tree').jstree('create_node', node_parent.id, node);
+              $('#tree').jstree('deselect_all');
+              $('#tree').jstree('select_node', newNodeId);
+            }
+          }
+        }
+        return true;
+      },
       'data': files,
       'theme': {
         'name': 'default-dark',
-      }
+      },
+      'multiple': false,
     },
     contextmenu: {items: customMenu},
     types: {

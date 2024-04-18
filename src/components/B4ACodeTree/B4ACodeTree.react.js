@@ -166,6 +166,8 @@ export default class B4ACodeTree extends React.Component {
         }
         else if (selected.text === 'public') {
           source = publicFolderPlaceholder
+        } else {
+          source = 'Select a file to view'
         }
       }
     }
