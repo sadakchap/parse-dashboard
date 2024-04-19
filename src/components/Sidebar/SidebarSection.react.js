@@ -9,10 +9,12 @@ import Icon from 'components/Icon/Icon.react';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import styles from 'components/Sidebar/B4aSidebar.scss';
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const sendEvent = () => {
   // eslint-disable-next-line no-undef
-  back4AppNavigation && back4AppNavigation.atApiReferenceIntroEvent && back4AppNavigation.atApiReferenceIntroEvent()
+  // back4AppNavigation && back4AppNavigation.atApiReferenceIntroEvent && back4AppNavigation.atApiReferenceIntroEvent()
+  amplitudeLogEvent('at API Reference Introduction');
 }
 
 const SidebarSection = ({ active, children, name, link, icon, style, primaryBackgroundColor, secondaryBackgroundColor, isCollapsed, onClick, badge }) => {
