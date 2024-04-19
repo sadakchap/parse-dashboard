@@ -341,10 +341,20 @@ const selectFileOnTree = (nodeId) => {
   $('#tree').jstree().select_node(nodeId); // select specified node
 }
 
-const sanitizeHTML = (str) => {
-  return str.replace(/[^\w. ]/gi, function (c) {
-    return '&#' + c.charCodeAt(0) + ';';
-  });
+const sanitizeHTML = (filename) => {
+  const illegalRe = /[\/\?<>\\:\*\|"]/g;  // Illegal characters for filenames
+  const controlRe = /[\x00-\x1f\x80-\x9f]/g;  // Illegal control characters
+  const scriptTagRe = /<script.*?>.*?<\/script>|script/gi;  // Script tags, case-insensitive and global match
+
+  // Remove illegal and control characters
+  let cleanedFilename = filename.replace(illegalRe, '') .replace(controlRe, '').replace(scriptTagRe, '');
+
+  // Truncate to 200 characters if necessary
+  if (cleanedFilename.length > 200) {
+    cleanedFilename = cleanedFilename.substring(0, 200);
+  }
+
+  return cleanedFilename;
 };
 
 export default {
