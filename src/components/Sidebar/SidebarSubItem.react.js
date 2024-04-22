@@ -9,11 +9,13 @@ import { Link } from "react-router-dom";
 import React from "react";
 import styles from "components/Sidebar/B4aSidebar.scss";
 import B4aBadge from "components/B4aBadge/B4aBadge.react";
+import { amplitudeLogEvent } from 'lib/amplitudeEvents';
 
 const sendEvent = () => {
-  back4AppNavigation &&
-    back4AppNavigation.atApiReferenceIntroEvent &&
-    back4AppNavigation.atApiReferenceIntroEvent();
+  // back4AppNavigation &&
+  //   back4AppNavigation.atApiReferenceIntroEvent &&
+  //   back4AppNavigation.atApiReferenceIntroEvent();
+  amplitudeLogEvent('at API Reference Introduction');
 };
 
 let SidebarSubItem = ({ active, name, action, link, children, badge }) => {

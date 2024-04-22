@@ -248,11 +248,43 @@ const getConfig = (files) => {
   return {
     plugins: ['contextmenu', 'dnd', 'sort', 'types', 'unique', 'changed'],
     core: {
-      'check_callback': true,
+      'check_callback': async function (operation, node, node_parent) {
+        if (operation === 'create_node' && node.type === 'new-folder') {
+          const originalInputName = node.text;
+          const folderList = [];
+          node_parent.children.forEach(child => {
+            const childNode = $('#tree').jstree('get_node', child);
+            if ((childNode.type === 'new-folder' || childNode.type === 'folder') && childNode.text === node.text) {
+              folderList.push(childNode);
+              node.text = folderList.length ? `${originalInputName} (${folderList.length})` : `${originalInputName}`;
+            }
+          });
+        }
+        if (operation === 'create_node' && node.type === 'new-file') {
+          const duplicate = node_parent.children.find(child => {
+            const childNode = $('#tree').jstree('get_node', child);
+            if ((childNode.type === 'new-file' || childNode.type === 'default') && childNode.text === node.text) {return true;}
+            return false;
+          });
+          if (duplicate) {
+            overwriteFileModal.text = node.text + ' file already exists. Do you want to overwrite?'
+            // Show alert and wait for the user response
+            const alertResponse = await MySwal.fire(overwriteFileModal);
+            if (alertResponse.value) {
+              $('#tree').jstree('delete_node', duplicate);
+              const newNodeId = $('#tree').jstree('create_node', node_parent.id, node);
+              $('#tree').jstree('deselect_all');
+              $('#tree').jstree('select_node', newNodeId);
+            }
+          }
+        }
+        return true;
+      },
       'data': files,
       'theme': {
         'name': 'default-dark',
-      }
+      },
+      'multiple': false,
     },
     contextmenu: {items: customMenu},
     types: {
@@ -309,10 +341,20 @@ const selectFileOnTree = (nodeId) => {
   $('#tree').jstree().select_node(nodeId); // select specified node
 }
 
-const sanitizeHTML = (str) => {
-  return str.replace(/[^\w. ]/gi, function (c) {
-    return '&#' + c.charCodeAt(0) + ';';
-  });
+const sanitizeHTML = (filename) => {
+  const illegalRe = /[\/\?<>\\:\*\|"]/g;  // Illegal characters for filenames
+  const controlRe = /[\x00-\x1f\x80-\x9f]/g;  // Illegal control characters
+  const scriptTagRe = /<script.*?>.*?<\/script>|script/gi;  // Script tags, case-insensitive and global match
+
+  // Remove illegal and control characters
+  let cleanedFilename = filename.replace(illegalRe, '') .replace(controlRe, '').replace(scriptTagRe, '');
+
+  // Truncate to 200 characters if necessary
+  if (cleanedFilename.length > 200) {
+    cleanedFilename = cleanedFilename.substring(0, 200);
+  }
+
+  return cleanedFilename;
 };
 
 export default {

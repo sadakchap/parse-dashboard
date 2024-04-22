@@ -166,6 +166,8 @@ export default class B4ACodeTree extends React.Component {
         }
         else if (selected.text === 'public') {
           source = publicFolderPlaceholder
+        } else {
+          source = 'Select a file to view'
         }
       }
     }
@@ -269,7 +271,7 @@ export default class B4ACodeTree extends React.Component {
     else if (this.state.isFolderSelected === true) {
       content = this.state.source && this.state.source !== '' ? <B4aEmptyState
         margin="46px 0 0 0"
-        imgSrc={folderInfoIcon}
+        // imgSrc={folderInfoIcon}
         description={this.state.source} /> : <div></div>;
     }
     else if (this.state.selectedFile) {
@@ -294,7 +296,7 @@ export default class B4ACodeTree extends React.Component {
       </div>;
     } else {
       content = (
-        <B4aEmptyState imgSrc={folderInfoIcon} description="Select a file to edit" margin="46px 0 0 0" />
+        <B4aEmptyState description="Select a file to edit" margin="46px 0 0 0" />
       );
     }
 
